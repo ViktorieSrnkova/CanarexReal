@@ -1,0 +1,290 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model adresy {
+  id            Int             @id(map: "adresy_pk") @default(autoincrement())
+  ulice         String?         @db.VarChar(50)
+  cislo_popisne Int?
+  lokace        String?         @db.VarChar(100)
+  mesto         String?         @db.VarChar(50)
+  lat           Decimal         @db.Decimal(10, 8)
+  lng           Decimal         @db.Decimal(10, 8)
+  inzeraty      inzeraty[]
+  stat_preklady stat_preklady[]
+}
+
+model aktuality {
+  id                 Int                  @id(map: "aktuality_pk") @default(autoincrement())
+  viditelnost        Boolean
+  datum_vytvoreni    DateTime             @db.Timestamp(6)
+  aktuality_preklady aktuality_preklady[]
+  obrazky            obrazky[]
+}
+
+model aktuality_preklady {
+  id           Int       @id(map: "aktuality_preklady_pk") @default(autoincrement())
+  titulek      String
+  text         String
+  jazyky_id    Int
+  aktuality_id Int
+  aktuality    aktuality @relation(fields: [aktuality_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "aktuality_preklady_aktuality")
+  jazyky       jazyky    @relation(fields: [jazyky_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "aktuality_preklady_jazyky")
+
+  @@unique([jazyky_id, aktuality_id], map: "akt_p")
+  @@index([aktuality_id], map: "idx_akt_p_akt")
+  @@index([jazyky_id], map: "idx_akt_p_jaz")
+}
+
+model formulare {
+  id                         Int                          @id(map: "formulare_pk") @default(autoincrement())
+  jmeno                      String                       @db.VarChar(100)
+  prijmeni                   String                       @db.VarChar(100)
+  email                      String                       @db.VarChar(50)
+  telefon                    String                       @db.VarChar(20)
+  pocet_loznic               Int?
+  pocet_koupelen             Int?
+  minimalnni_velikost        Int?
+  rozpocet                   Int?
+  index_inzeratu             Int?
+  prilet                     DateTime?                    @db.Date
+  revidovano                 Boolean
+  text_zpravy                String
+  odkud_formular_id          Int
+  typy_formulare_id          Int
+  odkud_formular             odkud_formular               @relation(fields: [odkud_formular_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "formulare_odkud_formular")
+  typy_formulare             typy_formulare               @relation(fields: [typy_formulare_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "formulare_typy_formulare")
+  formulare_typy_nemovitosti formulare_typy_nemovitosti[]
+  uzivatelske_formulare      uzivatelske_formulare[]
+
+  @@index([odkud_formular_id], map: "idx_form_odkud")
+  @@index([typy_formulare_id], map: "idx_form_typ")
+}
+
+model formulare_typy_nemovitosti {
+  formulare_id        Int
+  typy_nemovitosti_id Int
+  formulare           formulare        @relation(fields: [formulare_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "formulare_typy_nemovitosti_formulare")
+  typy_nemovitosti    typy_nemovitosti @relation(fields: [typy_nemovitosti_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "formulare_typy_nemovitosti_typy_nemovitosti")
+
+  @@id([formulare_id, typy_nemovitosti_id], map: "formulare_typy_nemovitosti_pk")
+  @@index([typy_nemovitosti_id], map: "idx_form_typ_typ")
+}
+
+model inzeraty {
+  id                   Int                    @id(map: "inzeraty_pk") @default(autoincrement())
+  index                Int
+  cena_v_eur           Int
+  loznice              Int
+  koupelny             Int
+  velikost             Int
+  reprezentativni      Boolean
+  datum_vytvoreni      DateTime               @db.Timestamp(6)
+  adresy_id            Int
+  statusy_id           Int
+  typy_nemovitosti_id  Int
+  adresy               adresy                 @relation(fields: [adresy_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "inzeraty_adresy")
+  statusy              statusy                @relation(fields: [statusy_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "inzeraty_statusy")
+  typy_nemovitosti     typy_nemovitosti       @relation(fields: [typy_nemovitosti_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "inzeraty_typy_nemovitosti")
+  inzeraty_piktogramy  inzeraty_piktogramy[]
+  inzeraty_preklady    inzeraty_preklady[]
+  obrazky              obrazky[]
+  uzivatelske_oblibene uzivatelske_oblibene[]
+
+  @@index([adresy_id], map: "idx_inz_addr")
+  @@index([statusy_id], map: "idx_inz_sts")
+  @@index([typy_nemovitosti_id], map: "idx_inz_typ")
+}
+
+model inzeraty_piktogramy {
+  piktogramy_id Int
+  inzeraty_id   Int
+  inzeraty      inzeraty   @relation(fields: [inzeraty_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "inzeraty_piktogramy_inzeraty")
+  piktogramy    piktogramy @relation(fields: [piktogramy_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "inzeraty_piktogramy_piktogramy")
+
+  @@id([piktogramy_id, inzeraty_id], map: "inzeraty_piktogramy_pk")
+  @@index([inzeraty_id], map: "idx_inz_pik_inz")
+}
+
+model inzeraty_preklady {
+  id          Int      @id(map: "inzeraty_preklady_pk") @default(autoincrement())
+  titulek     String
+  popis       String
+  detaily     String
+  jazyky_id   Int
+  inzeraty_id Int
+  inzeraty    inzeraty @relation(fields: [inzeraty_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "inzeraty_preklady_inzeraty")
+  jazyky      jazyky   @relation(fields: [jazyky_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "inzeraty_preklady_jazyky")
+
+  @@unique([jazyky_id, inzeraty_id], map: "inz_p")
+  @@index([inzeraty_id], map: "idx_inz_p_inz")
+  @@index([jazyky_id], map: "idx_inz_p_jaz")
+}
+
+model jazyky {
+  id                        Int                         @id(map: "jazyky_pk") @default(autoincrement())
+  nazev                     String                      @db.VarChar(2)
+  aktuality_preklady        aktuality_preklady[]
+  inzeraty_preklady         inzeraty_preklady[]
+  obrazky_preklady          obrazky_preklady[]
+  piktogramy_preklady       piktogramy_preklady[]
+  stat_preklady             stat_preklady[]
+  statusy_preklady          statusy_preklady[]
+  typy_nemovitosti_preklady typy_nemovitosti_preklady[]
+}
+
+model obrazky {
+  id               Int                @id(map: "obrazky_pk") @default(autoincrement())
+  url              String
+  poradi           Int?
+  aktuality_id     Int?
+  inzeraty_id      Int?
+  aktuality        aktuality?         @relation(fields: [aktuality_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "obrazky_aktuality")
+  inzeraty         inzeraty?          @relation(fields: [inzeraty_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "obrazky_inzeraty")
+  obrazky_preklady obrazky_preklady[]
+  piktogramy       piktogramy[]
+
+  @@index([aktuality_id], map: "idx_obr_akt")
+}
+
+model obrazky_preklady {
+  id         Int     @id(map: "obrazky_preklady_pk") @default(autoincrement())
+  alt_text   String
+  jazyky_id  Int
+  obrazky_id Int
+  jazyky     jazyky  @relation(fields: [jazyky_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "obrazky_preklady_jazyky")
+  obrazky    obrazky @relation(fields: [obrazky_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "obrazky_preklady_obrazky")
+
+  @@unique([jazyky_id, obrazky_id], map: "obr_p")
+  @@index([jazyky_id], map: "idx_obr_p_jaz")
+  @@index([obrazky_id], map: "idx_obr_p_obr")
+}
+
+model odkud_formular {
+  id        Int         @id(map: "odkud_formular_pk") @default(autoincrement())
+  nazev     String      @db.VarChar(50)
+  formulare formulare[]
+}
+
+model piktogramy {
+  id                  Int                   @id(map: "piktogramy_pk") @default(autoincrement())
+  nazev               String                @db.VarChar(30)
+  obrazky_id          Int
+  inzeraty_piktogramy inzeraty_piktogramy[]
+  obrazky             obrazky               @relation(fields: [obrazky_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "piktogramy_obrazky")
+  piktogramy_preklady piktogramy_preklady[]
+
+  @@index([obrazky_id], map: "idx_pik_obr")
+}
+
+model piktogramy_preklady {
+  id            Int        @id(map: "piktogramy_preklady_pk") @default(autoincrement())
+  nazev         String     @db.VarChar(40)
+  jazyky_id     Int
+  piktogramy_id Int
+  jazyky        jazyky     @relation(fields: [jazyky_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "piktogramy_preklady_jazyky")
+  piktogramy    piktogramy @relation(fields: [piktogramy_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "piktogramy_preklady_piktogramy")
+}
+
+model role {
+  id        Int         @id(map: "role_pk") @default(autoincrement())
+  nazev     String      @db.VarChar(100)
+  uzivatele uzivatele[]
+}
+
+model stat_preklady {
+  id        Int    @id(map: "slozeno") @default(autoincrement())
+  nazev     String @db.VarChar(15)
+  jazyky_id Int
+  adresy_id Int
+  adresy    adresy @relation(fields: [adresy_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "stat_preklady_adresy")
+  jazyky    jazyky @relation(fields: [jazyky_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "stat_preklady_jazyky")
+
+  @@unique([jazyky_id, adresy_id], map: "stat_p")
+  @@index([adresy_id], map: "idx_sta_p_addr")
+  @@index([jazyky_id], map: "idx_sta_p_jaz")
+}
+
+model statusy {
+  id               Int                @id(map: "statusy_pk") @default(autoincrement())
+  kod              String             @db.VarChar(20)
+  inzeraty         inzeraty[]
+  statusy_preklady statusy_preklady[]
+}
+
+model statusy_preklady {
+  id         Int     @id(map: "statusy_preklady_pk") @default(autoincrement())
+  nazev      String  @db.VarChar(20)
+  jazyky_id  Int
+  statusy_id Int
+  jazyky     jazyky  @relation(fields: [jazyky_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "statusy_jazyky")
+  statusy    statusy @relation(fields: [statusy_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "statusy_preklady_statusy")
+
+  @@unique([jazyky_id, statusy_id], map: "sts_p")
+  @@index([jazyky_id], map: "idx_sts_p_jaz")
+  @@index([statusy_id], map: "idx_sts_p_sts")
+}
+
+model typy_formulare {
+  id        Int         @id(map: "typy_formulare_pk") @default(autoincrement())
+  nazev     String      @db.VarChar(50)
+  formulare formulare[]
+}
+
+model typy_nemovitosti {
+  id                         Int                          @id(map: "typy_nemovitosti_pk") @default(autoincrement())
+  kod                        String                       @db.VarChar(20)
+  formulare_typy_nemovitosti formulare_typy_nemovitosti[]
+  inzeraty                   inzeraty[]
+  typy_nemovitosti_preklady  typy_nemovitosti_preklady[]
+}
+
+model typy_nemovitosti_preklady {
+  id                  Int              @id(map: "typy_nemovitosti_preklady_pk") @default(autoincrement())
+  nazev               String           @db.VarChar(15)
+  jazyky_id           Int
+  typy_nemovitosti_id Int
+  jazyky              jazyky           @relation(fields: [jazyky_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "typy_nemovitosti_jazyky")
+  typy_nemovitosti    typy_nemovitosti @relation(fields: [typy_nemovitosti_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "typy_nemovitosti_preklady_typy_nemovitosti")
+
+  @@unique([jazyky_id, typy_nemovitosti_id], map: "typ_p")
+  @@index([jazyky_id], map: "idx_typ_p_jaz")
+  @@index([typy_nemovitosti_id], map: "idx_typ_p_typ")
+}
+
+model uzivatele {
+  id                    Int                     @id(map: "uzivatele_pk") @default(autoincrement())
+  email                 String                  @unique(map: "unique_email") @db.VarChar(50)
+  heslo_hash            String
+  jmeno                 String                  @db.VarChar(100)
+  datum_vytvoreni       DateTime                @db.Timestamp(6)
+  role_id               Int?
+  role                  role?                   @relation(fields: [role_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "role_id")
+  uzivatelske_formulare uzivatelske_formulare[]
+  uzivatelske_oblibene  uzivatelske_oblibene[]
+}
+
+model uzivatelske_formulare {
+  uzivatele_id Int
+  formulare_id Int
+  formulare    formulare @relation(fields: [formulare_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "uzivatelske_formulare_formulare")
+  uzivatele    uzivatele @relation(fields: [uzivatele_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "uzivatelske_formulare_uzivatele")
+
+  @@id([uzivatele_id, formulare_id], map: "uzivatelske_formulare_pk")
+  @@index([formulare_id], map: "idx_uziv_f_form")
+}
+
+model uzivatelske_oblibene {
+  inzeraty_id  Int
+  uzivatele_id Int
+  inzeraty     inzeraty  @relation(fields: [inzeraty_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "uzivatelske_oblibene_inzeraty")
+  uzivatele    uzivatele @relation(fields: [uzivatele_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "uzivatelske_oblibene_uzivatele")
+
+  @@id([uzivatele_id, inzeraty_id], map: "uzivatelske_oblibene_pk")
+  @@index([uzivatele_id], map: "idx_uziv_o_uziv")
+}
