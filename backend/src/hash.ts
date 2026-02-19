@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 
 async function main() {
-  const password = "Pathword101"; // <- your admin password
+  const password = ""; // <- your admin password
   const hashed = await bcrypt.hash(password, 10);
   console.log("BCRYPT HASH:", hashed);
 }
