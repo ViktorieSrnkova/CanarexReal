@@ -1,21 +1,28 @@
 import express from "express";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
-import { detectLang } from "./middleware/detectLang";
 import adminRoutes from "./routes/admin-login";
 import authRoutes from "./routes/user-auth";
 import favoritesRouter from "./routes/favorites";
 import adminListingsRouter from "./routes/listings-management";
 import listingsRouter from "./routes/listings";
+import newsRouter from "./routes/news";
+import adminNewsRouter from "./routes/news-management";
+import formsManagementRouter from "./routes/forms-management";
 
 dotenv.config();
 
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
+
 app.use("/api/admin", adminRoutes);
 app.use("/api/admin/listings", adminListingsRouter);
+app.use("/api/admin/news-management", adminNewsRouter);
+app.use("/api/admin/forms-management", formsManagementRouter);
+
 app.use("/api/listings", listingsRouter);
+app.use("/api/news", newsRouter);
 app.use("/api/auth", authRoutes);
 app.use("/api/favorites", favoritesRouter);
 

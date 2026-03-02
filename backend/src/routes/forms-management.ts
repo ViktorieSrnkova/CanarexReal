@@ -153,3 +153,5 @@ router.patch("/:id/review", async (req, res) => {
     });
   }
 });
+
+export default router;
