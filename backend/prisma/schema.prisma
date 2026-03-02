@@ -58,6 +58,7 @@ model formulare {
   text_zpravy                String
   odkud_formular_id          Int
   typy_formulare_id          Int
+  datum_vytvoreni            DateTime                     @default(now()) @db.Timestamp(6)
   odkud_formular             odkud_formular               @relation(fields: [odkud_formular_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "formulare_odkud_formular")
   typy_formulare             typy_formulare               @relation(fields: [typy_formulare_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "formulare_typy_formulare")
   formulare_typy_nemovitosti formulare_typy_nemovitosti[]
