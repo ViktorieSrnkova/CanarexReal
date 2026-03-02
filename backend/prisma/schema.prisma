@@ -8,15 +8,16 @@ datasource db {
 }
 
 model adresy {
-  id            Int             @id(map: "adresy_pk") @default(autoincrement())
-  ulice         String?         @db.VarChar(50)
+  id            Int        @id(map: "adresy_pk") @default(autoincrement())
+  ulice         String?    @db.VarChar(50)
   cislo_popisne Int?
-  lokace        String?         @db.VarChar(100)
-  mesto         String?         @db.VarChar(50)
-  lat           Decimal         @db.Decimal(10, 8)
-  lng           Decimal         @db.Decimal(10, 8)
+  lokace        String?    @db.VarChar(100)
+  mesto         String?    @db.VarChar(50)
+  lat           Decimal    @db.Decimal(10, 8)
+  lng           Decimal    @db.Decimal(10, 8)
+  staty_id      Int
+  staty         staty      @relation(fields: [staty_id], references: [id], onUpdate: NoAction, map: "fk_adresy_stat")
   inzeraty      inzeraty[]
-  stat_preklady stat_preklady[]
 }
 
 model aktuality {
@@ -201,12 +202,10 @@ model stat_preklady {
   id        Int    @id(map: "slozeno") @default(autoincrement())
   nazev     String @db.VarChar(15)
   jazyky_id Int
-  adresy_id Int
-  adresy    adresy @relation(fields: [adresy_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "stat_preklady_adresy")
+  staty_id  Int
+  staty     staty  @relation(fields: [staty_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_stat_preklady_stat")
   jazyky    jazyky @relation(fields: [jazyky_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "stat_preklady_jazyky")
 
-  @@unique([jazyky_id, adresy_id], map: "stat_p")
-  @@index([adresy_id], map: "idx_sta_p_addr")
   @@index([jazyky_id], map: "idx_sta_p_jaz")
 }
 
@@ -282,10 +281,17 @@ model uzivatelske_formulare {
 model uzivatelske_oblibene {
   inzeraty_id     Int
   uzivatele_id    Int
-  datum_vytvoreni DateTime @default(now()) @db.Timestamptz(6)
+  datum_vytvoreni DateTime  @default(now()) @db.Timestamptz(6)
   inzeraty        inzeraty  @relation(fields: [inzeraty_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "uzivatelske_oblibene_inzeraty")
   uzivatele       uzivatele @relation(fields: [uzivatele_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "uzivatelske_oblibene_uzivatele")
 
   @@id([uzivatele_id, inzeraty_id], map: "uzivatelske_oblibene_pk")
   @@index([uzivatele_id], map: "idx_uziv_o_uziv")
+}
+
+model staty {
+  id            Int             @id @default(autoincrement())
+  kod           String          @unique @db.VarChar(5)
+  adresy        adresy[]
+  stat_preklady stat_preklady[]
 }

@@ -66,9 +66,16 @@ export function listingDetailSelect(userLangId: number = 2) {
         mesto: true,
         lat: true,
         lng: true,
-        stat_preklady: {
-          where: { jazyky_id: userLangId },
-          select: { nazev: true },
+        staty: {
+          select: {
+            stat_preklady: {
+              where: { jazyky_id: userLangId },
+              select: {
+                nazev: true,
+              },
+              take: 1,
+            },
+          },
         },
       },
     },
