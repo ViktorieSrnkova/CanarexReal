@@ -9,10 +9,18 @@ import listingsRouter from "./routes/listings";
 import newsRouter from "./routes/news";
 import adminNewsRouter from "./routes/news-management";
 import formsManagementRouter from "./routes/forms-management";
+import cors from "cors";
 
 dotenv.config();
 
 const app = express();
+
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  }),
+);
 app.use(express.json());
 app.use(cookieParser());
 

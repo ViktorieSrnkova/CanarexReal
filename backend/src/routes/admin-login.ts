@@ -2,6 +2,7 @@ import { Router } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import prisma from "../../lib/db";
+import { requireRole, requireUser, type AuthRequest } from "../middleware/auth";
 
 const router = Router();
 
@@ -81,6 +82,10 @@ router.post("/refresh", (req, res) => {
 router.post("/logout", (req, res) => {
   res.clearCookie("refresh_token");
   res.json({ message: "Logged out" });
+});
+
+router.get("/me", requireRole([1, 3]), (req: AuthRequest, res) => {
+  res.json({ user: req.user });
 });
 
 export default router;
