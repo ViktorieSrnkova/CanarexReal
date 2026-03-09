@@ -10,16 +10,16 @@ export default function AuthGuard({ children }: { children: JSX.Element }) {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        await api.get("/admin/me");
+        await api.get("/me");
         setValid(true);
       } catch {
         try {
-          const refresh = await api.post("/admin/refresh");
+          const refresh = await api.post("/refresh");
 
           const newToken = refresh.data.accessToken;
           localStorage.setItem("token", newToken);
 
-          await api.get("/admin/me");
+          await api.get("/me");
           setValid(true);
         } catch {
           localStorage.removeItem("token");

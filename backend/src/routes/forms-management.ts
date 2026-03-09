@@ -16,7 +16,7 @@ router.get("/", async (req, res) => {
         email: true,
         telefon: true,
         datum_vytvoreni: true,
-
+        revidovano: true,
         odkud_formular: {
           select: {
             nazev: true,
@@ -140,7 +140,28 @@ router.patch("/:id/review", async (req, res) => {
       data: { revidovano },
       select: {
         id: true,
+        jmeno: true,
+        prijmeni: true,
+        email: true,
+        telefon: true,
+        datum_vytvoreni: true,
+        pocet_loznic: true,
+        pocet_koupelen: true,
+        minimalnni_velikost: true,
+        rozpocet: true,
+        index_inzeratu: true,
+        prilet: true,
         revidovano: true,
+        text_zpravy: true,
+        odkud_formular: { select: { nazev: true } },
+        typy_formulare: { select: { nazev: true } },
+        formulare_typy_nemovitosti: {
+          select: { typy_nemovitosti: { select: { id: true, kod: true } } },
+        },
+        uzivatelske_formulare: {
+          select: { uzivatele: { select: { id: true, email: true } } },
+          take: 1,
+        },
       },
     });
 

@@ -13,7 +13,8 @@ import NewsPage from "../pages/news/NewsPage";
 import NewsCreatePage from "../pages/news/NewsCreatePage";
 import NewsEditPage from "../pages/news/NewsEditPage";
 
-import ContactFormsPage from "../pages/contacts/ContactFormsPage";
+import ContactFormsPage from "../pages/forms/ContactFormsPage";
+import FormDetailPage from "../pages/forms/FormDetailPage";
 import NotFoundPage from "../pages/errors/NotFoundPage";
 import UnauthorizedPage from "../pages/errors/UnauthorizedPage";
 import CenteredLayout from "../layouts/CenteredLayout";
@@ -43,7 +44,8 @@ export default function Router() {
           <Route path="/news/create" element={<NewsCreatePage />} />
           <Route path="/news/edit/:id" element={<NewsEditPage />} />
 
-          <Route path="/contacts" element={<ContactFormsPage />} />
+          <Route path="/forms" element={<ContactFormsPage />} />
+          <Route path="/forms/:id" element={<FormDetailPage />} />
         </Route>
         <Route path="/unauthorized" element={<UnauthorizedPage />} />
         <Route path="*" element={<NotFoundPage />} />

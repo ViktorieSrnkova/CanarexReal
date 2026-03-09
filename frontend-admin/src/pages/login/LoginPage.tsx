@@ -15,7 +15,7 @@ const LoginPage: React.FC = () => {
   const navigate = useNavigate();
   const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
     try {
-      const res = await api.post("/admin/login", {
+      const res = await api.post("/login", {
         email: values.username,
         password: values.password,
       });

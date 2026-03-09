@@ -9,7 +9,7 @@ export default function AdminLayout() {
 
   const handleLogout = async () => {
     try {
-      await api.post("/admin/logout");
+      await api.post("/logout");
       localStorage.removeItem("token");
       delete api.defaults.headers.common["Authorization"];
       navigate("/login");
@@ -38,7 +38,7 @@ export default function AdminLayout() {
             },
             {
               key: "4",
-              label: <Link to="/contacts">Formuláře</Link>,
+              label: <Link to="/forms">Formuláře</Link>,
             },
           ]}
         />
