@@ -9,6 +9,7 @@ import Icon, {
   PhoneOutlined,
   UserOutlined,
 } from "@ant-design/icons";
+import { formatPhoneNumber } from "../../utils/formatting";
 
 const { Text } = Typography;
 
@@ -52,7 +53,7 @@ const FormCard: React.FC<FormCardProps> = ({ form }) => {
           component={PhoneOutlined}
           style={{ fontSize: 16, marginBottom: 8, marginRight: 8 }}
         />
-        <Text type="secondary">{form.telefon}</Text>
+        <Text type="secondary">{formatPhoneNumber(form.telefon)}</Text>
       </div>
 
       <div

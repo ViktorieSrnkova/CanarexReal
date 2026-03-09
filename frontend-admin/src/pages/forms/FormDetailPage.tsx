@@ -4,7 +4,7 @@ import { Spin, Button, Typography, Tag } from "antd";
 import { getForm, toggleReview } from "../../api/forms";
 import type { FormDetail } from "../../types/forms";
 import { formatDate, formatDateTime, getReviewTag } from "../../utils/forms";
-import { formatMoneyEUR } from "../../utils/formatting";
+import { formatMoneyEUR, formatPhoneNumber } from "../../utils/formatting";
 
 const { Title, Text } = Typography;
 
@@ -101,7 +101,7 @@ const FormDetailPage = () => {
           Email: <Tag color="blue">{form.email}</Tag>
         </Text>
         <Text>
-          Telefon: <Tag color="green">{form.telefon}</Tag>
+          Telefon: <Tag color="green">{formatPhoneNumber(form.telefon)}</Tag>
         </Text>
         <Text style={{ marginLeft: "auto" }}>
           Datum vytvoření:
