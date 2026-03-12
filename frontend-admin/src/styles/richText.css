@@ -1,0 +1,29 @@
+/* src/index.css or your component CSS */
+.ce-block {
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin-bottom: 8px;
+  border-radius: 4px;
+  background: #fafafa;
+}
+
+.ce-block:hover {
+  border-color: #1890ff; /* Ant Design blue hover */
+}
+
+.ce-toolbar {
+  background: #f0f0f0;
+}
+
+.ce-paragraph,
+.ce-header {
+  font-family: "Segoe UI", sans-serif;
+}
+.ce-toolbar__content {
+  margin: 0 70px;
+}
+.ce-block__content {
+  max-width: 1000px;
+  margin: 0 80px;
+  text-wrap: wrap;
+}

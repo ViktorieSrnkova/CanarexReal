@@ -1,10 +1,12 @@
+// src/pages/NewsCreatePage.tsx
 import React from "react";
+import EditorMinimal from "../../components/editor/RichMediaEditor";
 
 const NewsCreatePage: React.FC = () => {
   return (
-    <div className="news-create-page">
-      <h1>Create News</h1>
-      <p>Welcome to the Create News page.</p>
+    <div style={{ padding: 24 }}>
+      <h2>Create News</h2>
+      <EditorMinimal />
     </div>
   );
 };
