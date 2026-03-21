@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, Button, Radio, Typography, Upload } from "antd";
+import { Form, Button, Radio, Typography, Upload, Row, Col } from "antd";
 import type { Lang } from "../../types/news";
 import { useNewsForm } from "../../hooks/useNewsForm";
 import Modals from "../../components/news/Modals";
@@ -23,54 +23,79 @@ const NewsCreatePage: React.FC = () => {
         onFinish={(values) => formHook.submitNews(values, form.resetFields)}
         style={{ maxWidth: 900 }}
       >
-        <LangButtonGroup
-          languages={languages}
-          getValue={(lang) => formHook.data.translations[lang]?.title}
-          label="Titulek"
-          onClick={(lang) => formHook.openModal("title", lang)}
-        />
+        <Row gutter={16}>
+          <Col span={15}>
+            <Form.Item label="Titulky">
+              <LangButtonGroup
+                languages={languages}
+                getValue={(lang) => formHook.data.translations[lang]?.title}
+                label="Titulek"
+                onClick={(lang) => formHook.openModal("title", lang)}
+              />
+            </Form.Item>
+          </Col>
 
-        <Form.Item
-          label="Viditelnost"
-          name="visible"
-          rules={[{ required: true, message: "Vyberte viditelnost" }]}
-        >
-          <Radio.Group>
-            <Radio value={true}>Viditelné</Radio>
-            <Radio value={false}>Neviditelné</Radio>
-          </Radio.Group>
-        </Form.Item>
-
-        <Form.Item label="Hlavní obrázek">
-          <Upload
-            beforeUpload={formHook.handleImageUpload}
-            maxCount={1}
-            showUploadList={false}
-          >
-            <Button
-              onClick={formHook.handleImageClick}
-              loading={formHook.pickingImage || formHook.uploading}
+          <Col span={8}>
+            <Form.Item
+              label="Viditelnost"
+              name="visible"
+              rules={[{ required: true, message: "Vyberte viditelnost" }]}
             >
-              {formHook.pickingImage || formHook.uploading
-                ? "Nahrávání..."
-                : "Nahrát obrázek"}
-            </Button>
-          </Upload>
-        </Form.Item>
+              <Radio.Group>
+                <Radio value={true}>Viditelné</Radio>
+                <Radio value={false}>Neviditelné</Radio>
+              </Radio.Group>
+            </Form.Item>
+          </Col>
+        </Row>
 
-        <LangButtonGroup
-          languages={languages}
-          getValue={(lang) => formHook.data.altTexts[lang]}
-          label="ALT"
-          onClick={(lang) => formHook.openModal("alt", lang)}
-        />
+        <Row gutter={16}>
+          <Col span={5}>
+            <Form.Item label="Hlavní obrázek">
+              <Upload
+                beforeUpload={formHook.handleImageUpload}
+                maxCount={1}
+                showUploadList={false}
+                onChange={({ file }) => {
+                  if (file.status === "removed" || file.status === "error") {
+                    formHook.handleImageCancel();
+                  }
+                }}
+              >
+                <Button
+                  onClick={formHook.handleImageClick}
+                  loading={formHook.pickingImage || formHook.uploading}
+                >
+                  {formHook.pickingImage || formHook.uploading
+                    ? "Nahrávání..."
+                    : "Nahrát obrázek"}
+                </Button>
+              </Upload>
+            </Form.Item>
+          </Col>
 
-        <LangButtonGroup
-          languages={languages}
-          getValue={(lang) => formHook.data.translations[lang]?.text}
-          label="Text"
-          onClick={(lang) => formHook.openModal("editor", lang)}
-        />
+          <Col span={10}>
+            <Form.Item label="Alt texty obrázku">
+              <LangButtonGroup
+                languages={languages}
+                getValue={(lang) => formHook.data.altTexts[lang]}
+                label="ALT"
+                onClick={(lang) => formHook.openModal("alt", lang)}
+              />
+            </Form.Item>
+          </Col>
+
+          <Col span={8}>
+            <Form.Item label="Text aktuality">
+              <LangButtonGroup
+                languages={languages}
+                getValue={(lang) => formHook.data.translations[lang]?.text}
+                label="Text"
+                onClick={(lang) => formHook.openModal("editor", lang)}
+              />
+            </Form.Item>
+          </Col>
+        </Row>
 
         <NewsPreview languages={languages} data={formHook.data} />
 

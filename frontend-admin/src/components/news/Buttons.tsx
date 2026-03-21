@@ -19,11 +19,33 @@ const LangButtonGroup: React.FC<Props> = ({
   const renderLangButton = (lang: Lang) => {
     const value = getValue(lang);
     const hasValue = !!value;
+
+    const isSecondaryLang = lang === "en" || lang === "sk";
+
+    let borderColor: string | undefined;
+    let color: string | undefined;
+
+    if (hasValue) {
+      borderColor = "#52c41a";
+      color = "#52c41a";
+    } else if (!isSecondaryLang) {
+      borderColor = "#1890ff";
+      color = "#1890ff";
+    } else if (isSecondaryLang) {
+      borderColor = "#188fff8b";
+      color = "#188fffdd";
+    }
+
     return (
       <Button
         key={lang}
         onClick={() => onClick(lang)}
         icon={hasValue ? <EditOutlined /> : <PlusOutlined />}
+        style={{
+          borderColor,
+          color,
+          fontWeight: hasValue ? "bold" : "normal",
+        }}
       >
         {label} {lang.toUpperCase()}
       </Button>

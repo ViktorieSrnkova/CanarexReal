@@ -40,24 +40,25 @@ export const useNewsForm = () => {
     }
   };
 
-  const saveTitle = () =>
-    activeLang &&
+  const saveTitle = () => {
+    if (!activeLang) return;
     setData((prev) => ({
       ...prev,
       translations: {
         ...prev.translations,
         [activeLang]: { ...prev.translations[activeLang], title: titleInput },
       },
-    })) &&
+    }));
     setTitleModal(false);
-
-  const saveAltText = () =>
-    activeLang &&
+  };
+  const saveAltText = () => {
+    if (!activeLang) return;
     setData((prev) => ({
       ...prev,
       altTexts: { ...prev.altTexts, [activeLang]: altInput },
-    })) &&
+    }));
     setAltModal(false);
+  };
 
   const saveEditorText = async () => {
     if (!editorRef.current || !activeLang) return;
@@ -74,9 +75,12 @@ export const useNewsForm = () => {
     }));
     setEditorModal(false);
   };
+  const closeTitleModal = () => setTitleModal(false);
+  const closeAltModal = () => setAltModal(false);
+  const closeEditorModal = () => setEditorModal(false);
 
   const handleImageClick = () => setPickingImage(true);
-
+  const handleImageCancel = () => setPickingImage(false);
   const handleImageUpload = async (file: File) => {
     setUploading(true);
     setPickingImage(false);
@@ -101,6 +105,9 @@ export const useNewsForm = () => {
       message.success("Aktualita úspěšně vytvořena");
       formReset();
       setData({ translations: {}, altTexts: {} });
+      if (editorRef.current) {
+        await editorRef.current.clear();
+      }
     } catch (error: unknown) {
       if (error instanceof Error) message.error(error.message);
       else message.error("Chyba při vytváření aktuality");
@@ -127,5 +134,9 @@ export const useNewsForm = () => {
     handleImageUpload,
     handleImageClick,
     submitNews,
+    closeTitleModal,
+    closeAltModal,
+    closeEditorModal,
+    handleImageCancel,
   };
 };

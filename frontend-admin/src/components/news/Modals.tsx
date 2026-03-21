@@ -25,7 +25,7 @@ const Modals = (formHook: NewsFormHook) => {
         title={`Titulek (${activeLang?.toUpperCase()})`}
         open={titleModal}
         onOk={saveTitle}
-        onCancel={() => {}}
+        onCancel={formHook.closeTitleModal}
       >
         <Input
           value={titleInput}
@@ -38,7 +38,7 @@ const Modals = (formHook: NewsFormHook) => {
         title={`Alt text (${activeLang?.toUpperCase()})`}
         open={altModal}
         onOk={saveAltText}
-        onCancel={() => {}}
+        onCancel={formHook.closeAltModal}
       >
         <Input
           value={altInput}
@@ -51,7 +51,7 @@ const Modals = (formHook: NewsFormHook) => {
         width={900}
         title={`Text (${activeLang?.toUpperCase()})`}
         open={editorModal}
-        onCancel={() => {}}
+        onCancel={formHook.closeEditorModal}
         footer={[
           <Button key="save" type="primary" onClick={saveEditorText}>
             Uložit text

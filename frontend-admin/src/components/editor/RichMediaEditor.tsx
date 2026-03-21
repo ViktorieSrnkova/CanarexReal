@@ -6,6 +6,8 @@ import { tools } from "../../config/editor-tools";
 
 export type EditorMinimalRef = {
   save: () => Promise<EditorJS.OutputData>;
+  clear: () => void;
+  destroy: () => void;
 };
 
 const EditorMinimal = forwardRef<EditorMinimalRef>((_, ref) => {
@@ -15,6 +17,8 @@ const EditorMinimal = forwardRef<EditorMinimalRef>((_, ref) => {
       if (!editorRef.current) throw new Error("Editor not initialized");
       return await editorRef.current.save();
     },
+    clear: () => editorRef.current?.clear(),
+    destroy: () => editorRef.current?.destroy(),
   }));
   useEffect(() => {
     if (!editorRef.current) {

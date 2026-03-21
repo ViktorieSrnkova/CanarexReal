@@ -122,20 +122,21 @@ router.post("/create", upload.single("image"), async (req, res) => {
 
     for (const [langCode, t] of Object.entries(translationsObj) as [
       string,
-      { title: string; text: string },
+      { title?: string; text?: string },
     ][]) {
+      if (!t?.title && !t?.text) continue;
       const jazyky_id = langIdMap[langCode];
       if (!jazyky_id) continue;
 
       await prisma.aktuality_preklady.create({
         data: {
-          titulek: t.title,
-          text: t.text,
+          titulek: t.title ?? "",
+          text: t.text ?? "",
           jazyky_id,
           aktuality_id: aktualita.id,
         },
       });
-
+      if (!t.text) continue;
       const parsed = JSON.parse(t.text);
 
       for (const block of parsed.blocks || []) {
@@ -179,7 +180,7 @@ router.post("/create", upload.single("image"), async (req, res) => {
 
       const fullImage = await prisma.obrazky.create({
         data: {
-          url: "/api/files/temp/" + aktualita.id,
+          url: "/api/files/images/" + aktualita.id,
           data: mainBuffer,
           is_temp: false,
           aktuality_id: aktualita.id,
@@ -188,7 +189,7 @@ router.post("/create", upload.single("image"), async (req, res) => {
 
       const thumbImage = await prisma.obrazky.create({
         data: {
-          url: "/api/files/temp/" + aktualita.id + "_thumb",
+          url: "/api/files/images/" + aktualita.id + "_thumb",
           data: thumbBuffer,
           is_temp: false,
           aktuality_id: aktualita.id,
@@ -199,6 +200,7 @@ router.post("/create", upload.single("image"), async (req, res) => {
         string,
         string,
       ][]) {
+        if (!altText) continue;
         const jazyky_id = langIdMap[langCode];
         if (!jazyky_id) continue;
 

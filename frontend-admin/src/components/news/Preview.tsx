@@ -37,7 +37,11 @@ const NewsPreview: React.FC<Props> = ({ languages, data }) => {
     <Row gutter={16} style={{ marginTop: 16 }}>
       {languages.map((lang) => {
         const t = data.translations[lang];
-        if (!t && !data.image) return null;
+        const hasContent = Boolean(
+          t?.title?.trim() || t?.text?.trim() || data.altTexts[lang]?.trim(),
+        );
+
+        if (!hasContent) return null;
 
         return (
           <Col span={8} key={lang}>
@@ -47,24 +51,26 @@ const NewsPreview: React.FC<Props> = ({ languages, data }) => {
                   <strong>Titulek:</strong> {t.title}
                 </p>
               )}
-              {data.image && (
+
+              {data.image && hasContent && (
                 <div style={{ marginTop: 8 }}>
                   <img
                     src={data.imagePreview}
                     alt={data.altTexts[lang] || "Hlavní obrázek"}
                     style={{ maxWidth: "100%", maxHeight: 150 }}
                   />
-                  {data.altTexts[lang] && (
-                    <p>
-                      <strong>Alt:</strong> {data.altTexts[lang]}
-                    </p>
-                  )}
-                  {t?.text && (
-                    <p>
-                      <strong>Text:</strong> {getPreviewText(t.text)}
-                    </p>
-                  )}
                 </div>
+              )}
+              {data.altTexts[lang] && (
+                <p>
+                  <strong>Alt:</strong> {data.altTexts[lang]}
+                </p>
+              )}
+
+              {t?.text && (
+                <p>
+                  <strong>Text:</strong> {getPreviewText(t.text)}
+                </p>
               )}
             </Card>
           </Col>
