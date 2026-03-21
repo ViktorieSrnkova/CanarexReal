@@ -47,7 +47,6 @@ export function listingDetailSelect(userLangId: number = 2) {
     reprezentativni: true,
     datum_vytvoreni: true,
 
-    // 🔹 překlady samotného inzerátu
     inzeraty_preklady: {
       where: { jazyky_id: userLangId },
       select: {
@@ -57,7 +56,6 @@ export function listingDetailSelect(userLangId: number = 2) {
       },
     },
 
-    // 🔹 adresa + stát ve správném jazyce
     adresy: {
       select: {
         ulice: true,
@@ -80,7 +78,6 @@ export function listingDetailSelect(userLangId: number = 2) {
       },
     },
 
-    // 🔹 status ve správném jazyce
     statusy: {
       select: {
         kod: true,
@@ -91,7 +88,6 @@ export function listingDetailSelect(userLangId: number = 2) {
       },
     },
 
-    // 🔹 typ nemovitosti ve správném jazyce
     typy_nemovitosti: {
       select: {
         kod: true,
@@ -102,7 +98,6 @@ export function listingDetailSelect(userLangId: number = 2) {
       },
     },
 
-    // 🔹 všechny obrázky + alt text ve správném jazyce
     obrazky: {
       orderBy: { poradi: "asc" as const },
       select: {
@@ -116,7 +111,6 @@ export function listingDetailSelect(userLangId: number = 2) {
       },
     },
 
-    // 🔹 všechny piktogramy + jejich překlady
     inzeraty_piktogramy: {
       select: {
         piktogramy: {

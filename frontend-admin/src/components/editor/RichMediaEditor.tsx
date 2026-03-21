@@ -1,53 +1,31 @@
-// src/components/EditorMinimal.tsx
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef, forwardRef, useImperativeHandle } from "react";
 import "../../styles/richText.css";
-import EditorJS, { type BlockToolConstructable } from "@editorjs/editorjs";
-import Header from "@editorjs/header";
-import ImageTool from "@editorjs/image";
-import List from "@editorjs/list";
-import Quote from "@editorjs/quote";
-import Delimiter from "@editorjs/delimiter";
-import LinkTool from "@editorjs/link";
-import { ImageToolTune } from "editorjs-image-resize-crop";
+import EditorJS from "@editorjs/editorjs";
+import DragDrop from "editorjs-drag-drop";
+import { tools } from "../../config/editor-tools";
 
-const EditorMinimal: React.FC = () => {
+export type EditorMinimalRef = {
+  save: () => Promise<EditorJS.OutputData>;
+};
+
+const EditorMinimal = forwardRef<EditorMinimalRef>((_, ref) => {
   const editorRef = useRef<EditorJS | null>(null);
-
+  useImperativeHandle(ref, () => ({
+    save: async () => {
+      if (!editorRef.current) throw new Error("Editor not initialized");
+      return await editorRef.current.save();
+    },
+  }));
   useEffect(() => {
     if (!editorRef.current) {
       editorRef.current = new EditorJS({
+        onReady: () => {
+          new DragDrop(editorRef.current);
+        },
         holder: "editorjs",
         autofocus: true,
         placeholder: "Start writing here...",
-        tools: {
-          header: Header,
-          image: {
-            class: ImageTool,
-            tunes: ["imageResize"],
-            config: {
-              uploader: {
-                async uploadByFile(file: File) {
-                  // temporary preview without backend
-                  return {
-                    success: 1,
-                    file: { url: URL.createObjectURL(file), alt: file.name },
-                  };
-                },
-              },
-            },
-          },
-          imageResize: {
-            class: ImageToolTune as BlockToolConstructable,
-            config: {
-              resize: true,
-              crop: false,
-            },
-          },
-          list: List,
-          quote: Quote,
-          delimiter: Delimiter,
-          linkTool: LinkTool,
-        },
+        tools,
       });
 
       return () => {
@@ -67,6 +45,6 @@ const EditorMinimal: React.FC = () => {
       style={{ minHeight: 300, border: "1px solid #ccc", padding: 10 }}
     />
   );
-};
+});
 
 export default EditorMinimal;

@@ -2,6 +2,11 @@ import { Router } from "express";
 import { requireRole, type AuthRequest } from "../middleware/auth";
 import prisma from "../../lib/db";
 import type { PublicRequest } from "../middleware/detectLang";
+import {
+  convertBufferToWebP,
+  convertBufferToThumbnail,
+} from "../utils/thumbnailMaker";
+import { upload } from "../middleware/uploader";
 
 const router = Router();
 router.use(requireRole([1, 3]));
@@ -95,6 +100,121 @@ router.get("/:id", async (req: PublicRequest, res) => {
   }
 });
 
-//opet put a patcjh pro editaci a mazani, ale az budes mit jak to na fe otestovat
+router.post("/create", upload.single("image"), async (req, res) => {
+  try {
+    const { visible, translations, altTexts } = req.body;
+    const file = req.file;
 
+    if (!visible || !translations) {
+      return res.status(400).json({ error: "Missing required fields" });
+    }
+
+    const translationsObj = JSON.parse(translations);
+    const altTextsObj = altTexts ? JSON.parse(altTexts) : {};
+
+    const aktualita = await prisma.aktuality.create({
+      data: {
+        viditelnost: visible === "true",
+      },
+    });
+
+    const langIdMap: Record<string, number> = { cs: 2, en: 1, sk: 3 };
+
+    for (const [langCode, t] of Object.entries(translationsObj) as [
+      string,
+      { title: string; text: string },
+    ][]) {
+      const jazyky_id = langIdMap[langCode];
+      if (!jazyky_id) continue;
+
+      await prisma.aktuality_preklady.create({
+        data: {
+          titulek: t.title,
+          text: t.text,
+          jazyky_id,
+          aktuality_id: aktualita.id,
+        },
+      });
+
+      const parsed = JSON.parse(t.text);
+
+      for (const block of parsed.blocks || []) {
+        if (block.type === "image" && block.data?.file?.id) {
+          const imageId = block.data.file.id;
+          const caption = block.data.caption || null;
+          await prisma.obrazky.update({
+            where: { id: imageId },
+            data: {
+              is_temp: false,
+              aktuality_id: aktualita.id,
+            },
+          });
+          await prisma.obrazky_preklady.upsert({
+            where: {
+              jazyky_id_obrazky_id: {
+                jazyky_id,
+                obrazky_id: imageId,
+              },
+            },
+            update: {
+              caption,
+            },
+            create: {
+              caption,
+              alt_text: null,
+              jazyky_id,
+              obrazky_id: imageId,
+            },
+          });
+        }
+      }
+    }
+
+    if (file) {
+      const mainBufferNode = await convertBufferToWebP(file.buffer);
+      const thumbBufferNode = await convertBufferToThumbnail(file.buffer);
+
+      const mainBuffer = new Uint8Array(mainBufferNode);
+      const thumbBuffer = new Uint8Array(thumbBufferNode);
+
+      const fullImage = await prisma.obrazky.create({
+        data: {
+          url: "/api/files/temp/" + aktualita.id,
+          data: mainBuffer,
+          is_temp: false,
+          aktuality_id: aktualita.id,
+        },
+      });
+
+      const thumbImage = await prisma.obrazky.create({
+        data: {
+          url: "/api/files/temp/" + aktualita.id + "_thumb",
+          data: thumbBuffer,
+          is_temp: false,
+          aktuality_id: aktualita.id,
+        },
+      });
+
+      for (const [langCode, altText] of Object.entries(altTextsObj) as [
+        string,
+        string,
+      ][]) {
+        const jazyky_id = langIdMap[langCode];
+        if (!jazyky_id) continue;
+
+        await prisma.obrazky_preklady.createMany({
+          data: [
+            { alt_text: altText, jazyky_id, obrazky_id: fullImage.id },
+            { alt_text: altText, jazyky_id, obrazky_id: thumbImage.id },
+          ],
+        });
+      }
+    }
+
+    res.json({ success: true, aktuality_id: aktualita.id });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to create aktualita" });
+  }
+});
 export default router;

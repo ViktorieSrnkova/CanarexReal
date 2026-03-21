@@ -1,0 +1,9 @@
+declare module "editorjs-paragraph-with-alignment";
+declare module "editorjs-text-alignment-blocktune";
+declare module "editorjs-header-with-alignment";
+declare module "editorjs-image-tune-plus";
+declare module "@rodrigoodhin/editorjs-image-gallery";
+declare module "editorjs-multicolumn";
+declare module "editorjs-toggle-block";
+declare module "editorjs-drag-drop";
+declare module "@plebjs/editorjs-emoji-picker-tool";

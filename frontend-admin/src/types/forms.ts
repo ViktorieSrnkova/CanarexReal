@@ -6,7 +6,6 @@ export interface FormSummary {
   telefon: string;
   revidovano: boolean;
   datum_vytvoreni: string;
-
   odkud_formular?: {
     nazev: string;
   };

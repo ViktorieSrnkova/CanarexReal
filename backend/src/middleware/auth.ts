@@ -47,14 +47,3 @@ export function requireUser(
     return res.status(401).json({ message: "Invalid token" });
   }
 }
-/*
-import { requireRole } from "../middleware/auth";
-
-router.get("/users", requireRole([2]), async (req, res) => {
-  // Only superadmin (role_id = 2)
-});
-
-router.get("/listings", requireRole([1,2]), async (req, res) => {
-  // Admins and superadmins
-});
-*/
