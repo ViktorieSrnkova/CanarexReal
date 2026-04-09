@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import type EditorJS from "@editorjs/editorjs";
 import type { NewsFormValues, Translation, Lang } from "../types/news";
 import { postNews } from "../api/news";
@@ -26,6 +26,7 @@ export const useNewsForm = () => {
   const [altInput, setAltInput] = useState("");
   const [uploading, setUploading] = useState(false);
   const [pickingImage, setPickingImage] = useState(false);
+  const [editorReady, setEditorReady] = useState(false);
 
   const openModal = (type: "title" | "alt" | "editor", lang: Lang) => {
     setActiveLang(lang);
@@ -35,10 +36,20 @@ export const useNewsForm = () => {
     } else if (type === "alt") {
       setAltInput(data.altTexts[lang] || "");
       setAltModal(true);
-    } else {
+    } else if (type === "editor") {
+      setActiveLang(lang);
       setEditorModal(true);
     }
   };
+  useEffect(() => {
+    if (!editorModal || !activeLang) return;
+    if (!editorRef.current || !editorReady) return;
+
+    const saved = data.translations[activeLang]?.text;
+    const parsed = saved ? JSON.parse(saved) : { blocks: [] };
+
+    editorRef.current.render(parsed);
+  }, [editorModal, activeLang, editorReady]);
 
   const saveTitle = () => {
     if (!activeLang) return;
@@ -74,6 +85,7 @@ export const useNewsForm = () => {
       },
     }));
     setEditorModal(false);
+    console.log("Saved content:", content);
   };
   const closeTitleModal = () => setTitleModal(false);
   const closeAltModal = () => setAltModal(false);
@@ -116,6 +128,7 @@ export const useNewsForm = () => {
 
   return {
     data,
+    setData,
     editorRef,
     activeLang,
     titleModal,
@@ -125,6 +138,7 @@ export const useNewsForm = () => {
     altInput,
     uploading,
     pickingImage,
+    setEditorReady,
     setTitleInput,
     setAltInput,
     openModal,

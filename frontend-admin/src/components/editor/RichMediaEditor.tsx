@@ -8,47 +8,60 @@ export type EditorMinimalRef = {
   save: () => Promise<EditorJS.OutputData>;
   clear: () => void;
   destroy: () => void;
+  render: (data: EditorJS.OutputData) => Promise<void>;
+};
+type Props = {
+  onReady?: () => void;
 };
 
-const EditorMinimal = forwardRef<EditorMinimalRef>((_, ref) => {
-  const editorRef = useRef<EditorJS | null>(null);
-  useImperativeHandle(ref, () => ({
-    save: async () => {
-      if (!editorRef.current) throw new Error("Editor not initialized");
-      return await editorRef.current.save();
-    },
-    clear: () => editorRef.current?.clear(),
-    destroy: () => editorRef.current?.destroy(),
-  }));
-  useEffect(() => {
-    if (!editorRef.current) {
-      editorRef.current = new EditorJS({
-        onReady: () => {
-          new DragDrop(editorRef.current);
-        },
-        holder: "editorjs",
-        autofocus: true,
-        placeholder: "Start writing here...",
-        tools,
-      });
+const EditorMinimal = forwardRef<EditorMinimalRef, Props>(
+  ({ onReady }, ref) => {
+    const editorRef = useRef<EditorJS | null>(null);
+    useImperativeHandle(ref, () => ({
+      save: async () => {
+        if (!editorRef.current) throw new Error("Editor not initialized");
+        return await editorRef.current.save();
+      },
+      clear: () => editorRef.current?.clear(),
+      destroy: () => editorRef.current?.destroy(),
+      render: async (data: EditorJS.OutputData) => {
+        if (!editorRef.current) return;
 
-      return () => {
-        if (
-          editorRef.current &&
-          typeof editorRef.current.destroy === "function"
-        ) {
-          editorRef.current.destroy();
-        }
-      };
-    }
-  }, []);
+        // ❗ EditorJS renderuje přes render()
+        await editorRef.current.render(data);
+      },
+    }));
+    useEffect(() => {
+      if (!editorRef.current) {
+        editorRef.current = new EditorJS({
+          onReady: () => {
+            new DragDrop(editorRef.current);
+            onReady?.();
+          },
+          holder: "editorjs",
+          autofocus: true,
+          placeholder: "Start writing here...",
+          tools,
+        });
 
-  return (
-    <div
-      id="editorjs"
-      style={{ minHeight: 300, border: "1px solid #ccc", padding: 10 }}
-    />
-  );
-});
+        return () => {
+          if (
+            editorRef.current &&
+            typeof editorRef.current.destroy === "function"
+          ) {
+            editorRef.current.destroy();
+          }
+        };
+      }
+    }, []);
+
+    return (
+      <div
+        id="editorjs"
+        style={{ minHeight: 300, border: "1px solid #ccc", padding: 10 }}
+      />
+    );
+  },
+);
 
 export default EditorMinimal;

@@ -1,12 +1,71 @@
-import React from "react";
+import { useEffect, useState } from "react";
+import { getAdminNews, deleteNews, toggleNewsVisibility } from "../../api/news";
+import NewsTable from "../../components/news/Table";
+import DeleteConfirmModal from "../../components/news/DeleteModal";
+import EditNewsModal from "../../components/news/EditModal";
+import type { NewsAdminItem } from "../../types/news";
 
-const NewsPage: React.FC = () => {
+const AdminNewsPage = () => {
+  const [data, setData] = useState<NewsAdminItem[]>([]);
+  const [deleteOpen, setDeleteOpen] = useState(false);
+  const [selected, setSelected] = useState<NewsAdminItem | null>(null);
+  const [editOpen, setEditOpen] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await getAdminNews();
+      setData(res);
+    };
+
+    fetchData();
+  }, []);
+
+  const handleDelete = async () => {
+    if (!selected) return;
+    await deleteNews(selected.id);
+    setDeleteOpen(false);
+  };
+  useEffect(() => {
+    if (!deleteOpen) {
+      const fetchData = async () => {
+        const res = await getAdminNews();
+        setData(res);
+      };
+      fetchData();
+    }
+  }, [deleteOpen]);
   return (
-    <div className="news-page">
-      <h1>News</h1>
-      <p>Welcome to the News page.</p>
-    </div>
+    <>
+      <NewsTable
+        data={data}
+        onToggle={async (id) => {
+          await toggleNewsVisibility(id);
+          const res = await getAdminNews();
+          setData(res);
+        }}
+        onEdit={(item) => {
+          setSelected(item);
+          setEditOpen(true);
+        }}
+        onDelete={(item) => {
+          setSelected(item);
+          setDeleteOpen(true);
+        }}
+      />
+
+      <DeleteConfirmModal
+        open={deleteOpen}
+        onConfirm={handleDelete}
+        onCancel={() => setDeleteOpen(false)}
+      />
+
+      <EditNewsModal
+        open={editOpen}
+        onClose={() => setEditOpen(false)}
+        initialData={selected}
+      />
+    </>
   );
 };
 
-export default NewsPage;
+export default AdminNewsPage;

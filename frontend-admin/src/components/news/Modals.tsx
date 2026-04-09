@@ -18,6 +18,7 @@ const Modals = (formHook: NewsFormHook) => {
     saveTitle,
     saveAltText,
     saveEditorText,
+    setEditorReady,
   } = formHook;
   return (
     <>
@@ -58,7 +59,7 @@ const Modals = (formHook: NewsFormHook) => {
           </Button>,
         ]}
       >
-        <EditorMinimal ref={editorRef} />
+        <EditorMinimal ref={editorRef} onReady={() => setEditorReady(true)} />
       </Modal>
     </>
   );

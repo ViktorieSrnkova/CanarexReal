@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { Form, Button, Radio, Typography, Upload, Row, Col } from "antd";
-import type { Lang } from "../../types/news";
+import type { Lang, NewsAdminItem } from "../../types/news";
 import { useNewsForm } from "../../hooks/useNewsForm";
 import Modals from "../../components/news/Modals";
 import LangButtonGroup from "../../components/news/Buttons";
@@ -9,9 +9,56 @@ import NewsPreview from "../../components/news/Preview";
 const { Title } = Typography;
 const languages: Lang[] = ["cs", "en", "sk"];
 
-const NewsCreatePage: React.FC = () => {
+type Props = {
+  initialData?: NewsAdminItem;
+};
+
+const NewsCreatePage: React.FC<Props> = ({ initialData }) => {
   const [form] = Form.useForm();
   const formHook = useNewsForm();
+  const initializedRef = useRef(false);
+  useEffect(() => {
+    if (!initialData) return;
+    if (initializedRef.current) return;
+
+    initializedRef.current = true;
+    // visibility
+    form.setFieldsValue({
+      visible: initialData.viditelnost,
+    });
+
+    // translations
+    const translations = { ...formHook.data.translations };
+    const altTexts = { ...formHook.data.altTexts };
+
+    initialData.aktuality_preklady.forEach((t) => {
+      let lang: Lang | undefined;
+
+      if (t.jazyky_id === 2) lang = "cs";
+      if (t.jazyky_id === 1) lang = "en";
+      if (t.jazyky_id === 3) lang = "sk";
+
+      if (!lang) return;
+
+      translations[lang] = {
+        title: t.titulek ?? undefined,
+        text: t.text ?? undefined,
+      };
+    });
+
+    // alt texts (pokud je máš z backendu jinak, upravíš mapping)
+    initialData.obrazky?.forEach((img) => {
+      languages.forEach((lang) => {
+        altTexts[lang] = img.alt ?? "";
+      });
+    });
+
+    formHook.setData({
+      ...formHook.data,
+      translations,
+      altTexts,
+    });
+  }, [initialData]);
 
   return (
     <div style={{ padding: 24 }}>

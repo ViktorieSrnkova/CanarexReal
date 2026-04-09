@@ -9,6 +9,7 @@ import listingsRouter from "./routes/listings";
 import newsRouter from "./routes/news";
 import adminNewsRouter from "./routes/news-management";
 import formsManagementRouter from "./routes/forms-management";
+import filesRouter from "./routes/images";
 import uploadRouter from "./routes/upload";
 import cors from "cors";
 import cron from "node-cron";
@@ -38,6 +39,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/favorites", favoritesRouter);
 app.use("/api/admin/files", uploadRouter);
 
+app.use("/api/files", filesRouter);
 //app.use("/api/admin/uploads", express.static("uploads"));
 
 app.get("/", (req, res) => {
