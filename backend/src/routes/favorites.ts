@@ -90,7 +90,7 @@ router.get("/", async (req: AuthRequest, res) => {
             velikost: true,
             obrazky: {
               where: { poradi: 1 },
-              select: { url: true },
+              select: { id: true },
             },
             statusy: {
               select: {

@@ -1,10 +1,10 @@
 import React from "react";
 import { Card, Row, Col } from "antd";
-import type { Lang, NewsFormState } from "../../types/news"; // Assuming you have a type for data
+import type { Lang, NewsFormState } from "../../types/news";
 
 type Props = {
   languages: Lang[];
-  data: NewsFormState & { imagePreview?: string; image?: File }; // include optional image preview
+  data: NewsFormState & { imagePreview?: string; mainImage?: File };
 };
 
 const NewsPreview: React.FC<Props> = ({ languages, data }) => {
@@ -28,7 +28,7 @@ const NewsPreview: React.FC<Props> = ({ languages, data }) => {
       text = text.trim();
       return text.length > maxLength
         ? text.slice(0, maxLength).trim() + "..."
-        : text || "Žádný obsah";
+        : text || "Žádný text ale je tam obrázek";
     } catch {
       return "Chybný obsah";
     }
@@ -40,22 +40,25 @@ const NewsPreview: React.FC<Props> = ({ languages, data }) => {
         const hasContent = Boolean(
           t?.title?.trim() || t?.text?.trim() || data.altTexts[lang]?.trim(),
         );
+        const imageSrc = data.mainImage
+          ? data.imagePreview
+          : data.existingImageUrl;
 
         if (!hasContent) return null;
 
         return (
           <Col span={8} key={lang}>
-            <Card title={`Jazyk ${lang.toUpperCase()}`}>
+            <Card title={`${lang.toUpperCase()}`}>
               {t?.title && (
                 <p>
                   <strong>Titulek:</strong> {t.title}
                 </p>
               )}
 
-              {data.image && hasContent && (
+              {imageSrc && hasContent && (
                 <div style={{ marginTop: 8 }}>
                   <img
-                    src={data.imagePreview}
+                    src={data.imagePreview ?? data.existingImageUrl}
                     alt={data.altTexts[lang] || "Hlavní obrázek"}
                     style={{ maxWidth: "100%", maxHeight: 150 }}
                   />

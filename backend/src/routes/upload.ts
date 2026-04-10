@@ -20,7 +20,7 @@ router.post("/upload-image", upload.single("file"), async (req, res) => {
       },
     });
 
-    const url = `/api/files/${image.id}`;
+    const url = `/api/files/images/${image.id}`;
     await prisma.obrazky.update({
       where: { id: image.id },
       data: { url },

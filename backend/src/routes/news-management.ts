@@ -7,6 +7,7 @@ import {
   convertBufferToThumbnail,
 } from "../utils/thumbnailMaker";
 import { upload } from "../middleware/uploader";
+import { extractImageId } from "../utils/url";
 
 const router = Router();
 router.use(requireRole([1, 3]));
@@ -35,7 +36,7 @@ router.get("/", async (req: PublicRequest, res) => {
         obrazky: {
           orderBy: { poradi: "asc" },
           select: {
-            url: true,
+            id: true,
           },
           take: 1,
         },
@@ -75,8 +76,9 @@ router.get("/admin-all", async (req: AuthRequest, res) => {
           orderBy: { poradi: "asc" },
           select: {
             id: true,
+            poradi: true,
           },
-          take: 1, // jen hlavní obrázek
+          take: 1,
         },
       },
     });
@@ -115,7 +117,7 @@ router.get("/:id", async (req: PublicRequest, res) => {
         },
         obrazky: {
           orderBy: { poradi: "asc" },
-          select: { url: true },
+          select: { id: true },
         },
       },
     });
@@ -178,9 +180,13 @@ router.post("/create", upload.single("image"), async (req, res) => {
       const parsed = JSON.parse(t.text);
 
       for (const block of parsed.blocks || []) {
-        if (block.type === "image" && block.data?.file?.id) {
-          const imageId = block.data.file.id;
-          const caption = block.data.caption || null;
+        if (block.type === "image") {
+          const imageId =
+            block.data?.file?.id ?? extractImageId(block.data?.file?.url);
+          if (!imageId) continue;
+
+          const caption = block.data?.caption || null;
+
           await prisma.obrazky.update({
             where: { id: imageId },
             data: {
@@ -222,6 +228,7 @@ router.post("/create", upload.single("image"), async (req, res) => {
           is_temp: false,
           aktuality_id: aktualita.id,
           url: "",
+          poradi: 1,
         },
       });
 
@@ -238,6 +245,7 @@ router.post("/create", upload.single("image"), async (req, res) => {
           is_temp: false,
           aktuality_id: aktualita.id,
           url: "",
+          poradi: 0,
         },
       });
 
@@ -279,13 +287,11 @@ router.delete("/:id", async (req, res) => {
       return res.status(400).json({ message: "Invalid ID" });
     }
 
-    // 🔹 najdi všechny obrázky k aktualitě
     const images = await prisma.obrazky.findMany({
       where: { aktuality_id: id },
       select: { id: true },
     });
 
-    // 🔹 nastav je na temp
     if (images.length) {
       await prisma.obrazky.updateMany({
         where: { aktuality_id: id },
@@ -296,7 +302,6 @@ router.delete("/:id", async (req, res) => {
       });
     }
 
-    // 🔹 smaž aktualitu (cascade se postará o zbytek)
     await prisma.aktuality.delete({
       where: { id },
     });
@@ -343,7 +348,7 @@ router.put("/:id", upload.single("image"), async (req, res) => {
     const { visible, translations, altTexts } = req.body;
     const file = req.file;
 
-    if (!visible || !translations) {
+    if (visible === undefined || !translations) {
       return res.status(400).json({ error: "Missing required fields" });
     }
 
@@ -351,12 +356,8 @@ router.put("/:id", upload.single("image"), async (req, res) => {
     const altTextsObj = altTexts ? JSON.parse(altTexts) : {};
 
     const langIdMap: Record<string, number> = { cs: 2, en: 1, sk: 3 };
+    const existingImageId = req.body.existingImageId;
 
-    // =========================
-    // 🧹 1. RESET STARÝ STAV
-    // =========================
-
-    // 🔹 všechny obrázky odpoj a nastav temp
     await prisma.obrazky.updateMany({
       where: { aktuality_id: id },
       data: {
@@ -365,12 +366,10 @@ router.put("/:id", upload.single("image"), async (req, res) => {
       },
     });
 
-    // 🔹 smaž všechny překlady
     await prisma.aktuality_preklady.deleteMany({
       where: { aktuality_id: id },
     });
 
-    // 🔹 update visibility
     const aktualita = await prisma.aktuality.update({
       where: { id },
       data: {
@@ -378,9 +377,6 @@ router.put("/:id", upload.single("image"), async (req, res) => {
       },
     });
 
-    // =========================
-    // ✏️ 2. VYTVOŘ ZNOVU PŘEKLADY (stejně jako CREATE)
-    // =========================
     for (const [langCode, t] of Object.entries(translationsObj) as [
       string,
       { title?: string; text?: string },
@@ -408,7 +404,6 @@ router.put("/:id", upload.single("image"), async (req, res) => {
           const imageId = block.data.file.id;
           const caption = block.data.caption || null;
 
-          // 🔹 znovu přiřaď obrázek k aktualitě
           await prisma.obrazky.update({
             where: { id: imageId },
             data: {
@@ -438,9 +433,6 @@ router.put("/:id", upload.single("image"), async (req, res) => {
       }
     }
 
-    // =========================
-    // 🖼️ 3. HLAVNÍ OBRÁZEK (replace)
-    // =========================
     if (file) {
       const mainBufferNode = await convertBufferToWebP(file.buffer);
       const thumbBufferNode = await convertBufferToThumbnail(file.buffer);
@@ -480,7 +472,6 @@ router.put("/:id", upload.single("image"), async (req, res) => {
         },
       });
 
-      // 🔹 alt texty
       for (const [langCode, altText] of Object.entries(altTextsObj) as [
         string,
         string,
@@ -497,6 +488,14 @@ router.put("/:id", upload.single("image"), async (req, res) => {
           ],
         });
       }
+    } else if (existingImageId) {
+      await prisma.obrazky.update({
+        where: { id: Number(existingImageId) },
+        data: {
+          is_temp: false,
+          aktuality_id: id,
+        },
+      });
     }
 
     res.json({ success: true, aktuality_id: id });

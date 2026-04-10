@@ -8,7 +8,7 @@ export function listingThumbnailSelect(userLangId: number = 2) {
     velikost: true,
     obrazky: {
       where: { poradi: 1 },
-      select: { url: true },
+      select: { id: true },
     },
     statusy: {
       select: {
@@ -102,7 +102,6 @@ export function listingDetailSelect(userLangId: number = 2) {
       orderBy: { poradi: "asc" as const },
       select: {
         id: true,
-        url: true,
         poradi: true,
         obrazky_preklady: {
           where: { jazyky_id: userLangId },
@@ -118,7 +117,7 @@ export function listingDetailSelect(userLangId: number = 2) {
             id: true,
             nazev: true,
             obrazky: {
-              select: { url: true },
+              select: { id: true },
             },
             piktogramy_preklady: {
               where: { jazyky_id: userLangId },

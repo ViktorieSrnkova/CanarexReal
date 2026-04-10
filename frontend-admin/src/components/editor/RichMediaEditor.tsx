@@ -27,7 +27,6 @@ const EditorMinimal = forwardRef<EditorMinimalRef, Props>(
       render: async (data: EditorJS.OutputData) => {
         if (!editorRef.current) return;
 
-        // ❗ EditorJS renderuje přes render()
         await editorRef.current.render(data);
       },
     }));

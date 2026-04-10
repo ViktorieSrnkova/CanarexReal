@@ -29,7 +29,7 @@ router.get("/", async (req: PublicRequest, res) => {
         obrazky: {
           orderBy: { poradi: "asc" },
           select: {
-            url: true,
+            id: true,
           },
           take: 1,
         },
@@ -71,7 +71,7 @@ router.get("/:id", async (req: PublicRequest, res) => {
         },
         obrazky: {
           orderBy: { poradi: "asc" },
-          select: { url: true },
+          select: { id: true },
         },
       },
     });

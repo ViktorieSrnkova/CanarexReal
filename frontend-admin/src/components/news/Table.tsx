@@ -1,8 +1,10 @@
-import { Table, Switch } from "antd";
+import { Table, Switch, Typography } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import Actions from "./Dropdown";
 import type { NewsAdminItem } from "../../types/news";
 import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
+
+const { Title } = Typography;
 
 type Props = {
   data: NewsAdminItem[];
@@ -35,7 +37,7 @@ const NewsTable: React.FC<Props> = ({ data, onToggle, onEdit, onDelete }) => {
     {
       title: "Obrázek",
       render: (_, r) => {
-        const img = r.obrazky?.[0];
+        const img = r.obrazky?.find((i) => i.poradi === 0);
 
         if (!img) return "—";
 
@@ -98,7 +100,35 @@ const NewsTable: React.FC<Props> = ({ data, onToggle, onEdit, onDelete }) => {
     },
   ];
 
-  return <Table rowKey="id" columns={columns} dataSource={data} />;
+  return (
+    <>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: 12,
+        }}
+      >
+        <Title style={{ margin: 0 }} level={2}>
+          Spravovat aktuality
+        </Title>
+
+        <div>Celkem: {data.length} aktualit</div>
+      </div>
+
+      <Table
+        rowKey="id"
+        columns={columns}
+        dataSource={data}
+        pagination={{
+          pageSize: 20,
+          showSizeChanger: true,
+          pageSizeOptions: ["10", "20", "50", "100"],
+        }}
+      />
+    </>
+  );
 };
 
 export default NewsTable;

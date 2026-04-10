@@ -14,8 +14,11 @@ export type AltTexts = {
 export type NewsFormState = {
   visible?: boolean;
   mainImage?: File;
+  existingImageId?: number;
+  existingImageUrl?: string;
   altTexts: AltTexts;
   translations: Record<Lang, Translation>;
+  imagePreview?: string;
 };
 export type NewsFormValues = {
   visible: boolean;
@@ -39,6 +42,7 @@ export type NewsAdminImage = {
   id: number;
   url: string;
   alt?: string | null;
+  poradi?: number;
 };
 
 export type NewsAdminItem = {

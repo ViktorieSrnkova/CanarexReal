@@ -24,7 +24,6 @@ router.get("/images/:id", async (req, res) => {
       return res.status(404).send("Not found");
     }
 
-    // pokud víš typ, nastav správně (webp máš z konverze)
     res.setHeader("Content-Type", "image/webp");
 
     res.send(Buffer.from(image.data));

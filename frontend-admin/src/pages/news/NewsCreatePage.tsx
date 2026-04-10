@@ -11,25 +11,27 @@ const languages: Lang[] = ["cs", "en", "sk"];
 
 type Props = {
   initialData?: NewsAdminItem;
+  onSuccess?: () => void;
 };
 
-const NewsCreatePage: React.FC<Props> = ({ initialData }) => {
+const NewsCreatePage: React.FC<Props> = ({ initialData, onSuccess }) => {
   const [form] = Form.useForm();
-  const formHook = useNewsForm();
+  const formHook = useNewsForm(initialData?.id, onSuccess);
   const initializedRef = useRef(false);
   useEffect(() => {
     if (!initialData) return;
     if (initializedRef.current) return;
 
     initializedRef.current = true;
-    // visibility
+
     form.setFieldsValue({
       visible: initialData.viditelnost,
     });
 
-    // translations
     const translations = { ...formHook.data.translations };
     const altTexts = { ...formHook.data.altTexts };
+    const img = initialData.obrazky?.[0];
+    const API_URL = import.meta.env.VITE_API_URL;
 
     initialData.aktuality_preklady.forEach((t) => {
       let lang: Lang | undefined;
@@ -46,18 +48,21 @@ const NewsCreatePage: React.FC<Props> = ({ initialData }) => {
       };
     });
 
-    // alt texts (pokud je máš z backendu jinak, upravíš mapping)
     initialData.obrazky?.forEach((img) => {
       languages.forEach((lang) => {
         altTexts[lang] = img.alt ?? "";
       });
     });
 
-    formHook.setData({
-      ...formHook.data,
+    formHook.setData((prev) => ({
+      ...prev,
       translations,
       altTexts,
-    });
+      existingImageId: img?.id,
+      existingImageUrl: img
+        ? `${API_URL}/api/files/images/${img.id}`
+        : undefined,
+    }));
   }, [initialData]);
 
   return (
@@ -70,8 +75,8 @@ const NewsCreatePage: React.FC<Props> = ({ initialData }) => {
         onFinish={(values) => formHook.submitNews(values, form.resetFields)}
         style={{ maxWidth: 900 }}
       >
-        <Row gutter={16}>
-          <Col span={15}>
+        <Row gutter={16} wrap>
+          <Col xs={24} lg={17}>
             <Form.Item label="Titulky">
               <LangButtonGroup
                 languages={languages}
@@ -82,7 +87,7 @@ const NewsCreatePage: React.FC<Props> = ({ initialData }) => {
             </Form.Item>
           </Col>
 
-          <Col span={8}>
+          <Col xs={24} lg={7}>
             <Form.Item
               label="Viditelnost"
               name="visible"
@@ -96,8 +101,8 @@ const NewsCreatePage: React.FC<Props> = ({ initialData }) => {
           </Col>
         </Row>
 
-        <Row gutter={16}>
-          <Col span={5}>
+        <Row gutter={16} wrap>
+          <Col xs={24} lg={5}>
             <Form.Item label="Hlavní obrázek">
               <Upload
                 beforeUpload={formHook.handleImageUpload}
@@ -121,7 +126,7 @@ const NewsCreatePage: React.FC<Props> = ({ initialData }) => {
             </Form.Item>
           </Col>
 
-          <Col span={10}>
+          <Col xs={24} lg={12}>
             <Form.Item label="Alt texty obrázku">
               <LangButtonGroup
                 languages={languages}
@@ -132,14 +137,16 @@ const NewsCreatePage: React.FC<Props> = ({ initialData }) => {
             </Form.Item>
           </Col>
 
-          <Col span={8}>
+          <Col xs={24} lg={12}>
             <Form.Item label="Text aktuality">
-              <LangButtonGroup
-                languages={languages}
-                getValue={(lang) => formHook.data.translations[lang]?.text}
-                label="Text"
-                onClick={(lang) => formHook.openModal("editor", lang)}
-              />
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>
+                <LangButtonGroup
+                  languages={languages}
+                  getValue={(lang) => formHook.data.translations[lang]?.text}
+                  label="Text"
+                  onClick={(lang) => formHook.openModal("editor", lang)}
+                />
+              </div>
             </Form.Item>
           </Col>
         </Row>

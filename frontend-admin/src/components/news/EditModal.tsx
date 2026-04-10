@@ -6,9 +6,15 @@ type Props = {
   open: boolean;
   onClose: () => void;
   initialData: NewsAdminItem | null;
+  onSuccess?: () => void;
 };
 
-const EditNewsModal: React.FC<Props> = ({ open, onClose, initialData }) => {
+const EditNewsModal: React.FC<Props> = ({
+  open,
+  onClose,
+  initialData,
+  onSuccess,
+}) => {
   return (
     <Modal
       open={open}
@@ -18,7 +24,9 @@ const EditNewsModal: React.FC<Props> = ({ open, onClose, initialData }) => {
       destroyOnHidden={true}
       centered
     >
-      {initialData && <NewsCreatePage initialData={initialData} />}
+      {initialData && (
+        <NewsCreatePage initialData={initialData} onSuccess={onSuccess} />
+      )}
     </Modal>
   );
 };

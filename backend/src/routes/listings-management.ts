@@ -5,7 +5,6 @@ import prisma from "../../lib/db";
 
 const router = Router();
 router.use(requireRole([1, 3]));
-// posty zacni az budes mit jak to na fe otestovat
 router.post("/", async (req, res) => {
   try {
   } catch (err) {
@@ -15,7 +14,6 @@ router.post("/", async (req, res) => {
       .json({ message: "Internal server error", error: String(err) });
   }
 });
-// vypis vsech inzeratu pro admina, pro editaci a mazani
 router.get("/", async (req, res) => {
   try {
     const listings = await prisma.inzeraty.findMany({

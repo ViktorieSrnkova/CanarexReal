@@ -63,6 +63,11 @@ const AdminNewsPage = () => {
         open={editOpen}
         onClose={() => setEditOpen(false)}
         initialData={selected}
+        onSuccess={async () => {
+          setEditOpen(false);
+          const res = await getAdminNews();
+          setData(res);
+        }}
       />
     </>
   );
