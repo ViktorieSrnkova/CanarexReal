@@ -9,6 +9,7 @@ import {
   SolutionOutlined,
   ToolOutlined,
 } from "@ant-design/icons";
+import React from "react";
 
 const { Sider, Header, Content } = Layout;
 
@@ -27,12 +28,34 @@ export default function AdminLayout() {
       console.error("Logout failed:", err);
     }
   };
+  const [openKeys, setOpenKeys] = React.useState<string[]>([]);
+  const selectedKey = (() => {
+    if (path === "/") return "1";
+    if (path.startsWith("/listings/create")) return "2-2";
+    if (path.startsWith("/listings")) return "2-1";
+    if (path.startsWith("/news/create")) return "3-2";
+    if (path.startsWith("/news")) return "3-1";
+    if (path.startsWith("/forms")) return "4";
+    return "1";
+  })();
+
+  React.useEffect(() => {
+    const keys: string[] = [];
+
+    if (path.startsWith("/listings")) keys.push("2");
+    if (path.startsWith("/news")) keys.push("3");
+
+    setOpenKeys(keys);
+  }, [path]);
   return (
     <Layout style={{ minHeight: "100vh" }}>
       <Sider width={250}>
         <Menu
           theme="dark"
           mode="inline"
+          selectedKeys={[selectedKey]}
+          openKeys={openKeys}
+          onOpenChange={(keys) => setOpenKeys(keys as string[])}
           items={[
             {
               key: "1",
