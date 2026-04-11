@@ -33,12 +33,12 @@ api.interceptors.response.use(
         const newToken = res.data.accessToken;
 
         localStorage.setItem("token", newToken);
-
         originalRequest.headers.Authorization = `Bearer ${newToken}`;
 
         return api(originalRequest);
       } catch (err) {
         localStorage.removeItem("token");
+        window.dispatchEvent(new Event("session-expired"));
         return Promise.reject(err);
       }
     }
