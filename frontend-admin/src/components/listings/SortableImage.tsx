@@ -1,0 +1,68 @@
+import React from "react";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+
+type ImageItem = {
+  uid: string;
+  file: File;
+  url: string;
+};
+
+type Props = {
+  id: string;
+  image: ImageItem;
+  isMain: boolean;
+};
+
+const SortableImage: React.FC<Props> = ({ id, image, isMain }) => {
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id });
+
+  return (
+    <div
+      ref={setNodeRef}
+      {...attributes}
+      {...listeners}
+      style={{
+        position: "relative",
+        width: 120,
+        height: 120,
+        border: isMain ? "3px solid #1890ff" : "1px solid #ccc",
+        borderRadius: 6,
+        overflow: "hidden",
+        transform: CSS.Transform.toString(transform),
+        transition,
+        cursor: "grab",
+      }}
+    >
+      {isMain && (
+        <div
+          style={{
+            position: "absolute",
+            top: 4,
+            left: 4,
+            background: "#1890ff",
+            color: "white",
+            fontSize: 10,
+            padding: "2px 6px",
+            borderRadius: 4,
+            zIndex: 2,
+          }}
+        >
+          Hlavní
+        </div>
+      )}
+      <img
+        src={image.url}
+        style={{
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+          display: "block",
+        }}
+      />
+    </div>
+  );
+};
+
+export default SortableImage;

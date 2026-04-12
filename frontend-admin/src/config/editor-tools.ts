@@ -18,7 +18,7 @@ import FontSize from "@fillipeppalhares/editorjs-font-size";
 
 import { uploadImage } from "../api/image-upload";
 
-export const tools = {
+export const fullEditorTools = {
   header: Header,
 
   image: {

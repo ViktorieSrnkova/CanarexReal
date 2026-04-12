@@ -9,7 +9,7 @@ const dashboardSections = [
   {
     title: "Inzeráty",
     actions: [
-      { path: "/listings/edit", purpose: "Spravovat inzeráty" },
+      { path: "/listings", purpose: "Spravovat inzeráty" },
       { path: "/listings/create", purpose: "Vytvořit nový inzerát" },
     ],
     stats: {

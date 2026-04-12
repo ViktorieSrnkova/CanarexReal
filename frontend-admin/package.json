@@ -11,6 +11,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@dnd-kit/core": "^6.3.1",
+    "@dnd-kit/sortable": "^10.0.0",
+    "@dnd-kit/utilities": "^3.2.2",
     "@editorjs/delimiter": "^1.4.2",
     "@editorjs/editorjs": "^2.31.5",
     "@editorjs/header": "^2.8.8",
@@ -29,6 +32,7 @@
     "editorjs-multicolumn": "^1.1.1",
     "editorjs-paragraph-with-alignment": "^3.0.0",
     "editorjs-text-alignment-blocktune": "^1.0.3",
+    "lodash": "^4.18.1",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-router-dom": "^7.13.1"
@@ -40,6 +44,7 @@
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^14.6.1",
+    "@types/lodash": "^4.17.24",
     "@types/node": "^24.10.1",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
