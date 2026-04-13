@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import type { CreateAdFormValues } from "../types/listings";
 import type { RcFile } from "antd/es/upload/interface";
 
-type ImageItem = {
+export type ImageItem = {
   uid: string;
   file: File;
   url: string;

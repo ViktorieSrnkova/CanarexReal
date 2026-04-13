@@ -11,7 +11,6 @@ import ListingEditPage from "../pages/listings/ListingEditPage";
 
 import NewsPage from "../pages/news/NewsPage";
 import NewsCreatePage from "../pages/news/NewsCreatePage";
-import NewsEditPage from "../pages/news/NewsEditPage";
 
 import ContactFormsPage from "../pages/forms/ContactFormsPage";
 import FormDetailPage from "../pages/forms/FormDetailPage";
@@ -42,7 +41,6 @@ export default function Router() {
 
           <Route path="/news" element={<NewsPage />} />
           <Route path="/news/create" element={<NewsCreatePage />} />
-          <Route path="/news/edit/:id" element={<NewsEditPage />} />
 
           <Route path="/forms" element={<ContactFormsPage />} />
           <Route path="/forms/:id" element={<FormDetailPage />} />

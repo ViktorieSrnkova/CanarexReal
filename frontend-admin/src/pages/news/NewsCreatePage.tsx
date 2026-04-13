@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { Form, Button, Radio, Typography, Upload, Row, Col } from "antd";
 import type { Lang, NewsAdminItem } from "../../types/news";
-import { useNewsForm } from "../../hooks/useNewsForm";
+import { useNewsForm } from "../../hooks/useNewsFormOG";
 import Modals from "../../components/news/Modals";
 import LangButtonGroup from "../../components/news/Buttons";
 import NewsPreview from "../../components/news/Preview";

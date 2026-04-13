@@ -19,13 +19,13 @@ export interface CreateAdFormValues {
   } | null;
   translations: Translations;
   gallery: File[];
-  mainImageAlt: string;
   features: Record<string, boolean>;
 }
 export interface Translation {
-  title: string;
-  description: string;
-  details: string;
+  alt?: string;
+  title?: string;
+  description?: EditorJS.OutputData;
+  details?: EditorJS.OutputData;
 }
 
 export type Language = "cs" | "en" | "sk";
@@ -42,7 +42,7 @@ export const FEATURES = [
   "Zahrada",
   "Garáž",
   "Balkón",
-  "Vybabení",
+  "Vybavení",
   "Výhled na oceán",
   "Výhled na hory",
   "VV",

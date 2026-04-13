@@ -21,6 +21,7 @@ type Props = {
 const EditorMinimal = forwardRef<EditorMinimalRef, Props>(
   ({ id, onReady, tools, value, onChange }, ref) => {
     const editorRef = useRef<EditorJS | null>(null);
+    const isInitialRender = useRef(true);
     useImperativeHandle(ref, () => ({
       save: async () => {
         if (!editorRef.current) throw new Error("Editor not initialized");
@@ -64,8 +65,11 @@ const EditorMinimal = forwardRef<EditorMinimalRef, Props>(
       }
     }, [id, tools]);
     useEffect(() => {
-      if (editorRef.current && value) {
+      if (!editorRef.current || !value) return;
+
+      if (isInitialRender.current) {
         editorRef.current.render(value);
+        isInitialRender.current = false;
       }
     }, [value]);
 
