@@ -1,6 +1,6 @@
 import { Modal, Input, Button } from "antd";
 import EditorMinimal from "../editor/RichMediaEditor";
-import type { useNewsForm } from "../../hooks/useNewsFormOG";
+import type { useNewsForm } from "../../hooks/useNewsForm";
 import { fullEditorTools } from "../../config/editor-tools";
 
 type NewsFormHook = ReturnType<typeof useNewsForm>;

@@ -43,7 +43,7 @@ const EditorMinimal = forwardRef<EditorMinimalRef, Props>(
             onReady?.();
           },
           holder: id,
-          autofocus: true,
+          autofocus: false,
           placeholder: "Start writing here...",
           tools,
           onChange: async () => {
