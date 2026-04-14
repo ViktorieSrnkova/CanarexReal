@@ -38,7 +38,7 @@ const NewsPreview: React.FC<Props> = ({ languages, data }) => {
       {languages.map((lang) => {
         const t = data.translations[lang];
         const hasContent = Boolean(
-          t?.title?.trim() || t?.text?.trim() || data.altTexts[lang]?.trim(),
+          t?.title?.trim() || t?.text?.trim() || t?.alt?.trim(),
         );
         const imageSrc = data.mainImage
           ? data.imagePreview
@@ -59,14 +59,14 @@ const NewsPreview: React.FC<Props> = ({ languages, data }) => {
                 <div style={{ marginTop: 8 }}>
                   <img
                     src={data.imagePreview ?? data.existingImageUrl}
-                    alt={data.altTexts[lang] || "Hlavní obrázek"}
+                    alt={t?.alt || "Hlavní obrázek"}
                     style={{ maxWidth: "100%", maxHeight: 150 }}
                   />
                 </div>
               )}
-              {data.altTexts[lang] && (
+              {t?.alt && (
                 <p>
-                  <strong>Alt:</strong> {data.altTexts[lang]}
+                  <strong>Alt:</strong> {t.alt}
                 </p>
               )}
 

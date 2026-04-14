@@ -5,6 +5,7 @@ import { useNewsForm } from "../../hooks/useNewsForm";
 import Modals from "../../components/news/Modals";
 import LangButtonGroup from "../../components/news/Buttons";
 import NewsPreview from "../../components/news/Preview";
+import { mapNewsToTranslations } from "../../utils/newsMapper";
 
 const { Title } = Typography;
 const languages: Lang[] = ["cs", "en", "sk"];
@@ -19,50 +20,29 @@ const NewsCreatePage: React.FC<Props> = ({ initialData, onSuccess }) => {
   const formHook = useNewsForm(initialData?.id, onSuccess);
   const initializedRef = useRef(false);
   useEffect(() => {
+    console.log("🟢 initialData (RAW FROM API):", initialData);
     if (!initialData) return;
     if (initializedRef.current) return;
 
     initializedRef.current = true;
 
-    form.setFieldsValue({
-      visible: initialData.viditelnost,
-    });
+    const translations = mapNewsToTranslations(initialData);
 
-    const translations = { ...formHook.data.translations };
-    const altTexts = { ...formHook.data.altTexts };
-    const img = initialData.obrazky?.[0];
+    const image = initialData.obrazky?.find((img) => img.poradi === 0);
     const API_URL = import.meta.env.VITE_API_URL;
-
-    initialData.aktuality_preklady.forEach((t) => {
-      let lang: Lang | undefined;
-
-      if (t.jazyky_id === 2) lang = "cs";
-      if (t.jazyky_id === 1) lang = "en";
-      if (t.jazyky_id === 3) lang = "sk";
-
-      if (!lang) return;
-
-      translations[lang] = {
-        title: t.titulek ?? undefined,
-        text: t.text ?? undefined,
-      };
-    });
-
-    initialData.obrazky?.forEach((img) => {
-      languages.forEach((lang) => {
-        altTexts[lang] = img.alt ?? "";
-      });
-    });
 
     formHook.setData((prev) => ({
       ...prev,
       translations,
-      altTexts,
-      existingImageId: img?.id,
-      existingImageUrl: img
-        ? `${API_URL}/api/files/images/${img.id}`
+      visible: initialData.viditelnost,
+      existingImageId: image?.id,
+      existingImageUrl: image
+        ? `${API_URL}/api/files/images/${image.id}`
         : undefined,
     }));
+    form.setFieldsValue({
+      visible: initialData.viditelnost,
+    });
   }, [initialData]);
 
   return (
@@ -130,7 +110,7 @@ const NewsCreatePage: React.FC<Props> = ({ initialData, onSuccess }) => {
             <Form.Item label="Alt texty obrázku">
               <LangButtonGroup
                 languages={languages}
-                getValue={(lang) => formHook.data.altTexts[lang]}
+                getValue={(lang) => formHook.data.translations[lang]?.alt}
                 label="ALT"
                 onClick={(lang) => formHook.openModal("alt", lang)}
               />

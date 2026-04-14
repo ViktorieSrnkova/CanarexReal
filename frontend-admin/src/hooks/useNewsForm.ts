@@ -11,24 +11,15 @@ import { message } from "antd";
 import type { EditorContent, EditorBlock } from "../types/editor";
 import { hydrateImages, safeParseEditor } from "../utils/editor";
 
-const emptyTranslation: Translation = {};
-
 const defaultTranslations: Record<Lang, Translation> = {
-  cs: emptyTranslation,
-  en: emptyTranslation,
-  sk: emptyTranslation,
-};
-
-const defaultAltTexts = {
-  cs: "",
-  en: "",
-  sk: "",
+  cs: { title: "", text: "", alt: "" },
+  en: { title: "", text: "", alt: "" },
+  sk: { title: "", text: "", alt: "" },
 };
 
 export const useNewsForm = (editId?: number, onSuccess?: () => void) => {
   const [data, setData] = useState<NewsFormState>({
     translations: defaultTranslations,
-    altTexts: defaultAltTexts,
   });
   const editorRef = useRef<EditorJS | null>(null);
   const [activeLang, setActiveLang] = useState<Lang | null>(null);
@@ -50,7 +41,7 @@ export const useNewsForm = (editId?: number, onSuccess?: () => void) => {
     }
 
     if (type === "alt") {
-      setAltInput(data.altTexts[lang] ?? "");
+      setAltInput(data.translations[lang]?.alt ?? "");
       setAltModal(true);
     }
 
@@ -92,9 +83,12 @@ export const useNewsForm = (editId?: number, onSuccess?: () => void) => {
 
     setData((prev) => ({
       ...prev,
-      altTexts: {
-        ...prev.altTexts,
-        [activeLang]: altInput,
+      translations: {
+        ...prev.translations,
+        [activeLang]: {
+          ...(prev.translations[activeLang] ?? {}),
+          alt: altInput,
+        },
       },
     }));
 
@@ -160,14 +154,17 @@ export const useNewsForm = (editId?: number, onSuccess?: () => void) => {
     const formData = new FormData();
     formData.append("visible", String(values.visible));
     formData.append("translations", JSON.stringify(data.translations));
-    formData.append("altTexts", JSON.stringify(data.altTexts));
 
     if (data.mainImage) {
       formData.append("image", data.mainImage);
     } else if (data.existingImageId) {
       formData.append("existingImageId", String(data.existingImageId));
     }
+    console.log("TRANSLATIONS RAW:", data.translations);
 
+    for (const [key, value] of formData.entries()) {
+      console.log("FORM DATA:", key, value);
+    }
     try {
       if (editId) {
         await putAdminNews(editId, formData);
@@ -179,7 +176,6 @@ export const useNewsForm = (editId?: number, onSuccess?: () => void) => {
       formReset();
       setData({
         translations: defaultTranslations,
-        altTexts: defaultAltTexts,
       });
 
       await editorRef.current?.clear();

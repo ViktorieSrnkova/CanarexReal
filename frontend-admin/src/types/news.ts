@@ -3,6 +3,7 @@ export type Lang = "cs" | "en" | "sk";
 export type Translation = {
   title?: string;
   text?: string;
+  alt?: string;
 };
 
 export type AltTexts = {
@@ -16,7 +17,6 @@ export type NewsFormState = {
   mainImage?: File;
   existingImageId?: number;
   existingImageUrl?: string;
-  altTexts: AltTexts;
   translations: Record<Lang, Translation>;
   imagePreview?: string;
 };
@@ -35,14 +35,19 @@ export type UploadedImage = {
 export type NewsAdminTranslation = {
   jazyky_id: number;
   titulek: string | null;
-  text?: string | null;
+  text: string | null;
+};
+
+export type NewsAdminImageTranslation = {
+  jazyky_id: number;
+  alt_text: string | null;
 };
 
 export type NewsAdminImage = {
   id: number;
+  poradi: number | null;
   url: string;
-  alt?: string | null;
-  poradi?: number;
+  obrazky_preklady: NewsAdminImageTranslation[] | null;
 };
 
 export type NewsAdminItem = {
@@ -52,8 +57,4 @@ export type NewsAdminItem = {
   aktuality_preklady: NewsAdminTranslation[];
   obrazky: NewsAdminImage[];
 };
-export type Translations = {
-  cs: { text: string; title: string };
-  en: { text: string; title: string };
-  sk: { text: string; title: string };
-};
+export type Translations = Record<Lang, Translation>;
