@@ -1,5 +1,10 @@
 import axios from "axios";
 
+export const sessionApi = axios.create({
+  baseURL: "http://localhost:3000/api/admin",
+  withCredentials: true,
+});
+
 export const api = axios.create({
   baseURL: "http://localhost:3000/api/admin",
   withCredentials: true,
@@ -20,7 +25,11 @@ api.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    if (
+      error.response?.status === 401 &&
+      !originalRequest._retry &&
+      !originalRequest.config?.skipAuthRefresh
+    ) {
       originalRequest._retry = true;
 
       try {
