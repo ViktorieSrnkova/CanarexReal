@@ -8,16 +8,18 @@ datasource db {
 }
 
 model adresy {
-  id            Int        @id(map: "adresy_pk") @default(autoincrement())
-  ulice         String?    @db.VarChar(50)
-  cislo_popisne Int?
-  lokace        String?    @db.VarChar(100)
-  mesto         String?    @db.VarChar(50)
-  lat           Decimal    @db.Decimal(10, 8)
-  lng           Decimal    @db.Decimal(10, 8)
-  staty_id      Int
-  staty         staty      @relation(fields: [staty_id], references: [id], onUpdate: NoAction, map: "fk_adresy_stat")
-  inzeraty      inzeraty[]
+  id              Int        @id(map: "adresy_pk") @default(autoincrement())
+  ulice           String?    @db.VarChar(50)
+  cislo_popisne   String?    @db.VarChar(20)
+  lokace          String?    @db.VarChar(100)
+  mesto           String?    @db.VarChar(50)
+  lat             Decimal    @db.Decimal(10, 8)
+  lng             Decimal    @db.Decimal(10, 8)
+  staty_id        Int
+  smerovaci_cislo String?    @db.VarChar(20)
+  cela_adresa     String?    @db.VarChar(255)
+  staty           staty      @relation(fields: [staty_id], references: [id], onUpdate: NoAction, map: "fk_adresy_stat")
+  inzeraty        inzeraty[]
 }
 
 model aktuality {

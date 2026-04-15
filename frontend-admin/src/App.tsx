@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Router from "./router";
 import SessionExpiredModal from "./components/SessionExpiredModal";
-import { sessionApi } from "./api/client";
+//import { sessionApi } from "./api/client";
 
 function App() {
   const [sessionExpired, setSessionExpired] = useState(false);
@@ -17,8 +17,8 @@ function App() {
       window.removeEventListener("session-expired", handler);
     };
   }, []);
-
-  useEffect(() => {
+  //modal se ukazoval moc brzo, pak na to koukni nespecha
+  /*  useEffect(() => {
     const interval = setInterval(
       async () => {
         try {
@@ -31,7 +31,7 @@ function App() {
     );
 
     return () => clearInterval(interval);
-  }, []);
+  }, []); */
   return (
     <>
       <Router />

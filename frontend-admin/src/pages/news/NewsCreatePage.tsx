@@ -134,7 +134,12 @@ const NewsCreatePage: React.FC<Props> = ({ initialData, onSuccess }) => {
         <NewsPreview languages={languages} data={formHook.data} />
 
         <Form.Item style={{ marginTop: 24 }}>
-          <Button type="primary" htmlType="submit">
+          <Button
+            type="primary"
+            htmlType="submit"
+            loading={formHook.loading}
+            block
+          >
             Uložit aktualitu
           </Button>
         </Form.Item>

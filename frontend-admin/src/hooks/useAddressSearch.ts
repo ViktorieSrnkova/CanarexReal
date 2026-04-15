@@ -1,7 +1,7 @@
 import React from "react";
 import debounce from "lodash/debounce";
 
-type AddressOption = {
+export type AddressOption = {
   display_name: string;
   place_id: number;
   lat: string;

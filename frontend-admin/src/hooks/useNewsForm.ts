@@ -31,6 +31,7 @@ export const useNewsForm = (editId?: number, onSuccess?: () => void) => {
   const [uploading, setUploading] = useState(false);
   const [pickingImage, setPickingImage] = useState(false);
   const [editorReady, setEditorReady] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const openModal = (type: "title" | "alt" | "editor", lang: Lang) => {
     setActiveLang(lang);
@@ -165,6 +166,8 @@ export const useNewsForm = (editId?: number, onSuccess?: () => void) => {
     for (const [key, value] of formData.entries()) {
       console.log("FORM DATA:", key, value);
     }
+
+    setLoading(true);
     try {
       if (editId) {
         await putAdminNews(editId, formData);
@@ -183,10 +186,13 @@ export const useNewsForm = (editId?: number, onSuccess?: () => void) => {
     } catch (error: unknown) {
       if (error instanceof Error) message.error(error.message);
       else message.error("Chyba při ukládání aktuality");
+    } finally {
+      setLoading(false);
     }
   };
 
   return {
+    loading,
     data,
     setData,
     editorRef,

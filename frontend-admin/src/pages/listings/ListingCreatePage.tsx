@@ -2,6 +2,7 @@ import {
   Button,
   Form,
   Input,
+  message,
   Select,
   Switch,
   Tabs,
@@ -25,12 +26,21 @@ import {
   rectSortingStrategy,
 } from "@dnd-kit/sortable";
 import SortableImage from "../../components/listings/SortableImage";
-import { useAddressSearch } from "../../hooks/useAddressSearch";
+import {
+  useAddressSearch,
+  type AddressOption,
+} from "../../hooks/useAddressSearch";
 import { useImages } from "../../hooks/useImages";
 import EditorMinimal from "../../components/editor/RichMediaEditor";
 import { useListingSubmit } from "../../hooks/useListingForm";
+import { useState } from "react";
+import { postListing } from "../../api/listings";
 
 const ListingCreatePage: React.FC = () => {
+  const [selectedAddress, setSelectedAddress] = useState<AddressOption | null>(
+    null,
+  );
+  const [loading, setLoading] = useState(false);
   const [form] = Form.useForm<CreateAdFormValues>();
   const {
     images,
@@ -41,10 +51,38 @@ const ListingCreatePage: React.FC = () => {
     handlePickImages,
   } = useImages(form);
   const { options, searchAddress } = useAddressSearch();
-  const { descRefs, detailsRefs, buildPayload } = useListingSubmit(images);
+  const { descRefs, detailsRefs, buildPayload } = useListingSubmit(
+    images,
+    selectedAddress,
+  );
+
   const onFinish = async (values: CreateAdFormValues) => {
-    const payload = await buildPayload(values);
-    console.log(payload);
+    if (!images.length) {
+      message.error("Musíš nahrát obrázky");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const payload = await buildPayload(values);
+      console.log(payload);
+      const formData = new FormData();
+
+      formData.append("payload", JSON.stringify(payload));
+
+      images.forEach((img) => {
+        formData.append("images", img.file);
+      });
+      await postListing(formData);
+      message.success("Inzerát vytvořen");
+      form.resetFields();
+      setImages([]);
+    } catch {
+      message.error("Chyba při vytváření inzerátu");
+    } finally {
+      setLoading(false);
+    }
   };
   return (
     <>
@@ -65,7 +103,7 @@ const ListingCreatePage: React.FC = () => {
           <span style={{ marginLeft: 8 }}>Zobrazit na hlavní stránce</span>
 
           <Form.Item
-            name="showOnHomepage"
+            name="isOnHomepage"
             label=""
             valuePropName="checked"
             initialValue={true}
@@ -86,7 +124,7 @@ const ListingCreatePage: React.FC = () => {
           <Form.Item
             required
             rules={[{ required: true, message: "Vyplň index" }]}
-            name="index"
+            name="listingIndex"
             label="Index Inzerátu"
             getValueFromEvent={(e) => e.target.value.replace(/\D/g, "")}
           >
@@ -128,7 +166,7 @@ const ListingCreatePage: React.FC = () => {
           <Form.Item
             required
             rules={[{ required: true, message: "Vyplň velikost" }]}
-            name="size"
+            name="area"
             label="Velikost v m²"
             getValueFromEvent={(e) => e.target.value.replace(/\D/g, "")}
           >
@@ -137,7 +175,7 @@ const ListingCreatePage: React.FC = () => {
           <Form.Item
             required
             rules={[{ required: true, message: "Vyplň lokaci" }]}
-            name={"location"}
+            name={"locationName"}
             label="Lokace"
           >
             <Input maxLength={21} />
@@ -150,18 +188,18 @@ const ListingCreatePage: React.FC = () => {
           >
             <Select
               options={[
-                { value: "apartment", label: "Apartmán" },
-                { value: "villa", label: "Vila" },
-                { value: "house", label: "Dům" },
-                { value: "studio", label: "Garsonka" },
-                { value: "land", label: "Pozemek" },
+                { value: "apartman", label: "Apartmán" },
+                { value: "vila", label: "Vila" },
+                { value: "dum", label: "Dům" },
+                { value: "garsonka", label: "Garsonka" },
+                { value: "pozemek", label: "Pozemek" },
               ]}
             />
           </Form.Item>
           <Form.Item
             required
             rules={[{ required: true, message: "Vyplň adresu" }]}
-            name="adresa"
+            name="address"
             label="Adresa"
             style={{ width: "100%" }}
           >
@@ -175,19 +213,24 @@ const ListingCreatePage: React.FC = () => {
                 value: item.place_id,
                 label: item.display_name,
               }))}
+              onChange={(val) => {
+                const found = options.find((o) => o.place_id === val.value);
+
+                setSelectedAddress(found ?? null);
+              }}
               style={{ width: "100%", color: "#000" }}
             />
           </Form.Item>
         </div>
         <Row gutter={[8, 0]}>
           {FEATURES.map((feature) => (
-            <Col key={feature}>
+            <Col key={feature.value}>
               <Form.Item
-                name={["attributes", feature]}
+                name={["features", String(feature.value)]}
                 valuePropName="value"
                 initialValue={false}
               >
-                <ToggleButton label={feature} />
+                <ToggleButton label={feature.label} />
               </Form.Item>
             </Col>
           ))}
@@ -348,6 +391,7 @@ const ListingCreatePage: React.FC = () => {
             htmlType="submit"
             size="large"
             block
+            loading={loading}
             disabled={images.length === 0}
           >
             Vytvořit inzerát

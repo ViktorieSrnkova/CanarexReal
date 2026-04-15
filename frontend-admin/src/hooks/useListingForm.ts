@@ -1,13 +1,17 @@
 import { useRef } from "react";
 import type { EditorMinimalRef } from "../components/editor/RichMediaEditor";
 import type {
+  AddressOption,
   CreateAdFormValues,
+  CreateAdPayload,
   Language,
-  Translation,
 } from "../types/listings";
 import type { ImageItem } from "./useImages";
 
-export const useListingSubmit = (images: ImageItem[]) => {
+export const useListingSubmit = (
+  images: ImageItem[],
+  selectedAddress: AddressOption | null,
+) => {
   const descRefs = useRef<Record<Language, EditorMinimalRef | null>>({
     cs: null,
     en: null,
@@ -20,22 +24,25 @@ export const useListingSubmit = (images: ImageItem[]) => {
     sk: null,
   });
 
-  const isEmpty = (data?: EditorJS.OutputData) =>
-    !data || data.blocks.length === 0;
+  const hasContent = (data?: EditorJS.OutputData) => !!data?.blocks?.length;
 
-  const buildPayload = async (values: CreateAdFormValues) => {
-    const cleanedTranslations: Partial<Record<Language, Translation>> = {};
+  const buildPayload = async (
+    values: CreateAdFormValues,
+  ): Promise<CreateAdPayload> => {
+    const cleanedTranslations: CreateAdPayload["translations"] = {};
 
-    for (const lang of ["cs", "en", "sk"] as Language[]) {
+    for (const lang of ["cs", "en", "sk"] as const) {
       const base = values.translations?.[lang];
 
       const desc = await descRefs.current[lang]?.save();
       const details = await detailsRefs.current[lang]?.save();
 
-      const cleaned: Translation = { ...base };
-
-      if (!isEmpty(desc)) cleaned.description = desc;
-      if (!isEmpty(details)) cleaned.details = details;
+      const cleaned = {
+        alt: base?.alt,
+        title: base?.title,
+        description: hasContent(desc) ? desc : undefined,
+        details: hasContent(details) ? details : undefined,
+      };
 
       const hasAnyValue =
         cleaned.alt || cleaned.title || cleaned.description || cleaned.details;
@@ -46,12 +53,31 @@ export const useListingSubmit = (images: ImageItem[]) => {
     }
 
     return {
-      ...values,
+      index: Number(values.listingIndex),
+      price: Number(values.price),
+      bedrooms: Number(values.bedrooms),
+      bathrooms: Number(values.bathrooms),
+      size: Number(values.area),
+      location: values.locationName,
+      propertyType: values.propertyType,
+      showOnHomepage: values.isOnHomepage,
+
+      attributes: values.features ?? {},
+
       translations: cleanedTranslations,
-      images: images.map((img, index) => ({
-        file: img.file,
+
+      images: images.map((_, index) => ({
         order: index,
       })),
+
+      address: selectedAddress
+        ? {
+            value: selectedAddress.place_id,
+            label: selectedAddress.display_name,
+            lat: selectedAddress.lat,
+            lon: selectedAddress.lon,
+          }
+        : null,
     };
   };
 
