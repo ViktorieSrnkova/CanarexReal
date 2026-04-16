@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { getAdminNews, deleteNews, toggleNewsVisibility } from "../../api/news";
 import NewsTable from "../../components/news/Table";
-import DeleteConfirmModal from "../../components/news/DeleteModal";
+import DeleteConfirmModal from "../../components/DeleteModal";
 import EditNewsModal from "../../components/news/EditModal";
 import type { NewsAdminItem } from "../../types/news";
 

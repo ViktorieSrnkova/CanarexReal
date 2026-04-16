@@ -4,9 +4,10 @@ import type {
   AddressOption,
   CreateAdFormValues,
   CreateAdPayload,
-  Language,
-} from "../types/listings";
+} from "../types/listing_form";
+
 import type { ImageItem } from "./useImages";
+import type { Language } from "../types/general";
 
 export const useListingSubmit = (
   images: ImageItem[],

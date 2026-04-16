@@ -116,15 +116,199 @@ router.post("/", upload.array("images"), async (req, res) => {
 });
 router.get("/", async (req, res) => {
   try {
+    const page = Number(req.query.page ?? 1);
+    const limit = Number(req.query.limit ?? 20);
+    const skip = (page - 1) * limit;
     const listings = await prisma.inzeraty.findMany({
-      select: listingDetailSelect(2),
+      skip,
+      take: limit,
+      orderBy: {
+        datum_vytvoreni: "desc",
+      },
+
+      select: {
+        id: true,
+        index: true,
+        cena_v_eur: true,
+        loznice: true,
+        koupelny: true,
+        velikost: true,
+        reprezentativni: true,
+        datum_vytvoreni: true,
+
+        adresy: {
+          select: {
+            lokace: true,
+          },
+        },
+
+        statusy: {
+          select: {
+            id: true,
+            kod: true,
+            statusy_preklady: {
+              where: {
+                jazyky_id: 2,
+              },
+              select: {
+                nazev: true,
+              },
+              take: 1,
+            },
+          },
+        },
+
+        typy_nemovitosti: {
+          select: {
+            id: true,
+            kod: true,
+            typy_nemovitosti_preklady: {
+              where: {
+                jazyky_id: 2,
+              },
+              select: {
+                nazev: true,
+              },
+              take: 1,
+            },
+          },
+        },
+
+        inzeraty_piktogramy: {
+          select: {
+            piktogramy: {
+              select: {
+                id: true,
+                nazev: true,
+                piktogramy_preklady: {
+                  where: {
+                    jazyky_id: 2,
+                  },
+                  select: {
+                    nazev: true,
+                  },
+                  take: 1,
+                },
+              },
+            },
+          },
+        },
+
+        obrazky: {
+          select: {
+            id: true,
+            url: true,
+            poradi: true,
+            obrazky_preklady: {
+              select: {
+                jazyky_id: true,
+              },
+            },
+          },
+          orderBy: {
+            poradi: "asc",
+          },
+          take: 1,
+        },
+        inzeraty_preklady: {
+          select: {
+            jazyky_id: true,
+          },
+        },
+      },
     });
-    res.json({ listings });
+
+    const total = await prisma.inzeraty.count();
+
+    return res.json({
+      data: listings,
+      pagination: {
+        page,
+        limit,
+        total,
+        pages: Math.ceil(total / limit),
+      },
+    });
   } catch (err) {
     console.error("listings get error:", err);
     res
       .status(500)
       .json({ message: "Internal server error", error: String(err) });
+  }
+});
+router.patch("/:id/status", async (req, res) => {
+  try {
+    const id = Number(req.params.id);
+    const { statusId } = req.body;
+
+    await prisma.inzeraty.update({
+      where: { id },
+      data: {
+        statusy_id: Number(statusId),
+      },
+    });
+
+    return res.json({ success: true });
+  } catch (err) {
+    console.error("status patch error:", err);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+router.patch("/:id/visibility", async (req, res) => {
+  try {
+    const id = Number(req.params.id);
+    const { value } = req.body;
+
+    if (typeof value !== "boolean") {
+      return res.status(400).json({ error: "Invalid value" });
+    }
+
+    await prisma.inzeraty.update({
+      where: { id },
+      data: {
+        reprezentativni: value,
+      },
+    });
+
+    return res.json({ success: true });
+  } catch (err) {
+    console.error("visibility patch error:", err);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+router.delete("/:id", async (req, res) => {
+  try {
+    const id = Number(req.params.id);
+
+    if (!Number.isInteger(id)) {
+      return res.status(400).json({ error: "Invalid id" });
+    }
+    //mam opacne vazbu na inzeraty a adresy, potreba otocit a nastavit cascade aby se adresa smazala i s inzeratem, dneska uz nemam stavu
+    const listing = await prisma.inzeraty.findUnique({
+      where: { id },
+      select: {
+        adresy_id: true,
+      },
+    });
+
+    if (!listing) {
+      return res.status(404).json({ error: "Listing not found" });
+    }
+
+    await prisma.inzeraty.delete({
+      where: { id },
+    });
+
+    if (listing.adresy_id) {
+      await prisma.adresy.delete({
+        where: { id: listing.adresy_id },
+      });
+    }
+
+    return res.json({ success: true });
+  } catch (err) {
+    console.error("listing delete error:", err);
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 

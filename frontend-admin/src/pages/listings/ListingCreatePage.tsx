@@ -10,11 +10,8 @@ import {
   Typography,
   Upload,
 } from "antd";
-import {
-  FEATURES,
-  type CreateAdFormValues,
-  type Language,
-} from "../../types/listings";
+import { FEATURES, type CreateAdFormValues } from "../../types/listing_form";
+import type { Language } from "../../types/general";
 import { liteEditorTools } from "../../config/lite-editor-tools";
 import { Row, Col } from "antd";
 import ToggleButton from "../../components/listings/ToggleButton";

@@ -1,6 +1,6 @@
 import type { FormInstance } from "antd";
 import React, { useEffect } from "react";
-import type { CreateAdFormValues } from "../types/listings";
+import type { CreateAdFormValues } from "../types/listing_form";
 import type { RcFile } from "antd/es/upload/interface";
 
 export type ImageItem = {

@@ -2,7 +2,7 @@ import { useEffect, useRef, forwardRef, useImperativeHandle } from "react";
 import "../../styles/richText.css";
 import EditorJS from "@editorjs/editorjs";
 import DragDrop from "editorjs-drag-drop";
-import type { EditorTools } from "../../types/listings";
+import type { EditorTools } from "../../types/editor";
 
 export type EditorMinimalRef = {
   save: () => Promise<EditorJS.OutputData>;

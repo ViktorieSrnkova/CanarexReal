@@ -1,6 +1,6 @@
 import { Table, Switch, Typography } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import Actions from "./Dropdown";
+import Actions from "../Actions";
 import type { NewsAdminItem } from "../../types/news";
 import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
 
@@ -21,7 +21,11 @@ const NewsTable: React.FC<Props> = ({ data, onToggle, onEdit, onDelete }) => {
     {
       title: "",
       render: (_, record) => (
-        <Actions record={record} onEdit={onEdit} onDelete={onDelete} />
+        <Actions<NewsAdminItem>
+          value={record}
+          onEdit={onEdit}
+          onDelete={onDelete}
+        />
       ),
     },
     {

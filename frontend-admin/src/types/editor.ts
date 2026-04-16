@@ -1,3 +1,7 @@
+import type { ToolConstructable, ToolSettings } from "@editorjs/editorjs";
+
+export type EditorTools = Record<string, ToolConstructable | ToolSettings>;
+
 export type EditorContent = {
   time?: number;
   blocks: EditorBlock[];

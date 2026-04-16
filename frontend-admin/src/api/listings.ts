@@ -1,4 +1,15 @@
+import type { RawListing } from "../types/api";
 import { api } from "./client";
+
+export type GetListingsResponse = {
+  data: RawListing[];
+  pagination: {
+    page: number;
+    limit: number;
+    total: number;
+    pages: number;
+  };
+};
 
 export const postListing = async (formData: FormData) => {
   const { data } = await api.post("/listings/", formData, {
@@ -6,6 +17,29 @@ export const postListing = async (formData: FormData) => {
       "Content-Type": "multipart/form-data",
     },
   });
+  return data;
+};
 
+export const getListings = async () => {
+  const { data } = await api.get<GetListingsResponse>("/listings");
+  return data;
+};
+
+export const patchListingStatus = async (id: number, statusId: number) => {
+  const { data } = await api.patch(`/listings/${id}/status`, {
+    statusId,
+  });
+  return data;
+};
+
+export const patchListingVisibility = async (id: number, value: boolean) => {
+  const { data } = await api.patch(`/listings/${id}/visibility`, {
+    value,
+  });
+  return data;
+};
+
+export const deleteListing = async (id: number) => {
+  const { data } = await api.delete(`/listings/${id}`);
   return data;
 };

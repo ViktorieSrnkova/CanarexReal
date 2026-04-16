@@ -1,7 +1,7 @@
 import List from "@editorjs/list";
 import Paragraph from "editorjs-paragraph-with-alignment";
 import Underline from "@editorjs/underline";
-import type { EditorTools } from "../types/listings";
+import type { EditorTools } from "../types/editor";
 
 export const liteEditorTools: EditorTools = {
   paragraph: {
