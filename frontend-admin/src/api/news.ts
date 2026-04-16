@@ -1,11 +1,11 @@
 import { api } from "./client";
 
 export const postNews = async (formData: FormData) => {
-  const { data } = await api.post("/aktuality/create", formData);
+  const { data } = await api.post("/aktuality/", formData);
   return data;
 };
 export const getAdminNews = async () => {
-  const res = await api.get("/aktuality/admin-all");
+  const res = await api.get("/aktuality/");
   return res.data.news;
 };
 

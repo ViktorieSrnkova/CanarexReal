@@ -11,7 +11,7 @@ import { upload } from "../middleware/uploader";
 const router = Router();
 router.use(requireRole([1, 3]));
 
-router.post("/create", upload.array("images"), async (req, res) => {
+router.post("/", upload.array("images"), async (req, res) => {
   try {
     const values = JSON.parse(req.body.payload);
     const files = (req.files ?? []) as Express.Multer.File[];

@@ -22,7 +22,7 @@ const langIdMap: Record<string, number> = {
   sk: 3,
 };
 
-router.get("/admin-all", async (req: AuthRequest, res) => {
+router.get("/", async (req: AuthRequest, res) => {
   try {
     const news = await prisma.aktuality.findMany({
       orderBy: {
@@ -66,60 +66,7 @@ router.get("/admin-all", async (req: AuthRequest, res) => {
     });
   }
 });
-
-router.get("/:id", async (req: PublicRequest, res) => {
-  try {
-    const id = Number(req.params.id);
-    if (isNaN(id)) {
-      return res.status(400).json({ message: "Invalid ID" });
-    }
-
-    const news = await prisma.aktuality.findFirst({
-      where: {
-        id,
-        viditelnost: true,
-      },
-      select: {
-        id: true,
-        datum_vytvoreni: true,
-        aktuality_preklady: {
-          where: { jazyky_id: req.userLangId ?? 2 },
-          select: {
-            titulek: true,
-            text: true,
-          },
-          take: 1,
-        },
-        obrazky: {
-          orderBy: { poradi: "asc" },
-          select: { id: true },
-          obrazky_preklady: {
-            where: { jazyky_id: req.userLangId ?? 2 },
-            select: { alt_text: true },
-          },
-        },
-      },
-    });
-
-    if (!news) {
-      return res.status(404).json({ message: "News not found" });
-    }
-    const formatted = {
-      id: news.id,
-      datum_vytvoreni: news.datum_vytvoreni,
-      obrazky: news.obrazky,
-      titulek: news.aktuality_preklady[0]?.titulek,
-      text: news.aktuality_preklady[0]?.text,
-    };
-
-    res.json({ formatted });
-  } catch (err) {
-    console.error("News detail error:", err);
-    res.status(500).json({ message: "Internal server error" });
-  }
-});
-
-router.post("/create", upload.single("image"), async (req, res) => {
+router.post("/", upload.single("image"), async (req, res) => {
   try {
     const { visible, translations } = req.body;
     const file = req.file;
