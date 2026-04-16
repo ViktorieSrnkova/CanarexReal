@@ -43,6 +43,7 @@ const NewsCreatePage: React.FC<Props> = ({ initialData, onSuccess }) => {
     form.setFieldsValue({
       visible: initialData.viditelnost,
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialData]);
 
   return (

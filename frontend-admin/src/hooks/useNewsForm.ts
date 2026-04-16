@@ -60,6 +60,7 @@ export const useNewsForm = (editId?: number, onSuccess?: () => void) => {
     const hydrated = hydrateImages(parsed);
 
     editorRef.current.render(hydrated);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editorModal, activeLang, editorReady]);
 
   const saveTitle = () => {
