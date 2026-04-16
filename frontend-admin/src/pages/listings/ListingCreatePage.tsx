@@ -85,9 +85,29 @@ const ListingCreatePage: React.FC = () => {
     }
   };
   return (
-    <>
+    <div
+      onFocusCapture={() => {
+        if (uploading) setUploading(false);
+      }}
+    >
       <Typography.Title level={2}>Vytvořit inzerát</Typography.Title>
-      <Form layout="vertical" onFinish={onFinish} form={form}>
+      <Form
+        layout="vertical"
+        onFinish={onFinish}
+        form={form}
+        onFinishFailed={({ errorFields }) => {
+          if (errorFields.length > 0) {
+            const firstError = errorFields[0];
+            form.scrollToField(firstError.name, {
+              behavior: "smooth",
+              block: "center",
+            });
+            message.error(
+              `Chyba ve formuláři: ${firstError.errors[0] || "Zkontroluj pole"}`,
+            );
+          }
+        }}
+      >
         <div
           className="switch-row"
           style={{
@@ -252,7 +272,7 @@ const ListingCreatePage: React.FC = () => {
               const files = info.fileList
                 .map((f) => f.originFileObj)
                 .filter((f): f is RcFile => !!f);
-
+              if (!files.length) return;
               handleUpload(files);
               setUploading(false);
             }}
@@ -398,7 +418,7 @@ const ListingCreatePage: React.FC = () => {
           </Button>
         </Form.Item>
       </Form>
-    </>
+    </div>
   );
 };
 
