@@ -8,18 +8,19 @@ datasource db {
 }
 
 model adresy {
-  id              Int        @id(map: "adresy_pk") @default(autoincrement())
-  ulice           String?    @db.VarChar(50)
-  cislo_popisne   String?    @db.VarChar(20)
-  lokace          String?    @db.VarChar(100)
-  mesto           String?    @db.VarChar(50)
-  lat             Decimal    @db.Decimal(10, 8)
-  lng             Decimal    @db.Decimal(10, 8)
+  id              Int      @id(map: "adresy_pk") @default(autoincrement())
+  ulice           String?  @db.VarChar(50)
+  cislo_popisne   String?  @db.VarChar(20)
+  lokace          String?  @db.VarChar(100)
+  mesto           String?  @db.VarChar(50)
+  lat             Decimal  @db.Decimal(10, 8)
+  lng             Decimal  @db.Decimal(10, 8)
   staty_id        Int
-  smerovaci_cislo String?    @db.VarChar(20)
-  cela_adresa     String?    @db.VarChar(255)
-  staty           staty      @relation(fields: [staty_id], references: [id], onUpdate: NoAction, map: "fk_adresy_stat")
-  inzeraty        inzeraty[]
+  smerovaci_cislo String?  @db.VarChar(20)
+  cela_adresa     String?  @db.VarChar(255)
+  inzeraty_id     Int      @unique(map: "adresy_inzeraty_id_unique")
+  inzeraty        inzeraty @relation(fields: [inzeraty_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_adresy_inzeraty")
+  staty           staty    @relation(fields: [staty_id], references: [id], onUpdate: NoAction, map: "fk_adresy_stat")
 }
 
 model aktuality {
@@ -89,10 +90,9 @@ model inzeraty {
   velikost             Int
   reprezentativni      Boolean
   datum_vytvoreni      DateTime               @default(now()) @db.Timestamp(6)
-  adresy_id            Int
   statusy_id           Int
   typy_nemovitosti_id  Int
-  adresy               adresy                 @relation(fields: [adresy_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "inzeraty_adresy")
+  adresy               adresy?
   statusy              statusy                @relation(fields: [statusy_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "inzeraty_statusy")
   typy_nemovitosti     typy_nemovitosti       @relation(fields: [typy_nemovitosti_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "inzeraty_typy_nemovitosti")
   inzeraty_piktogramy  inzeraty_piktogramy[]
@@ -100,7 +100,6 @@ model inzeraty {
   obrazky              obrazky[]
   uzivatelske_oblibene uzivatelske_oblibene[]
 
-  @@index([adresy_id], map: "idx_inz_addr")
   @@index([statusy_id], map: "idx_inz_sts")
   @@index([typy_nemovitosti_id], map: "idx_inz_typ")
 }

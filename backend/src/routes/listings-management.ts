@@ -33,19 +33,6 @@ router.post("/", upload.array("images"), async (req, res) => {
     const geo = await reverseGeocode(lat, lon);
 
     const result = await prisma.$transaction(async (tx) => {
-      const createdAddress = await tx.adresy.create({
-        data: {
-          lat: new Prisma.Decimal(lat),
-          lng: new Prisma.Decimal(lon),
-          ulice: geo.street ?? null,
-          cislo_popisne: geo.houseNumber ?? null,
-          lokace: location,
-          mesto: geo.city ?? null,
-          staty_id: 1,
-          smerovaci_cislo: geo.postcode ?? null,
-          cela_adresa: address.label,
-        },
-      });
       const propertyType = await tx.typy_nemovitosti.findFirst({
         where: { kod: values.propertyType },
       });
@@ -60,9 +47,21 @@ router.post("/", upload.array("images"), async (req, res) => {
           koupelny: Number(values.bathrooms),
           velikost: Number(values.size),
           reprezentativni: values.showOnHomepage,
-          adresy_id: createdAddress.id,
           statusy_id: 1,
           typy_nemovitosti_id: propertyType.id,
+          adresy: {
+            create: {
+              lat: new Prisma.Decimal(lat),
+              lng: new Prisma.Decimal(lon),
+              ulice: geo.street ?? null,
+              cislo_popisne: geo.houseNumber ?? null,
+              lokace: location,
+              mesto: geo.city ?? null,
+              staty_id: 1,
+              smerovaci_cislo: geo.postcode ?? null,
+              cela_adresa: address.label,
+            },
+          },
         },
       });
       if (selectedPictogramIds.length > 0) {
@@ -283,30 +282,13 @@ router.delete("/:id", async (req, res) => {
     if (!Number.isInteger(id)) {
       return res.status(400).json({ error: "Invalid id" });
     }
-    //mam opacne vazbu na inzeraty a adresy, potreba otocit a nastavit cascade aby se adresa smazala i s inzeratem, dneska uz nemam stavu
-    const listing = await prisma.inzeraty.findUnique({
-      where: { id },
-      select: {
-        adresy_id: true,
-      },
-    });
-
-    if (!listing) {
-      return res.status(404).json({ error: "Listing not found" });
-    }
 
     await prisma.inzeraty.delete({
       where: { id },
     });
 
-    if (listing.adresy_id) {
-      await prisma.adresy.delete({
-        where: { id: listing.adresy_id },
-      });
-    }
-
     return res.json({ success: true });
-  } catch (err) {
+  } catch (err: any) {
     console.error("listing delete error:", err);
     res.status(500).json({ message: "Internal server error" });
   }
