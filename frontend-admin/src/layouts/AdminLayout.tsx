@@ -9,11 +9,13 @@ import {
   SolutionOutlined,
   ToolOutlined,
 } from "@ant-design/icons";
-import React from "react";
+import React, { useState } from "react";
 
 const { Sider, Header, Content } = Layout;
 
 export default function AdminLayout() {
+  const [collapsed, setCollapsed] = useState(false);
+  const [openKeys, setOpenKeys] = useState<string[]>([]);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -28,7 +30,6 @@ export default function AdminLayout() {
       console.error("Logout failed:", err);
     }
   };
-  const [openKeys, setOpenKeys] = React.useState<string[]>([]);
   const selectedKey = (() => {
     if (path === "/") return "1";
     if (path.startsWith("/listings/create")) return "2-2";
@@ -38,8 +39,8 @@ export default function AdminLayout() {
     if (path.startsWith("/forms")) return "4";
     return "1";
   })();
-
   React.useEffect(() => {
+    if (window.innerWidth < 992) return;
     const keys: string[] = [];
 
     if (path.startsWith("/listings")) keys.push("2");
@@ -48,14 +49,32 @@ export default function AdminLayout() {
     setOpenKeys(keys);
   }, [path]);
   return (
-    <Layout style={{ minHeight: "100vh" }}>
-      <Sider width={250}>
+    <Layout
+      style={{
+        minHeight: "100vh",
+        marginLeft: window.innerWidth < 992 ? 0 : 250,
+      }}
+    >
+      <Sider
+        width={250}
+        breakpoint="lg"
+        collapsedWidth="0"
+        collapsed={collapsed}
+        onCollapse={(value) => setCollapsed(value)}
+        style={{
+          position: "fixed",
+          height: "100vh",
+          zIndex: 1000,
+          left: 0,
+          top: 0,
+        }}
+      >
         <Menu
           theme="dark"
           mode="inline"
           selectedKeys={[selectedKey]}
           openKeys={openKeys}
-          onOpenChange={(keys) => setOpenKeys(keys as string[])}
+          onOpenChange={setOpenKeys}
           items={[
             {
               key: "1",
@@ -136,6 +155,11 @@ export default function AdminLayout() {
               ),
             },
           ]}
+          onClick={() => {
+            if (window.innerWidth < 992) {
+              setCollapsed(true);
+            }
+          }}
         />
       </Sider>
       <Layout>
@@ -152,7 +176,12 @@ export default function AdminLayout() {
             Odhlásit se
           </Button>
         </Header>
-        <Content style={{ padding: 24 }}>
+        <Content
+          style={{
+            padding: window.innerWidth < 768 ? 12 : 24,
+            paddingTop: window.innerWidth < 768 ? 32 : 24,
+          }}
+        >
           <Outlet />
         </Content>
       </Layout>

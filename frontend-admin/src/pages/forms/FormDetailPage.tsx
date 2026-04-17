@@ -46,11 +46,14 @@ const FormDetailPage = () => {
   if (loading || !form) return <Spin size="large" />;
 
   return (
-    <div style={{ padding: 24 }}>
+    <div>
       <div
         style={{
           marginBottom: 24,
           display: "flex",
+          flexDirection: "row",
+          flexWrap: "wrap",
+          gap: 12,
           alignItems: "center",
           justifyContent: "space-between",
           padding: 16,
@@ -62,20 +65,43 @@ const FormDetailPage = () => {
         {getReviewTag(form.revidovano)}
         <div
           style={{
-            marginTop: 8,
-            gap: 8,
+            columnGap: 16,
             display: "flex",
+            flexWrap: "wrap",
+            alignItems: "center",
           }}
         >
-          <Text>Typ: </Text>
-          <Tag color="blue">{form.typy_formulare?.nazev}</Tag>
-          <Text style={{ marginLeft: "16px" }}>Odkud: </Text>
-          <Tag color="purple">{form.odkud_formular?.nazev} </Tag>
+          <div
+            style={{
+              gap: 8,
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <Text>Typ: </Text>
+            <Tag color="blue">{form.typy_formulare?.nazev}</Tag>
+          </div>
+          <div
+            style={{
+              gap: 8,
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <Text>Odkud: </Text>
+            <Tag color="purple">{form.odkud_formular?.nazev} </Tag>
+          </div>{" "}
         </div>
         <Button
           type={form.revidovano ? "default" : "primary"}
           onClick={handleToggle}
           loading={toggling}
+          style={{
+            whiteSpace: "normal",
+            height: "auto",
+            textAlign: "center",
+            padding: 8,
+          }}
         >
           {form.revidovano
             ? "Označit jako nerevidované"

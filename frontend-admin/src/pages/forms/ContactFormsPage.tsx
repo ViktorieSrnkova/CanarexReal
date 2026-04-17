@@ -30,7 +30,7 @@ const ContactFormsPage = () => {
   if (!forms.length) return <Empty description="No contact forms yet" />;
 
   return (
-    <div style={{ padding: 24 }}>
+    <div>
       <Title level={2}>Formuláře</Title>
 
       <Row gutter={[16, 16]}>

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { statusOptions, type ListingRow } from "../../types/listings";
 import { ListingTable } from "../../components/listings/ListingTable";
 import { mapListing } from "../../utils/mapListing";
-import type { RawListing } from "../../types/api";
 import {
   deleteListing,
   getListings,
@@ -20,19 +19,29 @@ const ListingsPage: React.FC = () => {
   );
   const [deleteId, setDeleteId] = useState<number | null>(null);
   const [deleteOpen, setDeleteOpen] = useState(false);
-
+  const [pagination, setPagination] = useState({
+    page: 1,
+    limit: 20,
+    total: 0,
+  });
   useEffect(() => {
     const loadListings = async () => {
       try {
         setLoading(true);
+        setData([]);
+        const res = await getListings({
+          page: pagination.page,
+          limit: pagination.limit,
+        });
 
-        const res = await getListings();
-
-        const mapped: ListingRow[] = res.data.map((item: RawListing) =>
-          mapListing(item),
-        );
+        const mapped: ListingRow[] = res.data.map((item) => mapListing(item));
 
         setData(mapped);
+
+        setPagination((prev) => ({
+          ...prev,
+          total: res.pagination.total,
+        }));
       } catch (err) {
         console.error("Failed to load listings:", err);
       } finally {
@@ -41,7 +50,7 @@ const ListingsPage: React.FC = () => {
     };
 
     loadListings();
-  }, []);
+  }, [pagination.page, pagination.limit]);
   const handleChangeStatus = async (id: number, statusId: number) => {
     try {
       await patchListingStatus(id, statusId);
@@ -119,6 +128,11 @@ const ListingsPage: React.FC = () => {
         onDelete={handleDeleteClick}
         onToggleVisibility={handleToggleVisibility}
         onChangeStatus={handleChangeStatus}
+        loading={loading}
+        pagination={pagination}
+        onPaginationChange={(page, limit) => {
+          setPagination({ page, limit, total: pagination.total });
+        }}
       />
       <DeleteConfirmModal
         open={deleteOpen}

@@ -1,10 +1,8 @@
-import { Table, Switch, Typography } from "antd";
+import { Table, Switch } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import Actions from "../Actions";
 import type { NewsAdminItem } from "../../types/news";
 import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
-
-const { Title } = Typography;
 
 type Props = {
   data: NewsAdminItem[];
@@ -20,6 +18,14 @@ const NewsTable: React.FC<Props> = ({ data, onToggle, onEdit, onDelete }) => {
   const columns: ColumnsType<NewsAdminItem> = [
     {
       title: "",
+      width: 25,
+      fixed: "left",
+      onCell: () => ({
+        style: {
+          paddingLeft: 8,
+          paddingRight: 4,
+        },
+      }),
       render: (_, record) => (
         <Actions<NewsAdminItem>
           value={record}
@@ -106,25 +112,11 @@ const NewsTable: React.FC<Props> = ({ data, onToggle, onEdit, onDelete }) => {
 
   return (
     <>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginBottom: 12,
-        }}
-      >
-        <Title style={{ margin: 0 }} level={2}>
-          Spravovat aktuality
-        </Title>
-
-        <div>Celkem: {data.length} aktualit</div>
-      </div>
-
       <Table
         rowKey="id"
         columns={columns}
         dataSource={data}
+        scroll={{ x: true }}
         pagination={{
           pageSize: 20,
           showSizeChanger: true,

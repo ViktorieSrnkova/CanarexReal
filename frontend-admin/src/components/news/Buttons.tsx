@@ -53,7 +53,7 @@ const LangButtonGroup: React.FC<Props> = ({
   };
 
   return (
-    <div style={{ display: "flex", gap: 8 }}>
+    <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
       {languages.map(renderLangButton)}
     </div>
   );

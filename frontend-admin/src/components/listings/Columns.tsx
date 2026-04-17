@@ -31,7 +31,13 @@ export function getColumns({
       fixed: "left",
       onCell: () => ({
         style: {
-          paddingLeft: 4,
+          paddingLeft: 8,
+          paddingRight: 4,
+        },
+      }),
+      onHeaderCell: () => ({
+        style: {
+          paddingLeft: 8,
           paddingRight: 4,
         },
       }),

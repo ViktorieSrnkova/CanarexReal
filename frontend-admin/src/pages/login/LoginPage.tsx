@@ -33,50 +33,63 @@ const LoginPage: React.FC = () => {
     <div
       style={{
         textAlign: "center",
-        paddingInline: 150,
-        paddingTop: "calc(50% - 195px)",
-        backgroundColor: "#efefef",
+        paddingInline: window.innerWidth < 768 ? 20 : 150,
+        backgroundColor: window.innerWidth < 768 ? "#C1E6F5" : "#efefef",
         height: "100vh",
+        display: "flex",
+        alignItems: "center",
       }}
     >
-      <Title level={2} style={{ marginBottom: 50 }}>
-        Přihlášení do administrace
-      </Title>
-      <Form
-        name="login"
-        style={{ maxWidth: 400, margin: "0 auto" }}
-        onFinish={onFinish}
-        autoComplete="off"
+      <div
+        className="items"
+        style={{
+          backgroundColor: "#efefef",
+          padding: "8px",
+          borderRadius: "8px",
+        }}
       >
-        <Form.Item<FieldType>
-          layout="vertical"
-          label="E-mail:"
-          name="username"
-          rules={[
-            { required: true, message: "Zadejte svůj přihlašovací e-mail!" },
-          ]}
+        <Title
+          level={2}
+          style={{ marginBottom: window.innerWidth < 768 ? 20 : 50 }}
         >
-          <Input prefix={<UserOutlined />} placeholder="E-mail" />
-        </Form.Item>
+          Přihlášení do administrace
+        </Title>
+        <Form
+          name="login"
+          style={{ maxWidth: 400, margin: "0 auto" }}
+          onFinish={onFinish}
+          autoComplete="off"
+        >
+          <Form.Item<FieldType>
+            layout="vertical"
+            label="E-mail:"
+            name="username"
+            rules={[
+              { required: true, message: "Zadejte svůj přihlašovací e-mail!" },
+            ]}
+          >
+            <Input prefix={<UserOutlined />} placeholder="E-mail" />
+          </Form.Item>
 
-        <Form.Item<FieldType>
-          layout="vertical"
-          label="Heslo:"
-          name="password"
-          rules={[{ required: true, message: "Zadejte své heslo!" }]}
-        >
-          <Input.Password
-            prefix={<LockOutlined />}
-            type="password"
-            placeholder="Heslo"
-          />
-        </Form.Item>
-        <Form.Item label={null}>
-          <Button type="primary" htmlType="submit">
-            Přihlásit se
-          </Button>
-        </Form.Item>
-      </Form>
+          <Form.Item<FieldType>
+            layout="vertical"
+            label="Heslo:"
+            name="password"
+            rules={[{ required: true, message: "Zadejte své heslo!" }]}
+          >
+            <Input.Password
+              prefix={<LockOutlined />}
+              type="password"
+              placeholder="Heslo"
+            />
+          </Form.Item>
+          <Form.Item label={null}>
+            <Button type="primary" htmlType="submit">
+              Přihlásit se
+            </Button>
+          </Form.Item>
+        </Form>
+      </div>
     </div>
   );
 };

@@ -4,6 +4,7 @@ import NewsTable from "../../components/news/Table";
 import DeleteConfirmModal from "../../components/DeleteModal";
 import EditNewsModal from "../../components/news/EditModal";
 import type { NewsAdminItem } from "../../types/news";
+import Title from "antd/es/typography/Title";
 
 const AdminNewsPage = () => {
   const [data, setData] = useState<NewsAdminItem[]>([]);
@@ -36,6 +37,8 @@ const AdminNewsPage = () => {
   }, [deleteOpen]);
   return (
     <>
+      <Title level={2}>Spravovat aktuality</Title>
+      <div>Celkem aktualit: {data.length}</div>
       <NewsTable
         data={data}
         onToggle={async (id) => {

@@ -47,7 +47,7 @@ const NewsCreatePage: React.FC<Props> = ({ initialData, onSuccess }) => {
   }, [initialData]);
 
   return (
-    <div style={{ padding: 24 }}>
+    <div>
       <Title level={2}>Vytvořit aktualitu</Title>
 
       <Form

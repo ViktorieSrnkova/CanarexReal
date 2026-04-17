@@ -20,8 +20,14 @@ export const postListing = async (formData: FormData) => {
   return data;
 };
 
-export const getListings = async () => {
-  const { data } = await api.get<GetListingsResponse>("/listings");
+export const getListings = async (params?: {
+  page?: number;
+  limit?: number;
+}) => {
+  const { data } = await api.get<GetListingsResponse>("/listings", {
+    params,
+  });
+
   return data;
 };
 
