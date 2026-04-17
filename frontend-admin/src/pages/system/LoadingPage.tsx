@@ -1,6 +1,6 @@
 import { Spin } from "antd";
 
-export default function LoadingPage() {
+const LoadingPage: React.FC = () => {
   return (
     <div
       style={{
@@ -13,4 +13,5 @@ export default function LoadingPage() {
       <Spin size="large" />
     </div>
   );
-}
+};
+export default LoadingPage;

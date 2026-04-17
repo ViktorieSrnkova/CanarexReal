@@ -7,19 +7,21 @@ const { Text } = Typography;
 type Props = {
   visibility?: boolean;
   created: string;
-  title: string;
   amountNew?: number;
   amountUnprocessed?: number;
   index?: number;
+  context: string;
+  total?: number;
 };
 
 const StatCard: React.FC<Props> = ({
   visibility,
   created,
-  title,
   amountNew,
   amountUnprocessed,
   index,
+  context,
+  total,
 }) => {
   return (
     <Card
@@ -34,11 +36,10 @@ const StatCard: React.FC<Props> = ({
         justifyContent: "center",
       }}
     >
-      {title && (
-        <Text style={{ fontSize: "14px", display: "block" }}>
-          Nejnovější: {title}
-        </Text>
-      )}
+      <Text style={{ fontSize: "14px", display: "block" }}>
+        Nejnovější {context}:
+      </Text>
+
       {index && (
         <Text style={{ fontSize: "14px", display: "block" }}>ID: {index}</Text>
       )}
@@ -47,6 +48,7 @@ const StatCard: React.FC<Props> = ({
           Vytvořeno: {new Date(created).toLocaleDateString("cs-CZ")}
         </Text>
       )}
+
       {amountNew !== undefined && (
         <Text style={{ fontSize: "14px", display: "block" }}>
           Počet nových:{" "}
@@ -61,7 +63,8 @@ const StatCard: React.FC<Props> = ({
           </Text>
         </Text>
       )}
-      {visibility && (
+
+      {visibility !== undefined && visibility !== null && (
         <Text style={{ fontSize: "14px", display: "block" }}>
           Viditelnost:{" "}
           {visibility === true ? (
@@ -69,6 +72,11 @@ const StatCard: React.FC<Props> = ({
           ) : (
             <CloseOutlined style={{ color: "red" }} />
           )}
+        </Text>
+      )}
+      {total && (
+        <Text style={{ fontSize: "14px", display: "block" }}>
+          Počet celkem: {total}
         </Text>
       )}
     </Card>

@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import adminRoutes from "./routes/admin-login";
+import dashboardRoutes from "./routes/dashboard";
 import authRoutes from "./routes/user-auth";
 import favoritesRouter from "./routes/favorites";
 import adminListingsRouter from "./routes/listings-management";
@@ -32,6 +33,7 @@ app.use("/api/admin", adminRoutes);
 app.use("/api/admin/listings", adminListingsRouter);
 app.use("/api/admin/aktuality", adminNewsRouter);
 app.use("/api/admin/forms-management", formsManagementRouter);
+app.use("/api/admin/dashboard", dashboardRoutes);
 
 app.use("/api/listings", listingsRouter);
 app.use("/api/news", newsRouter);

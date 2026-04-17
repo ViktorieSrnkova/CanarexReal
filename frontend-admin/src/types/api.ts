@@ -51,3 +51,21 @@ export type RawListing = {
     jazyky_id: number;
   }[];
 };
+export type DashboardResponse = {
+  listings: {
+    total: number;
+    visible: boolean;
+    latestCreated: string;
+    lastIndex: number;
+  };
+  news: {
+    total: number;
+    visible: boolean;
+    latestCreated: string;
+  };
+  forms: {
+    new: number;
+    unprocessed: number;
+    latestCreated: string;
+  };
+};

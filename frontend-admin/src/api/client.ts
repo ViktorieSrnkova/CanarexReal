@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const sessionApi = axios.create({
+export const sessionCheckApi = axios.create({
   baseURL: "http://localhost:3000/api/admin",
   withCredentials: true,
 });

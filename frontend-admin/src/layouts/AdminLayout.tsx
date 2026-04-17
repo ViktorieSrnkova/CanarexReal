@@ -10,6 +10,7 @@ import {
   ToolOutlined,
 } from "@ant-design/icons";
 import React, { useState } from "react";
+import { useSessionWatcher } from "../hooks/useSessionWatcher";
 
 const { Sider, Header, Content } = Layout;
 
@@ -39,6 +40,12 @@ export default function AdminLayout() {
     if (path.startsWith("/forms")) return "4";
     return "1";
   })();
+
+  useSessionWatcher(() => {
+    localStorage.removeItem("token");
+    window.dispatchEvent(new Event("session-expired"));
+    navigate("/login");
+  });
   React.useEffect(() => {
     if (window.innerWidth < 992) return;
     const keys: string[] = [];
@@ -48,6 +55,7 @@ export default function AdminLayout() {
 
     setOpenKeys(keys);
   }, [path]);
+
   return (
     <Layout
       style={{

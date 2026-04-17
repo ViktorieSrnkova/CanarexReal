@@ -2,10 +2,13 @@ import React from "react";
 import ActionCard from "../../components/dashboard/ActionCard";
 import { Typography } from "antd";
 import StatCard from "../../components/dashboard/StatCard";
+import { getDashboard } from "../../api/dashboard";
+import LoadingPage from "../system/LoadingPage";
+import type { DashboardResponse } from "../../types/api";
 
 const { Title } = Typography;
 
-const dashboardSections = [
+const createDashboardSections = (stats: DashboardResponse) => [
   {
     title: "Inzeráty",
     actions: [
@@ -13,10 +16,11 @@ const dashboardSections = [
       { path: "/listings/create", purpose: "Vytvořit nový inzerát" },
     ],
     stats: {
-      title: "Nejnovější inzerát",
-      created: "2024-06-01T12:00:00Z",
-      visibility: true,
-      index: 123,
+      created: stats.listings.latestCreated,
+      visibility: stats.listings.visible,
+      index: stats.listings.lastIndex,
+      total: stats.listings.total,
+      context: "inzerát",
     },
   },
   {
@@ -26,19 +30,20 @@ const dashboardSections = [
       { path: "/news/create", purpose: "Vytvořit nový článek" },
     ],
     stats: {
-      title: "Nejnovější aktualita",
-      created: "2024-06-01T12:00:00Z",
-      visibility: true,
+      created: stats.news.latestCreated,
+      visibility: stats.news.visible,
+      total: stats.news.total,
+      context: "aktualita",
     },
   },
   {
     title: "Formuláře",
     actions: [{ path: "/forms", purpose: "Spravovat formuláře" }],
     stats: {
-      title: "Jan Novák",
       created: "2024-06-01T12:00:00Z",
-      amountNew: 5,
-      amountUnprocessed: 2,
+      amountNew: stats.forms.new,
+      amountUnprocessed: stats.forms.unprocessed,
+      context: "kontakt",
     },
   },
 ];
@@ -60,6 +65,7 @@ function DisplaySection({
 }
 const DashboardPage: React.FC = () => {
   const [isMobile, setIsMobile] = React.useState(false);
+  const [stats, setStats] = React.useState<DashboardResponse | null>(null);
 
   React.useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 1110);
@@ -67,9 +73,24 @@ const DashboardPage: React.FC = () => {
     window.addEventListener("resize", check);
     return () => window.removeEventListener("resize", check);
   }, []);
+  React.useEffect(() => {
+    const load = async () => {
+      try {
+        const data = await getDashboard();
+        console.log("visibility:", data.news.visible, typeof data.news.visible);
+        setStats(data);
+      } catch (err) {
+        console.error("Dashboard fetch error:", err);
+      }
+    };
+
+    load();
+  }, []);
+
+  if (!stats) return <LoadingPage />;
   return (
     <div className="dashboard-page">
-      {dashboardSections.map((section) => (
+      {createDashboardSections(stats).map((section) => (
         <DisplaySection key={section.title} title={section.title}>
           <div
             style={
