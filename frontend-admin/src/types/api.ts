@@ -67,5 +67,7 @@ export type DashboardResponse = {
     new: number;
     unprocessed: number;
     latestCreated: string;
+    name: string;
+    surname: string;
   };
 };

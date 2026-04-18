@@ -12,6 +12,8 @@ type Props = {
   index?: number;
   context: string;
   total?: number;
+  name?: string;
+  surname?: string;
 };
 
 const StatCard: React.FC<Props> = ({
@@ -22,6 +24,8 @@ const StatCard: React.FC<Props> = ({
   index,
   context,
   total,
+  name,
+  surname,
 }) => {
   return (
     <Card
@@ -39,6 +43,12 @@ const StatCard: React.FC<Props> = ({
       <Text style={{ fontSize: "14px", display: "block" }}>
         Nejnovější {context}:
       </Text>
+      {name && surname && (
+        <Text style={{ fontSize: "14px", display: "block" }}>
+          {" "}
+          {name} {surname}
+        </Text>
+      )}
 
       {index && (
         <Text style={{ fontSize: "14px", display: "block" }}>ID: {index}</Text>
@@ -49,7 +59,7 @@ const StatCard: React.FC<Props> = ({
         </Text>
       )}
 
-      {amountNew !== undefined && (
+      {amountNew !== undefined && amountNew !== null && amountNew !== 0 && (
         <Text style={{ fontSize: "14px", display: "block" }}>
           Počet nových:{" "}
           <Badge count={amountNew} style={{ backgroundColor: "#0ac20e" }} />

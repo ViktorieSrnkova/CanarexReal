@@ -35,7 +35,7 @@ router.get("/", async (req, res) => {
   const fiveDaysAgo = new Date();
   fiveDaysAgo.setDate(fiveDaysAgo.getDate() - 5);
 
-  const [latestForm, formsUnprocessed, formsNew] = await Promise.all([
+  const [latestForm, formsUnprocessed, formsNew, formInfo] = await Promise.all([
     prisma.formulare.findFirst({
       orderBy: { datum_vytvoreni: "desc" },
       select: { datum_vytvoreni: true },
@@ -51,6 +51,10 @@ router.get("/", async (req, res) => {
           gte: fiveDaysAgo,
         },
       },
+    }),
+    prisma.formulare.findFirst({
+      orderBy: { datum_vytvoreni: "desc" },
+      select: { jmeno: true, prijmeni: true },
     }),
   ]);
   res.json({
@@ -69,6 +73,8 @@ router.get("/", async (req, res) => {
       new: formsNew,
       unprocessed: formsUnprocessed,
       latestCreated: latestForm?.datum_vytvoreni ?? null,
+      name: formInfo?.jmeno,
+      surname: formInfo?.prijmeni,
     },
   });
 });

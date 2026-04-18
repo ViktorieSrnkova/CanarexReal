@@ -44,6 +44,8 @@ const createDashboardSections = (stats: DashboardResponse) => [
       amountNew: stats.forms.new,
       amountUnprocessed: stats.forms.unprocessed,
       context: "kontakt",
+      name: stats.forms.name,
+      surname: stats.forms.surname,
     },
   },
 ];
