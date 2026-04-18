@@ -1,12 +1,7 @@
 import React from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-
-type ImageItem = {
-  uid: string;
-  file: File;
-  url: string;
-};
+import type { ImageItem } from "../../types/listing_form";
 
 type Props = {
   id: string;
@@ -17,7 +12,6 @@ type Props = {
 const SortableImage: React.FC<Props> = ({ id, image, isMain }) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id });
-
   return (
     <div
       ref={setNodeRef}

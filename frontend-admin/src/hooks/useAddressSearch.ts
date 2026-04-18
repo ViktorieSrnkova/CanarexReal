@@ -1,12 +1,6 @@
 import React from "react";
 import debounce from "lodash/debounce";
-
-export type AddressOption = {
-  display_name: string;
-  place_id: number;
-  lat: string;
-  lon: string;
-};
+import type { AddressOption } from "../types/listing_form";
 
 export function useAddressSearch() {
   const [options, setOptions] = React.useState<AddressOption[]>([]);

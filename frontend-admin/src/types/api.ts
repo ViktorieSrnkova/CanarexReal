@@ -71,3 +71,43 @@ export type DashboardResponse = {
     surname: string;
   };
 };
+export type RawListingDetail = {
+  id: number;
+  index: string | null;
+  cena_v_eur: number | null;
+  loznice: number | null;
+  koupelny: number | null;
+  velikost: number | null;
+  reprezentativni: boolean | null;
+  datum_vytvoreni: string;
+
+  typy_nemovitosti_id: number | null;
+
+  adresy: {
+    lokace: string | null;
+    lat: string; //Prisma Decimal → string
+    lng: string; //Prisma Decimal → string
+    nominatim_id: string | null;
+  } | null;
+
+  inzeraty_piktogramy: {
+    piktogramy_id: number;
+  }[];
+
+  obrazky: {
+    id: number;
+    url: string;
+    poradi: number;
+    obrazky_preklady: {
+      jazyky_id: number;
+      alt: string | null;
+    }[];
+  }[];
+
+  inzeraty_preklady: {
+    jazyky_id: number;
+    titulek: string | null;
+    popis: string | null;
+    detaily: string | null;
+  }[];
+};

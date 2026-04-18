@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import { getAdminNews, deleteNews, toggleNewsVisibility } from "../../api/news";
 import NewsTable from "../../components/news/Table";
 import DeleteConfirmModal from "../../components/DeleteModal";
-import EditNewsModal from "../../components/news/EditModal";
 import type { NewsAdminItem } from "../../types/news";
 import Title from "antd/es/typography/Title";
+import { EditModal } from "../../components/EditModal";
+import NewsCreatePage from "./NewsCreatePage";
 
 const AdminNewsPage = () => {
   const [data, setData] = useState<NewsAdminItem[]>([]);
@@ -62,16 +63,23 @@ const AdminNewsPage = () => {
         onCancel={() => setDeleteOpen(false)}
       />
 
-      <EditNewsModal
+      <EditModal<NewsAdminItem>
         open={editOpen}
         onClose={() => setEditOpen(false)}
         initialData={selected}
-        onSuccess={async () => {
-          setEditOpen(false);
-          const res = await getAdminNews();
-          setData(res);
-        }}
-      />
+      >
+        {({ data, onSuccess }) => (
+          <NewsCreatePage
+            initialData={data}
+            onSuccess={async () => {
+              setEditOpen(false);
+              const res = await getAdminNews();
+              setData(res);
+              onSuccess?.();
+            }}
+          />
+        )}
+      </EditModal>
     </>
   );
 };

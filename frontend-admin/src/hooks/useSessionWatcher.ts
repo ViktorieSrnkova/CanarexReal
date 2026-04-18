@@ -28,7 +28,7 @@ export function useSessionWatcher(onExpire: () => void) {
         const status = err.response?.status;
 
         if (status === 401) {
-          await new Promise((r) => setTimeout(r, 1000));
+          await new Promise((r) => setTimeout(r, 3000));
 
           try {
             await checkSession();

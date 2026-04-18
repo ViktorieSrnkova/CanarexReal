@@ -4,12 +4,17 @@ import { ListingTable } from "../../components/listings/ListingTable";
 import { mapListing } from "../../utils/mapListing";
 import {
   deleteListing,
+  getListingById,
   getListings,
   patchListingStatus,
   patchListingVisibility,
 } from "../../api/listings";
 import Title from "antd/es/typography/Title";
 import DeleteConfirmModal from "../../components/DeleteModal";
+import ListingCreatePage from "./ListingCreatePage";
+import { EditModal } from "../../components/EditModal";
+import type { CreateAdFormValues } from "../../types/listing_form";
+import { mapRawListingToFormValues } from "../../utils/listingsMapper";
 
 const ListingsPage: React.FC = () => {
   const [data, setData] = useState<ListingRow[]>([]);
@@ -117,6 +122,20 @@ const ListingsPage: React.FC = () => {
       setDeleteId(null);
     }
   };
+  const [editOpen, setEditOpen] = useState(false);
+  const [selected, setSelected] = useState<CreateAdFormValues | null>(null);
+
+  const handleEdit = async (id: number) => {
+    try {
+      const res = await getListingById(id);
+      const mapped = mapRawListingToFormValues(res);
+
+      setSelected(mapped);
+      setEditOpen(true);
+    } catch (err) {
+      console.error("Failed to load listing detail:", err);
+    }
+  };
   return (
     <div className="listings-page">
       <Title level={2}>Spravovat inzeráty</Title>
@@ -124,7 +143,7 @@ const ListingsPage: React.FC = () => {
 
       <ListingTable
         data={data}
-        onEdit={(id) => console.log("edit", id)}
+        onEdit={handleEdit}
         onDelete={handleDeleteClick}
         onToggleVisibility={handleToggleVisibility}
         onChangeStatus={handleChangeStatus}
@@ -142,6 +161,34 @@ const ListingsPage: React.FC = () => {
           setDeleteId(null);
         }}
       />
+      {editOpen && selected && (
+        <EditModal<CreateAdFormValues>
+          open={editOpen}
+          onClose={() => {
+            setEditOpen(false);
+            setSelected(null);
+          }}
+          initialData={selected}
+        >
+          {({ data, onSuccess }) => (
+            <ListingCreatePage
+              key={selected?.listingIndex ?? "edit"}
+              initialData={data}
+              editId={selected?.id}
+              onSuccess={async () => {
+                setEditOpen(false);
+                const res = await getListings({
+                  page: pagination.page,
+                  limit: pagination.limit,
+                });
+
+                setData(res.data.map(mapListing));
+                onSuccess?.();
+              }}
+            />
+          )}
+        </EditModal>
+      )}
 
       {loading && <p style={{ marginTop: 12 }}>Loading listings...</p>}
     </div>

@@ -10,7 +10,11 @@ import {
   Typography,
   Upload,
 } from "antd";
-import { FEATURES, type CreateAdFormValues } from "../../types/listing_form";
+import {
+  FEATURES,
+  type AddressOption,
+  type CreateAdFormValues,
+} from "../../types/listing_form";
 import type { Language } from "../../types/general";
 import { liteEditorTools } from "../../config/lite-editor-tools";
 import { Row, Col } from "antd";
@@ -23,17 +27,23 @@ import {
   rectSortingStrategy,
 } from "@dnd-kit/sortable";
 import SortableImage from "../../components/listings/SortableImage";
-import {
-  useAddressSearch,
-  type AddressOption,
-} from "../../hooks/useAddressSearch";
+import { useAddressSearch } from "../../hooks/useAddressSearch";
 import { useImages } from "../../hooks/useImages";
 import EditorMinimal from "../../components/editor/RichMediaEditor";
 import { useListingSubmit } from "../../hooks/useListingForm";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { postListing } from "../../api/listings";
+type Props = {
+  initialData?: CreateAdFormValues;
+  onSuccess?: () => void;
+  editId?: number;
+};
 
-const ListingCreatePage: React.FC = () => {
+const ListingCreatePage: React.FC<Props> = ({
+  initialData,
+  onSuccess,
+  editId,
+}) => {
   const [selectedAddress, setSelectedAddress] = useState<AddressOption | null>(
     null,
   );
@@ -71,8 +81,14 @@ const ListingCreatePage: React.FC = () => {
       images.forEach((img) => {
         formData.append("images", img.file);
       });
-      await postListing(formData);
-      message.success("Inzerát vytvořen");
+      if (editId) {
+        //await putListing(editId, formData);
+        message.success("Inzerát upraven");
+      } else {
+        await postListing(formData);
+        message.success("Inzerát vytvořen");
+      }
+      onSuccess?.();
       form.resetFields();
       setImages([]);
     } catch {
@@ -81,6 +97,22 @@ const ListingCreatePage: React.FC = () => {
       setLoading(false);
     }
   };
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    if (!initialData) return;
+
+    form.setFieldsValue(initialData);
+
+    if (initialData.address) {
+      setSelectedAddress(initialData.address);
+    }
+    const id = requestAnimationFrame(() => {
+      setMounted(false); //temp
+    });
+
+    return () => cancelAnimationFrame(id);
+  }, [initialData]);
+
   return (
     <div
       onFocusCapture={() => {
@@ -227,11 +259,11 @@ const ListingCreatePage: React.FC = () => {
               }}
               labelInValue
               options={options.map((item) => ({
-                value: item.place_id,
-                label: item.display_name,
+                value: item.value,
+                label: item.label,
               }))}
               onChange={(val) => {
-                const found = options.find((o) => o.place_id === val.value);
+                const found = options.find((o) => o.value === val.value);
 
                 setSelectedAddress(found ?? null);
               }}
@@ -340,63 +372,69 @@ const ListingCreatePage: React.FC = () => {
             },
           ]}
         />
-        <Tabs
-          type="card"
-          tabBarStyle={{
-            borderBottom: "1px solid #1890ff",
-          }}
-          style={{ backgroundColor: "#c7f1f765", padding: 20, borderRadius: 8 }}
-          defaultActiveKey="cs"
-          items={(["cs", "en", "sk"] as Language[]).map((lang) => ({
-            key: lang,
-            label: lang.toUpperCase(),
-            children: (
-              <>
-                <Form.Item
-                  name={["translations", lang, "alt"]}
-                  label="Alt text hlavního obrázku"
-                >
-                  <Input />
-                </Form.Item>
-                <Form.Item
-                  name={["translations", lang, "title"]}
-                  label="Název inzerátu"
-                >
-                  <Input />
-                </Form.Item>
+        {mounted && (
+          <Tabs
+            type="card"
+            destroyOnHidden={false}
+            tabBarStyle={{
+              borderBottom: "1px solid #1890ff",
+            }}
+            style={{
+              backgroundColor: "#c7f1f765",
+              padding: 20,
+              borderRadius: 8,
+            }}
+            defaultActiveKey="cs"
+            items={(["cs", "en", "sk"] as Language[]).map((lang) => ({
+              key: lang,
+              label: lang.toUpperCase(),
+              children: (
+                <>
+                  <Form.Item
+                    name={["translations", lang, "alt"]}
+                    label="Alt text hlavního obrázku"
+                  >
+                    <Input />
+                  </Form.Item>
+                  <Form.Item
+                    name={["translations", lang, "title"]}
+                    label="Název inzerátu"
+                  >
+                    <Input />
+                  </Form.Item>
 
-                <Form.Item
-                  name={["translations", lang, "description"]}
-                  label="Popis"
-                  getValueFromEvent={() => undefined}
-                >
-                  <EditorMinimal
-                    ref={(el) => {
-                      descRefs.current[lang] = el;
-                    }}
-                    id={`desc-${lang}`}
-                    tools={liteEditorTools}
-                  />
-                </Form.Item>
+                  <Form.Item
+                    name={["translations", lang, "description"]}
+                    label="Popis"
+                    getValueFromEvent={() => undefined}
+                  >
+                    <EditorMinimal
+                      ref={(el) => {
+                        descRefs.current[lang] = el;
+                      }}
+                      id={`desc-${lang}`}
+                      tools={liteEditorTools}
+                    />
+                  </Form.Item>
 
-                <Form.Item
-                  name={["translations", lang, "details"]}
-                  label="Podrobnosti"
-                  getValueFromEvent={() => undefined}
-                >
-                  <EditorMinimal
-                    ref={(el) => {
-                      detailsRefs.current[lang] = el;
-                    }}
-                    id={`details-${lang}`}
-                    tools={liteEditorTools}
-                  />
-                </Form.Item>
-              </>
-            ),
-          }))}
-        />
-
+                  <Form.Item
+                    name={["translations", lang, "details"]}
+                    label="Podrobnosti"
+                    getValueFromEvent={() => undefined}
+                  >
+                    <EditorMinimal
+                      ref={(el) => {
+                        detailsRefs.current[lang] = el;
+                      }}
+                      id={`details-${lang}`}
+                      tools={liteEditorTools}
+                    />
+                  </Form.Item>
+                </>
+              ),
+            }))}
+          />
+        )}
         {images.length === 0 && (
           <Typography.Text type="danger">
             Musíš nahrát alespoň jeden obrázek, aby bylo možné vytvořit inzerát

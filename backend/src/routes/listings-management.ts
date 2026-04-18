@@ -60,6 +60,7 @@ router.post("/", upload.array("images"), async (req, res) => {
               staty_id: 1,
               smerovaci_cislo: geo.postcode ?? null,
               cela_adresa: address.label,
+              nominatim_id: address.value,
             },
           },
         },
@@ -233,6 +234,84 @@ router.get("/", async (req, res) => {
     res
       .status(500)
       .json({ message: "Internal server error", error: String(err) });
+  }
+});
+router.get("/:id", async (req, res) => {
+  try {
+    const id = Number(req.params.id);
+
+    if (!id) {
+      return res.status(400).json({ message: "Invalid ID" });
+    }
+
+    const listing = await prisma.inzeraty.findUnique({
+      where: { id },
+
+      select: {
+        id: true,
+        index: true,
+        cena_v_eur: true,
+        loznice: true,
+        koupelny: true,
+        velikost: true,
+        reprezentativni: true,
+        datum_vytvoreni: true,
+        typy_nemovitosti_id: true,
+
+        adresy: {
+          select: {
+            lokace: true,
+            lat: true,
+            lng: true,
+            nominatim_id: true,
+          },
+        },
+
+        inzeraty_piktogramy: {
+          select: {
+            piktogramy_id: true,
+          },
+        },
+
+        obrazky: {
+          select: {
+            id: true,
+            url: true,
+            poradi: true,
+            obrazky_preklady: {
+              select: {
+                jazyky_id: true,
+                alt_text: true,
+              },
+            },
+          },
+          orderBy: {
+            poradi: "asc",
+          },
+        },
+
+        inzeraty_preklady: {
+          select: {
+            jazyky_id: true,
+            titulek: true,
+            popis: true,
+            detaily: true,
+          },
+        },
+      },
+    });
+
+    if (!listing) {
+      return res.status(404).json({ message: "Listing not found" });
+    }
+
+    return res.json(listing);
+  } catch (err) {
+    console.error("listing detail error:", err);
+    res.status(500).json({
+      message: "Internal server error",
+      error: String(err),
+    });
   }
 });
 router.patch("/:id/status", async (req, res) => {

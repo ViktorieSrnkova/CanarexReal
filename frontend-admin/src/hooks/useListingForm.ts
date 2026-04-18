@@ -4,9 +4,9 @@ import type {
   AddressOption,
   CreateAdFormValues,
   CreateAdPayload,
+  ImageItem,
 } from "../types/listing_form";
 
-import type { ImageItem } from "./useImages";
 import type { Language } from "../types/general";
 
 export const useListingSubmit = (
@@ -73,8 +73,8 @@ export const useListingSubmit = (
 
       address: selectedAddress
         ? {
-            value: selectedAddress.place_id,
-            label: selectedAddress.display_name,
+            value: selectedAddress.value,
+            label: selectedAddress.label,
             lat: selectedAddress.lat,
             lon: selectedAddress.lon,
           }

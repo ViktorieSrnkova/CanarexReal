@@ -11,13 +11,21 @@ export interface Translation {
 export type Translations = Record<Language, Translation>;
 
 export type AddressOption = {
-  display_name: string;
-  place_id: number;
-  lat: string;
-  lon: string;
+  label: string;
+  value: number;
+  lat?: string;
+  lon?: string;
 };
-
+export type ImageItem = {
+  uid: string;
+  file: File;
+  url: string;
+};
+export type UIImage =
+  | { type: "existing"; id: number; url: string; poradi: number }
+  | { type: "new"; file: File; uid: string };
 export interface CreateAdFormValues {
+  id?: number;
   isOnHomepage: boolean;
   price: number;
   propertyType: PropertyType;
@@ -26,10 +34,7 @@ export interface CreateAdFormValues {
   bedrooms: number;
   bathrooms: number;
   area: number;
-  address: {
-    value: number;
-    label: string;
-  } | null;
+  address: AddressOption | null;
   translations: Translations;
   gallery: File[];
   features: Record<string, boolean>;
@@ -89,3 +94,12 @@ export type CreateAdPayload = {
     lon?: string;
   } | null;
 };
+export const PROPERTY_TYPE_MAP: Record<number, PropertyType> = {
+  1: "apartman",
+  2: "vila",
+  3: "dum",
+  4: "garsonka",
+  5: "pozemek",
+};
+export type FeatureId = (typeof FEATURES)[number]["value"];
+export const FEATURES_SET = new Set<FeatureId>(FEATURES.map((f) => f.value));

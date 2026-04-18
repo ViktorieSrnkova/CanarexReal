@@ -1,4 +1,4 @@
-import type { RawListing } from "../types/api";
+import type { RawListing, RawListingDetail } from "../types/api";
 import { api } from "./client";
 
 export type GetListingsResponse = {
@@ -30,7 +30,10 @@ export const getListings = async (params?: {
 
   return data;
 };
-
+export const getListingById = async (id: number): Promise<RawListingDetail> => {
+  const res = await api.get<RawListingDetail>(`/listings/${id}`);
+  return res.data;
+};
 export const patchListingStatus = async (id: number, statusId: number) => {
   const { data } = await api.patch(`/listings/${id}/status`, {
     statusId,
