@@ -1,10 +1,5 @@
 import axios from "axios";
 
-export const sessionCheckApi = axios.create({
-  baseURL: "http://localhost:3000/api/admin",
-  withCredentials: true,
-});
-
 export const api = axios.create({
   baseURL: "http://localhost:3000/api/admin",
   withCredentials: true,
@@ -28,7 +23,7 @@ api.interceptors.response.use(
     if (
       error.response?.status === 401 &&
       !originalRequest._retry &&
-      !originalRequest.config?.skipAuthRefresh
+      !originalRequest.skipAuthRefresh
     ) {
       originalRequest._retry = true;
 
@@ -42,7 +37,10 @@ api.interceptors.response.use(
         const newToken = res.data.accessToken;
 
         localStorage.setItem("token", newToken);
-        originalRequest.headers.Authorization = `Bearer ${newToken}`;
+        originalRequest.headers = {
+          ...originalRequest.headers,
+          Authorization: `Bearer ${newToken}`,
+        };
 
         return api(originalRequest);
       } catch (err) {

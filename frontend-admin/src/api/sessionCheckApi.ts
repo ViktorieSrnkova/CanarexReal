@@ -1,12 +1,8 @@
-import { sessionCheckApi } from "./client";
+import { api } from "./client";
 
 export const checkSession = async () => {
-  const token = localStorage.getItem("token");
-
-  const res = await sessionCheckApi.get("/me", {
-    headers: {
-      Authorization: token ? `Bearer ${token}` : "",
-    },
+  const res = await api.get("/me", {
+    skipAuthRefresh: true,
   });
 
   return res.data;

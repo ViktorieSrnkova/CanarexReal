@@ -1,6 +1,5 @@
 import { useEffect, useRef } from "react";
 import { checkSession } from "../api/sessionCheckApi";
-import axios from "axios";
 
 export function useSessionWatcher(onExpire: () => void) {
   const lastRefreshRef = useRef<number>(0);
@@ -23,20 +22,8 @@ export function useSessionWatcher(onExpire: () => void) {
 
     try {
       await checkSession();
-    } catch (err: unknown) {
-      if (axios.isAxiosError(err)) {
-        const status = err.response?.status;
-
-        if (status === 401) {
-          await new Promise((r) => setTimeout(r, 3000));
-
-          try {
-            await checkSession();
-          } catch {
-            onExpire();
-          }
-        }
-      }
+    } catch {
+      onExpire();
     } finally {
       runningRef.current = false;
     }
@@ -48,6 +35,7 @@ export function useSessionWatcher(onExpire: () => void) {
     const interval = setInterval(runCheck, 1000 * 60 * 30);
 
     return () => clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [onExpire]);
 
   useEffect(() => {
