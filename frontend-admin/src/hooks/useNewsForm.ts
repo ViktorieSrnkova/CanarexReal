@@ -162,11 +162,6 @@ export const useNewsForm = (editId?: number, onSuccess?: () => void) => {
     } else if (data.existingImageId) {
       formData.append("existingImageId", String(data.existingImageId));
     }
-    console.log("TRANSLATIONS RAW:", data.translations);
-
-    for (const [key, value] of formData.entries()) {
-      console.log("FORM DATA:", key, value);
-    }
 
     setLoading(true);
     try {

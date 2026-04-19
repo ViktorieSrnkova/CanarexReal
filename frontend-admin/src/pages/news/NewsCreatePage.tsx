@@ -20,7 +20,6 @@ const NewsCreatePage: React.FC<Props> = ({ initialData, onSuccess }) => {
   const formHook = useNewsForm(initialData?.id, onSuccess);
   const initializedRef = useRef(false);
   useEffect(() => {
-    console.log("🟢 initialData (RAW FROM API):", initialData);
     if (!initialData) return;
     if (initializedRef.current) return;
 

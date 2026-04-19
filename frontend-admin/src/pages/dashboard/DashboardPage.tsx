@@ -79,7 +79,6 @@ const DashboardPage: React.FC = () => {
     const load = async () => {
       try {
         const data = await getDashboard();
-        console.log("visibility:", data.news.visible, typeof data.news.visible);
         setStats(data);
       } catch (err) {
         console.error("Dashboard fetch error:", err);

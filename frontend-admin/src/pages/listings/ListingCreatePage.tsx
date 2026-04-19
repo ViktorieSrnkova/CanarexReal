@@ -73,7 +73,6 @@ const ListingCreatePage: React.FC<Props> = ({
 
     try {
       const payload = await buildPayload(values);
-      console.log(payload);
       const formData = new FormData();
 
       formData.append("payload", JSON.stringify(payload));
