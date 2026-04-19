@@ -30,10 +30,15 @@ const cleanFilters = (values: ListingFilters): ListingFilters => ({
   index: cleanString(values.index),
   statusIds: cleanArray(values.statusIds),
   typeCodes: cleanArray(values.typeCodes),
-  price: cleanString(values.price),
+  priceFrom: cleanString(values.priceFrom),
+  priceTo: cleanString(values.priceTo),
+  sizeFrom: cleanString(values.sizeFrom),
+  sizeTo: cleanString(values.sizeTo),
   location: cleanString(values.location),
-  bedrooms: cleanString(values.bedrooms),
-  bathrooms: cleanString(values.bathrooms),
+  bedroomsFrom: cleanString(values.bedroomsFrom),
+  bedroomsTo: cleanString(values.bedroomsTo),
+  bathroomsFrom: cleanString(values.bathroomsFrom),
+  bathroomsTo: cleanString(values.bathroomsTo),
   pictogramIds: cleanArray(values.pictogramIds),
 });
 
@@ -50,10 +55,15 @@ export function ListingSearchForm({
       index: filters.index,
       statusIds: filters.statusIds ?? [],
       typeCodes: filters.typeCodes ?? [],
-      price: filters.price,
+      priceFrom: filters.priceFrom,
+      priceTo: filters.priceTo,
+      sizeFrom: filters.sizeFrom,
+      sizeTo: filters.sizeTo,
       location: filters.location,
-      bedrooms: filters.bedrooms,
-      bathrooms: filters.bathrooms,
+      bedroomsFrom: filters.bedroomsFrom,
+      bedroomsTo: filters.bedroomsTo,
+      bathroomsFrom: filters.bathroomsFrom,
+      bathroomsTo: filters.bathroomsTo,
       pictogramIds: filters.pictogramIds ?? [],
     });
   }, [filters, form]);
@@ -114,12 +124,39 @@ export function ListingSearchForm({
         </Form.Item>
 
         <Form.Item
-          name="price"
-          label="Cena"
+          name="priceFrom"
+          label="Cena od"
           getValueFromEvent={numericValue}
           style={{ marginBottom: 0 }}
         >
           <Input allowClear inputMode="numeric" />
+        </Form.Item>
+
+        <Form.Item
+          name="priceTo"
+          label="Cena do"
+          getValueFromEvent={numericValue}
+          style={{ marginBottom: 0 }}
+        >
+          <Input allowClear inputMode="numeric" />
+        </Form.Item>
+
+        <Form.Item
+          name="sizeFrom"
+          label="Velikost od"
+          getValueFromEvent={numericValue}
+          style={{ marginBottom: 0 }}
+        >
+          <Input allowClear inputMode="numeric" suffix="m²" />
+        </Form.Item>
+
+        <Form.Item
+          name="sizeTo"
+          label="Velikost do"
+          getValueFromEvent={numericValue}
+          style={{ marginBottom: 0 }}
+        >
+          <Input allowClear inputMode="numeric" suffix="m²" />
         </Form.Item>
 
         <Form.Item name="location" label="Lokace" style={{ marginBottom: 0 }}>
@@ -127,8 +164,8 @@ export function ListingSearchForm({
         </Form.Item>
 
         <Form.Item
-          name="bedrooms"
-          label="Ložnice"
+          name="bedroomsFrom"
+          label="Ložnice od"
           getValueFromEvent={numericValue}
           style={{ marginBottom: 0 }}
         >
@@ -136,8 +173,26 @@ export function ListingSearchForm({
         </Form.Item>
 
         <Form.Item
-          name="bathrooms"
-          label="Koupelny"
+          name="bedroomsTo"
+          label="Ložnice do"
+          getValueFromEvent={numericValue}
+          style={{ marginBottom: 0 }}
+        >
+          <Input allowClear inputMode="numeric" />
+        </Form.Item>
+
+        <Form.Item
+          name="bathroomsFrom"
+          label="Koupelny od"
+          getValueFromEvent={numericValue}
+          style={{ marginBottom: 0 }}
+        >
+          <Input allowClear inputMode="numeric" />
+        </Form.Item>
+
+        <Form.Item
+          name="bathroomsTo"
+          label="Koupelny do"
           getValueFromEvent={numericValue}
           style={{ marginBottom: 0 }}
         >

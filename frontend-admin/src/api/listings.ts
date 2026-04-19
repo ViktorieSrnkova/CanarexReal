@@ -39,10 +39,15 @@ export const getListings = async (params?: GetListingsParams) => {
     index: filters?.index,
     statusIds: filters?.statusIds?.join(","),
     typeCodes: filters?.typeCodes?.join(","),
-    price: filters?.price,
+    priceFrom: filters?.priceFrom,
+    priceTo: filters?.priceTo,
+    sizeFrom: filters?.sizeFrom,
+    sizeTo: filters?.sizeTo,
     location: filters?.location,
-    bedrooms: filters?.bedrooms,
-    bathrooms: filters?.bathrooms,
+    bedroomsFrom: filters?.bedroomsFrom,
+    bedroomsTo: filters?.bedroomsTo,
+    bathroomsFrom: filters?.bathroomsFrom,
+    bathroomsTo: filters?.bathroomsTo,
     pictogramIds: filters?.pictogramIds?.join(","),
   };
 

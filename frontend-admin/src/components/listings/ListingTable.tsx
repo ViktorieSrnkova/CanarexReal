@@ -37,6 +37,18 @@ const firstFilterValue = (value: FilterValue | null | undefined) => {
   return text || undefined;
 };
 
+const parseRangeFilter = (value: FilterValue | null | undefined) => {
+  const text = firstFilterValue(value);
+  if (!text) return {};
+
+  const [from, to] = text.split(":");
+
+  return {
+    from: from || undefined,
+    to: to || undefined,
+  };
+};
+
 const parseStatusIds = (value: FilterValue | null | undefined) =>
   (value ?? [])
     .map((item) => Number(item))
@@ -58,16 +70,25 @@ const normalizeFilters = (
   const statusIds = parseStatusIds(tableFilters.statusIds);
   const typeCodes = parsePropertyTypeCodes(tableFilters.typeCodes);
   const pictogramIds = parseStatusIds(tableFilters.pictogramIds);
+  const priceRange = parseRangeFilter(tableFilters.price);
+  const sizeRange = parseRangeFilter(tableFilters.size);
+  const bedroomsRange = parseRangeFilter(tableFilters.bedrooms);
+  const bathroomsRange = parseRangeFilter(tableFilters.bathrooms);
 
   return {
     query: currentFilters.query,
     index: firstFilterValue(tableFilters.index),
     statusIds: statusIds.length ? statusIds : undefined,
     typeCodes: typeCodes.length ? typeCodes : undefined,
-    price: firstFilterValue(tableFilters.price),
+    priceFrom: priceRange.from,
+    priceTo: priceRange.to,
+    sizeFrom: sizeRange.from,
+    sizeTo: sizeRange.to,
     location: firstFilterValue(tableFilters.location),
-    bedrooms: firstFilterValue(tableFilters.bedrooms),
-    bathrooms: firstFilterValue(tableFilters.bathrooms),
+    bedroomsFrom: bedroomsRange.from,
+    bedroomsTo: bedroomsRange.to,
+    bathroomsFrom: bathroomsRange.from,
+    bathroomsTo: bathroomsRange.to,
     pictogramIds: pictogramIds.length ? pictogramIds : undefined,
   };
 };

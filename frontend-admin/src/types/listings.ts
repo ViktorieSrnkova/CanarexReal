@@ -56,10 +56,15 @@ export type ListingFilters = {
   index?: string;
   statusIds?: number[];
   typeCodes?: PropertyType[];
-  price?: string;
+  priceFrom?: string;
+  priceTo?: string;
+  sizeFrom?: string;
+  sizeTo?: string;
   location?: string;
-  bedrooms?: string;
-  bathrooms?: string;
+  bedroomsFrom?: string;
+  bedroomsTo?: string;
+  bathroomsFrom?: string;
+  bathroomsTo?: string;
   pictogramIds?: number[];
 };
 

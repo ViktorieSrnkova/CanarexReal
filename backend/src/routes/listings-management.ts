@@ -30,6 +30,27 @@ const toNumberFilter = (value: unknown) => {
   return Number.isInteger(numberValue) ? numberValue : undefined;
 };
 
+const toNumberRangeFilter = (fromValue: unknown, toValue: unknown) => {
+  const from = toNumberFilter(fromValue);
+  const to = toNumberFilter(toValue);
+
+  if (from === undefined && to === undefined) return undefined;
+
+  return {
+    ...(from !== undefined ? { gte: from } : {}),
+    ...(to !== undefined ? { lte: to } : {}),
+  };
+};
+
+const toNumberOrRangeFilter = (
+  exactValue: unknown,
+  fromValue: unknown,
+  toValue: unknown,
+) => {
+  const exact = toNumberFilter(exactValue);
+  return exact ?? toNumberRangeFilter(fromValue, toValue);
+};
+
 const toNumberList = (value: unknown) => {
   const normalized = toQueryString(value);
   if (!normalized) return [];
@@ -167,9 +188,18 @@ const buildListingsWhere = (query: AuthRequest["query"]) => {
     };
   }
 
-  const price = toNumberFilter(query.price);
+  const price = toNumberOrRangeFilter(
+    query.price,
+    query.priceFrom,
+    query.priceTo,
+  );
   if (price !== undefined) {
     where.cena_v_eur = price;
+  }
+
+  const size = toNumberRangeFilter(query.sizeFrom, query.sizeTo);
+  if (size !== undefined) {
+    where.velikost = size;
   }
 
   const location = toQueryString(query.location);
@@ -181,12 +211,20 @@ const buildListingsWhere = (query: AuthRequest["query"]) => {
     };
   }
 
-  const bedrooms = toNumberFilter(query.bedrooms);
+  const bedrooms = toNumberOrRangeFilter(
+    query.bedrooms,
+    query.bedroomsFrom,
+    query.bedroomsTo,
+  );
   if (bedrooms !== undefined) {
     where.loznice = bedrooms;
   }
 
-  const bathrooms = toNumberFilter(query.bathrooms);
+  const bathrooms = toNumberOrRangeFilter(
+    query.bathrooms,
+    query.bathroomsFrom,
+    query.bathroomsTo,
+  );
   if (bathrooms !== undefined) {
     where.koupelny = bathrooms;
   }

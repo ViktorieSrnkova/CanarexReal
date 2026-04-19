@@ -28,7 +28,13 @@ type Args = {
 };
 
 const filteredValue = (value?: string) => (value ? [value] : null);
+const rangeFilteredValue = (from?: string, to?: string) =>
+  from || to ? [`${from ?? ""}:${to ?? ""}`] : null;
 
+const parseRangeValue = (value: unknown) => {
+  const [from = "", to = ""] = String(value ?? "").split(":");
+  return { from, to };
+};
 const getSearchFilter = (
   placeholder: string,
   options?: { numeric?: boolean },
@@ -57,6 +63,81 @@ const getSearchFilter = (
               : event.target.value;
             setSelectedKeys(nextValue ? [nextValue] : []);
           }}
+          onPressEnter={() => confirm({ closeDropdown: true })}
+          style={{ marginBottom: 8, display: "block" }}
+        />
+        <Space>
+          <Button
+            type="primary"
+            size="small"
+            icon={<SearchOutlined />}
+            onClick={() => confirm({ closeDropdown: true })}
+          >
+            Filtrovat
+          </Button>
+          <Button
+            size="small"
+            onClick={() => {
+              setSelectedKeys([]);
+              if (clearFilters) {
+                clearFilters({ confirm: true, closeDropdown: true });
+              } else {
+                confirm({ closeDropdown: true });
+              }
+            }}
+          >
+            Vymazat
+          </Button>
+        </Space>
+      </div>
+    );
+  },
+  filterIcon: (active: boolean) => (
+    <SearchOutlined style={{ color: active ? "#1677ff" : undefined }} />
+  ),
+});
+
+const getRangeSearchFilter = (
+  fromPlaceholder: string,
+  toPlaceholder: string,
+) => ({
+  filterDropdown: ({
+    setSelectedKeys,
+    selectedKeys,
+    confirm,
+    clearFilters,
+  }: FilterDropdownProps) => {
+    const value = parseRangeValue(selectedKeys[0]);
+
+    const setRange = (nextValue: { from: string; to: string }) => {
+      const from = nextValue.from.replace(/\D/g, "");
+      const to = nextValue.to.replace(/\D/g, "");
+      setSelectedKeys(from || to ? [`${from}:${to}`] : []);
+    };
+
+    return (
+      <div
+        style={{ padding: 8, width: 220 }}
+        onKeyDown={(event) => event.stopPropagation()}
+      >
+        <Input
+          autoFocus
+          inputMode="numeric"
+          value={value.from}
+          placeholder={fromPlaceholder}
+          onChange={(event) =>
+            setRange({ from: event.target.value, to: value.to })
+          }
+          onPressEnter={() => confirm({ closeDropdown: true })}
+          style={{ marginBottom: 8, display: "block" }}
+        />
+        <Input
+          inputMode="numeric"
+          value={value.to}
+          placeholder={toPlaceholder}
+          onChange={(event) =>
+            setRange({ from: value.from, to: event.target.value })
+          }
           onPressEnter={() => confirm({ closeDropdown: true })}
           style={{ marginBottom: 8, display: "block" }}
         />
@@ -200,8 +281,8 @@ export function getColumns({
       title: "Cena",
       width: 115,
       dataIndex: "cena_v_eur",
-      filteredValue: filteredValue(filters.price),
-      ...getSearchFilter("Filtrovat cenu", { numeric: true }),
+      filteredValue: rangeFilteredValue(filters.priceFrom, filters.priceTo),
+      ...getRangeSearchFilter("Cena od", "Cena do"),
       render: (value: number) => formatMoneyEUR(value),
     },
 
@@ -231,8 +312,11 @@ export function getColumns({
       ),
       width: 40,
       dataIndex: "loznice",
-      filteredValue: filteredValue(filters.bedrooms),
-      ...getSearchFilter("Filtrovat ložnice", { numeric: true }),
+      filteredValue: rangeFilteredValue(
+        filters.bedroomsFrom,
+        filters.bedroomsTo,
+      ),
+      ...getRangeSearchFilter("Ložnice od", "Ložnice do"),
     },
 
     {
@@ -244,11 +328,15 @@ export function getColumns({
       ),
       width: 40,
       dataIndex: "koupelny",
-      filteredValue: filteredValue(filters.bathrooms),
-      ...getSearchFilter("Filtrovat koupelny", { numeric: true }),
+      filteredValue: rangeFilteredValue(
+        filters.bathroomsFrom,
+        filters.bathroomsTo,
+      ),
+      ...getRangeSearchFilter("Koupelny od", "Koupelny do"),
     },
 
     {
+      key: "size",
       title: (
         <Tooltip title="Velikost v m² ">
           <span> m²</span>
@@ -256,6 +344,8 @@ export function getColumns({
       ),
       width: 70,
       dataIndex: "velikost",
+      filteredValue: rangeFilteredValue(filters.sizeFrom, filters.sizeTo),
+      ...getRangeSearchFilter("Velikost od", "Velikost do"),
     },
     {
       width: 140,
