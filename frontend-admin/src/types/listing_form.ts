@@ -1,7 +1,13 @@
 import type { Language } from "./general";
 
-export type PropertyType = "apartman" | "vila" | "dum" | "garsonka" | "pozemek";
-
+export const PROPERTY_TYPE_OPTIONS = [
+  { value: "apartman", label: "Apartmán" },
+  { value: "vila", label: "Vila" },
+  { value: "dum", label: "Dům" },
+  { value: "garsonka", label: "Garsonka" },
+  { value: "pozemek", label: "Pozemek" },
+] as const;
+export type PropertyType = (typeof PROPERTY_TYPE_OPTIONS)[number]["value"];
 export interface Translation {
   alt?: string;
   title?: string;

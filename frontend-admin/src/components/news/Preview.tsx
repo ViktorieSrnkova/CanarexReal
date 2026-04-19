@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Row, Col } from "antd";
+import { Card } from "antd";
 import type { Lang, NewsFormState } from "../../types/news";
 
 type Props = {
@@ -34,7 +34,15 @@ const NewsPreview: React.FC<Props> = ({ languages, data }) => {
     }
   };
   return (
-    <Row gutter={16} style={{ marginTop: 16 }}>
+    <div
+      style={{
+        marginTop: 16,
+        display: "flex",
+        flexDirection: "row",
+        flexWrap: "wrap",
+        gap: 16,
+      }}
+    >
       {languages.map((lang) => {
         const t = data.translations[lang];
         const hasContent = Boolean(
@@ -47,8 +55,8 @@ const NewsPreview: React.FC<Props> = ({ languages, data }) => {
         if (!hasContent) return null;
 
         return (
-          <Col span={8} key={lang}>
-            <Card title={`${lang.toUpperCase()}`}>
+          <div key={lang}>
+            <Card title={`${lang.toUpperCase()}`} style={{ maxWidth: "265px" }}>
               {t?.title && (
                 <p>
                   <strong>Titulek:</strong> {t.title}
@@ -76,10 +84,10 @@ const NewsPreview: React.FC<Props> = ({ languages, data }) => {
                 </p>
               )}
             </Card>
-          </Col>
+          </div>
         );
       })}
-    </Row>
+    </div>
   );
 };
 

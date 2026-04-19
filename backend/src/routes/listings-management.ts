@@ -10,6 +10,241 @@ import { upload } from "../middleware/uploader";
 
 const router = Router();
 router.use(requireRole([1, 3]));
+const PROPERTY_TYPE_CODES = new Set([
+  "apartman",
+  "vila",
+  "dum",
+  "garsonka",
+  "pozemek",
+]);
+const toQueryString = (value: unknown) => {
+  const rawValue = Array.isArray(value) ? value[0] : value;
+  return typeof rawValue === "string" ? rawValue.trim() : "";
+};
+
+const toNumberFilter = (value: unknown) => {
+  const normalized = toQueryString(value).replace(/\s/g, "");
+  if (!normalized) return undefined;
+
+  const numberValue = Number(normalized);
+  return Number.isInteger(numberValue) ? numberValue : undefined;
+};
+
+const toNumberList = (value: unknown) => {
+  const normalized = toQueryString(value);
+  if (!normalized) return [];
+
+  return normalized
+    .split(",")
+    .map((item) => Number(item))
+    .filter((item) => Number.isInteger(item));
+};
+
+const toStringList = (value: unknown) => {
+  const normalized = toQueryString(value);
+  if (!normalized) return [];
+
+  return normalized
+    .split(",")
+    .map((item) => item.trim())
+    .filter(Boolean);
+};
+
+const containsText = (value: string) => ({
+  contains: value,
+  mode: "insensitive" as const,
+});
+
+const buildSearchWhere = (value: string): Prisma.inzeratyWhereInput[] => {
+  const query = value.trim();
+  if (!query) return [];
+
+  const conditions: Prisma.inzeratyWhereInput[] = [
+    {
+      adresy: {
+        is: {
+          lokace: containsText(query),
+        },
+      },
+    },
+    {
+      statusy: {
+        is: {
+          OR: [
+            { kod: containsText(query) },
+            {
+              statusy_preklady: {
+                some: {
+                  jazyky_id: 2,
+                  nazev: containsText(query),
+                },
+              },
+            },
+          ],
+        },
+      },
+    },
+    {
+      typy_nemovitosti: {
+        is: {
+          OR: [
+            { kod: containsText(query) },
+            {
+              typy_nemovitosti_preklady: {
+                some: {
+                  jazyky_id: 2,
+                  nazev: containsText(query),
+                },
+              },
+            },
+          ],
+        },
+      },
+    },
+    {
+      inzeraty_piktogramy: {
+        some: {
+          piktogramy: {
+            is: {
+              OR: [
+                { nazev: containsText(query) },
+                {
+                  piktogramy_preklady: {
+                    some: {
+                      jazyky_id: 2,
+                      nazev: containsText(query),
+                    },
+                  },
+                },
+              ],
+            },
+          },
+        },
+      },
+    },
+  ];
+
+  const numberValue = toNumberFilter(query);
+  if (numberValue !== undefined) {
+    conditions.push(
+      { index: numberValue },
+      { cena_v_eur: numberValue },
+      { loznice: numberValue },
+      { koupelny: numberValue },
+      { velikost: numberValue },
+    );
+  }
+
+  return conditions;
+};
+
+const buildListingsWhere = (query: AuthRequest["query"]) => {
+  const where: Prisma.inzeratyWhereInput = {};
+
+  const searchConditions = buildSearchWhere(toQueryString(query.query));
+  if (searchConditions.length > 0) {
+    where.OR = searchConditions;
+  }
+
+  const index = toNumberFilter(query.index);
+  if (index !== undefined) {
+    where.index = index;
+  }
+
+  const statusIds = toNumberList(query.statusIds);
+  if (statusIds.length > 0) {
+    where.statusy_id = { in: statusIds };
+  }
+
+  const typeCodes = toStringList(query.typeCodes).filter((code) =>
+    PROPERTY_TYPE_CODES.has(code),
+  );
+  if (typeCodes.length > 0) {
+    where.typy_nemovitosti = {
+      is: {
+        kod: { in: typeCodes },
+      },
+    };
+  }
+
+  const price = toNumberFilter(query.price);
+  if (price !== undefined) {
+    where.cena_v_eur = price;
+  }
+
+  const location = toQueryString(query.location);
+  if (location) {
+    where.adresy = {
+      is: {
+        lokace: containsText(location),
+      },
+    };
+  }
+
+  const bedrooms = toNumberFilter(query.bedrooms);
+  if (bedrooms !== undefined) {
+    where.loznice = bedrooms;
+  }
+
+  const bathrooms = toNumberFilter(query.bathrooms);
+  if (bathrooms !== undefined) {
+    where.koupelny = bathrooms;
+  }
+
+  const pictogramIds = toNumberList(query.pictogramIds);
+  if (pictogramIds.length > 0) {
+    where.inzeraty_piktogramy = {
+      some: {
+        piktogramy_id: { in: pictogramIds },
+      },
+    };
+  }
+
+  return where;
+};
+
+router.get("/filter-options", async (_req, res) => {
+  try {
+    const pictograms = await prisma.piktogramy.findMany({
+      where: {
+        inzeraty_piktogramy: {
+          some: {},
+        },
+      },
+      orderBy: {
+        id: "asc",
+      },
+      select: {
+        id: true,
+        nazev: true,
+        piktogramy_preklady: {
+          where: {
+            jazyky_id: 2,
+          },
+          select: {
+            nazev: true,
+          },
+          take: 1,
+        },
+      },
+    });
+
+    const collator = new Intl.Collator("cs");
+    const options = pictograms
+      .map((pictogram) => ({
+        value: pictogram.id,
+        label: pictogram.piktogramy_preklady[0]?.nazev ?? pictogram.nazev,
+      }))
+      .sort((a, b) => collator.compare(a.label, b.label));
+
+    return res.json({ pictograms: options });
+  } catch (err) {
+    console.error("listing filter options error:", err);
+    res
+      .status(500)
+      .json({ message: "Internal server error", error: String(err) });
+  }
+});
 
 router.post("/", upload.array("images"), async (req, res) => {
   try {
@@ -119,7 +354,9 @@ router.get("/", async (req, res) => {
     const page = Number(req.query.page ?? 1);
     const limit = Number(req.query.limit ?? 20);
     const skip = (page - 1) * limit;
+    const where = buildListingsWhere(req.query);
     const listings = await prisma.inzeraty.findMany({
+      where,
       skip,
       take: limit,
       orderBy: {

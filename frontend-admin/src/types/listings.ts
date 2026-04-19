@@ -1,3 +1,5 @@
+import type { PropertyType } from "./listing_form";
+
 export type ListingLanguageMap = {
   en: boolean;
   cs: boolean;
@@ -48,6 +50,24 @@ export type ListingRow = {
   image: ListingImage | null;
   languages: ListingLanguageMap;
 };
+
+export type ListingFilters = {
+  query?: string;
+  index?: string;
+  statusIds?: number[];
+  typeCodes?: PropertyType[];
+  price?: string;
+  location?: string;
+  bedrooms?: string;
+  bathrooms?: string;
+  pictogramIds?: number[];
+};
+
+export type ListingFilterOption = {
+  value: number;
+  label: string;
+};
+
 export const statusOptions = [
   { value: 1, label: "NA PRODEJ" },
   { value: 2, label: "PRODÁNO" },

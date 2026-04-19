@@ -12,6 +12,7 @@ import {
 } from "antd";
 import {
   FEATURES,
+  PROPERTY_TYPE_OPTIONS,
   type AddressOption,
   type CreateAdFormValues,
 } from "../../types/listing_form";
@@ -33,6 +34,7 @@ import EditorMinimal from "../../components/editor/RichMediaEditor";
 import { useListingSubmit } from "../../hooks/useListingForm";
 import { useEffect, useState } from "react";
 import { postListing } from "../../api/listings";
+
 type Props = {
   initialData?: CreateAdFormValues;
   onSuccess?: () => void;
@@ -110,6 +112,7 @@ const ListingCreatePage: React.FC<Props> = ({
     });
 
     return () => cancelAnimationFrame(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialData]);
 
   return (
@@ -234,15 +237,7 @@ const ListingCreatePage: React.FC<Props> = ({
             label="Typ nemovitosti"
             rules={[{ required: true, message: "Vyber typ nemovitosti" }]}
           >
-            <Select
-              options={[
-                { value: "apartman", label: "Apartmán" },
-                { value: "vila", label: "Vila" },
-                { value: "dum", label: "Dům" },
-                { value: "garsonka", label: "Garsonka" },
-                { value: "pozemek", label: "Pozemek" },
-              ]}
-            />
+            <Select options={[...PROPERTY_TYPE_OPTIONS]} />
           </Form.Item>
           <Form.Item
             required

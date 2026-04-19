@@ -1,9 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { statusOptions, type ListingRow } from "../../types/listings";
+import {
+  type ListingFilterOption,
+  statusOptions,
+  type ListingFilters,
+  type ListingRow,
+} from "../../types/listings";
 import { ListingTable } from "../../components/listings/ListingTable";
+import { ListingSearchForm } from "../../components/listings/ListingSearchForm";
 import { mapListing } from "../../utils/mapListing";
 import {
   deleteListing,
+  getListingFilterOptions,
   getListingById,
   getListings,
   patchListingStatus,
@@ -15,9 +22,14 @@ import ListingCreatePage from "./ListingCreatePage";
 import { EditModal } from "../../components/EditModal";
 import type { CreateAdFormValues } from "../../types/listing_form";
 import { mapRawListingToFormValues } from "../../utils/listingsMapper";
+import LoadingPage from "../system/LoadingPage";
 
 const ListingsPage: React.FC = () => {
   const [data, setData] = useState<ListingRow[]>([]);
+  const [filters, setFilters] = useState<ListingFilters>({});
+  const [pictogramOptions, setPictogramOptions] = useState<
+    ListingFilterOption[]
+  >([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [updatingVisibilityIds, setUpdatingVisibilityIds] = useState<number[]>(
     [],
@@ -29,6 +41,20 @@ const ListingsPage: React.FC = () => {
     limit: 20,
     total: 0,
   });
+
+  useEffect(() => {
+    const loadFilterOptions = async () => {
+      try {
+        const res = await getListingFilterOptions();
+        setPictogramOptions(res.pictograms);
+      } catch (err) {
+        console.error("Failed to load listing filter options:", err);
+      }
+    };
+
+    loadFilterOptions();
+  }, []);
+
   useEffect(() => {
     const loadListings = async () => {
       try {
@@ -37,6 +63,7 @@ const ListingsPage: React.FC = () => {
         const res = await getListings({
           page: pagination.page,
           limit: pagination.limit,
+          filters,
         });
 
         const mapped: ListingRow[] = res.data.map((item) => mapListing(item));
@@ -55,7 +82,8 @@ const ListingsPage: React.FC = () => {
     };
 
     loadListings();
-  }, [pagination.page, pagination.limit]);
+  }, [pagination.page, pagination.limit, filters]);
+
   const handleChangeStatus = async (id: number, statusId: number) => {
     try {
       await patchListingStatus(id, statusId);
@@ -122,6 +150,10 @@ const ListingsPage: React.FC = () => {
       setDeleteId(null);
     }
   };
+  const handleFiltersChange = (nextFilters: ListingFilters) => {
+    setFilters(nextFilters);
+    setPagination((prev) => ({ ...prev, page: 1 }));
+  };
   const [editOpen, setEditOpen] = useState(false);
   const [selected, setSelected] = useState<CreateAdFormValues | null>(null);
 
@@ -140,13 +172,20 @@ const ListingsPage: React.FC = () => {
     <div className="listings-page">
       <Title level={2}>Spravovat inzeráty</Title>
       <div>Celkem inzerátů: {data.length}</div>
-
+      <ListingSearchForm
+        filters={filters}
+        pictogramOptions={pictogramOptions}
+        onChange={handleFiltersChange}
+      />
       <ListingTable
         data={data}
+        filters={filters}
+        pictogramOptions={pictogramOptions}
         onEdit={handleEdit}
         onDelete={handleDeleteClick}
         onToggleVisibility={handleToggleVisibility}
         onChangeStatus={handleChangeStatus}
+        onFiltersChange={handleFiltersChange}
         loading={loading}
         pagination={pagination}
         onPaginationChange={(page, limit) => {
@@ -190,7 +229,7 @@ const ListingsPage: React.FC = () => {
         </EditModal>
       )}
 
-      {loading && <p style={{ marginTop: 12 }}>Loading listings...</p>}
+      {loading && <LoadingPage />}
     </div>
   );
 };
