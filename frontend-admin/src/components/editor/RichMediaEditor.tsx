@@ -15,11 +15,12 @@ type Props = {
   onReady?: () => void;
   tools: EditorTools;
   value?: EditorJS.OutputData;
+  data?: EditorJS.OutputData;
   onChange?: (value: EditorJS.OutputData) => void;
 };
 
 const EditorMinimal = forwardRef<EditorMinimalRef, Props>(
-  ({ id, onReady, tools, value, onChange }, ref) => {
+  ({ id, onReady, tools, value, onChange, data }, ref) => {
     const editorRef = useRef<EditorJS | null>(null);
     const isInitialRender = useRef(true);
     useImperativeHandle(ref, () => ({
@@ -44,6 +45,7 @@ const EditorMinimal = forwardRef<EditorMinimalRef, Props>(
           },
           holder: id,
           autofocus: false,
+          data: data,
           placeholder: "Start writing here...",
           tools,
           onChange: async () => {

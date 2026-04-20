@@ -7,7 +7,6 @@ import DashboardPage from "../pages/dashboard/DashboardPage";
 
 import ListingsPage from "../pages/listings/ListingsPage";
 import ListingCreatePage from "../pages/listings/ListingCreatePage";
-import ListingEditPage from "../pages/listings/ListingEditPage";
 
 import NewsPage from "../pages/news/NewsPage";
 import NewsCreatePage from "../pages/news/NewsCreatePage";
@@ -37,7 +36,6 @@ export default function Router() {
 
           <Route path="/listings" element={<ListingsPage />} />
           <Route path="/listings/create" element={<ListingCreatePage />} />
-          <Route path="/listings/edit/:id" element={<ListingEditPage />} />
 
           <Route path="/news" element={<NewsPage />} />
           <Route path="/news/create" element={<NewsCreatePage />} />

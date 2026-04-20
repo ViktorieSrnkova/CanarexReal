@@ -63,16 +63,20 @@ export async function processAdImages(params: {
     createdImages.push({ id: thumb.id, order: -1 });
   }
 
+  const thumb = createdImages.find((i) => i.order === -1);
+  if (!thumb) return;
+
   for (const [langCode, t] of Object.entries(translationsObj)) {
     const jazyky_id = langIdMap[langCode];
+
     if (!jazyky_id || !t?.alt) continue;
 
-    await tx.obrazky_preklady.createMany({
-      data: createdImages.map((img) => ({
-        alt_text: t.alt || "",
+    await tx.obrazky_preklady.create({
+      data: {
+        alt_text: t.alt,
         jazyky_id,
-        obrazky_id: img.id,
-      })),
+        obrazky_id: thumb.id,
+      },
     });
   }
 }

@@ -1,17 +1,12 @@
 import { useRef } from "react";
-import type { EditorMinimalRef } from "../components/editor/RichMediaEditor";
 import type {
   AddressOption,
   CreateAdFormValues,
   CreateAdPayload,
-  ImageItem,
 } from "../types/listing_form";
-
 import type { Language } from "../types/general";
-export const useListingSubmit = (
-  images: ImageItem[],
-  selectedAddress: AddressOption | null,
-) => {
+import type { EditorMinimalRef } from "../components/editor/RichMediaEditor";
+export const useEditedListing = (selectedAddress: AddressOption | null) => {
   const descRefs = useRef<Record<Language, EditorMinimalRef | null>>({
     cs: null,
     en: null,
@@ -24,24 +19,19 @@ export const useListingSubmit = (
     sk: null,
   });
 
-  const hasContent = (data?: EditorJS.OutputData) => !!data?.blocks?.length;
-
-  const buildPayload = async (
-    values: CreateAdFormValues,
-  ): Promise<CreateAdPayload> => {
+  const buildEditPayload = async (values: CreateAdFormValues) => {
     const cleanedTranslations: CreateAdPayload["translations"] = {};
-
     for (const lang of ["cs", "en", "sk"] as const) {
       const base = values.translations?.[lang];
-
+      console.log(descRefs.current[lang]);
       const desc = await descRefs.current[lang]?.save();
       const details = await detailsRefs.current[lang]?.save();
 
       const cleaned = {
         alt: base?.alt,
         title: base?.title,
-        description: hasContent(desc) ? desc : undefined,
-        details: hasContent(details) ? details : undefined,
+        description: desc?.blocks?.length ? desc : undefined,
+        details: details?.blocks?.length ? details : undefined,
       };
 
       const hasAnyValue =
@@ -60,16 +50,8 @@ export const useListingSubmit = (
       size: Number(values.area),
       location: values.locationName,
       propertyType: values.propertyType,
-      showOnHomepage: values.isOnHomepage,
-
       attributes: values.features ?? {},
-
       translations: cleanedTranslations,
-
-      images: images.map((_, index) => ({
-        order: index,
-      })),
-
       address: selectedAddress
         ? {
             value: selectedAddress.value,
@@ -80,10 +62,9 @@ export const useListingSubmit = (
         : null,
     };
   };
-
   return {
     descRefs,
     detailsRefs,
-    buildPayload,
+    buildEditPayload,
   };
 };

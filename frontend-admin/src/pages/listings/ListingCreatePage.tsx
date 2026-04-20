@@ -32,20 +32,27 @@ import { useAddressSearch } from "../../hooks/useAddressSearch";
 import { useImages } from "../../hooks/useImages";
 import EditorMinimal from "../../components/editor/RichMediaEditor";
 import { useListingSubmit } from "../../hooks/useListingForm";
-import { useEffect, useState } from "react";
-import { postListing } from "../../api/listings";
+import { useEffect, useRef, useState } from "react";
+import { /* editListingTexts, */ postListing } from "../../api/listings";
+import { useEditedListing } from "../../hooks/useEditListing";
 
 type Props = {
   initialData?: CreateAdFormValues;
   onSuccess?: () => void;
-  editId?: number;
 };
 
-const ListingCreatePage: React.FC<Props> = ({
-  initialData,
-  onSuccess,
-  editId,
-}) => {
+const ListingCreatePage: React.FC<Props> = ({ initialData, onSuccess }) => {
+  const readyMap = useRef<
+    Record<Language, { desc: boolean; details: boolean }>
+  >({
+    cs: { desc: false, details: false },
+    en: { desc: false, details: false },
+    sk: { desc: false, details: false },
+  });
+  const languages: Language[] = ["cs", "en", "sk"];
+  const isEditMode = !!initialData;
+  const hasInitialData = typeof initialData?.id === "number";
+  const id = initialData?.id;
   const [selectedAddress, setSelectedAddress] = useState<AddressOption | null>(
     null,
   );
@@ -64,9 +71,10 @@ const ListingCreatePage: React.FC<Props> = ({
     images,
     selectedAddress,
   );
+  const { buildEditPayload } = useEditedListing(selectedAddress);
 
   const onFinish = async (values: CreateAdFormValues) => {
-    if (!images.length) {
+    if (!images.length && !isEditMode) {
       message.error("Musíš nahrát obrázky");
       return;
     }
@@ -74,46 +82,95 @@ const ListingCreatePage: React.FC<Props> = ({
     setLoading(true);
 
     try {
-      const payload = await buildPayload(values);
-      const formData = new FormData();
+      if (hasInitialData && id) {
+        const payload = await buildEditPayload(values);
 
-      formData.append("payload", JSON.stringify(payload));
+        console.log("EDIT PAYLOAD:", payload);
+        //await editListingTexts(id, payload);
 
-      images.forEach((img) => {
-        formData.append("images", img.file);
-      });
-      if (editId) {
-        //await putListing(editId, formData);
         message.success("Inzerát upraven");
       } else {
+        const payload = await buildPayload(values);
+        const formData = new FormData();
+
+        formData.append("payload", JSON.stringify(payload));
+
+        images.forEach((img) => {
+          formData.append("images", img.file);
+        });
+
         await postListing(formData);
         message.success("Inzerát vytvořen");
+
+        onSuccess?.();
+        form.resetFields();
+        setImages([]);
       }
-      onSuccess?.();
-      form.resetFields();
-      setImages([]);
     } catch {
       message.error("Chyba při vytváření inzerátu");
     } finally {
       setLoading(false);
     }
   };
-  const [mounted, setMounted] = useState(false);
+  const [activeTab, setActiveTab] = useState<Language>("cs");
+  const initializedRef = useRef(false);
+
   useEffect(() => {
     if (!initialData) return;
+    if (initializedRef.current) return;
 
-    form.setFieldsValue(initialData);
+    initializedRef.current = true;
+
+    const { translations, ...rest } = initialData;
+
+    form.setFieldsValue({
+      ...rest,
+      translations: {
+        cs: {
+          title: translations?.cs?.title,
+          alt: translations?.cs?.alt,
+        },
+        en: {
+          title: translations?.en?.title,
+          alt: translations?.en?.alt,
+        },
+        sk: {
+          title: translations?.sk?.title,
+          alt: translations?.sk?.alt,
+        },
+      },
+    });
 
     if (initialData.address) {
       setSelectedAddress(initialData.address);
     }
-    const id = requestAnimationFrame(() => {
-      setMounted(false); //temp
-    });
+  }, [initialData, form]);
+  useEffect(() => {
+    if (!initialData) return;
 
-    return () => cancelAnimationFrame(id);
+    /* const lang = activeTab; */
+
+    /* const interval = setInterval(() => {
+      const descRef = descRefs.current[lang];
+      const detailsRef = detailsRefs.current[lang];
+
+      const desc = initialData.translations?.[lang]?.description;
+      const details = initialData.translations?.[lang]?.details;
+
+      const isReady =
+        readyMap.current[lang].desc && readyMap.current[lang].details;
+
+      if (isReady && descRef && detailsRef) {
+        if (desc) descRef.render(desc);
+        if (details) detailsRef.render(details);
+
+        clearInterval(interval);
+      }
+    }, 50); */
+
+    /*  return () => clearInterval(interval); */
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initialData]);
+  }, [initialData, activeTab]);
 
   return (
     <div
@@ -121,7 +178,9 @@ const ListingCreatePage: React.FC<Props> = ({
         if (uploading) setUploading(false);
       }}
     >
-      <Typography.Title level={2}>Vytvořit inzerát</Typography.Title>
+      <Typography.Title level={2}>
+        {!isEditMode ? "Vytvořit inzerát" : "Upravit inzerát"}
+      </Typography.Title>
       <Form
         layout="vertical"
         onFinish={onFinish}
@@ -139,30 +198,32 @@ const ListingCreatePage: React.FC<Props> = ({
           }
         }}
       >
-        <div
-          className="switch-row"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            marginBottom: 16,
-            padding: 10,
-            backgroundColor: "#c7f1f765",
-            borderRadius: 8,
-            gap: 16,
-          }}
-        >
-          <span style={{ marginLeft: 8 }}>Zobrazit na hlavní stránce</span>
-
-          <Form.Item
-            name="isOnHomepage"
-            label=""
-            valuePropName="checked"
-            initialValue={true}
-            style={{ marginBottom: 0 }}
+        {!isEditMode && (
+          <div
+            className="switch-row"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              marginBottom: 16,
+              padding: 10,
+              backgroundColor: "#c7f1f765",
+              borderRadius: 8,
+              gap: 16,
+            }}
           >
-            <Switch />
-          </Form.Item>
-        </div>
+            <span style={{ marginLeft: 8 }}>Zobrazit na hlavní stránce</span>
+
+            <Form.Item
+              name="isOnHomepage"
+              label=""
+              valuePropName="checked"
+              initialValue={true}
+              style={{ marginBottom: 0 }}
+            >
+              <Switch />
+            </Form.Item>
+          </div>
+        )}
         <div
           className="input-group"
           style={{
@@ -278,37 +339,39 @@ const ListingCreatePage: React.FC<Props> = ({
             </Col>
           ))}
         </Row>
-        <div
-          className="upload-row"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            columnGap: 16,
-            padding: "4px 4px 4px 0",
-          }}
-        >
-          <Upload
-            multiple
-            beforeUpload={() => false}
-            showUploadList={false}
-            onChange={(info) => {
-              const files = info.fileList
-                .map((f) => f.originFileObj)
-                .filter((f): f is RcFile => !!f);
-              if (!files.length) return;
-              handleUpload(files);
-              setUploading(false);
+        {!isEditMode && (
+          <div
+            className="upload-row"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              columnGap: 16,
+              padding: "4px 4px 4px 0",
             }}
           >
-            <Button
-              type="primary"
-              loading={uploading}
-              onClick={handlePickImages}
+            <Upload
+              multiple
+              beforeUpload={() => false}
+              showUploadList={false}
+              onChange={(info) => {
+                const files = info.fileList
+                  .map((f) => f.originFileObj)
+                  .filter((f): f is RcFile => !!f);
+                if (!files.length) return;
+                handleUpload(files);
+                setUploading(false);
+              }}
             >
-              {uploading ? "Načítám..." : "Nahrát obrázky"}
-            </Button>
-          </Upload>
-        </div>
+              <Button
+                type="primary"
+                loading={uploading}
+                onClick={handlePickImages}
+              >
+                {uploading ? "Načítám..." : "Nahrát obrázky"}
+              </Button>
+            </Upload>
+          </div>
+        )}
         {images.length > 0 && (
           <Tooltip title="Pořadí obrázků můžeš měnit přetažením myší">
             <Typography.Text
@@ -366,70 +429,79 @@ const ListingCreatePage: React.FC<Props> = ({
             },
           ]}
         />
-        {mounted && (
-          <Tabs
-            type="card"
-            destroyOnHidden={false}
-            tabBarStyle={{
-              borderBottom: "1px solid #1890ff",
-            }}
-            style={{
-              backgroundColor: "#c7f1f765",
-              padding: 20,
-              borderRadius: 8,
-            }}
-            defaultActiveKey="cs"
-            items={(["cs", "en", "sk"] as Language[]).map((lang) => ({
-              key: lang,
-              label: lang.toUpperCase(),
-              children: (
-                <>
-                  <Form.Item
-                    name={["translations", lang, "alt"]}
-                    label="Alt text hlavního obrázku"
-                  >
-                    <Input />
-                  </Form.Item>
-                  <Form.Item
-                    name={["translations", lang, "title"]}
-                    label="Název inzerátu"
-                  >
-                    <Input />
-                  </Form.Item>
+        <Tabs
+          activeKey={activeTab}
+          onChange={(key) => setActiveTab(key as Language)}
+          type="card"
+          destroyOnHidden={false}
+          tabBarStyle={{
+            borderBottom: "1px solid #1890ff",
+          }}
+          style={{
+            backgroundColor: "#c7f1f765",
+            padding: 20,
+            borderRadius: 8,
+          }}
+          items={languages.map((lang) => ({
+            key: lang,
+            label: lang.toUpperCase(),
+            children: (
+              /*  activeTab === lang ? */
+              <div style={{ display: activeTab === lang ? "block" : "none" }}>
+                <Form.Item
+                  name={["translations", lang, "alt"]}
+                  label="Alt text hlavního obrázku"
+                >
+                  <Input />
+                </Form.Item>
+                <Form.Item
+                  name={["translations", lang, "title"]}
+                  label="Název inzerátu"
+                >
+                  <Input />
+                </Form.Item>
 
-                  <Form.Item
-                    name={["translations", lang, "description"]}
-                    label="Popis"
-                    getValueFromEvent={() => undefined}
-                  >
-                    <EditorMinimal
-                      ref={(el) => {
-                        descRefs.current[lang] = el;
-                      }}
-                      id={`desc-${lang}`}
-                      tools={liteEditorTools}
-                    />
-                  </Form.Item>
+                <Form.Item
+                  name={["translations", lang, "description"]}
+                  label="Popis"
+                  getValueFromEvent={() => undefined}
+                >
+                  <EditorMinimal
+                    ref={(el) => {
+                      descRefs.current[lang] = el;
+                    }}
+                    id={`desc-${lang}`}
+                    tools={liteEditorTools}
+                    data={initialData?.translations?.[lang]?.description}
+                    onReady={() => {
+                      readyMap.current[lang].desc = true;
+                    }}
+                  />
+                </Form.Item>
 
-                  <Form.Item
-                    name={["translations", lang, "details"]}
-                    label="Podrobnosti"
-                    getValueFromEvent={() => undefined}
-                  >
-                    <EditorMinimal
-                      ref={(el) => {
-                        detailsRefs.current[lang] = el;
-                      }}
-                      id={`details-${lang}`}
-                      tools={liteEditorTools}
-                    />
-                  </Form.Item>
-                </>
-              ),
-            }))}
-          />
-        )}
-        {images.length === 0 && (
+                <Form.Item
+                  name={["translations", lang, "details"]}
+                  label="Podrobnosti"
+                  getValueFromEvent={() => undefined}
+                >
+                  <EditorMinimal
+                    ref={(el) => {
+                      detailsRefs.current[lang] = el;
+                    }}
+                    id={`details-${lang}`}
+                    tools={liteEditorTools}
+                    data={initialData?.translations?.[lang]?.details}
+                    onReady={() => {
+                      readyMap.current[lang].details = true;
+                    }}
+                  />
+                </Form.Item>
+              </div>
+            ) /* : null */,
+          }))}
+        />
+
+        {images.length === 0 && !isEditMode && (
           <Typography.Text type="danger">
             Musíš nahrát alespoň jeden obrázek, aby bylo možné vytvořit inzerát
           </Typography.Text>
@@ -441,9 +513,9 @@ const ListingCreatePage: React.FC<Props> = ({
             size="large"
             block
             loading={loading}
-            disabled={images.length === 0}
+            disabled={images.length === 0 && !isEditMode}
           >
-            Vytvořit inzerát
+            {!isEditMode ? " Vytvořit inzerát" : "Uložit úpravy"}
           </Button>
         </Form.Item>
       </Form>

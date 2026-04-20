@@ -213,7 +213,6 @@ const ListingsPage: React.FC = () => {
             <ListingCreatePage
               key={selected?.listingIndex ?? "edit"}
               initialData={data}
-              editId={selected?.id}
               onSuccess={async () => {
                 setEditOpen(false);
                 const res = await getListings({

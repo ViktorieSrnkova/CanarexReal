@@ -88,6 +88,7 @@ export type RawListingDetail = {
     lat: string; //Prisma Decimal → string
     lng: string; //Prisma Decimal → string
     nominatim_id: string | null;
+    cela_adresa: string | null;
   } | null;
 
   inzeraty_piktogramy: {
@@ -100,7 +101,7 @@ export type RawListingDetail = {
     poradi: number;
     obrazky_preklady: {
       jazyky_id: number;
-      alt: string | null;
+      alt_text: string | null;
     }[];
   }[];
 

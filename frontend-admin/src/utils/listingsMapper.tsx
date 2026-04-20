@@ -12,6 +12,22 @@ const mapPropertyType = (id: number | null): PropertyType | null => {
   if (!id) return null;
   return PROPERTY_TYPE_MAP[id] ?? null;
 };
+const mapAltByLanguage = (obrazky: RawListingDetail["obrazky"]) => {
+  const result: Record<string, string> = {};
+
+  const thumb = obrazky.find((img) => img.poradi === 0);
+  if (!thumb) return result;
+
+  for (const t of thumb.obrazky_preklady) {
+    const lang = LANGUAGE_MAP[t.jazyky_id];
+    if (!lang) continue;
+
+    result[lang] = t.alt_text ?? "";
+  }
+
+  return result;
+};
+
 const mapFeatures = (
   items: { piktogramy_id: number }[],
 ): Record<string, boolean> => {
@@ -27,6 +43,7 @@ const mapFeatures = (
 };
 const mapTranslations = (
   items: RawListingDetail["inzeraty_preklady"],
+  alts: Record<string, string>,
 ): CreateAdFormValues["translations"] => {
   return items.reduce(
     (acc, t) => {
@@ -36,6 +53,7 @@ const mapTranslations = (
 
       acc[lang] = {
         title: t.titulek ?? "",
+        alt: alts[lang] ?? "",
         description: t.popis ? JSON.parse(t.popis) : undefined,
         details: t.detaily ? JSON.parse(t.detaily) : undefined,
       };
@@ -48,7 +66,9 @@ const mapTranslations = (
 export const mapRawListingToFormValues = (
   data: RawListingDetail,
 ): CreateAdFormValues => {
+  const alts = mapAltByLanguage(data.obrazky);
   return {
+    id: data.id,
     isOnHomepage: data.reprezentativni ?? false,
 
     price: data.cena_v_eur ?? 0,
@@ -66,13 +86,13 @@ export const mapRawListingToFormValues = (
     address: data.adresy
       ? {
           value: Number(data.adresy.nominatim_id ?? 0),
-          label: data.adresy.lokace ?? "",
+          label: data.adresy.cela_adresa ?? "",
           lat: data.adresy.lat ?? "",
           lon: data.adresy.lng ?? "",
         }
       : null,
 
-    translations: mapTranslations(data.inzeraty_preklady),
+    translations: mapTranslations(data.inzeraty_preklady, alts),
 
     gallery: [],
 

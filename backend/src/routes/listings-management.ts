@@ -7,9 +7,18 @@ import { reverseGeocode } from "../utils/reverseGeocode";
 import { getSelectedPictogramIds } from "../utils/mapPictogramsHelper";
 import { Prisma } from "../generated/prisma/browser";
 import { upload } from "../middleware/uploader";
+import { replaceTranslations } from "../utils/saveTranslationsHelper";
+import { parseTranslations } from "../utils/parseTranslationsHelper";
 
 const router = Router();
 router.use(requireRole([1, 3]));
+
+const langIdMap: Record<string, number> = {
+  cs: 2,
+  en: 1,
+  sk: 3,
+};
+
 const PROPERTY_TYPE_CODES = new Set([
   "apartman",
   "vila",
@@ -539,6 +548,7 @@ router.get("/:id", async (req, res) => {
             lat: true,
             lng: true,
             nominatim_id: true,
+            cela_adresa: true,
           },
         },
 
@@ -648,4 +658,114 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
+router.put("/:id", async (req, res) => {
+  try {
+    const id = Number(req.params.id);
+    if (!Number.isInteger(id)) {
+      return res.status(400).json({ error: "Invalid id" });
+    }
+
+    const body = req.body;
+
+    const propertyType = await prisma.typy_nemovitosti.findFirst({
+      where: { kod: body.propertyType },
+    });
+
+    if (!propertyType) {
+      return res.status(400).json({ error: "Invalid property type" });
+    }
+
+    await prisma.inzeraty.update({
+      where: { id },
+      data: {
+        index: body.index,
+        cena_v_eur: body.price,
+        loznice: body.bedrooms,
+        koupelny: body.bathrooms,
+        velikost: body.size,
+        typy_nemovitosti_id: propertyType.id,
+      },
+    });
+
+    await prisma.inzeraty_piktogramy.deleteMany({
+      where: { inzeraty_id: id },
+    });
+
+    await prisma.inzeraty_piktogramy.createMany({
+      data: Object.entries(body.attributes ?? {})
+        .filter(([, v]) => v)
+        .map(([pid]) => ({
+          inzeraty_id: id,
+          piktogramy_id: Number(pid),
+        })),
+    });
+
+    if (body.address) {
+      await prisma.adresy.upsert({
+        where: { inzeraty_id: id },
+        update: {
+          nominatim_id: body.address.value,
+          lokace: body.lokace,
+          lat: body.address.lat,
+          lng: body.address.lon,
+          cela_adresa: body.address.label,
+        },
+        create: {
+          inzeraty_id: id,
+          nominatim_id: body.address.value,
+          lokace: body.lokace,
+          lat: body.address.lat,
+          lng: body.address.lon,
+          cela_adresa: body.address.label,
+          staty_id: 1,
+        },
+      });
+    } else {
+      await prisma.adresy.deleteMany({
+        where: { inzeraty_id: id },
+      });
+    }
+    const mainImage = await prisma.obrazky.findFirst({
+      where: {
+        inzeraty_id: id,
+        poradi: 0,
+      },
+    });
+    if (mainImage) {
+      for (const [langCode, t] of Object.entries(
+        body.translations ?? {},
+      ) as any) {
+        const jazyky_id = langIdMap[langCode];
+        if (!jazyky_id) continue;
+
+        await prisma.obrazky_preklady.upsert({
+          where: {
+            jazyky_id_obrazky_id: {
+              jazyky_id,
+              obrazky_id: mainImage.id,
+            },
+          },
+          update: {
+            alt_text: t.alt ?? null,
+          },
+          create: {
+            jazyky_id,
+            obrazky_id: mainImage.id,
+            alt_text: t.alt ?? null,
+          },
+        });
+      }
+    }
+    await replaceTranslations({
+      listingId: id,
+      translationsObj: body.translations ?? {},
+      langIdMap,
+    });
+
+    await res.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to update listing" });
+  }
+});
 export default router;

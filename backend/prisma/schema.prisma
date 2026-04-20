@@ -15,7 +15,7 @@ model adresy {
   mesto           String?  @db.VarChar(50)
   lat             Decimal  @db.Decimal(10, 8)
   lng             Decimal  @db.Decimal(10, 8)
-  nominatim_id String? @db.VarChar(50)
+  nominatim_id    Int? 
   staty_id        Int
   smerovaci_cislo String?  @db.VarChar(20)
   cela_adresa     String?  @db.VarChar(255)

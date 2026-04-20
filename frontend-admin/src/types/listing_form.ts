@@ -27,9 +27,6 @@ export type ImageItem = {
   file: File;
   url: string;
 };
-export type UIImage =
-  | { type: "existing"; id: number; url: string; poradi: number }
-  | { type: "new"; file: File; uid: string };
 export interface CreateAdFormValues {
   id?: number;
   isOnHomepage: boolean;
@@ -73,7 +70,7 @@ export type CreateAdPayload = {
   size: number;
   location: string;
   propertyType: string;
-  showOnHomepage: boolean;
+  showOnHomepage?: boolean;
 
   attributes: Record<string, boolean>;
 
@@ -89,7 +86,7 @@ export type CreateAdPayload = {
     >
   >;
 
-  images: {
+  images?: {
     order: number;
   }[];
 

@@ -1,4 +1,5 @@
 import type { RawListing, RawListingDetail } from "../types/api";
+import type { CreateAdPayload } from "../types/listing_form";
 import type { ListingFilterOption, ListingFilters } from "../types/listings";
 import { api } from "./client";
 
@@ -22,6 +23,15 @@ export const postListing = async (formData: FormData) => {
       "Content-Type": "multipart/form-data",
     },
   });
+  return data;
+};
+
+export const editListingTexts = async (
+  id: number,
+  payload: CreateAdPayload,
+) => {
+  const { data } = await api.put(`/listings/${id}`, payload);
+
   return data;
 };
 
