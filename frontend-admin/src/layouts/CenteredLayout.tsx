@@ -3,7 +3,7 @@ import { Outlet } from "react-router-dom";
 
 const { Content } = Layout;
 
-export default function AdminLayout() {
+export default function CenteredLayout() {
   return (
     <Layout
       style={{
