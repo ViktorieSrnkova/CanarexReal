@@ -12,9 +12,11 @@ import adminNewsRouter from "./routes/news-management";
 import formsManagementRouter from "./routes/forms-management";
 import filesRouter from "./routes/images";
 import uploadRouter from "./routes/upload";
+import formsRouter from "./routes/forms";
 import cors from "cors";
 import cron from "node-cron";
 import { cleanupTempImages } from "./jobs/cleanupImage";
+import { testSMTP } from "./services/email";
 
 dotenv.config();
 
@@ -22,7 +24,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: ["http://localhost:5173", "http://localhost:5174"],
     credentials: true,
   }),
 );
@@ -34,12 +36,13 @@ app.use("/api/admin/listings", adminListingsRouter);
 app.use("/api/admin/aktuality", adminNewsRouter);
 app.use("/api/admin/forms-management", formsManagementRouter);
 app.use("/api/admin/dashboard", dashboardRoutes);
+app.use("/api/admin/files", uploadRouter);
 
 app.use("/api/listings", listingsRouter);
 app.use("/api/news", newsRouter);
 app.use("/api/auth", authRoutes);
 app.use("/api/favorites", favoritesRouter);
-app.use("/api/admin/files", uploadRouter);
+app.use("/api/forms", formsRouter);
 
 app.use("/api/files", filesRouter);
 //app.use("/api/admin/uploads", express.static("uploads"));
@@ -56,5 +59,6 @@ cron.schedule("0 * * * *", async () => {
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
+  testSMTP();
   console.log(`Server running on http://localhost:${PORT}`);
 });

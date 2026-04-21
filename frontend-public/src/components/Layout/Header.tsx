@@ -51,37 +51,38 @@ function Header() {
           </span>
           <a href="mailto:info@canarexreal.com" className="mail">
             <img src={Mail} alt="email" />
-            info@canarexreal.com
+            stan@canarexreal.com
           </a>
         </div>
         <div className="info-right">
           <LangSwitcher />
         </div>
       </div>
+      <div className="main-header-wrapper">
+        <div className="main-header">
+          <div className="logo" onClick={() => navigate("/")}>
+            <img src={CanarexReal} alt="logo" width={197} /> {t("header.logo")}
+          </div>
 
-      <div className="main-header">
-        <div className="logo" onClick={() => navigate("/")}>
-          <img src={CanarexReal} alt="logo" width={197} /> {t("header.logo")}
+          <nav>
+            <ul>
+              {menuItems.map((item) => (
+                <li key={item.path}>
+                  <NavLink
+                    to={item.path}
+                    className={({ isActive }) =>
+                      isActive ? "active" : "nonactive"
+                    }
+                  >
+                    {item.label}
+                  </NavLink>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          {/* <div className="burger">☰</div> */}
         </div>
-
-        <nav>
-          <ul>
-            {menuItems.map((item) => (
-              <li key={item.path}>
-                <NavLink
-                  to={item.path}
-                  className={({ isActive }) =>
-                    isActive ? "active" : "nonactive"
-                  }
-                >
-                  {item.label}
-                </NavLink>
-              </li>
-            ))}
-          </ul>
-        </nav>
-
-        {/* <div className="burger">☰</div> */}
       </div>
       {/*  <Button text={"◄ " + t("header.back")} /> */}
     </header>

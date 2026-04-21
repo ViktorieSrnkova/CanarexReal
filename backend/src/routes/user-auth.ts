@@ -2,7 +2,7 @@ import { Router } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import prisma from "../../lib/db";
-import loginLimiter from "../middleware/rateLimit";
+import { loginLimiter } from "../middleware/rateLimit";
 
 const router = Router();
 
