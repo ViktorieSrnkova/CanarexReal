@@ -51,6 +51,11 @@ export const cs = {
     since: "Odkdy chcete začít osobní prohlídky",
     date: "Datum",
     unsetDate: "Nevím",
+    titleInq: "Napište nám Vaše představy!",
+    subtitleInq: "Rádi Vám najdeme nemovitost na míru.",
+    titleDet: "Chcete více informací o prohlížené nemovitosti?",
+    subtitleDet:
+      "Rádi Vám sdělíme veškeré informace, upřesněte prosím Váš dotaz.",
   },
   property_type: {
     vila: "Vila",

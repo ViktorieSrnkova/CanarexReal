@@ -7,7 +7,7 @@ import { useT } from "../../i18n";
 import "../../styles/forms/baseForm.css";
 import Button from "../General/Button";
 import type { ContactFormValues, InqueryFormValues } from "../../types/forms";
-//import { createForm } from "../../api/forms";
+import { createForm } from "../../api/forms";
 import InqueryFormPart from "./InqueryFormPart";
 type Props =
   | { from: number; what: 1 }
@@ -110,7 +110,7 @@ export default function ContactForm(props: Props): React.ReactElement {
         ...(props.what === 2 ? { index: props.index } : {}),
       };
       console.log(payload);
-      //await createForm(payload);
+      await createForm(payload);
       setSubmitStatus("success");
       setSubmitMessage(t("form.success"));
       reset();
@@ -132,7 +132,7 @@ export default function ContactForm(props: Props): React.ReactElement {
     <FormProvider {...methods}>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className={props.what === 3 ? "inquiry-form-wrapper" : "contact-form"}
+        className={`${props.what === 1 ? "contact-form" : ""} ${props.what === 3 ? "inquiry-form-wrapper" : ""} ${props.what === 2 ? "det-wrap" : ""}`}
         noValidate
       >
         {props.what === 3 && (
@@ -140,7 +140,9 @@ export default function ContactForm(props: Props): React.ReactElement {
             <InqueryFormPart />
           </div>
         )}
-        <div className="base-form">
+        <div
+          className={props.what === 2 ? "details-form-wrapper" : "base-form"}
+        >
           <div className={props.what === 3 ? "long" : "grid-2"}>
             <div className="field">
               <label>{t("form.name")} *</label>
@@ -212,7 +214,9 @@ export default function ContactForm(props: Props): React.ReactElement {
             </div>
           </div>
 
-          <div className={`field full ${props.what === 3 ? "long" : ""}`}>
+          <div
+            className={`field full ${props.what === 3 ? "long" : ""} ${props.what === 2 ? "short" : ""}`}
+          >
             <label>{t("form.text")} *</label>
             <textarea
               {...register("message")}

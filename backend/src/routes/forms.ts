@@ -16,16 +16,50 @@ router.post("/", contactFormLimiter, async (req: PublicRequest, res) => {
     if (payload.website) {
       return res.status(400).json({ message: "Spam detected" });
     }
+    const baseData = {
+      jmeno: payload.name,
+      prijmeni: payload.surname,
+      email: payload.email,
+      telefon: payload.fullPhone,
+      text_zpravy: payload.message,
+      revidovano: false,
+      odkud_formular_id: payload.from,
+      typy_formulare_id: payload.what,
+    };
+
+    const extraData = {
+      ...(payload.index !== undefined && { index_inzeratu: payload.index }),
+
+      ...(payload.priceFrom !== undefined && {
+        rozpocet_od: payload.priceFrom,
+      }),
+      ...(payload.priceTo !== undefined && { rozpocet_do: payload.priceTo }),
+
+      ...(payload.sizeFrom !== undefined && { velikost_od: payload.sizeFrom }),
+      ...(payload.sizeTo !== undefined && { velikost_do: payload.sizeTo }),
+
+      ...(payload.bedrooms !== undefined && { pocet_loznic: payload.bedrooms }),
+      ...(payload.bathrooms !== undefined && {
+        pocet_koupelen: payload.bathrooms,
+      }),
+
+      ...(payload.arrivalMode && {
+        prilet: payload.arrival ? new Date(payload.arrival) : undefined,
+        vi_prilet: payload.arrivalMode === "date" ? true : false,
+      }),
+    };
     const form = await prisma.formulare.create({
       data: {
-        jmeno: payload.name,
-        prijmeni: payload.surname,
-        email: payload.email,
-        telefon: payload.fullPhone,
-        text_zpravy: payload.message,
-        revidovano: false,
-        odkud_formular_id: payload.from,
-        typy_formulare_id: payload.what,
+        ...baseData,
+        ...extraData,
+        ...(payload.type &&
+          payload.type.length > 0 && {
+            formulare_typy_nemovitosti: {
+              create: payload.type.map((id: number) => ({
+                typy_nemovitosti_id: id,
+              })),
+            },
+          }),
       },
     });
     const data = {

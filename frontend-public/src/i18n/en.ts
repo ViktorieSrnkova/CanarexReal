@@ -51,6 +51,12 @@ export const en = {
     since: "When would you like to start the private tours?",
     date: "Date",
     unsetDate: "Not sure",
+    titleInq: "Tell us your vision!",
+    subtitleInq: "We will hapily find you a tailor-made property.",
+    titleDet:
+      "Do you want more information about the property you are viewing?",
+    subtitleDet:
+      "We will be happy to provide you with all the information, please specify your question.",
   },
   togglers: {
     vila: "Villa",

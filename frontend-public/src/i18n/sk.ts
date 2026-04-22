@@ -51,6 +51,11 @@ export const sk = {
     since: "Kedy chcete začať s osobnými prehliadkami?",
     date: "Dátum",
     unsetDate: "Neviem",
+    titleInq: "Napíšte nám Vaše predstavy!",
+    subtitleInq: "Radi Vám nájdeme nehnuteľnosť na mieru.",
+    titleDet: "Chcete viac informácií o prezeranej nehnuteľnosti?",
+    subtitleDet:
+      "Radi Vám poskytneme všetky informácie, upresnite prosím Vašu otázku.",
   },
   togglers: {
     vila: "Vila",

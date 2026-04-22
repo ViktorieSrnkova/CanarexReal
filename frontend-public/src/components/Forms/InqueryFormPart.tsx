@@ -27,11 +27,11 @@ function InqueryFormPart() {
       <ToggleGroup
         label={t("form.type")}
         options={[
-          { label: "Vila", value: 3 },
-          { label: "Apartmán", value: 1 },
-          { label: "Dům", value: 2 },
-          { label: "Garsonka", value: 4 },
-          { label: "Pozemek", value: 5 },
+          { label: t("property_type.vila"), value: 3 },
+          { label: t("property_type.apartment"), value: 1 },
+          { label: t("property_type.house"), value: 2 },
+          { label: t("property_type.studio"), value: 4 },
+          { label: t("property_type.studio"), value: 5 },
         ]}
         value={watch("type") ?? []}
         onChange={(val) => setValue("type", val, { shouldValidate: true })}
