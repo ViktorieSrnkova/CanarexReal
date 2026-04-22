@@ -1,5 +1,5 @@
 .lang-switch {
-  display: inline-flex;
+  display: flex;
   background: #f1f5f9;
   border-radius: 999px;
   padding: 4px;

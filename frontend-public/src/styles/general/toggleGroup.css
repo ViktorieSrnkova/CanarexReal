@@ -1,0 +1,18 @@
+.toggle-group .active {
+  background-color: #87ceeb;
+}
+.toggle-group {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  justify-content: start;
+  max-width: 402px;
+}
+.toggle-section {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.toggle-section label {
+  font-size: 14px;
+}

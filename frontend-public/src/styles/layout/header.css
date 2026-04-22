@@ -81,12 +81,12 @@
   list-style-type: none;
 }
 
-.active:hover {
+.main-header .active:hover {
   cursor: pointer;
   color: crimson;
 }
 
-.active {
+.main-header .active {
   color: crimson;
   text-decoration: none;
 }

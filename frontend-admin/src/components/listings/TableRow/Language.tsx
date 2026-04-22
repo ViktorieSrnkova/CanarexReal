@@ -18,7 +18,7 @@ const renderCheck = (has: boolean, tooltip: string) => (
   <Tooltip title={tooltip}>
     <span
       style={{
-        display: "inline-flex",
+        display: "flex",
         alignItems: "center",
         justifyContent: "center",
         width: 16,

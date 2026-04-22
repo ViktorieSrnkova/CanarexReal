@@ -52,13 +52,16 @@ model formulare {
   prijmeni                   String                       @db.VarChar(100)
   email                      String                       @db.VarChar(50)
   telefon                    String                       @db.VarChar(20)
-  pocet_loznic               Int?
-  pocet_koupelen             Int?
-  minimalnni_velikost        Int?
-  rozpocet                   Int?
+  pocet_loznic               Int[]
+  pocet_koupelen             Int[]
+  rozpocet_od                Int?
+  rozpocet_do                Int?
+  velikost_od                Int?
+  velikost_do                Int?
   index_inzeratu             Int?
   prilet                     DateTime?                    @db.Date
-  revidovano                 Boolean
+  vi_prilet                  Boolean?                    
+  revidovano                 Boolean                      @default(false)
   text_zpravy                String
   odkud_formular_id          Int
   typy_formulare_id          Int

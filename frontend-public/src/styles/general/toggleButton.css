@@ -1,0 +1,13 @@
+.toggle-btn {
+  display: flex;
+  height: 40px;
+  padding: 8px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0 8px;
+  border: 2px solid #87ceeb;
+  background-color: #ffffff;
+  font-size: 16px;
+  cursor: pointer;
+  min-width: 40px;
+}

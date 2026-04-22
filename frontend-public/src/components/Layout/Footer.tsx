@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useT } from "../../i18n";
-import ContactForm from "../Forms/ContactForm";
+import ContactForm from "../Forms/BaseForm";
 
 import Phone from "../../assets/Phone.svg";
 import Mail from "../../assets/Mail.svg";
@@ -58,8 +58,8 @@ const Footer: React.FC = () => {
             </div>
             <div className="mail">
               <img src={Mail} alt="email" height={14} />
-              <a href={`mailto:${t("footer.email")}`} className="number">
-                stan@canarexreal.com
+              <a href={`mailto:${t("contact.email")}`} className="number">
+                {t("contact.email")}
               </a>
             </div>
           </div>
