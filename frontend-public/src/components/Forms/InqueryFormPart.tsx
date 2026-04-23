@@ -31,7 +31,7 @@ function InqueryFormPart() {
           { label: t("property_type.apartment"), value: 1 },
           { label: t("property_type.house"), value: 2 },
           { label: t("property_type.studio"), value: 4 },
-          { label: t("property_type.studio"), value: 5 },
+          { label: t("property_type.land"), value: 5 },
         ]}
         value={watch("type") ?? []}
         onChange={(val) => setValue("type", val, { shouldValidate: true })}

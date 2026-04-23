@@ -57,7 +57,7 @@ export const sk = {
     subtitleDet:
       "Radi Vám poskytneme všetky informácie, upresnite prosím Vašu otázku.",
   },
-  togglers: {
+  property_type: {
     vila: "Vila",
     apartment: "Apartmán",
     house: "Dom",
@@ -66,5 +66,11 @@ export const sk = {
   },
   contact: {
     email: "stan@canarexreal.com",
+    title: "Kontaktujte nás!",
+    subtitle: "Radi zodpovieme všetky Vaše dotazy.",
+    ceoRole: "CEO CanarexReal",
+    assistRole: "asistentka CEO",
+    mapAddr:
+      "Av. Quinto Centenario, 60, portal A, 38683 Santiago del Teide, Santa Cruz de Tenerife, Španielsko",
   },
 };

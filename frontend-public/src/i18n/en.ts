@@ -58,7 +58,7 @@ export const en = {
     subtitleDet:
       "We will be happy to provide you with all the information, please specify your question.",
   },
-  togglers: {
+  property_type: {
     vila: "Villa",
     apartment: "Apartment",
     house: "House",
@@ -67,5 +67,11 @@ export const en = {
   },
   contact: {
     email: "stan@canarexreal.com",
+    title: "Contact us!",
+    subtitle: "We will happily answer all your questions.",
+    ceoRole: "CEO of CanarexReal",
+    assistRole: "assistant of the CEO",
+    mapAddr:
+      "Av. Quinto Centenario, 60, portal A, 38683 Santiago del Teide, Santa Cruz de Tenerife, Spain",
   },
 };

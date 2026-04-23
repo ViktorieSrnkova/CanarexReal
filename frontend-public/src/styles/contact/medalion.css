@@ -1,0 +1,81 @@
+.medalion-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 450px;
+  position: static;
+  color: #3f3f3f;
+}
+.medalion-graphic {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: fit-content;
+}
+
+.medalion-role {
+  font-size: 14px;
+}
+.medalion-hr {
+  width: 70px;
+  margin-top: 0;
+  margin-bottom: 7px;
+  height: 1px;
+  border: 0;
+  border-top: solid 1px #000;
+}
+.medalion-blue-pettal {
+  width: 330px;
+  height: 240px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  border-radius: 0px 100px 0px 100px;
+
+  background-image: linear-gradient(
+    180deg,
+    #87ceeb 31.57894736842105%,
+    #fff 100%
+  );
+}
+.medalion-blue-pettal img {
+  position: relative;
+  border-radius: 0px 100px 0px 100px;
+  height: 240px;
+  width: 200px;
+  top: -62px;
+  object-fit: cover;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+.medalion-person {
+  position: relative;
+  top: -29px;
+}
+.medalion-name {
+  margin: 0;
+  margin-bottom: 9px;
+  text-align: center;
+}
+.medalion-info-wrapper {
+  margin-top: 42px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.medalion-first-row {
+  display: flex;
+  white-space: nowrap;
+  justify-content: center;
+  margin-bottom: 10px;
+  gap: 16px;
+}
+.medalion-second-row {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+.marginless {
+  margin: 0;
+}

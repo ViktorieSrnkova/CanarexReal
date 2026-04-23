@@ -66,5 +66,11 @@ export const cs = {
   },
   contact: {
     email: "stan@canarexreal.com",
+    title: "Kontaktujte nás!",
+    subtitle: "Rádi zodpovíme veškeré Vaše dotazy.",
+    ceoRole: "CEO CanarexReal",
+    assistRole: "asistentka CEO",
+    mapAddr:
+      "Av. Quinto Centenario, 60, portal A, 38683 Santiago del Teide, Santa Cruz de Tenerife, Španělsko",
   },
 };
