@@ -18,7 +18,7 @@ function Contact() {
             phoneSecondary="+34 604 198 470"
             email="stan@canarexreal.com"
             alt="Stanislav Srnka"
-            image="/contact/stan.png"
+            image="/contact/stan.webp"
             flagPath={["/flags/cz.png", "/flags/es.png"]}
             flagAlts={["cz flag", "es flag"]}
           />
@@ -28,7 +28,7 @@ function Contact() {
             phoneMain="+421 919 490 980"
             email="chloe@canarexreal.com"
             alt="Chloe Golem"
-            image="/contact/chloe.png"
+            image="/contact/chloe.webp"
             flagPath={["/flags/sk.png"]}
             flagAlts={["sk flag"]}
           />

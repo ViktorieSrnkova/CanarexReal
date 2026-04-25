@@ -1,0 +1,36 @@
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pagination button {
+  border: none;
+  background: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 6px;
+  font-size: 16px;
+}
+
+.pagination button.active {
+  background: #87ceeb;
+  color: #380401;
+}
+
+.pagination button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.dots {
+  padding: 0 6px;
+  font-weight: 700;
+}
+.btn {
+  display: flex;
+  align-items: center;
+}
+.arrow {
+  padding-inline: 8px;
+}

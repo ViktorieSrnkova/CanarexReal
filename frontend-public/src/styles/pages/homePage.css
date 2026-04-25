@@ -1,0 +1,16 @@
+.hp-cards-wrapper {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: flex-start;
+  align-items: flex-start;
+  max-width: 1029px;
+  padding: 12px 0 48px 0;
+}
+
+.wawe {
+  max-width: 1376px;
+  padding: 0;
+  margin: 0;
+}

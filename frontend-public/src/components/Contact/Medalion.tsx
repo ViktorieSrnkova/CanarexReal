@@ -18,7 +18,14 @@ function Medalion(props: Props) {
     <div className="medalion-wrapper">
       <div className="medalion-graphic">
         <div className="medalion-blue-pettal">
-          <img src={props.image} alt={props.alt} />
+          <img
+            src={props.image}
+            alt={props.alt}
+            loading="eager"
+            width={200}
+            height={240}
+            fetchPriority="high"
+          />
 
           <div className="medalion-person">
             <p className="medalion-name">{props.name}</p>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -9,6 +9,7 @@ import Button from "../General/Button";
 import type { ContactFormValues, InqueryFormValues } from "../../types/forms";
 import { createForm } from "../../api/forms";
 import InqueryFormPart from "./InqueryFormPart";
+import { useLang } from "../../hooks/i18n/useLang";
 type Props =
   | { from: number; what: 1 }
   | { from: number; what: 2; index: number }
@@ -18,6 +19,7 @@ type FormValues = ContactFormValues & Partial<InqueryFormValues>;
 
 export default function ContactForm(props: Props): React.ReactElement {
   const t = useT();
+  const { lang } = useLang();
   const [submitStatus, setSubmitStatus] = useState<
     "idle" | "success" | "error"
   >("idle");
@@ -126,8 +128,20 @@ export default function ContactForm(props: Props): React.ReactElement {
     register,
     handleSubmit,
     reset,
+    clearErrors,
     formState: { errors, isSubmitting },
   } = methods;
+
+  useEffect(() => {
+    reset(methods.getValues(), {
+      keepValues: true,
+      keepDirty: true,
+      keepTouched: false,
+      keepErrors: false,
+    });
+
+    clearErrors();
+  }, [lang]);
   return (
     <FormProvider {...methods}>
       <form

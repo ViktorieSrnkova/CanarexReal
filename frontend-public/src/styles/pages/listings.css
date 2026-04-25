@@ -1,0 +1,23 @@
+.listings-wrapper {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 16px;
+  width: 100%;
+}
+.listings-wrapper .filters {
+  max-width: 327px;
+  width: 100%;
+  background-color: aquamarine;
+}
+.listings-wrapper .listings {
+  max-width: 1029px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+.content {
+  max-width: 1376px;
+  width: 100%;
+}

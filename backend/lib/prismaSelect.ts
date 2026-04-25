@@ -6,14 +6,25 @@ export function listingThumbnailSelect(userLangId: number = 2) {
     loznice: true,
     koupelny: true,
     velikost: true,
+    statusy_id: true,
+
     obrazky: {
-      where: { poradi: 1 },
-      select: { id: true },
+      where: { poradi: 0 },
+      select: {
+        id: true,
+        poradi: true,
+        obrazky_preklady: {
+          where: { jazyky_id: userLangId },
+          take: 1,
+          select: { alt_text: true },
+        },
+      },
     },
     statusy: {
       select: {
         statusy_preklady: {
           where: { jazyky_id: userLangId },
+          take: 1,
           select: { nazev: true },
         },
       },
@@ -22,6 +33,7 @@ export function listingThumbnailSelect(userLangId: number = 2) {
       select: {
         typy_nemovitosti_preklady: {
           where: { jazyky_id: userLangId },
+          take: 1,
           select: { nazev: true },
         },
       },
@@ -31,6 +43,7 @@ export function listingThumbnailSelect(userLangId: number = 2) {
     },
     inzeraty_preklady: {
       where: { jazyky_id: userLangId },
+      take: 1,
       select: { titulek: true },
     },
   };
@@ -46,6 +59,7 @@ export function listingDetailSelect(userLangId: number = 2) {
     velikost: true,
     reprezentativni: true,
     datum_vytvoreni: true,
+    statusy_id: true,
 
     inzeraty_preklady: {
       where: { jazyky_id: userLangId },
@@ -99,7 +113,7 @@ export function listingDetailSelect(userLangId: number = 2) {
     },
 
     obrazky: {
-      orderBy: { poradi: "asc" as const },
+      where: { poradi: 0 },
       select: {
         id: true,
         poradi: true,

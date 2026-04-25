@@ -1,34 +1,61 @@
 import { Link } from "react-router-dom";
 import "../../styles/listing/card.css";
+import { formatMoneyEUR } from "../../utils/formatting";
 
-function Card() {
+type Props = {
+  id: number;
+  titulek: string;
+  lokace: string;
+  typ: string;
+  status: string;
+  obrazekId: number;
+  cena_v_eur: number;
+  loznice: number;
+  koupelny: number;
+  velikost: number;
+  alt: string;
+  status_id: number;
+};
+
+function Card(props: Props) {
   return (
-    <div className="card">
-      <Link to="/listing/{id}" className="card-image">
-        <div className="card-status">NOVÉ</div>
+    <div className={`card ${props.status_id === 2 ? "status-2-active" : ""}`}>
+      <Link to={`/listings/${props.id}`} className="card-image">
+        <img
+          src={`http://localhost:3000/api/files/images/${props.obrazekId}`}
+          alt={props.alt}
+          className="card-img"
+          loading="lazy"
+        />{" "}
+        <div className={`card-status status-${props.status_id}`}>
+          {props.status}
+        </div>
       </Link>
+
       <div className="card-first-row">
         <div className="card-location">
           <img src="/utils/map-pin.svg" alt="map pin" />
-          <Link to="/listing/{id}" className="card-loc-link">
-            San Eugenio Alto
+          <Link to={`/listings/${props.id}`} className="card-loc-link">
+            {props.lokace}
           </Link>
         </div>
         <div className="card-icons">
           <img src="/utils/bed.svg" alt="map pin" />
-          <p className="spaced6 number">1</p>
+          <p className="spaced6 number">{props.loznice}</p>
           <img src="/utils/bath.svg" alt="map pin" />
-          <p className="spaced6 number">1</p>
+          <p className="spaced6 number">{props.koupelny}</p>
           <img src="/utils/size.svg" alt="map pin" />
-          <p className="number">92m²</p>
+          <p className="number">{props.velikost} m²</p>
         </div>
       </div>
       <div className="card-second-row">
-        <p>Prostorný apartmán v Malibu Park, San Eugenio Alto</p>
+        <p>{props.titulek} </p>
       </div>
       <div className="card-third-row">
-        <p>Apartmán</p>
-        <div className="card-price number">260 000 €</div>
+        <p>{props.typ}</p>
+        <div className="card-price number">
+          {formatMoneyEUR(props.cena_v_eur)}
+        </div>
       </div>
     </div>
   );

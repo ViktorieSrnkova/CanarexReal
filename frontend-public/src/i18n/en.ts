@@ -74,4 +74,8 @@ export const en = {
     mapAddr:
       "Av. Quinto Centenario, 60, portal A, 38683 Santiago del Teide, Santa Cruz de Tenerife, Spain",
   },
+  listings: {
+    next: "Next",
+    back: "Back",
+  },
 };

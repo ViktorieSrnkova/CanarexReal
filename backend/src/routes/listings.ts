@@ -14,15 +14,23 @@ router.get("/", async (req: PublicRequest, res) => {
     const page = Number(req.query.page) || 1;
     const limit = Number(req.query.limit) || 12;
     const skip = (page - 1) * limit;
+    const langId = req.userLangId ?? 2;
 
-    const thumbnails = await prisma.inzeraty.findMany({
-      skip,
-      take: limit,
-      orderBy: { datum_vytvoreni: "desc" },
-      select: listingThumbnailSelect(req.userLangId),
+    const [thumbnails, total] = await Promise.all([
+      prisma.inzeraty.findMany({
+        skip,
+        take: limit,
+        orderBy: { datum_vytvoreni: "desc" },
+        select: listingThumbnailSelect(langId),
+      }),
+
+      prisma.inzeraty.count(),
+    ]);
+
+    res.json({
+      thumbnails,
+      total,
     });
-
-    res.json({ thumbnails });
   } catch (err) {
     console.error("Thumbnails error:", err);
     res
@@ -48,14 +56,35 @@ router.get("/home", async (req: PublicRequest, res) => {
       .json({ message: "Internal server error", error: String(err) });
   }
 });
+router.get("/thumb/:id", async (req: PublicRequest, res) => {
+  try {
+    const id = Number(req.params.id);
+    const langId = req.userLangId ?? 2;
+
+    const thumb = await prisma.inzeraty.findUnique({
+      where: { id },
+      select: listingThumbnailSelect(langId),
+    });
+
+    if (!thumb) {
+      return res.status(404).json({ message: "Listing not found" });
+    }
+
+    res.json({ thumb });
+  } catch (err) {
+    console.error("Listing thumb error:", err);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
 
 router.get("/:id", async (req: PublicRequest, res) => {
   try {
     const id = Number(req.params.id);
+    const langId = req.userLangId ?? 2;
 
     const listing = await prisma.inzeraty.findUnique({
       where: { id },
-      select: listingDetailSelect(req.userLangId),
+      select: listingDetailSelect(langId),
     });
 
     if (!listing) {

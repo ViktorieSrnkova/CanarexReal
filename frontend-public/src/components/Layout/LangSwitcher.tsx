@@ -14,7 +14,6 @@ function LangSwitcher() {
           key={l.code}
           onClick={() => {
             setLang(l.code);
-            window.location.reload();
           }}
           className={`lang-btn ${lang === l.code ? "active" : ""}`}
           title={l.label}

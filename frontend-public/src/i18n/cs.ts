@@ -73,4 +73,8 @@ export const cs = {
     mapAddr:
       "Av. Quinto Centenario, 60, portal A, 38683 Santiago del Teide, Santa Cruz de Tenerife, Španělsko",
   },
+  listings: {
+    next: "Další",
+    back: "Zpět",
+  },
 };
