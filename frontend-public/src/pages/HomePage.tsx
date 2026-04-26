@@ -3,14 +3,23 @@ import { getListingsThumbsHome } from "../api/listings";
 import type { ListingThumbnail } from "../types/rawApi";
 import Card from "../components/Listing/Card";
 import "../styles/pages/homePage.css";
+import { useLang } from "../hooks/i18n/useLang";
+import { LANGUAGE_TO_ID } from "../types/general";
+import Button from "../components/General/Button";
+import { useNavigate } from "react-router-dom";
+import { useT } from "../i18n";
 
 function HomePage() {
+  const navigate = useNavigate();
+  const t = useT();
   const [listings, setListings] = useState<ListingThumbnail[]>([]);
+  const { lang } = useLang();
+  const langId = LANGUAGE_TO_ID[lang];
 
   useEffect(() => {
     const load = async () => {
       try {
-        const data = await getListingsThumbsHome();
+        const data = await getListingsThumbsHome(langId);
         setListings(data);
       } catch (err) {
         console.error(err);
@@ -18,37 +27,54 @@ function HomePage() {
     };
 
     load();
-  }, []);
-  if (!listings.length) return <div>Loading...</div>;
+  }, [langId]);
   return (
-    <div className="content">
+    <>
+      <div className="hero">
+        <h1>{t("homepage.title")}</h1>
+        <h2>{t("homepage.subtitle")}</h2>
+        <div className="buttons">
+          <Button onClick={() => navigate("/listings")}>
+            {t("homepage.listings")}
+          </Button>
+          <Button onClick={() => navigate("/contact")} variant="secondary">
+            {t("homepage.contact")}
+          </Button>
+        </div>
+      </div>
       <img
         className="wawe"
         src="/general/vlnka-gray-white-nm.svg"
         alt="vlnka-gray-to-white"
       />
-      <div className="hp-cards-wrapper">
-        {listings.slice(0, 6).map((listing) => {
-          const cardData = {
-            id: listing.id,
-            titulek: listing.inzeraty_preklady[0]?.titulek ?? "",
-            lokace: listing.adresy?.lokace ?? "",
-            typ:
-              listing.typy_nemovitosti?.typy_nemovitosti_preklady[0]?.nazev ??
-              "",
-            status: "NOVÉ",
-            cena_v_eur: listing.cena_v_eur,
-            loznice: listing.loznice,
-            koupelny: listing.koupelny,
-            velikost: listing.velikost,
-            obrazekId: listing.obrazky[0]?.id ?? 0,
-            alt: listing.obrazky[0]?.obrazky_preklady[0]?.alt_text ?? "",
-            status_id: 4,
-          };
+      {!listings.length ? (
+        <div>Loading...</div>
+      ) : (
+        <div className="content">
+          <div className="hp-cards-wrapper">
+            {listings.slice(0, 6).map((listing) => {
+              const cardData = {
+                id: listing.id,
+                titulek: listing.inzeraty_preklady[0]?.titulek ?? "",
+                lokace: listing.adresy?.lokace ?? "",
+                typ:
+                  listing.typy_nemovitosti?.typy_nemovitosti_preklady[0]
+                    ?.nazev ?? "",
+                status: "NOVÉ",
+                cena_v_eur: listing.cena_v_eur,
+                loznice: listing.loznice,
+                koupelny: listing.koupelny,
+                velikost: listing.velikost,
+                obrazekId: listing.obrazky[0]?.id ?? 0,
+                alt: listing.obrazky[0]?.obrazky_preklady[0]?.alt_text ?? "",
+                status_id: 4,
+              };
 
-          return <Card key={listing.id} {...cardData} />;
-        })}
-      </div>
+              return <Card key={listing.id} {...cardData} />;
+            })}
+          </div>
+        </div>
+      )}
 
       <img
         className="wawe"
@@ -60,7 +86,7 @@ function HomePage() {
         src="/general/vlnka-gray-white-nm.svg"
         alt="vlnka-gray-to-white"
       />
-    </div>
+    </>
   );
 }
 

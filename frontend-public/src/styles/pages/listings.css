@@ -18,6 +18,6 @@
   align-items: flex-end;
 }
 .content {
-  max-width: 1376px;
   width: 100%;
+  padding-inline: 32px;
 }

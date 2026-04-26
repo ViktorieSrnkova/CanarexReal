@@ -1,0 +1,80 @@
+.crsl-listings-wrapper {
+  display: flex;
+  gap: 20px;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+  height: 320px;
+  width: 1040px;
+  align-items: center;
+  justify-content: center;
+}
+.crsl-first-row h2 {
+  text-align: center;
+  margin-top: 32px;
+}
+.crsl-third-row {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 10px;
+  margin-bottom: 32px;
+}
+.crsl-second-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 20px;
+  align-items: center;
+}
+.crsl-third-row {
+  margin-top: 20px;
+}
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ccc;
+  transition: 0.2s;
+}
+
+.dot.active {
+  background: #87ceeb;
+  transform: scale(1.2);
+}
+.arrow-left,
+.arrow-right {
+  width: 20px;
+  height: 32px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.2s;
+}
+
+.arrow-left:hover,
+.arrow-right:hover {
+  opacity: 0.6;
+}
+
+.arrow-left::before,
+.arrow-right::before {
+  content: "";
+  width: 20px;
+  height: 20px;
+  border-top: 2px solid #87ceeb;
+  border-right: 2px solid #87ceeb;
+}
+
+.arrow-left::before {
+  transform: rotate(-135deg);
+}
+
+.arrow-right::before {
+  transform: rotate(45deg);
+}
+.arrow-left,
+.arrow-right,
+.dot {
+  cursor: pointer;
+}

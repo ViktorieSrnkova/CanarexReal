@@ -9,6 +9,8 @@
   display: flex;
   flex: 1;
   width: 100%;
+  max-width: 1440px;
+  margin: auto;
   justify-content: center;
 }
 .layout__content {
@@ -16,4 +18,14 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+.layout__footer {
+  max-width: 1440px;
+  width: 100%;
+  margin: auto;
+}
+.layout__header {
+  max-width: 1440px;
+  width: 100%;
+  margin: auto;
 }

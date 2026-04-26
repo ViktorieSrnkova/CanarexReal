@@ -4,28 +4,72 @@ import { useT } from "../i18n";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import type { ListingThumbnail } from "../types/rawApi";
-import { getListingById } from "../api/listings";
+import { getListingById, getSimilarListings } from "../api/listings";
+import { useLang } from "../hooks/i18n/useLang";
+import { LANGUAGE_TO_ID } from "../types/general";
+import type { AxiosError } from "axios";
+import { ListingUnavailable } from "./ListingUnavailable";
+import Carrousel from "../components/Listing/Carrousel";
 
 function SingleListing() {
   const t = useT();
   const { id } = useParams();
+  const { lang } = useLang();
+  const langId = LANGUAGE_TO_ID[lang];
   const [listing, setListing] = useState<ListingThumbnail | null>(null);
+  const [notAvailable, setNotAvailable] = useState(false);
+  const [similar, setSimilar] = useState<ListingThumbnail[]>([]);
+  const [loadingSimilar, setLoadingSimilar] = useState(false);
 
   useEffect(() => {
     if (!id) return;
 
     const load = async () => {
       try {
-        const data = await getListingById(id);
+        const data = await getListingById(id, langId);
         setListing(data);
+        setNotAvailable(false);
       } catch (err) {
-        console.error(err);
+        const error = err as AxiosError;
+
+        if (error.response?.status === 404) {
+          setListing(null);
+          setNotAvailable(true);
+          return;
+        }
+
+        console.error(error);
       }
     };
 
     load();
-  }, [id]);
-  if (!listing) return <div>Loading...</div>;
+  }, [id, langId]);
+
+  useEffect(() => {
+    if (!id) return;
+
+    const loadSimilar = async () => {
+      setLoadingSimilar(true);
+      try {
+        const data = await getSimilarListings(id, langId);
+        setSimilar(data);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoadingSimilar(false);
+      }
+    };
+
+    loadSimilar();
+  }, [id, langId]);
+
+  if (notAvailable) {
+    return <ListingUnavailable />;
+  }
+
+  if (!listing) {
+    return <div>Loading...</div>;
+  }
   const cardData = {
     id: listing.id,
     titulek: listing.inzeraty_preklady[0]?.titulek ?? "",
@@ -50,7 +94,18 @@ function SingleListing() {
           <BaseForm from={1} what={2} index={listing.index} />
         </div>
       </div>
-
+      <img
+        className="wawe"
+        alt="vlnka-gray-to-white"
+        src="/general/vlnka-gray-white-nm.svg"
+      ></img>
+      <Carrousel
+        similar={similar}
+        loading={loadingSimilar}
+        title={t("similar.title")}
+        loadTxt={t("general.loading")}
+        errTxt={t("similar.error")}
+      />
       <div className="contact white">
         <h2>{t("form.titleInq")}</h2>
         <h3 className="inq-subtitle">{t("form.subtitleInq")}</h3>

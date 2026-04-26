@@ -17,6 +17,7 @@ import cors from "cors";
 import cron from "node-cron";
 import { cleanupTempImages } from "./jobs/cleanupImage";
 import { testSMTP } from "./services/email";
+import { langMiddleware } from "./middleware/lang";
 
 dotenv.config();
 
@@ -30,6 +31,7 @@ app.use(
 );
 app.use(express.json());
 app.use(cookieParser());
+app.use(langMiddleware);
 
 app.use("/api/admin", adminRoutes);
 app.use("/api/admin/listings", adminListingsRouter);

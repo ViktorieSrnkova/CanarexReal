@@ -78,4 +78,23 @@ export const en = {
     next: "Next",
     back: "Back",
   },
+  homepage: {
+    title: "Tenerife, where dreams come true",
+    subtitle: "Find your ideal property from over 200 listings.",
+    listings: "View listings",
+    contact: "Contact an agent",
+  },
+  similar: {
+    error: "We currently do not have any similar properties.",
+    title: "Similar properties",
+  },
+  general: {
+    loading: "Loading ...",
+  },
+  carrousel: {
+    title: "Property Listings",
+  },
+  services: {
+    more: "More properties",
+  },
 };

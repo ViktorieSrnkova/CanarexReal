@@ -1,4 +1,4 @@
-export function listingThumbnailSelect(userLangId: number = 2) {
+export function listingThumbnailSelect(langId: number = 2) {
   return {
     id: true,
     index: true,
@@ -14,7 +14,7 @@ export function listingThumbnailSelect(userLangId: number = 2) {
         id: true,
         poradi: true,
         obrazky_preklady: {
-          where: { jazyky_id: userLangId },
+          where: { jazyky_id: langId },
           take: 1,
           select: { alt_text: true },
         },
@@ -23,7 +23,7 @@ export function listingThumbnailSelect(userLangId: number = 2) {
     statusy: {
       select: {
         statusy_preklady: {
-          where: { jazyky_id: userLangId },
+          where: { jazyky_id: langId },
           take: 1,
           select: { nazev: true },
         },
@@ -32,7 +32,7 @@ export function listingThumbnailSelect(userLangId: number = 2) {
     typy_nemovitosti: {
       select: {
         typy_nemovitosti_preklady: {
-          where: { jazyky_id: userLangId },
+          where: { jazyky_id: langId },
           take: 1,
           select: { nazev: true },
         },
@@ -42,14 +42,14 @@ export function listingThumbnailSelect(userLangId: number = 2) {
       select: { lokace: true, mesto: true },
     },
     inzeraty_preklady: {
-      where: { jazyky_id: userLangId },
+      where: { jazyky_id: langId },
       take: 1,
       select: { titulek: true },
     },
   };
 }
 
-export function listingDetailSelect(userLangId: number = 2) {
+export function listingDetailSelect(langId: number = 2) {
   return {
     id: true,
     index: true,
@@ -62,7 +62,7 @@ export function listingDetailSelect(userLangId: number = 2) {
     statusy_id: true,
 
     inzeraty_preklady: {
-      where: { jazyky_id: userLangId },
+      where: { jazyky_id: langId },
       select: {
         titulek: true,
         popis: true,
@@ -81,7 +81,7 @@ export function listingDetailSelect(userLangId: number = 2) {
         staty: {
           select: {
             stat_preklady: {
-              where: { jazyky_id: userLangId },
+              where: { jazyky_id: langId },
               select: {
                 nazev: true,
               },
@@ -96,7 +96,7 @@ export function listingDetailSelect(userLangId: number = 2) {
       select: {
         kod: true,
         statusy_preklady: {
-          where: { jazyky_id: userLangId },
+          where: { jazyky_id: langId },
           select: { nazev: true },
         },
       },
@@ -106,7 +106,7 @@ export function listingDetailSelect(userLangId: number = 2) {
       select: {
         kod: true,
         typy_nemovitosti_preklady: {
-          where: { jazyky_id: userLangId },
+          where: { jazyky_id: langId },
           select: { nazev: true },
         },
       },
@@ -118,7 +118,7 @@ export function listingDetailSelect(userLangId: number = 2) {
         id: true,
         poradi: true,
         obrazky_preklady: {
-          where: { jazyky_id: userLangId },
+          where: { jazyky_id: langId },
           select: { alt_text: true },
         },
       },
@@ -134,11 +134,20 @@ export function listingDetailSelect(userLangId: number = 2) {
               select: { id: true },
             },
             piktogramy_preklady: {
-              where: { jazyky_id: userLangId },
+              where: { jazyky_id: langId },
               select: { nazev: true },
             },
           },
         },
+      },
+    },
+  };
+}
+export function listingWithLangWhere(langId: number) {
+  return {
+    inzeraty_preklady: {
+      some: {
+        jazyky_id: langId,
       },
     },
   };

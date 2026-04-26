@@ -4,8 +4,12 @@ import type { ListingThumbnail } from "../types/rawApi";
 import { getListingsThumbs } from "../api/listings";
 import "../styles/pages/listings.css";
 import Pagination from "../components/General/Pagination";
+import { useLang } from "../hooks/i18n/useLang";
+import { LANGUAGE_TO_ID } from "../types/general";
 
 function Listings() {
+  const { lang } = useLang();
+  const langId = LANGUAGE_TO_ID[lang];
   const [listings, setListings] = useState<ListingThumbnail[]>([]);
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
@@ -15,7 +19,10 @@ function Listings() {
   useEffect(() => {
     const load = async () => {
       try {
-        const { thumbnails, total } = await getListingsThumbs({ page, limit });
+        const { thumbnails, total } = await getListingsThumbs(langId, {
+          page,
+          limit,
+        });
         setListings(thumbnails);
         setTotal(total);
       } catch (err) {
@@ -24,7 +31,7 @@ function Listings() {
     };
 
     load();
-  }, [page]);
+  }, [page, langId]);
   return (
     <div className="content">
       <div className="listings-wrapper">

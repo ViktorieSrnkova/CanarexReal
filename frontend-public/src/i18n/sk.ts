@@ -77,4 +77,23 @@ export const sk = {
     next: "Ďalšie",
     back: "Späť",
   },
+  homepage: {
+    title: "Tenerife, kde sny majú adresu",
+    subtitle: "Vyberte si svoju ideálnu nehnuteľnosť z minimálne 200 ponúk.",
+    listings: "Zobraziť ponuku",
+    contact: "Kontaktovať agenta",
+  },
+  similar: {
+    error: "Momentálne nemáme podobné nehnuteľnosti.",
+    title: "Podobné nehnuteľnosti",
+  },
+  general: {
+    loading: "Načítanie ...",
+  },
+  carrousel: {
+    title: "Ponuka nehnuteľností",
+  },
+  services: {
+    more: "Ďalšie nehnuteľnosti",
+  },
 };
