@@ -1,30 +1,55 @@
-import { useNavigate } from "react-router-dom";
-//import { useLang } from "../hooks/i18n/useLang";
-//import { useT } from "../i18n";
+import { useNavigate, useParams } from "react-router-dom";
+import { useT } from "../i18n";
 import Button from "../components/General/Button";
+import "../styles/pages/istingUnavailable.css";
+import { useEffect, useState } from "react";
+import { getSimilarListings } from "../api/listings";
+import Carrousel from "../components/Listing/Carrousel";
+import { useLang } from "../hooks/i18n/useLang";
+import { LANGUAGE_TO_ID } from "../types/general";
+import type { ListingThumbnail } from "../types/rawApi";
 
 export function ListingUnavailable() {
-  //const { lang } = useLang();
-  //const t = useT();
+  const t = useT();
   const navigate = useNavigate();
+  const { id } = useParams();
+  const { lang } = useLang();
+  const langId = LANGUAGE_TO_ID[lang];
+  const [similar, setSimilar] = useState<ListingThumbnail[]>([]);
+  const [loadingSimilar, setLoadingSimilar] = useState(false);
+  useEffect(() => {
+    if (!id) return;
 
+    const loadSimilar = async () => {
+      setLoadingSimilar(true);
+      try {
+        const data = await getSimilarListings(id, langId);
+        setSimilar(data);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoadingSimilar(false);
+      }
+    };
+
+    loadSimilar();
+  }, [id, langId]);
   return (
     <div className="unavailable">
-      <h1>{/* {t("listing.notAvailableTitle")} */}404 není překlad</h1>
+      <h1>{t("listing.notAvailableTitle")}</h1>
 
-      <p>
-        {/* {t("listing.notAvailableText")} */} tenhle inzerát nemáme ve vaší
-        zvolené jazykové verzi, avšak níže můžete vidět podobné nemovitosti nebo
-        se přesunout na stránku s inzeráy
-      </p>
+      <p>{t("listing.notAvailableText")}</p>
 
       <Button onClick={() => navigate("/listings")}>
-        {/* {t("listing.backToListings")} */} Zpět na inzeráty
+        {t("listing.backToListings")}
       </Button>
-
-      <h3>{/* {t("listing.suggested")} */} Podobné inzeráty</h3>
-
-      {/* sem můžeš dát mini grid similar listings */}
+      <Carrousel
+        similar={similar}
+        loading={loadingSimilar}
+        title={t("similar.title")}
+        loadTxt={t("general.loading")}
+        errTxt={t("similar.error")}
+      />
     </div>
   );
 }

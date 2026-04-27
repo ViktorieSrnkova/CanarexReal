@@ -45,3 +45,8 @@ export type ListingsThumbResponse = {
   thumbnails: ListingThumbnail[];
   total: number;
 };
+export type Pictogram = {
+  id: number;
+  name: string | null;
+  iconSvg: string | null;
+};

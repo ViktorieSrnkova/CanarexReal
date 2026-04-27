@@ -83,6 +83,12 @@ export const en = {
     subtitle: "Find your ideal property from over 200 listings.",
     listings: "View listings",
     contact: "Contact an agent",
+    services: "View services",
+    contactMe: "Contact me",
+    servis: "Real Estate Services from A to Z",
+    rent: "I'll help you rent out your property",
+    ideal: "I'll find you the perfect property",
+    manage: "Management, cleaning, and renovation",
   },
   similar: {
     error: "We currently do not have any similar properties.",
@@ -96,5 +102,11 @@ export const en = {
   },
   services: {
     more: "More properties",
+  },
+  listing: {
+    notAvailableTitle: "Not available in this language",
+    notAvailableText:
+      "This listing is unfortunately not available in the selected language. You can browse similar properties below or go back to the listings overview.",
+    backToListings: "Back to listings",
   },
 };

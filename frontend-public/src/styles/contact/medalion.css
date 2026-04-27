@@ -3,9 +3,10 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 450px;
+  margin-top: 62px;
   position: static;
   color: #3f3f3f;
+  margin-bottom: 16px;
 }
 .medalion-graphic {
   display: flex;

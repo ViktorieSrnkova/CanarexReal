@@ -4,13 +4,13 @@ import Mail from "../../assets/Mail.svg";
 type Props = {
   name: string;
   role: string;
-  phoneMain: string;
+  phoneMain?: string;
   phoneSecondary?: string;
-  email: string;
+  email?: string;
   image: string;
   alt: string;
-  flagPath: string[];
-  flagAlts: string[];
+  flagPath?: string[];
+  flagAlts?: string[];
 };
 
 function Medalion(props: Props) {
@@ -36,25 +36,34 @@ function Medalion(props: Props) {
       </div>
       <div className="medalion-info-wrapper">
         <div className="medalion-first-row">
-          <div className="marginless number phone">
-            <img src={props.flagPath[0]} alt={props.flagAlts[0]} />
-            <img src={Phone} alt="phone icon" />
-            {props.phoneMain}
-          </div>
+          {props.phoneMain && (
+            <div className="marginless number phone">
+              {props.flagPath && props.flagAlts && (
+                <img src={props.flagPath[0]} alt={props.flagAlts[0]} />
+              )}
+              <img src={Phone} alt="phone icon" />
+              {props.phoneMain}
+            </div>
+          )}
+
           {props.phoneSecondary && (
             <div className="marginless number phone">
-              <img src={props.flagPath[1]} alt={props.flagAlts[1]} />
+              {props.flagPath && props.flagAlts && (
+                <img src={props.flagPath[1]} alt={props.flagAlts[1]} />
+              )}
               <img src={Phone} alt="phone icon" />
               {props.phoneSecondary}
             </div>
           )}
         </div>
-        <div className="medalion-second-row">
-          <a className="mail marginless" href={`mailto:${props.email}`}>
-            <img src={Mail} alt="mail icon" />
-            {props.email}
-          </a>
-        </div>
+        {props.email && (
+          <div className="medalion-second-row">
+            <a className="mail marginless" href={`mailto:${props.email}`}>
+              <img src={Mail} alt="mail icon" />
+              {props.email}
+            </a>
+          </div>
+        )}
       </div>
     </div>
   );

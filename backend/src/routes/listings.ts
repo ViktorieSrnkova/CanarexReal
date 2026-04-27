@@ -10,6 +10,26 @@ import { detectLang, type PublicRequest } from "../middleware/detectLang";
 const router = Router();
 router.use(detectLang);
 
+router.get("/fx-rates", async (req, res) => {
+  try {
+    const resFx = await fetch("https://api.frankfurter.app/latest?from=EUR", {
+      redirect: "follow",
+    });
+
+    const text = await resFx.text();
+
+    const data = JSON.parse(text);
+    console.log("rates fetched");
+    return res.json({
+      CZK: data.rates?.CZK ?? null,
+      GBP: data.rates?.GBP ?? null,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      message: "FX endpoint crashed",
+    });
+  }
+});
 router.get("/", async (req: PublicRequest, res) => {
   try {
     const page = Number(req.query.page) || 1;
@@ -170,6 +190,77 @@ router.get("/:id/similar", async (req: PublicRequest, res) => {
     res.json({ similar });
   } catch (err) {
     console.error("Similar listings error:", err);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+router.get("/:id/pictograms", async (req: PublicRequest, res) => {
+  const listingId = Number(req.params.id);
+  const langId = Number(req.headers["x-lang-id"]);
+
+  try {
+    const listingPictograms = await prisma.inzeraty_piktogramy.findMany({
+      where: { inzeraty_id: listingId },
+      select: { piktogramy_id: true },
+    });
+
+    const dynamicIds = listingPictograms.map((p) => p.piktogramy_id);
+
+    const allIds = [...new Set([1, 2, 3, ...dynamicIds])];
+
+    const pictograms = await prisma.piktogramy.findMany({
+      where: {
+        id: { in: allIds },
+      },
+      include: {
+        obrazky: {
+          select: {
+            icon_svg: true,
+          },
+        },
+        piktogramy_preklady: {
+          where: {
+            jazyky_id: langId,
+          },
+          select: {
+            nazev: true,
+          },
+        },
+      },
+    });
+
+    const result = pictograms.map((p) => ({
+      id: p.id,
+      name: p.piktogramy_preklady[0]?.nazev ?? null,
+      iconSvg: p.obrazky.icon_svg,
+    }));
+    const FIXED = [1, 2, 3];
+    const SPECIAL = 14;
+
+    const ORDER = [4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 16];
+    const orderMap = new Map(ORDER.map((id, i) => [id, i]));
+
+    const fixedItems = result.filter((p) => FIXED.includes(p.id));
+    const specialItem = result.find((p) => p.id === SPECIAL);
+    const rest = result.filter(
+      (p) => !FIXED.includes(p.id) && p.id !== SPECIAL,
+    );
+
+    rest.sort((a, b) => {
+      const aOrder = orderMap.get(a.id) ?? 999;
+      const bOrder = orderMap.get(b.id) ?? 999;
+      return aOrder - bOrder;
+    });
+
+    const sorted = [
+      ...fixedItems.sort((a, b) => a.id - b.id),
+      ...(specialItem ? [specialItem] : []),
+      ...rest,
+    ];
+
+    res.json({ pictograms: sorted });
+  } catch (err) {
+    console.error(err);
     res.status(500).json({ message: "Internal server error" });
   }
 });

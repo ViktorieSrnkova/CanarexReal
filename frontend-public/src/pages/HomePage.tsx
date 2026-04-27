@@ -8,6 +8,13 @@ import { LANGUAGE_TO_ID } from "../types/general";
 import Button from "../components/General/Button";
 import { useNavigate } from "react-router-dom";
 import { useT } from "../i18n";
+import hero from "/pages/hero.webp";
+import type { CSSProperties } from "react";
+import Medalion from "../components/Contact/Medalion";
+
+type HeroStyle = CSSProperties & {
+  "--hero"?: string;
+};
 
 function HomePage() {
   const navigate = useNavigate();
@@ -30,7 +37,14 @@ function HomePage() {
   }, [langId]);
   return (
     <>
-      <div className="hero">
+      <div
+        className="hero"
+        style={
+          {
+            "--hero": `url(${hero})`,
+          } as HeroStyle
+        }
+      >
         <h1>{t("homepage.title")}</h1>
         <h2>{t("homepage.subtitle")}</h2>
         <div className="buttons">
@@ -48,7 +62,7 @@ function HomePage() {
         alt="vlnka-gray-to-white"
       />
       {!listings.length ? (
-        <div>Loading...</div>
+        <div>{t("general.loading")}</div>
       ) : (
         <div className="content">
           <div className="hp-cards-wrapper">
@@ -86,6 +100,32 @@ function HomePage() {
         src="/general/vlnka-gray-white-nm.svg"
         alt="vlnka-gray-to-white"
       />
+      <div className="hp-contact-wrapper">
+        <div className="hp-contact">
+          <div className="hp-2-contact">
+            <p>{t("homepage.servis")}</p>
+            <p>{t("homepage.rent")}</p>
+          </div>
+          <Medalion
+            image="/contact/stan.webp"
+            alt="Stan Srnka"
+            name="Stan Srnka"
+            role="Váš realitní agent na Tenerife"
+          />
+          <div className="hp-2-contact">
+            <p>{t("homepage.ideal")}</p>
+            <p>{t("homepage.manage")}</p>
+          </div>
+        </div>
+        <div className="buttons">
+          <Button onClick={() => navigate("/services")}>
+            {t("homepage.services")}
+          </Button>
+          <Button onClick={() => navigate("/contact")} variant="secondary">
+            {t("homepage.contactMe")}
+          </Button>
+        </div>
+      </div>
     </>
   );
 }

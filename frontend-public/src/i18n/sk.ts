@@ -82,6 +82,12 @@ export const sk = {
     subtitle: "Vyberte si svoju ideálnu nehnuteľnosť z minimálne 200 ponúk.",
     listings: "Zobraziť ponuku",
     contact: "Kontaktovať agenta",
+    services: "Zobraziť služby",
+    contactMe: "Kontaktujte ma",
+    servis: "Realitné služby od A po Z",
+    rent: "Zabezpečím prenájom vašej nehnuteľnosti",
+    ideal: "Nájdem vám ideálnu nehnuteľnosť",
+    manage: "Správa, upratovanie a rekonštrukcia",
   },
   similar: {
     error: "Momentálne nemáme podobné nehnuteľnosti.",
@@ -95,5 +101,11 @@ export const sk = {
   },
   services: {
     more: "Ďalšie nehnuteľnosti",
+  },
+  listing: {
+    notAvailableTitle: "Nedostupné v tomto jazyku",
+    notAvailableText:
+      "Táto ponuka bohužiaľ nie je k dispozícii vo vybranom jazyku. Môžete si pozrieť podobné nehnuteľnosti nižšie alebo sa vrátiť na zoznam inzerátov.",
+    backToListings: "Späť na inzeráty",
   },
 };

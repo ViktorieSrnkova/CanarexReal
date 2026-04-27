@@ -1,7 +1,9 @@
+import type { FxRates } from "../types/general";
 import type {
   GetListingsQuery,
   ListingsThumbResponse,
   ListingThumbnail,
+  Pictogram,
 } from "../types/rawApi";
 import { api } from "./axios";
 
@@ -51,4 +53,22 @@ export const getSimilarListings = async (
   });
 
   return data.similar;
+};
+
+export const getPictogramsForId = async (
+  id: number | string,
+  langId: number,
+): Promise<Pictogram[]> => {
+  const { data } = await api.get(`/listings/${id}/pictograms`, {
+    headers: {
+      "x-lang-id": langId,
+    },
+  });
+
+  return data.pictograms;
+};
+
+export const getFxRates = async (): Promise<FxRates> => {
+  const res = await api.get("/listings/fx-rates");
+  return res.data;
 };

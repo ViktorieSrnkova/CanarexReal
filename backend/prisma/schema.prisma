@@ -15,11 +15,11 @@ model adresy {
   mesto           String?  @db.VarChar(50)
   lat             Decimal  @db.Decimal(10, 8)
   lng             Decimal  @db.Decimal(10, 8)
-  nominatim_id    Int? 
   staty_id        Int
   smerovaci_cislo String?  @db.VarChar(20)
   cela_adresa     String?  @db.VarChar(255)
   inzeraty_id     Int      @unique(map: "adresy_inzeraty_id_unique")
+  nominatim_id    Int?
   inzeraty        inzeraty @relation(fields: [inzeraty_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_adresy_inzeraty")
   staty           staty    @relation(fields: [staty_id], references: [id], onUpdate: NoAction, map: "fk_adresy_stat")
 }
@@ -52,20 +52,20 @@ model formulare {
   prijmeni                   String                       @db.VarChar(100)
   email                      String                       @db.VarChar(50)
   telefon                    String                       @db.VarChar(20)
-  pocet_loznic               Int[]
-  pocet_koupelen             Int[]
-  rozpocet_od                Int?
-  rozpocet_do                Int?
-  velikost_od                Int?
-  velikost_do                Int?
   index_inzeratu             Int?
   prilet                     DateTime?                    @db.Date
-  vi_prilet                  Boolean?                    
   revidovano                 Boolean                      @default(false)
   text_zpravy                String
   odkud_formular_id          Int
   typy_formulare_id          Int
   datum_vytvoreni            DateTime                     @default(now()) @db.Timestamp(6)
+  rozpocet_do                Int?
+  rozpocet_od                Int?
+  velikost_do                Int?
+  velikost_od                Int?
+  pocet_loznic               Int[]
+  pocet_koupelen             Int[]
+  vi_prilet                  Boolean?
   odkud_formular             odkud_formular               @relation(fields: [odkud_formular_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "formulare_odkud_formular")
   typy_formulare             typy_formulare               @relation(fields: [typy_formulare_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "formulare_typy_formulare")
   formulare_typy_nemovitosti formulare_typy_nemovitosti[]
@@ -154,6 +154,7 @@ model obrazky {
   uploaded_at      DateTime?          @default(now()) @db.Timestamp(6)
   is_temp          Boolean?           @default(true)
   data             Bytes?
+  icon_svg         String?
   aktuality        aktuality?         @relation(fields: [aktuality_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "obrazky_aktuality")
   inzeraty         inzeraty?          @relation(fields: [inzeraty_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "obrazky_inzeraty")
   obrazky_preklady obrazky_preklady[]

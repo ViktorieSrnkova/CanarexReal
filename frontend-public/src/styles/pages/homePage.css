@@ -36,7 +36,7 @@
   content: "";
   position: absolute;
   inset: 0;
-  background-image: url("/pages/hero.webp");
+  background-image: var(--hero);
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
@@ -72,5 +72,37 @@
   align-items: center;
   justify-content: flex-end;
   width: 100%;
+  gap: 16px;
+}
+
+.hp-contact {
+  display: flex;
+  gap: 42px;
+  align-items: center;
+}
+
+.hp-2-contact {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  max-width: 170px;
+  text-align: center;
+}
+.hp-2-contact p {
+  background: #c1e6f5;
+  padding: 8px;
+  border-radius: 0 16px;
+}
+.hp-contact-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding-top: 32px;
+  padding-bottom: 2px;
+}
+.hp-contact-wrapper .buttons {
+  display: flex;
   gap: 16px;
 }

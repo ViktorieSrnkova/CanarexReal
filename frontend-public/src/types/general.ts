@@ -9,3 +9,7 @@ export const LANGUAGE_TO_ID: Record<Language, number> = {
   cs: 2,
   sk: 3,
 };
+export type FxRates = {
+  CZK: number;
+  GBP: number;
+};

@@ -82,6 +82,12 @@ export const cs = {
     subtitle: "Najděte si z minimálně 200 nabídek svou ideální nemovitost.",
     listings: "Zobrazit nabídku",
     contact: "Kontaktovat agenta",
+    services: "Zobrazit služby",
+    contactMe: "Kontaktujte mě",
+    servis: "Realitní servis od A do Z",
+    rent: "Zajistím pronájem Vaší nemovitosti",
+    ideal: "Najdu Vám ideální nemovitost",
+    manage: "Správa, úklid a rekonstrukce",
   },
   similar: {
     error: "Momentálně nemáme podobné nemovitosti.",
@@ -95,5 +101,11 @@ export const cs = {
   },
   services: {
     more: "Další nemovitosti",
+  },
+  listing: {
+    notAvailableTitle: "Nedostupné v tomto jazyce",
+    notAvailableText:
+      "Tento inzerát bohužel není k dispozici ve vybraném jazyce. Můžete si prohlédnout podobné nemovitosti níže nebo přejít na seznam inzerátů.",
+    backToListings: "Zpět na inzeráty",
   },
 };
