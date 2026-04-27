@@ -57,3 +57,8 @@
 .listing-hero-icons img:hover {
   transform: scale(1.1);
 }
+
+.copied-text {
+  background: rgb(174, 255, 227);
+  border-top: 5px solid rgb(174, 255, 227);
+}

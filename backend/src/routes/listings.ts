@@ -130,8 +130,15 @@ router.get("/:id", async (req: PublicRequest, res) => {
     const id = Number(req.params.id);
     const langId = req.userLangId ?? 2;
 
-    const listing = await prisma.inzeraty.findUnique({
-      where: { id },
+    const listing = await prisma.inzeraty.findFirst({
+      where: {
+        id,
+        inzeraty_preklady: {
+          some: {
+            jazyky_id: langId,
+          },
+        },
+      },
       select: listingDetailSelect(langId),
     });
 

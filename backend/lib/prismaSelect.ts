@@ -113,7 +113,12 @@ export function listingDetailSelect(langId: number = 2) {
     },
 
     obrazky: {
-      where: { poradi: 0 },
+      where: {
+        poradi: {
+          not: 0,
+        },
+      },
+      orderBy: { poradi: "asc" as const },
       select: {
         id: true,
         poradi: true,

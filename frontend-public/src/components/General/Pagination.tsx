@@ -29,7 +29,11 @@ function Pagination({ page, totalPages, onChange }: Props) {
         onClick={() => onChange(page - 1)}
         disabled={page === 1}
       >
-        <img className="arrow" src="/utils/arrow-left.svg" alt="arrow left" />{" "}
+        <img
+          className="arrow-pg"
+          src="/utils/arrow-left.svg"
+          alt="arrow left"
+        />{" "}
         {t("listings.back")}
       </button>
 
@@ -55,7 +59,11 @@ function Pagination({ page, totalPages, onChange }: Props) {
         disabled={page === totalPages}
       >
         {t("listings.next")}{" "}
-        <img className="arrow" src="/utils/arrow-right.svg" alt="arrow right" />
+        <img
+          className="arrow-pg"
+          src="/utils/arrow-right.svg"
+          alt="arrow right"
+        />
       </button>
     </div>
   );

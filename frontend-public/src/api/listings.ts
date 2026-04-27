@@ -1,6 +1,7 @@
 import type { FxRates } from "../types/general";
 import type {
   GetListingsQuery,
+  ListingDetailResponse,
   ListingsThumbResponse,
   ListingThumbnail,
   Pictogram,
@@ -71,4 +72,16 @@ export const getPictogramsForId = async (
 export const getFxRates = async (): Promise<FxRates> => {
   const res = await api.get("/listings/fx-rates");
   return res.data;
+};
+export const getListingDetail = async (
+  id: number | string,
+  langId: number,
+): Promise<ListingDetailResponse> => {
+  const { data } = await api.get(`/listings/${id}`, {
+    headers: {
+      "x-lang-id": langId,
+    },
+  });
+
+  return data.listing;
 };

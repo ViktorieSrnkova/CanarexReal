@@ -3,9 +3,14 @@ import Card from "../components/Listing/Card";
 import { useT } from "../i18n";
 import { useParams } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
-import type { ListingThumbnail, Pictogram } from "../types/rawApi";
+import type {
+  ListingDetailResponse,
+  ListingThumbnail,
+  Pictogram,
+} from "../types/rawApi";
 import {
   getListingById,
+  getListingDetail,
   getPictogramsForId,
   getSimilarListings,
 } from "../api/listings";
@@ -18,6 +23,8 @@ import Pictograms from "../components/Listing/Pictograms";
 import { formatMoneyEUR } from "../utils/formatting";
 import "../styles/pages/singlelisting.css";
 import { useFx } from "../FxContext";
+import Tooltip from "../components/General/Tooltip";
+import ListingGallery from "../components/Listing/Gallery";
 
 function SingleListing() {
   const t = useT();
@@ -26,10 +33,12 @@ function SingleListing() {
   const { lang } = useLang();
   const langId = LANGUAGE_TO_ID[lang];
   const [listing, setListing] = useState<ListingThumbnail | null>(null);
+  const [detail, setDetail] = useState<ListingDetailResponse | null>(null);
   const [notAvailable, setNotAvailable] = useState(false);
   const [similar, setSimilar] = useState<ListingThumbnail[]>([]);
   const [loadingSimilar, setLoadingSimilar] = useState(false);
   const [pictograms, setPictograms] = useState<Pictogram[]>([]);
+  const [hoveredIcon, setHoveredIcon] = useState<"like" | "copy" | null>(null);
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
@@ -39,6 +48,8 @@ function SingleListing() {
       try {
         const data = await getListingById(id, langId);
         setListing(data);
+        const data2 = await getListingDetail(id, langId);
+        setDetail(data2);
         setNotAvailable(false);
       } catch (err) {
         const error = err as AxiosError;
@@ -121,20 +132,21 @@ function SingleListing() {
     status_id: listing.statusy_id,
   };
 
-  const handleLikeClick = () => {
-    /*     if (!user) { */
+  /*   const handleLikeClick = () => {
+   if (!user) { 
     // TODO: redirect / modal / toast
     console.log("User must be logged in to like");
     return;
-    /*  } */
+    }
 
-    /* console.log("LIKE listing:", listing.id); */
+    console.log("LIKE listing:", listing.id); 
   };
-  const handleCopyLink = async () => {
+   */
+  const handleCopy = async () => {
     await navigator.clipboard.writeText(window.location.href);
     setCopied(true);
 
-    setTimeout(() => setCopied(false), 1500);
+    setTimeout(() => setCopied(false), 300);
   };
   return (
     <>
@@ -142,23 +154,46 @@ function SingleListing() {
         <div className="first-row">
           <h1>{listing.inzeraty_preklady[0]?.titulek}</h1>
           <div className="listing-hero-icons">
-            <img
-              src="/listings/heart.svg"
-              onClick={handleLikeClick}
-              style={{ cursor: "pointer" }}
-              alt="like"
-            />
-
-            {copied ? (
-              <span className="copied-text">Zkopírováno ✓</span>
-            ) : (
+            {/*  <div
+              onMouseEnter={() => setHoveredIcon("like")}
+              onMouseLeave={() => setHoveredIcon(null)}
+              style={{ position: "relative" }}
+            >
               <img
-                src="/listings/copy.svg"
-                onClick={handleCopyLink}
+                src="/listings/heart.svg"
+                onClick={handleLikeClick}
                 style={{ cursor: "pointer" }}
+                alt="like"
+              />
+              {hoveredIcon === "like" && (
+                <Tooltip message="Přidat do oblíbených" top={-34} left={-84} />
+              )}
+            </div>
+ */}
+            <div
+              onMouseEnter={() => setHoveredIcon("copy")}
+              onMouseLeave={() => setHoveredIcon(null)}
+              style={{ position: "relative" }}
+            >
+              <img
+                onClick={handleCopy}
+                src="/listings/copy.svg"
+                style={{
+                  cursor: "pointer",
+                  background: copied ? "#87ceeb" : "",
+                  borderRadius: "8px",
+                  transition: "background 0.2s ease-out",
+                }}
                 alt="copy link"
               />
-            )}
+              {hoveredIcon === "copy" && (
+                <Tooltip
+                  message="Zkopírovat URL inzerátu"
+                  top={-34}
+                  left={-90}
+                />
+              )}
+            </div>
           </div>
         </div>
         <div className="second-row">
@@ -181,6 +216,7 @@ function SingleListing() {
           </div>
         </div>
       </div>
+      <ListingGallery imagesProp={detail?.obrazky ?? []} />
       <div className="pictograms gray ">
         <Pictograms
           pictograms={pictograms}
