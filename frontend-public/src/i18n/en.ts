@@ -108,5 +108,11 @@ export const en = {
     notAvailableText:
       "This listing is unfortunately not available in the selected language. You can browse similar properties below or go back to the listings overview.",
     backToListings: "Back to listings",
+    description: "Property description",
+    detail: "Details",
+    location: "Property location",
+    city: "City:",
+    collapsed: "show full description",
+    expanded: "show less",
   },
 };

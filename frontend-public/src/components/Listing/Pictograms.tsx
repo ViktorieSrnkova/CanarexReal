@@ -1,8 +1,8 @@
-import type { Pictogram } from "../../types/rawApi";
 import "../../styles/listing/pictograms.css";
+import type { PictogramDTO } from "../../types/rawApi";
 
 type Props = {
-  pictograms: Pictogram[];
+  pictograms: PictogramDTO[];
   bed: number;
   bath: number;
   size: string;
@@ -14,6 +14,7 @@ function Pictograms(props: Props) {
     2: props.bath,
     3: props.size,
   };
+
   return (
     <div className="pict">
       {props.pictograms.map((p) => (
@@ -21,13 +22,17 @@ function Pictograms(props: Props) {
           <div className="top-part">
             <div
               className="icon"
-              dangerouslySetInnerHTML={{ __html: p.iconSvg ?? "" }}
+              dangerouslySetInnerHTML={{
+                __html: p.iconSvg ?? "",
+              }}
             />
+
             {extraValues[p.id] !== undefined && (
               <span className="number pict-det">{extraValues[p.id]}</span>
             )}
           </div>
-          <span className="pict-name">{p.name}</span>
+
+          <span className="pict-name">{p.name ?? ""}</span>
         </div>
       ))}
     </div>

@@ -3,15 +3,10 @@ import Card from "../components/Listing/Card";
 import { useT } from "../i18n";
 import { useParams } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
-import type {
-  ListingDetailResponse,
-  ListingThumbnail,
-  Pictogram,
-} from "../types/rawApi";
+import type { ListingDetailResponse, ListingThumbnail } from "../types/rawApi";
 import {
   getListingById,
   getListingDetail,
-  getPictogramsForId,
   getSimilarListings,
 } from "../api/listings";
 import { useLang } from "../hooks/i18n/useLang";
@@ -25,6 +20,9 @@ import "../styles/pages/singlelisting.css";
 import { useFx } from "../FxContext";
 import Tooltip from "../components/General/Tooltip";
 import ListingGallery from "../components/Listing/Gallery";
+import Map from "../components/General/Map";
+import EditorRendererWrapper from "../components/Editor/EditorRendererWrapper";
+import { ExpandableDescription } from "../components/Listing/ExpandableDescription";
 
 function SingleListing() {
   const t = useT();
@@ -37,7 +35,6 @@ function SingleListing() {
   const [notAvailable, setNotAvailable] = useState(false);
   const [similar, setSimilar] = useState<ListingThumbnail[]>([]);
   const [loadingSimilar, setLoadingSimilar] = useState(false);
-  const [pictograms, setPictograms] = useState<Pictogram[]>([]);
   const [hoveredIcon, setHoveredIcon] = useState<"like" | "copy" | null>(null);
   const [copied, setCopied] = useState(false);
 
@@ -48,8 +45,8 @@ function SingleListing() {
       try {
         const data = await getListingById(id, langId);
         setListing(data);
-        const data2 = await getListingDetail(id, langId);
-        setDetail(data2);
+        const detail = await getListingDetail(id, langId);
+        setDetail(detail);
         setNotAvailable(false);
       } catch (err) {
         const error = err as AxiosError;
@@ -95,21 +92,6 @@ function SingleListing() {
     loadSimilar();
   }, [id, langId]);
 
-  useEffect(() => {
-    if (!id) return;
-    const fetchPictograms = async () => {
-      try {
-        const data = await getPictogramsForId(id, langId);
-        setPictograms(data);
-      } catch (err) {
-        console.error("Failed to load pictograms:", err);
-        setPictograms([]);
-      }
-    };
-
-    fetchPictograms();
-  }, [id, langId]);
-
   if (notAvailable) {
     return <ListingUnavailable />;
   }
@@ -148,6 +130,14 @@ function SingleListing() {
 
     setTimeout(() => setCopied(false), 300);
   };
+  const lat = detail?.adresy?.lat;
+  const lng = detail?.adresy?.lng;
+
+  if (lat == null || lng == null) return null;
+
+  const detContent = detail?.inzeraty_preklady?.[0]?.detaily;
+  const content = detail?.inzeraty_preklady?.[0]?.popis;
+  if (!content) return;
   return (
     <>
       <div className="listing-hero">
@@ -219,7 +209,7 @@ function SingleListing() {
       <ListingGallery imagesProp={detail?.obrazky ?? []} />
       <div className="pictograms gray ">
         <Pictograms
-          pictograms={pictograms}
+          pictograms={detail?.inzeraty_piktogramy ?? []}
           bath={listing.koupelny}
           bed={listing.loznice}
           size={`${listing.velikost} m²`}
@@ -230,6 +220,29 @@ function SingleListing() {
         alt="vlnka-gray-to-white"
         src="/general/vlnka-gray-white-nm.svg"
       ></img>
+      <ExpandableDescription content={content} />
+      <div className="lower-section">
+        <div className="details-wrapper">
+          <h3>{t("listing.detail")}</h3>
+          <EditorRendererWrapper data={detContent} />
+        </div>
+        <div className="map-wrapper">
+          <h3>{t("listing.location")}</h3>
+          <div className="city">
+            <h4>{t("listing.city")}</h4> <p>{detail?.adresy.lokace}</p>
+          </div>
+          <div className="address">
+            <img src="/utils/map-pin.svg" alt="map pin" />
+            <p>{detail?.adresy.cela_adresa}</p>
+          </div>
+          <Map height="320px" lat={lat} lng={lng} zoom={12} />
+        </div>
+      </div>
+      <img
+        className="wawe"
+        src="/general/vlnka-white-gray.svg"
+        alt="vlnka-white-to-gray"
+      />
       <div className="contact gray">
         <h2>{t("form.titleDet")}</h2>
         <h3 className="padded-subtitle">{t("form.subtitleDet")}</h3>
@@ -249,6 +262,16 @@ function SingleListing() {
         title={t("similar.title")}
         loadTxt={t("general.loading")}
         errTxt={t("similar.error")}
+      />{" "}
+      <img
+        className="wawe"
+        src="/general/vlnka-white-gray.svg"
+        alt="vlnka-white-to-gray"
+      />
+      <img
+        className="wawe"
+        src="/general/vlnka-gray-white-nm.svg"
+        alt="vlnka-gray-to-white"
       />
       <div className="contact white">
         <h2>{t("form.titleInq")}</h2>

@@ -1,3 +1,5 @@
+import type { PropertyType } from "./filters";
+
 export type ContactFormValues = {
   name: string;
   surname: string;
@@ -46,3 +48,16 @@ export type ContactFormPayload = FormPayload<ContactFormValues>;
 export type DetailListingPayload = FormPayload<DetailListingFormValues>;
 
 export type InqueryPayload = FormPayload<InqueryFormValues>;
+
+export type FormValues = {
+  type: PropertyType[];
+  priceFrom: number;
+  priceTo: number;
+  sizeFrom: number;
+  sizeTo: number;
+  bedrooms: number[];
+  bathrooms: number[];
+  arrivalMode: "date" | "unknown";
+  arrival?: Date | null;
+};
+export type InquiryFormPatch = Partial<FormValues>;

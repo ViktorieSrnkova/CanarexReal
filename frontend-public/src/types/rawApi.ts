@@ -29,6 +29,8 @@ export type ListingThumbnail = {
   adresy: {
     lokace: string;
     mesto: string;
+    lat: number;
+    lng: number;
   } | null;
 
   inzeraty_preklady: {
@@ -45,13 +47,8 @@ export type ListingsThumbResponse = {
   thumbnails: ListingThumbnail[];
   total: number;
 };
-export type Pictogram = {
-  id: number;
-  name: string | null;
-  iconSvg: string | null;
-};
 
-export type ListingDetailResponse = {
+export type listingDetailSelect = {
   id: number;
   index: number;
   cena_v_eur: number;
@@ -69,12 +66,11 @@ export type ListingDetailResponse = {
   }[];
 
   adresy: {
-    ulice: string;
-    cislo_popisne: string;
     lokace: string;
     mesto: string;
     lat: number;
     lng: number;
+    cela_adresa: string;
     staty: {
       stat_preklady: {
         nazev: string;
@@ -97,19 +93,6 @@ export type ListingDetailResponse = {
   };
 
   obrazky: ListingImageRaw[];
-
-  inzeraty_piktogramy: {
-    piktogramy: {
-      id: number;
-      nazev: string;
-      obrazky: {
-        id: number;
-      }[];
-      piktogramy_preklady: {
-        nazev: string;
-      }[];
-    };
-  }[];
 };
 export type ListingImageRaw = {
   id: number;
@@ -117,4 +100,13 @@ export type ListingImageRaw = {
   obrazky_preklady: {
     alt_text: string;
   }[];
+};
+
+export type PictogramDTO = {
+  id: number;
+  name: string | null;
+  iconSvg: string | null;
+};
+export type ListingDetailResponse = listingDetailSelect & {
+  inzeraty_piktogramy: PictogramDTO[];
 };

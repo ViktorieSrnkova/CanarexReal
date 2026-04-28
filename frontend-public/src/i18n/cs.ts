@@ -107,5 +107,11 @@ export const cs = {
     notAvailableText:
       "Tento inzerát bohužel není k dispozici ve vybraném jazyce. Můžete si prohlédnout podobné nemovitosti níže nebo přejít na seznam inzerátů.",
     backToListings: "Zpět na inzeráty",
+    description: "Popis nemovitosti",
+    detail: "Podrobnosti",
+    location: "Lokace nemovitosti",
+    city: "Město:",
+    collapsed: "zobrazit celý popis",
+    expanded: "zobrazit méně",
   },
 };

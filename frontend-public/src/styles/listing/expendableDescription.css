@@ -1,0 +1,73 @@
+.det-content {
+  max-height: 140px;
+  overflow: hidden;
+  position: relative;
+  transition: max-height 0.2s ease-in-out;
+  will-change: max-height;
+}
+
+.det-content::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 90px;
+  background: linear-gradient(to bottom, transparent, white);
+}
+.det-content.expanded {
+  max-height: 1000px;
+}
+
+.det-content.expanded::after {
+  display: none;
+}
+
+.arrow-up,
+.arrow-down {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.2s;
+}
+.det-toggle-btn {
+  background-color: transparent;
+  color: #06a1e0;
+  padding: 4px;
+  height: 22px;
+}
+.det-toggle-btn:hover {
+  background-color: transparent;
+  color: #87ceeb;
+}
+.det-btn-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 26px;
+}
+
+.arrow-up:hover,
+.arrow-down:hover {
+  opacity: 0.6;
+}
+
+.arrow-up::before,
+.arrow-down::before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  border-top: 2px solid #87ceeb;
+  border-right: 2px solid #87ceeb;
+}
+
+.arrow-up::before {
+  transform: rotate(-45deg);
+}
+
+.arrow-down::before {
+  transform: rotate(135deg);
+}

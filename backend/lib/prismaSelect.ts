@@ -39,7 +39,7 @@ export function listingThumbnailSelect(langId: number = 2) {
       },
     },
     adresy: {
-      select: { lokace: true, mesto: true },
+      select: { lokace: true, mesto: true, lat: true, lng: true },
     },
     inzeraty_preklady: {
       where: { jazyky_id: langId },
@@ -72,12 +72,11 @@ export function listingDetailSelect(langId: number = 2) {
 
     adresy: {
       select: {
-        ulice: true,
-        cislo_popisne: true,
         lokace: true,
         mesto: true,
         lat: true,
         lng: true,
+        cela_adresa: true,
         staty: {
           select: {
             stat_preklady: {
@@ -85,7 +84,6 @@ export function listingDetailSelect(langId: number = 2) {
               select: {
                 nazev: true,
               },
-              take: 1,
             },
           },
         },
@@ -125,24 +123,6 @@ export function listingDetailSelect(langId: number = 2) {
         obrazky_preklady: {
           where: { jazyky_id: langId },
           select: { alt_text: true },
-        },
-      },
-    },
-
-    inzeraty_piktogramy: {
-      select: {
-        piktogramy: {
-          select: {
-            id: true,
-            nazev: true,
-            obrazky: {
-              select: { id: true },
-            },
-            piktogramy_preklady: {
-              where: { jazyky_id: langId },
-              select: { nazev: true },
-            },
-          },
         },
       },
     },

@@ -1,6 +1,5 @@
 import { MapContainer, TileLayer, Marker } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import type { LatLngExpression } from "leaflet";
 import L from "leaflet";
 
 const redIcon = new L.Icon({
@@ -10,15 +9,23 @@ const redIcon = new L.Icon({
   iconSize: [25, 41],
   iconAnchor: [12, 41],
 });
-const position: LatLngExpression = [28.239334, -16.840377];
+type Props = {
+  lat: number;
+  lng: number;
+  zoom: number;
+  height: string;
+};
 
-export default function OfficeMap() {
+function Map({ lat, lng, zoom, height }: Props) {
+  const position: [number, number] = [lat, lng];
+
   return (
     <MapContainer
       center={position}
-      zoom={16}
+      zoom={zoom}
+      style={{ height: height, width: "100%" }}
       scrollWheelZoom={false}
-      style={{ height: "300px", width: "100%" }}
+      className="map"
     >
       <TileLayer
         attribution="&copy; OpenStreetMap"
@@ -29,3 +36,5 @@ export default function OfficeMap() {
     </MapContainer>
   );
 }
+
+export default Map;

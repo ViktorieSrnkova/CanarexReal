@@ -3,6 +3,12 @@
   font-weight: normal;
   box-sizing: border-box;
 }
+@import "leaflet/dist/leaflet.css";
+@import "leaflet.markercluster/dist/MarkerCluster.css";
+@import "leaflet.markercluster/dist/MarkerCluster.Default.css";
+b {
+  font-weight: bold;
+}
 .number {
   font-family: "Roboto", sans-serif;
   font-style: normal;
@@ -29,4 +35,35 @@ button {
   align-items: center;
   padding-top: 24px;
   padding-bottom: 24px;
+}
+
+.price-label {
+  display: inline-block;
+  background: white;
+  border-radius: 5px;
+  border: 1px solid #87ceeb;
+  padding: 2px 5px;
+  color: #000;
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  box-shadow: 0 1px 1px rgba(112, 138, 141, 0.659);
+  position: relative;
+}
+
+.price-label::after {
+  content: "";
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 5px 5px 0 5px;
+  border-style: solid;
+  border-color: black transparent transparent transparent;
+}
+.price-label.active {
+  background: #c1e6f5;
+  color: #1e1e1e;
+  border: 1px solid #5bb8e6;
+  transform: scale(1.1);
 }

@@ -1,5 +1,5 @@
 import Medalion from "../components/Contact/Medalion";
-import OfficeMap from "../components/Contact/OfficeMap";
+import Map from "../components/General/Map";
 import BaseForm from "../components/Forms/BaseForm";
 import { useT } from "../i18n";
 import "../styles/pages/contact.css";
@@ -39,8 +39,13 @@ function Contact() {
         </div>
       </div>
       <div className="contact-map">
-        <OfficeMap />
+        <Map lat={28.239334} lng={-16.840377} height="320px" zoom={16} />
       </div>
+      <img
+        className="wawe"
+        src="/general/vlnka-gray-white-nm.svg"
+        alt="vlnka-gray-to-white"
+      />
       <div className="contact white">
         <h2>{t("form.titleInq")}</h2>
         <h3 className="inq-subtitle">{t("form.subtitleInq")}</h3>

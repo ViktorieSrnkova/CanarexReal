@@ -8,8 +8,8 @@ import "../../styles/forms/baseForm.css";
 import Button from "../General/Button";
 import type { ContactFormValues, InqueryFormValues } from "../../types/forms";
 import { createForm } from "../../api/forms";
-import InqueryFormPart from "./InqueryFormPart";
 import { useLang } from "../../hooks/i18n/useLang";
+import InqueryFormPartRHF from "./InqueryFormPartRHF";
 type Props =
   | { from: number; what: 1 }
   | { from: number; what: 2; index: number }
@@ -151,7 +151,7 @@ export default function ContactForm(props: Props): React.ReactElement {
       >
         {props.what === 3 && (
           <div className="init-column">
-            <InqueryFormPart />
+            <InqueryFormPartRHF />
           </div>
         )}
         <div

@@ -1,25 +1,20 @@
 import ToggleButton from "./ToggleButton";
 import "../../styles/general/toggleGroup.css";
 
-type Option = {
-  label: string;
-  value: number;
-};
-
-type Props = {
-  options: Option[];
-  value: number[];
-  onChange: (value: number[]) => void;
+type Props<T extends number> = {
+  options: { label: string; value: T }[];
+  value: T[];
+  onChange: (value: T[]) => void;
   label: string;
 };
 
-export default function ToggleGroup({
+export default function ToggleGroup<T extends number>({
   options,
   value,
   onChange,
   label,
-}: Props) {
-  const toggle = (val: number) => {
+}: Props<T>) {
+  const toggle = (val: T) => {
     if (value.includes(val)) {
       onChange(value.filter((v) => v !== val));
     } else {

@@ -107,5 +107,11 @@ export const sk = {
     notAvailableText:
       "Táto ponuka bohužiaľ nie je k dispozícii vo vybranom jazyku. Môžete si pozrieť podobné nehnuteľnosti nižšie alebo sa vrátiť na zoznam inzerátov.",
     backToListings: "Späť na inzeráty",
+    description: "Popis nehnuteľnosti",
+    detail: "Podrobnosti",
+    location: "Poloha nehnuteľnosti",
+    city: "Mesto:",
+    collapsed: "zobraziť celý popis",
+    expanded: "zobraziť menej",
   },
 };

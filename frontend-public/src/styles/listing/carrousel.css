@@ -11,6 +11,7 @@
 .crsl-first-row h2 {
   text-align: center;
   margin-top: 32px;
+  font-weight: 600;
 }
 .crsl-third-row {
   display: flex;
