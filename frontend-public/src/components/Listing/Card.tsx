@@ -54,7 +54,7 @@ function Card(props: Props) {
       <div className="card-third-row">
         <p>{props.typ}</p>
         <div className="card-price number">
-          {formatMoneyEUR(props.cena_v_eur)}
+          <b className="bold-num"> {formatMoneyEUR(props.cena_v_eur)}</b>
         </div>
       </div>
     </div>

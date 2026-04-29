@@ -116,7 +116,7 @@ export default function ListingGallery({ imagesProp }: Props) {
         <div onClick={next} className="arrow arrow-right"></div>
       </div>
 
-      <div className="gallery-thumbs" ref={thumbsRef}>
+      <div className="gallery-thumbs pc" ref={thumbsRef}>
         {images.map((img, i) => (
           <img
             key={img + i}

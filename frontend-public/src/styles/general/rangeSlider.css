@@ -1,13 +1,13 @@
 .range-header {
   display: flex;
   justify-content: space-between;
-  max-width: 402px;
-  margin-bottom: 8px;
+  max-width: 25.125rem;
+  margin-bottom: 0.5rem;
 }
 .range {
-  font-size: 14px;
+  font-size: 0.875em;
 }
 .range-input {
-  max-width: 390px;
-  margin-left: 6px;
+  max-width: 24.375rem;
+  margin-left: 0.375rem;
 }

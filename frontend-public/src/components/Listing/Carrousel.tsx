@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Card from "./Card";
 import type { ListingThumbnail } from "../../types/rawApi";
 import "../../styles/listing/carrousel.css";
@@ -14,12 +14,24 @@ type Props = {
 function Carrousel(props: Props) {
   const similar = props.similar;
   const [startIndex, setStartIndex] = useState(0);
-  const visibleCount = 3;
   const total = similar.length;
-
+  const [visibleCount, setVisibleCount] = useState(3);
   const isEmpty = total === 0;
   const isStatic = total > 0 && total <= 3;
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth <= 1112) {
+        setVisibleCount(1);
+      } else {
+        setVisibleCount(3);
+      }
+    };
 
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
   const mapCard = (sim: ListingThumbnail) => ({
     id: sim.id,
     titulek: sim.inzeraty_preklady[0]?.titulek ?? "",

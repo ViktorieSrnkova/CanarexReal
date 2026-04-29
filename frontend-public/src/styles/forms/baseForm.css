@@ -3,7 +3,7 @@
   background-color: #f5f5f5;
   display: flex;
   flex-direction: row;
-  gap: 32px;
+  gap: 2rem;
   width: 100%;
 }
 
@@ -13,53 +13,53 @@
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
-  gap: 32px;
+  gap: 2rem;
   width: 100%;
 }
 .det-wrap {
-  max-width: 627px;
+  max-width: 39.188rem;
   width: 100%;
 }
 .details-form-wrapper {
-  max-width: 627px;
+  max-width: 39.188rem;
   width: 100%;
 }
 
 .grid-2 {
-  max-width: 708px;
+  max-width: 44.25rem;
   width: 100%;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px;
+  gap: 0.625rem;
 }
 .long {
-  max-width: 1022px;
+  max-width: 63.875rem;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px;
+  gap: 0.625rem;
 }
 .short {
-  max-width: 627px;
-  min-height: 115px;
-  height: 115px;
+  max-width: 39.188rem;
+  min-height: 7.188rem;
+  height: 7.188rem;
 }
 .field {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 0.5rem;
 }
 
 .field label {
-  font-size: 14px;
+  font-size: 0.875em;
   color: #333;
 }
 
 input,
 textarea {
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  padding: 10px 12px;
-  font-size: 16px;
+  border: 0.063rem solid #ddd;
+  border-radius: 0.625rem;
+  padding: 0.625em 0.75rem;
+  font-size: 1em;
   outline: none;
   transition: 0.2s;
   background: #fff;
@@ -71,23 +71,23 @@ textarea:focus {
 }
 
 .full {
-  margin-top: 15px;
+  margin-top: 0.938rem;
   width: 100%;
 }
 
 textarea {
-  min-height: 80px;
-  height: 138px;
+  min-height: 5rem;
+  height: 8.625rem;
   resize: vertical;
 }
 
 .phone-row {
   display: flex;
-  gap: 8px;
+  gap: 0.5rem;
 }
 
 .phone-row .prefix {
-  width: 90px;
+  width: 5.625rem;
 }
 .phoneInput {
   width: 100%;
@@ -95,12 +95,12 @@ textarea {
 }
 .error {
   color: #ff4d4f;
-  font-size: 12px;
+  font-size: 0.75em;
 }
 
 .gdpr-col {
-  margin-top: 10px;
-  font-size: 13px;
+  margin-top: 0.625rem;
+  font-size: 0.813em;
   color: #444;
   display: flex;
   flex-direction: column;
@@ -109,14 +109,14 @@ textarea {
 .submit-row {
   display: flex;
   justify-content: space-between;
-  margin-top: 15px;
+  margin-top: 0.938rem;
 }
 
 .required-hint {
-  font-size: 12px;
+  font-size: 0.75em;
   color: #111;
   opacity: 0.8;
-  margin-top: 10px;
+  margin-top: 0.625rem;
   text-align: left;
 }
 .input {
@@ -140,11 +140,11 @@ textarea {
 }
 .epho {
   position: absolute;
-  margin-left: 100px;
+  margin-left: 6.25rem;
 }
 .submit-msg {
-  margin-top: 10px;
-  font-size: 14px;
+  margin-top: 0.625rem;
+  font-size: 0.875em;
 }
 
 .submit-msg.success {
@@ -155,9 +155,9 @@ textarea {
   color: #ff4d4f;
 }
 .spinner {
-  width: 18px;
-  height: 18px;
-  border: 2px solid rgba(255, 255, 255, 0.4);
+  width: 1.125rem;
+  height: 1.125rem;
+  border: 0.125rem solid rgba(255, 255, 255, 0.4);
   border-top-color: #fff;
   border-radius: 50%;
   display: inline-block;
@@ -174,14 +174,14 @@ textarea {
   flex-direction: column;
   justify-content: start;
   align-items: start;
-  max-width: 402px;
+  max-width: 25.125rem;
   background-color: #fff;
 }
 .full .tall {
-  min-height: 232px;
-  max-width: 1022px;
+  min-height: 22rem;
+  max-width: 63.875rem;
 }
 .base-form {
   width: 100%;
-  max-width: 1022px;
+  max-width: 63.875rem;
 }

@@ -39,7 +39,7 @@ function Contact() {
         </div>
       </div>
       <div className="contact-map">
-        <Map lat={28.239334} lng={-16.840377} height="320px" zoom={16} />
+        <Map lat={28.239334} lng={-16.840377} height="20rem" zoom={16} />
       </div>
       <img
         className="wawe"

@@ -191,7 +191,7 @@ function SingleListing() {
                 style={{
                   cursor: "pointer",
                   background: copied ? "#87ceeb" : "",
-                  borderRadius: "8px",
+                  borderRadius: "0.5rem",
                   transition: "background 0.2s ease-out",
                 }}
                 alt="copy link"
@@ -255,7 +255,7 @@ function SingleListing() {
             <img src="/utils/map-pin.svg" alt="map pin" />
             <p>{formatLocation(detail?.adresy.cela_adresa, lang)}</p>
           </div>
-          <Map height="320px" lat={lat} lng={lng} zoom={12} />
+          <Map height="20rem" lat={lat} lng={lng} zoom={12} />
         </div>
       </div>
       <img

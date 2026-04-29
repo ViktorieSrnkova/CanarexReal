@@ -1,9 +1,8 @@
 .card {
-  width: 331px;
-  height: 313px;
+  width: 20.688rem;
   border: none;
-  border-radius: 8px;
-  padding: 8px;
+  border-radius: 0.5rem;
+  padding: 0.5em;
   display: flex;
   flex-direction: column;
   justify-content: start;
@@ -21,11 +20,10 @@
   position: relative;
   display: block;
   overflow: hidden;
-  width: 315px;
-  height: 198px;
+  width: 100%;
   text-decoration: none;
   color: black;
-  border-radius: 8px;
+  border-radius: 0.5rem;
 }
 .card-img {
   width: 100%;
@@ -41,29 +39,29 @@
   flex-direction: row;
   justify-content: space-between;
   width: 100%;
-  padding-top: 8px;
+  padding-top: 0.5em;
 }
 .card p {
   margin: 0;
 }
 
 .status {
-  font-size: 16px;
+  font-size: 1em;
 }
 .card-location {
-  font-size: 14px;
+  font-size: 0.875em;
 
   display: flex;
   flex-direction: row;
-  gap: 8px;
+  gap: 0.5rem;
 }
 .card-location img {
-  width: 12px;
-  height: 14px;
+  width: 0.75rem;
+  height: 0.875rem;
 }
 .card-second-row {
-  font-size: 14px;
-  min-height: 48px;
+  font-size: 0.875em;
+  min-height: 3rem;
   line-height: 140%;
 }
 .card-loc-link {
@@ -72,33 +70,33 @@
 .card-icons {
   display: flex;
   flex-direction: row;
-  gap: 2px;
-  height: 14px;
-  font-size: 14px;
+  gap: 0.125rem;
+  height: 0.875rem;
+  font-size: 0.875em;
 }
 .spaced6 {
-  padding-right: 4px;
+  padding-right: 0.25em;
 }
 .card-third-row {
-  padding-left: 16px;
+  padding-left: 1em;
   line-height: 140%;
-  height: 22px;
+  height: 1.375rem;
   align-items: center;
 }
 .card-price {
-  font-size: 16px;
+  font-size: 1em;
   font-style: normal;
 }
 .card-status {
-  padding: 1px 8px;
+  padding: 0.063em 0.5em;
   justify-content: center;
   align-items: center;
   position: absolute;
-  left: 4px;
-  top: 4px;
-  border-radius: 0 8px;
+  left: 0.25rem;
+  top: 0.25rem;
+  border-radius: 0 0.5rem;
   width: fit-content;
-  font-size: 16px;
+  font-size: 1em;
   line-height: 140%;
   z-index: 10;
 }

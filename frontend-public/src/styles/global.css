@@ -33,18 +33,18 @@ button {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 24px;
-  padding-bottom: 24px;
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
 }
 
 .price-label {
   display: inline-block;
   background: white;
-  border-radius: 5px;
-  border: 1px solid #87ceeb;
-  padding: 2px 5px;
+  border-radius: 0.313rem;
+  border: 0.063rem solid #87ceeb;
+  padding: 0.125em 0.313em;
   color: #000;
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 500;
   white-space: nowrap;
   box-shadow: 0 1px 1px rgba(112, 138, 141, 0.659);
@@ -54,16 +54,19 @@ button {
 .price-label::after {
   content: "";
   position: absolute;
-  bottom: -5px;
   left: 50%;
   transform: translateX(-50%);
-  border-width: 5px 5px 0 5px;
+  border-width: 0.313em 0.313em 0 0.313em;
+  bottom: -0.3em;
   border-style: solid;
   border-color: black transparent transparent transparent;
 }
 .price-label.active {
   background: #c1e6f5;
   color: #1e1e1e;
-  border: 1px solid #5bb8e6;
+  border: 0.063rem solid #5bb8e6;
   transform: scale(1.1);
+}
+.bold-num {
+  font-family: "Roboto", sans-serif;
 }

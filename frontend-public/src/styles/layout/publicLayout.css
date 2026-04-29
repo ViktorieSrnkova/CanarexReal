@@ -9,7 +9,7 @@
   display: flex;
   flex: 1;
   width: 100%;
-  max-width: 1440px;
+  max-width: 90rem;
   margin: auto;
   justify-content: center;
 }
@@ -20,12 +20,12 @@
   align-items: center;
 }
 .layout__footer {
-  max-width: 1440px;
+  max-width: 90rem;
   width: 100%;
   margin: auto;
 }
 .layout__header {
-  max-width: 1440px;
+  max-width: 90rem;
   width: 100%;
   margin: auto;
 }

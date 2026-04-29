@@ -1,38 +1,37 @@
 .crsl-listings-wrapper {
   display: flex;
-  gap: 20px;
+  gap: 1.25rem;
   overflow: hidden;
   transition: transform 0.3s ease;
-  height: 320px;
-  width: 1040px;
+  height: 21rem;
   align-items: center;
   justify-content: center;
 }
 .crsl-first-row h2 {
   text-align: center;
-  margin-top: 32px;
+  margin-top: 2rem;
   font-weight: 600;
 }
 .crsl-third-row {
   display: flex;
   justify-content: center;
-  gap: 6px;
-  margin-top: 10px;
-  margin-bottom: 32px;
+  gap: 0.375rem;
+  margin-top: 0.625rem;
+  margin-bottom: 2rem;
 }
 .crsl-second-row {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
-  gap: 20px;
+  gap: 0.5rem;
   align-items: center;
 }
 .crsl-third-row {
-  margin-top: 20px;
+  margin-top: 1.25rem;
 }
 .dot {
-  width: 8px;
-  height: 8px;
+  width: 0.5rem;
+  height: 0.5rem;
   border-radius: 50%;
   background: #ccc;
   transition: 0.2s;
@@ -44,8 +43,8 @@
 }
 .arrow-left,
 .arrow-right {
-  width: 20px;
-  height: 32px;
+  width: 1.25rem;
+  height: 2rem;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -61,10 +60,10 @@
 .arrow-left::before,
 .arrow-right::before {
   content: "";
-  width: 20px;
-  height: 20px;
-  border-top: 2px solid #87ceeb;
-  border-right: 2px solid #87ceeb;
+  width: 1.25rem;
+  height: 1.25rem;
+  border-top: 0.125rem solid #87ceeb;
+  border-right: 0.125rem solid #87ceeb;
 }
 
 .arrow-left::before {

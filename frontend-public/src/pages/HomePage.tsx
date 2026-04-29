@@ -11,7 +11,7 @@ import { useT } from "../i18n";
 import hero from "/pages/hero.webp";
 import type { CSSProperties } from "react";
 import Medalion from "../components/Contact/Medalion";
-
+import "../styles/responsivity/resize.css";
 type HeroStyle = CSSProperties & {
   "--hero"?: string;
 };
@@ -61,6 +61,11 @@ function HomePage() {
         src="/general/vlnka-gray-white-nm.svg"
         alt="vlnka-gray-to-white"
       />
+      <img
+        className="wawe mobile"
+        src="/general/small-vlnka-gray-white.svg"
+        alt="vlnka-gray-to-white"
+      />
       {!listings.length ? (
         <div>{t("general.loading")}</div>
       ) : (
@@ -96,13 +101,23 @@ function HomePage() {
         alt="vlnka-white-to-gray"
       />
       <img
+        className="wawe mobile"
+        src="/general/small-vlnka-white-gray.svg"
+        alt="vlnka-white-to-gray"
+      />
+      <img
+        className="wawe mobile"
+        src="/general/small-vlnka-gray-white.svg"
+        alt="vlnka-gray-to-white"
+      />
+      <img
         className="wawe"
         src="/general/vlnka-gray-white-nm.svg"
         alt="vlnka-gray-to-white"
       />
       <div className="hp-contact-wrapper">
         <div className="hp-contact">
-          <div className="hp-2-contact">
+          <div className="hp-2-contact pc">
             <p>{t("homepage.servis")}</p>
             <p>{t("homepage.rent")}</p>
           </div>
@@ -112,7 +127,13 @@ function HomePage() {
             name="Stan Srnka"
             role="Váš realitní agent na Tenerife"
           />
-          <div className="hp-2-contact">
+          <div className="hp-2-contact mobile">
+            <p>{t("homepage.servis")}</p>
+            <p>{t("homepage.rent")}</p>
+            <p>{t("homepage.ideal")}</p>
+            <p>{t("homepage.manage")}</p>
+          </div>
+          <div className="hp-2-contact pc ">
             <p>{t("homepage.ideal")}</p>
             <p>{t("homepage.manage")}</p>
           </div>

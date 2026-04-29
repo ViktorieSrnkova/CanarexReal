@@ -3,10 +3,10 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: 62px;
+  margin-top: 3.875rem;
   position: static;
   color: #3f3f3f;
-  margin-bottom: 16px;
+  margin-bottom: 1rem;
 }
 .medalion-graphic {
   display: flex;
@@ -16,24 +16,24 @@
 }
 
 .medalion-role {
-  font-size: 14px;
+  font-size: 0.875em;
 }
 .medalion-hr {
-  width: 70px;
+  width: 4.375rem;
   margin-top: 0;
-  margin-bottom: 7px;
-  height: 1px;
+  margin-bottom: 0.438rem;
+  height: 0.063rem;
   border: 0;
-  border-top: solid 1px #000;
+  border-top: solid 0.063rem #000;
 }
 .medalion-blue-pettal {
-  width: 330px;
-  height: 240px;
+  width: 20.625rem;
+  height: 15rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
-  border-radius: 0px 100px 0px 100px;
+  border-radius: 0 6.25rem 0 6.25rem;
 
   background-image: linear-gradient(
     180deg,
@@ -43,24 +43,24 @@
 }
 .medalion-blue-pettal img {
   position: relative;
-  border-radius: 0px 100px 0px 100px;
-  height: 240px;
-  width: 200px;
-  top: -62px;
+  border-radius: 0 6.25rem 0 6.25rem;
+  height: 15rem;
+  width: 12.5rem;
+  top: -3.875rem;
   object-fit: cover;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
 }
 .medalion-person {
   position: relative;
-  top: -29px;
+  top: -1.813rem;
 }
 .medalion-name {
   margin: 0;
-  margin-bottom: 9px;
+  margin-bottom: 0.563rem;
   text-align: center;
 }
 .medalion-info-wrapper {
-  margin-top: 42px;
+  margin-top: 2.625rem;
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -69,8 +69,8 @@
   display: flex;
   white-space: nowrap;
   justify-content: center;
-  margin-bottom: 10px;
-  gap: 16px;
+  margin-bottom: 0.625rem;
+  gap: 1rem;
 }
 .medalion-second-row {
   display: flex;

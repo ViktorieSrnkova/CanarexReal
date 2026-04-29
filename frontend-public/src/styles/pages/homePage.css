@@ -2,11 +2,11 @@
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-  gap: 16px;
+  gap: 1rem;
   justify-content: flex-start;
   align-items: flex-start;
-  max-width: 1029px;
-  padding: 12px 0 48px 0;
+  max-width: 64.313rem;
+  padding: 0.75em 0 3em 0;
 }
 
 .wawe {
@@ -14,22 +14,22 @@
   min-width: 100%;
   padding: 0;
   margin: 0;
-  max-width: 1440px;
+  max-width: 90rem;
   object-fit: cover;
-  height: 30px;
+  height: 1.875rem;
 }
 .hero {
   position: relative;
   width: 100%;
-  max-width: 1440px;
-  height: 311px;
+  max-width: 90rem;
+  height: 19.438rem;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   color: #1e1e1e;
-  padding-left: 142px;
-  padding-right: 16px;
+  padding-left: 8.875em;
+  padding-right: 1em;
 }
 
 .hero::before {
@@ -37,7 +37,7 @@
   position: absolute;
   inset: 0;
   background-image: var(--hero);
-  background-size: contain;
+  background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 
@@ -50,20 +50,20 @@
   z-index: 1;
 }
 .hero h1 {
-  font-size: 72px;
+  font-size: 4.5em;
   font-weight: 700;
   line-height: 120%;
-  letter-spacing: -2.16px;
-  margin-bottom: 10px;
-  margin-top: 64px;
+  letter-spacing: -0.131rem;
+  margin-bottom: 0.625rem;
+  margin-top: 4rem;
 }
 .hero h2 {
-  font-size: 32px;
+  font-size: 2em;
   font-style: normal;
   font-weight: 400;
   line-height: 120%;
   margin-top: 0;
-  margin-bottom: 22px;
+  margin-bottom: 1.375rem;
 }
 .hero .buttons {
   display: flex;
@@ -72,12 +72,12 @@
   align-items: center;
   justify-content: flex-end;
   width: 100%;
-  gap: 16px;
+  gap: 1rem;
 }
 
 .hp-contact {
   display: flex;
-  gap: 42px;
+  gap: 2.625rem;
   align-items: center;
 }
 
@@ -85,24 +85,27 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
-  max-width: 170px;
+  gap: 1.25rem;
+  max-width: 10.625rem;
   text-align: center;
 }
 .hp-2-contact p {
   background: #c1e6f5;
-  padding: 8px;
-  border-radius: 0 16px;
+  padding: 0.5em;
+  border-radius: 0 1rem;
 }
 .hp-contact-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
-  padding-top: 32px;
-  padding-bottom: 2px;
+  padding-top: 2em;
+  padding-bottom: 0.125em;
 }
 .hp-contact-wrapper .buttons {
   display: flex;
-  gap: 16px;
+  gap: 1rem;
+}
+.mobile {
+  display: none;
 }

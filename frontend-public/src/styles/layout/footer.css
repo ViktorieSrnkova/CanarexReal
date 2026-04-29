@@ -3,10 +3,10 @@
   background-color: #f5f5f5;
 }
 .vert-line {
-  width: 1px;
+  width: 0.063rem;
   border: none;
-  border-right: 1px solid #303030;
-  height: 21px;
+  border-right: 0.063rem solid #303030;
+  height: 1.313rem;
   color: #efefef;
   background-color: #efefef;
   margin: 0;
@@ -15,32 +15,30 @@
   display: flex;
   align-items: start;
   justify-content: center;
-  gap: 64px;
+  gap: 4rem;
   margin: auto;
-  padding-inline: 32px;
-  min-height: 418px;
+  min-height: 26.125rem;
   background: #f5f5f5;
   color: #3f3f3f;
   list-style-type: none;
   white-space: nowrap;
   box-sizing: border-box;
-  margin-top: 30px;
-  padding: 9px 0 33px 0;
+  margin-top: 1.875rem;
+  padding: 0.563em 2em 2.063em 2em;
+  width: 100%;
 }
-.start-footer {
-  display: block;
-}
+
 .middle-footer {
   display: flex;
   flex-direction: column;
 }
 .bottom-info {
   display: flex;
-  gap: 20px;
+  gap: 1.25rem;
   justify-content: center;
   align-items: center;
-  padding-bottom: 30px;
-  font-size: 14px;
+  padding-bottom: 1.875rem;
+  font-size: 0.875em;
 }
 .bottom-info a {
   color: #1e1e1e;
@@ -51,21 +49,20 @@
 }
 .icons {
   display: flex;
-  gap: 16px;
-  margin-bottom: 8px;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
 }
 .icons a {
-  height: 32px;
+  height: 2rem;
 }
 .icons a img {
-  width: 32px;
+  width: 2rem;
   aspect-ratio: 1;
 }
 .actual-footer .start-footer h2,
 .actual-footer .middle-footer h2 {
-  margin: 24px 0 24px 0;
-  font-size: 20px;
-  width: 338px;
+  margin: 1.5rem 0 1.5rem 0;
+  font-size: 1.25em;
 }
 .phone p {
   margin: 0;
@@ -73,9 +70,12 @@
 .contacts {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 0.5rem;
 }
 .mail a {
   text-decoration: none;
   color: #1e1e1e;
+}
+.mobile {
+  display: none;
 }

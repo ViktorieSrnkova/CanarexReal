@@ -4,15 +4,15 @@
 .toggle-group {
   display: flex;
   flex-direction: row;
-  gap: 8px;
+  gap: 0.5rem;
   justify-content: start;
-  max-width: 402px;
+  max-width: 25.125rem;
 }
 .toggle-section {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 0.25rem;
 }
 .toggle-section label {
-  font-size: 14px;
+  font-size: 0.875em;
 }

@@ -1,5 +1,5 @@
 .contact {
-  padding: 32px;
+  padding: 2em;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -7,15 +7,15 @@
 }
 .contact h2 {
   margin: 0;
-  margin-bottom: 4px;
-  font-size: 24px;
+  margin-bottom: 0.25rem;
+  font-size: 1.5rem;
   font-style: normal;
   font-weight: 600;
   line-height: 120%;
-  letter-spacing: -0.48px;
+  letter-spacing: -0.03em;
 }
 .contact h3 {
-  font-size: 20px;
+  font-size: 1.25em;
   font-weight: 400;
   line-height: 120%;
   font-style: normal;
@@ -29,22 +29,22 @@
 .details-form {
   display: flex;
   flex-direction: row;
-  gap: 20px;
+  gap: 1.25rem;
   width: 100%;
   justify-content: center;
 }
 .padded-subtitle {
   margin: 0;
-  margin-bottom: 32px;
+  margin-bottom: 2rem;
 }
 .inq-subtitle {
   margin: 0;
-  margin-bottom: 12px;
+  margin-bottom: 0.75rem;
 }
 .medalion-group {
   display: flex;
   flex-direction: row;
-  gap: 255px;
+  gap: 15.938rem;
   justify-content: center;
   width: 100%;
 }
@@ -56,17 +56,17 @@
 }
 .contact-map-wrapper {
   display: flex;
-  gap: 8px;
-  height: 16px;
+  gap: 0.5rem;
+  height: 1rem;
   width: 100%;
   align-items: center;
   justify-content: center;
-  margin-top: 16px;
+  margin-top: 1rem;
 }
 .contact-map {
   background: yellow;
   width: 100%;
-  height: 300px;
+  height: 18.75rem;
 }
 .details-form .card {
   background-color: #fff;

@@ -1,11 +1,11 @@
 .gallery {
   display: flex;
-  gap: 42px;
-  max-width: 1214px;
+  gap: 2.625rem;
+  max-width: 75.875rem;
   width: 100%;
   background-color: #f5f5f5;
-  padding-right: 22px;
-  padding-left: 42px;
+  padding-right: 1.375em;
+  padding-left: 2.625em;
 }
 
 .gallery-main {
@@ -14,53 +14,53 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 42px;
+  gap: 2.625rem;
 }
 .gallery-image {
   width: 100%;
-  max-width: 786px;
+  max-width: 49.125rem;
 }
 
 .gallery-main img {
   width: 100%;
-  max-width: 786px;
-  height: 520px;
+  max-width: 49.125rem;
+  height: 32.5rem;
   object-fit: contain;
 }
 
 .arrow {
-  width: 40px;
-  height: 40px;
+  width: 2.5rem;
+  height: 2.5rem;
   border-color: #767676;
 }
 
 .arrow-left {
-  left: 10px;
+  left: 0.625rem;
 }
 
 .arrow-right {
-  right: 10px;
+  right: 0.625rem;
 }
 .gallery-main .arrow-right::before,
 .gallery-main .arrow-left::before {
-  border-top: 2px solid #767676;
-  border-right: 2px solid #767676;
+  border-top: 0.125rem solid #767676;
+  border-right: 0.125rem solid #767676;
 }
 
 .gallery-thumbs {
-  width: 168px;
+  width: 10.5rem;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 0.625rem;
   overflow-y: auto;
-  max-height: 520px;
+  max-height: 32.5rem;
 }
 
 .thumb {
-  height: 148px;
-  width: 148px;
-  min-height: 148px;
-  min-width: 148px;
+  height: 9.25rem;
+  width: 9.25rem;
+  min-height: 9.25rem;
+  min-width: 9.25rem;
   object-fit: cover;
   cursor: pointer;
   opacity: 0.6;
@@ -69,10 +69,10 @@
 
 .thumb.active {
   opacity: 1;
-  border: 3px solid #87ceeb;
+  border: 0.188rem solid #87ceeb;
 }
 .gallery-thumbs::-webkit-scrollbar {
-  width: 8px;
+  width: 0.5rem;
 }
 
 .gallery-thumbs::-webkit-scrollbar-track {
@@ -81,7 +81,7 @@
 
 .gallery-thumbs::-webkit-scrollbar-thumb {
   background-color: rgba(0, 0, 0, 0.25);
-  border-radius: 10px;
+  border-radius: 0.625rem;
 }
 
 .gallery-thumbs::-webkit-scrollbar-thumb:hover {
@@ -107,7 +107,7 @@
 .lightbox-content {
   max-width: 90dvw;
   height: 100dvh;
-  padding: 10px;
+  padding: 0.625em;
   box-sizing: border-box;
   display: flex;
   align-items: center;
@@ -129,18 +129,18 @@
 }
 
 .lightbox .arrow-left {
-  left: 20px;
+  left: 1.25rem;
 }
 
 .lightbox .arrow-right {
-  right: 20px;
+  right: 1.25rem;
 }
 
 .lightbox-close {
   position: fixed;
-  top: 20px;
-  right: 20px;
-  font-size: 32px;
+  top: 1.25rem;
+  right: 1.25rem;
+  font-size: 2em;
   color: white;
   cursor: pointer;
   z-index: 10000;

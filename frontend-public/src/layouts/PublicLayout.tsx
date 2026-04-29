@@ -3,6 +3,7 @@ import Header from "../components/Layout/Header";
 import Footer from "../components/Layout/Footer";
 import "../styles/layout/publicLayout.css";
 import ScrollToTop from "../components/General/ScrollToTop";
+import FloatingMobileActions from "../components/Mobile/FloatingMobileActions";
 
 export default function PublicLayout() {
   return (
@@ -22,6 +23,7 @@ export default function PublicLayout() {
 
         <footer className="layout__footer">
           <Footer />
+          <FloatingMobileActions />
         </footer>
       </div>
     </>

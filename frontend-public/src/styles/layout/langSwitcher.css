@@ -1,23 +1,23 @@
 .lang-switch {
   display: flex;
   background: #f1f5f9;
-  border-radius: 999px;
-  padding: 4px;
-  gap: 4px;
+  border-radius: 62.438rem;
+  padding: 0.25em;
+  gap: 0.25rem;
 }
 
 .lang-btn {
   border: none;
   background: transparent;
-  border-radius: 999px;
-  padding: 5px;
+  border-radius: 62.438rem;
+  padding: 0.313em;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .lang-btn img {
-  width: 16px;
-  height: 16px;
+  width: 1rem;
+  height: 1rem;
   display: block;
 }
 

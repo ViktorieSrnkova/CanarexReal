@@ -1,14 +1,14 @@
 .button {
-  padding: 12px 16px;
-  border-radius: 16px;
+  padding: 0.75em 1em;
+  border-radius: 1rem;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: 0.2s;
   border: none;
-  font-size: 16px;
-  height: 40px;
+  font-size: 1em;
+  height: 2.5rem;
 }
 
 .button-primary {

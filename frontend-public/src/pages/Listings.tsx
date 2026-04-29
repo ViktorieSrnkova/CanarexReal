@@ -50,7 +50,7 @@ function Listings() {
   const [sort, setSort] = useState<ListingSort>("date");
   const [filters, setFilters] = useState<FormValues>(defaultFilters);
   const [formFilters, setFormFilters] = useState<FormValues>(defaultFilters);
-
+  const [filtersOpen, setFiltersOpen] = useState(false);
   useEffect(() => {
     const load = async () => {
       try {
@@ -76,11 +76,24 @@ function Listings() {
   );
   const handleMarkerClick = (id: number) => {
     if (window.innerWidth <= 600) {
-      navigate(`/properties/${id}`);
+      navigate(`/listings/${id}`);
     } else {
       setSelectedListing(id);
     }
   };
+  useEffect(() => {
+    if (filtersOpen) {
+      document.body.classList.add("no-scroll");
+    } else {
+      document.body.classList.remove("no-scroll");
+    }
+  }, [filtersOpen]);
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, [page]);
 
   function hasCoords(
     l: ListingThumbnail,
@@ -98,6 +111,7 @@ function Listings() {
   const handleSubmit = async () => {
     setPage(1);
     setFilters(formFilters);
+    setFiltersOpen(false);
   };
 
   const isDefault =
@@ -116,8 +130,16 @@ function Listings() {
 
   return (
     <div className="content">
+      <button className="filters-toggle" onClick={() => setFiltersOpen(true)}>
+        Filtry
+      </button>
       <div className="listings-wrapper">
-        <div className="filters">
+        <div className={`filters ${filtersOpen ? "open" : ""}`}>
+          <div className="filters-header">
+            <div className="close" onClick={() => setFiltersOpen(false)}>
+              ×
+            </div>
+          </div>
           <div className="view-switch">
             <button
               className={`list ${view === "list" ? "active" : ""}`}
