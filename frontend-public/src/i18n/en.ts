@@ -77,6 +77,18 @@ export const en = {
   listings: {
     next: "Next",
     back: "Back",
+    sort: "Sorting",
+    filter: "Filtering",
+    submit: "Filter",
+    newest: "Newest",
+    lowestPrice: "Price from lowest",
+    highestPrice: "Pirce from highest",
+    list: "List",
+    map: "Map",
+    sortLabel: "Sort by",
+    goTo: "View Property",
+    clear: "Clear filter",
+    none: "We currently do not have any properties that would match the selected filters.",
   },
   homepage: {
     title: "Tenerife, where dreams come true",

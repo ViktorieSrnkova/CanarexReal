@@ -1,5 +1,6 @@
 import { Router } from "express";
 import prisma from "../../lib/db";
+import { Prisma } from "../generated/prisma/browser";
 import {
   listingThumbnailSelect,
   listingDetailSelect,
@@ -9,6 +10,97 @@ import { detectLang, type PublicRequest } from "../middleware/detectLang";
 
 const router = Router();
 router.use(detectLang);
+
+const normalizeArray = (value: unknown): unknown[] => {
+  if (!value) return [];
+
+  return Array.isArray(value) ? value : [value];
+};
+
+const toNumberArray = (value: unknown): number[] => {
+  const arr = normalizeArray(value);
+
+  return arr
+    .flatMap((v) =>
+      typeof v === "string" && v.includes(",") ? v.split(",") : v,
+    )
+    .map((v) => Number(v))
+    .filter((v) => !Number.isNaN(v));
+};
+
+const toValidNumber = (value: unknown): number | undefined => {
+  if (value === undefined) return undefined;
+
+  const num = Number(value);
+  return Number.isNaN(num) ? undefined : num;
+};
+
+const toRange = (
+  from?: unknown,
+  to?: unknown,
+): Prisma.IntFilter | undefined => {
+  const gte = toValidNumber(from);
+  const lte = toValidNumber(to);
+
+  const filter: Prisma.IntFilter = {};
+
+  if (gte !== undefined) filter.gte = gte;
+  if (lte !== undefined) filter.lte = lte;
+
+  return Object.keys(filter).length > 0 ? filter : undefined;
+};
+
+const toInFilter = (arr: unknown): { in: number[] } | undefined => {
+  const numbers = toNumberArray(arr);
+
+  if (numbers.length === 0) return undefined;
+
+  return { in: numbers };
+};
+
+const getQueryArray = (query: any, key: string) => {
+  return query[key] ?? query[`${key}[]`];
+};
+
+const buildPublicListingsWhere = (query: any): Prisma.inzeratyWhereInput => {
+  const where: Prisma.inzeratyWhereInput = {};
+
+  const types = toInFilter(getQueryArray(query, "type"));
+  if (types) {
+    where.typy_nemovitosti_id = types;
+  }
+
+  const price = toRange(query.priceFrom, query.priceTo);
+  if (price) {
+    where.cena_v_eur = price;
+  }
+
+  const size = toRange(query.sizeFrom, query.sizeTo);
+  if (size) {
+    where.velikost = size;
+  }
+
+  const bedrooms = toInFilter(getQueryArray(query, "bedrooms"));
+  if (bedrooms) {
+    where.loznice = bedrooms;
+  }
+
+  const bathrooms = toInFilter(getQueryArray(query, "bathrooms"));
+  if (bathrooms) {
+    where.koupelny = bathrooms;
+  }
+
+  return where;
+};
+
+const SORT_MAP = {
+  price_asc: { cena_v_eur: "asc" },
+  price_desc: { cena_v_eur: "desc" },
+  newest: { datum_vytvoreni: "desc" },
+} satisfies Record<string, Prisma.inzeratyOrderByWithRelationInput>;
+
+const buildOrderBy = (sort?: string) =>
+  SORT_MAP[sort as keyof typeof SORT_MAP] ?? SORT_MAP.newest;
 
 router.get("/fx-rates", async (req, res) => {
   try {
@@ -36,23 +128,22 @@ router.get("/", async (req: PublicRequest, res) => {
     const limit = Number(req.query.limit) || 12;
     const skip = (page - 1) * limit;
     const langId = req.langId ?? 2;
+    const where = buildPublicListingsWhere(req.query);
+    const orderBy = buildOrderBy(req.query.sort as string);
 
     const [thumbnails, total] = await Promise.all([
       prisma.inzeraty.findMany({
         skip,
         take: limit,
-        orderBy: { datum_vytvoreni: "desc" },
-        where: listingWithLangWhere(langId),
+        orderBy,
+        where: { ...listingWithLangWhere(langId), ...where },
         select: listingThumbnailSelect(langId),
       }),
 
       prisma.inzeraty.count({
         where: {
-          inzeraty_preklady: {
-            some: {
-              jazyky_id: langId,
-            },
-          },
+          ...listingWithLangWhere(langId),
+          ...where,
         },
       }),
     ]);

@@ -9,17 +9,16 @@ import { LANGUAGE_TO_ID } from "../types/general";
 import FiltersWrapper from "../components/Forms/FiltersWrapper";
 import Button from "../components/General/Button";
 import Dropdown from "../components/General/Dropdown";
-import {
-  SORT_OPTIONS,
-  type ListingFilters,
-  type ListingSort,
-} from "../types/filters";
+import { type ListingSort } from "../types/filters";
 import SearchMap from "../components/Listing/SearchMap";
 import { useNavigate } from "react-router-dom";
 import { useSearchParams } from "react-router-dom";
 import type { FormValues } from "../types/forms";
+import { useT } from "../i18n";
+import NoFilters from "../components/Listing/NoFilters";
 
 function Listings() {
+  const t = useT();
   const { lang } = useLang();
   const navigate = useNavigate();
   const langId = LANGUAGE_TO_ID[lang];
@@ -32,6 +31,25 @@ function Listings() {
   const [selectedListing, setSelectedListing] = useState<number | null>(null);
   const limit = 9;
   const totalPages = Math.ceil(total / limit);
+  const SORT_OPTIONS = [
+    { label: t("listings.newest"), value: "date" },
+    { label: t("listings.lowestPrice"), value: "price_asc" },
+    { label: t("listings.highestPrice"), value: "price_desc" },
+  ] as const;
+  const defaultFilters: FormValues = {
+    type: [],
+    priceFrom: 80000,
+    priceTo: 1000000,
+    sizeFrom: 0,
+    sizeTo: 300,
+    bedrooms: [],
+    bathrooms: [],
+    arrivalMode: "unknown",
+    arrival: null,
+  };
+  const [sort, setSort] = useState<ListingSort>("date");
+  const [filters, setFilters] = useState<FormValues>(defaultFilters);
+  const [formFilters, setFormFilters] = useState<FormValues>(defaultFilters);
 
   useEffect(() => {
     const load = async () => {
@@ -39,6 +57,8 @@ function Listings() {
         const { thumbnails, total } = await getListingsThumbs(langId, {
           page,
           limit,
+          filters,
+          sort,
         });
         setListings(thumbnails);
         setTotal(total);
@@ -48,7 +68,7 @@ function Listings() {
     };
 
     load();
-  }, [page, langId]);
+  }, [page, langId, filters, sort]);
 
   const selected = useMemo(
     () => listings.find((l) => l.id === selectedListing),
@@ -74,40 +94,26 @@ function Listings() {
       return p;
     });
   };
-  const [sort, setSort] = useState<ListingSort>("date");
 
-  const [filters, setFilters] = useState<FormValues>({
-    type: [],
-    priceFrom: 80000,
-    priceTo: 1000000,
-    sizeFrom: 0,
-    sizeTo: 300,
-    bedrooms: [],
-    bathrooms: [],
-    arrivalMode: "unknown",
-    arrival: null,
-  });
   const handleSubmit = async () => {
-    const apiFilters: ListingFilters = {
-      typeCodes: filters.type,
-      priceFrom: filters.priceFrom,
-      priceTo: filters.priceTo,
-      sizeFrom: filters.sizeFrom,
-      sizeTo: filters.sizeTo,
-      bedrooms: filters.bedrooms,
-      bathrooms: filters.bathrooms,
-      sort,
-    };
-
-    console.log(apiFilters);
-    /*  const res = await getListingsThumbs(langId, {
-      page: 1,
-      limit: 20,
-      filters: apiFilters,
-    });
-
-    setListings(res.thumbnails); */
+    setPage(1);
+    setFilters(formFilters);
   };
+
+  const isDefault =
+    formFilters.type.length === 0 &&
+    formFilters.priceFrom === defaultFilters.priceFrom &&
+    formFilters.priceTo === defaultFilters.priceTo &&
+    formFilters.sizeFrom === defaultFilters.sizeFrom &&
+    formFilters.sizeTo === defaultFilters.sizeTo &&
+    formFilters.bedrooms.length === 0 &&
+    formFilters.bathrooms.length === 0;
+
+  const handleClear = async () => {
+    setFilters(defaultFilters);
+    setFormFilters(defaultFilters);
+  };
+
   return (
     <div className="content">
       <div className="listings-wrapper">
@@ -118,7 +124,7 @@ function Listings() {
               onClick={() => setView("list")}
             >
               <img src="/listings/List.svg" />
-              Seznam
+              {t("listings.list")}
             </button>
 
             <button
@@ -126,15 +132,15 @@ function Listings() {
               onClick={() => setView("map")}
             >
               <img src="/listings/Map.svg" />
-              Mapa
+              {t("listings.map")}
             </button>
           </div>
           {view === "list" && (
             <>
-              <h2>Řazení</h2>
+              <h2> {t("listings.sort")}</h2>
 
               <Dropdown
-                label="Řadit dle"
+                label={t("listings.sortLabel")}
                 value={sort}
                 options={SORT_OPTIONS}
                 onChange={(val) => setSort(val)}
@@ -143,10 +149,15 @@ function Listings() {
               <hr className="filter-hr" />
             </>
           )}
-          <h2>Filtrování</h2>
-          <FiltersWrapper value={filters} onChange={setFilters} />
+          <h2> {t("listings.filter")}</h2>
+          <FiltersWrapper value={formFilters} onChange={setFormFilters} />
           <div className="button-wrapper">
-            <Button onClick={handleSubmit}>Filtruj</Button>
+            <Button onClick={handleSubmit}> {t("listings.submit")}</Button>
+            {!isDefault && (
+              <Button onClick={handleClear} variant="danger">
+                {t("listings.clear")}
+              </Button>
+            )}
           </div>
         </div>
         <div className="listings">
@@ -157,29 +168,33 @@ function Listings() {
                 totalPages={totalPages}
                 onChange={setPage}
               />
-              <div className="hp-cards-wrapper">
-                {listings.map((listing) => {
-                  const cardData = {
-                    id: listing.id,
-                    titulek: listing.inzeraty_preklady[0]?.titulek ?? "",
-                    lokace: listing.adresy?.lokace ?? "",
-                    typ:
-                      listing.typy_nemovitosti?.typy_nemovitosti_preklady[0]
-                        ?.nazev ?? "",
-                    status: listing.statusy.statusy_preklady[0].nazev ?? "",
-                    cena_v_eur: listing.cena_v_eur,
-                    loznice: listing.loznice,
-                    koupelny: listing.koupelny,
-                    velikost: listing.velikost,
-                    obrazekId: listing.obrazky[0]?.id ?? 0,
-                    alt:
-                      listing.obrazky[0]?.obrazky_preklady[0]?.alt_text ?? "",
-                    status_id: listing.statusy_id,
-                  };
+              {listings.length === 0 ? (
+                <NoFilters />
+              ) : (
+                <div className="hp-cards-wrapper">
+                  {listings.map((listing) => {
+                    const cardData = {
+                      id: listing.id,
+                      titulek: listing.inzeraty_preklady[0]?.titulek ?? "",
+                      lokace: listing.adresy?.lokace ?? "",
+                      typ:
+                        listing.typy_nemovitosti?.typy_nemovitosti_preklady[0]
+                          ?.nazev ?? "",
+                      status: listing.statusy.statusy_preklady[0].nazev ?? "",
+                      cena_v_eur: listing.cena_v_eur,
+                      loznice: listing.loznice,
+                      koupelny: listing.koupelny,
+                      velikost: listing.velikost,
+                      obrazekId: listing.obrazky[0]?.id ?? 0,
+                      alt:
+                        listing.obrazky[0]?.obrazky_preklady[0]?.alt_text ?? "",
+                      status_id: listing.statusy_id,
+                    };
 
-                  return <Card key={listing.id} {...cardData} />;
-                })}
-              </div>
+                    return <Card key={listing.id} {...cardData} />;
+                  })}
+                </div>
+              )}
               <Pagination
                 page={page}
                 totalPages={totalPages}
@@ -188,61 +203,70 @@ function Listings() {
             </>
           ) : (
             <div className="map-wrapper-listing">
-              <SearchMap
-                markers={listings.filter(hasCoords).map((l) => ({
-                  id: l.id,
-                  price: l.cena_v_eur,
-                  position: {
-                    lat: l.adresy?.lat,
-                    lng: l.adresy?.lng,
-                  },
-                }))}
-                selectedId={selectedListing}
-                onMarkerClick={(id) => {
-                  handleMarkerClick(id);
-                  setClicked(true);
-                }}
-              />
-              {clicked && (
-                <div className="result">
-                  <div
-                    className="result-close"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setClicked(false);
-                      setSelectedListing(null);
+              {listings.length === 0 ? (
+                <NoFilters />
+              ) : (
+                <>
+                  <SearchMap
+                    markers={listings.filter(hasCoords).map((l) => ({
+                      id: l.id,
+                      price: l.cena_v_eur,
+                      position: {
+                        lat: l.adresy?.lat,
+                        lng: l.adresy?.lng,
+                      },
+                    }))}
+                    selectedId={selectedListing}
+                    onMarkerClick={(id) => {
+                      handleMarkerClick(id);
+                      setClicked(true);
                     }}
-                  >
-                    ×
-                  </div>
+                  />
+                  {clicked && (
+                    <div className="result">
+                      <div
+                        className="result-close"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setClicked(false);
+                          setSelectedListing(null);
+                        }}
+                      >
+                        ×
+                      </div>
 
-                  {selected && (
-                    <Card
-                      id={selected.id}
-                      titulek={selected.inzeraty_preklady[0]?.titulek ?? ""}
-                      lokace={selected.adresy?.lokace ?? ""}
-                      typ={
-                        selected.typy_nemovitosti?.typy_nemovitosti_preklady[0]
-                          ?.nazev ?? ""
-                      }
-                      status={
-                        selected.statusy?.statusy_preklady[0]?.nazev ?? ""
-                      }
-                      cena_v_eur={selected.cena_v_eur}
-                      loznice={selected.loznice}
-                      koupelny={selected.koupelny}
-                      velikost={selected.velikost}
-                      obrazekId={selected.obrazky[0]?.id ?? 0}
-                      alt={
-                        selected.obrazky[0]?.obrazky_preklady[0]?.alt_text ?? ""
-                      }
-                      status_id={selected.statusy_id}
-                    />
+                      {selected && (
+                        <Card
+                          id={selected.id}
+                          titulek={selected.inzeraty_preklady[0]?.titulek ?? ""}
+                          lokace={selected.adresy?.lokace ?? ""}
+                          typ={
+                            selected.typy_nemovitosti
+                              ?.typy_nemovitosti_preklady[0]?.nazev ?? ""
+                          }
+                          status={
+                            selected.statusy?.statusy_preklady[0]?.nazev ?? ""
+                          }
+                          cena_v_eur={selected.cena_v_eur}
+                          loznice={selected.loznice}
+                          koupelny={selected.koupelny}
+                          velikost={selected.velikost}
+                          obrazekId={selected.obrazky[0]?.id ?? 0}
+                          alt={
+                            selected.obrazky[0]?.obrazky_preklady[0]
+                              ?.alt_text ?? ""
+                          }
+                          status_id={selected.statusy_id}
+                        />
+                      )}
+                      <Button
+                        onClick={() => navigate(`/listings/${selected?.id}`)}
+                      >
+                        {t("listings.goTo")}
+                      </Button>
+                    </div>
                   )}
-                  <Button onClick={() => navigate(`/listings/${selected?.id}`)}>
-                    Zobrazit nemovitost
-                  </Button>
-                </div>
+                </>
               )}
             </div>
           )}

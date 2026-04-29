@@ -34,8 +34,7 @@ export const getListingsThumbs = async (
   const { filters, sort, ...pagination } = params ?? {};
   const requestParams = {
     ...pagination,
-    query: filters?.query,
-    typeCodes: filters?.typeCodes?.join(","),
+    type: filters?.type,
     priceFrom: filters?.priceFrom,
     priceTo: filters?.priceTo,
     sizeFrom: filters?.sizeFrom,

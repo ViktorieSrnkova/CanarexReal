@@ -76,6 +76,18 @@ export const sk = {
   listings: {
     next: "Ďalšie",
     back: "Späť",
+    sort: "Triedenie",
+    filter: "Filtrovanie",
+    submit: "Filtrovať",
+    newest: "Najnovšie",
+    lowestPrice: "Cena od najnižšej",
+    highestPrice: "Cena od najvyššej",
+    list: "Zoznam",
+    map: "Mapa",
+    sortLabel: "Triediť podľa",
+    goTo: "Zobraziť nehnuteľnosť",
+    clear: "Zrušiť filtre",
+    none: "V súčasnosti nemáme v ponuke žiadne nehnuteľnosti, ktoré by spĺňali zvolené filtre.",
   },
   homepage: {
     title: "Tenerife, kde sny majú adresu",

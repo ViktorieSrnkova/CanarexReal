@@ -1,6 +1,6 @@
 import BaseForm from "../components/Forms/BaseForm";
 import Card from "../components/Listing/Card";
-import { useT } from "../i18n";
+import { useT, type Lang } from "../i18n";
 import { useParams } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 import type { ListingDetailResponse, ListingThumbnail } from "../types/rawApi";
@@ -113,7 +113,27 @@ function SingleListing() {
     alt: listing.obrazky[0]?.obrazky_preklady[0]?.alt_text ?? "",
     status_id: listing.statusy_id,
   };
+  const formatLocation = (address: string, lang: Lang) => {
+    if (!address) return "";
 
+    return address
+      .replace(
+        /Kanárske ostrovy|Kanárské ostrovy/g,
+        {
+          cs: "Kanárské ostrovy",
+          sk: "Kanárske ostrovy",
+          en: "Canary Islands",
+        }[lang],
+      )
+      .replace(
+        /Španělsko|Spain/g,
+        {
+          cs: "Španělsko",
+          sk: "Španielsko",
+          en: "Spain",
+        }[lang],
+      );
+  };
   /*   const handleLikeClick = () => {
    if (!user) { 
     // TODO: redirect / modal / toast
@@ -233,7 +253,7 @@ function SingleListing() {
           </div>
           <div className="address">
             <img src="/utils/map-pin.svg" alt="map pin" />
-            <p>{detail?.adresy.cela_adresa}</p>
+            <p>{formatLocation(detail?.adresy.cela_adresa, lang)}</p>
           </div>
           <Map height="320px" lat={lat} lng={lng} zoom={12} />
         </div>

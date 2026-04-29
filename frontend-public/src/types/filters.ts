@@ -1,14 +1,5 @@
-export const PROPERTY_TYPE_OPTIONS = [
-  { value: 1, label: "Apartmán" },
-  { value: 3, label: "Vila" },
-  { value: 2, label: "Dům" },
-  { value: 4, label: "Garsonka" },
-  { value: 5, label: "Pozemek" },
-] as const;
-export type PropertyType = (typeof PROPERTY_TYPE_OPTIONS)[number]["value"];
 export type ListingFilters = {
-  query?: string;
-  typeCodes?: PropertyType[];
+  type?: number[];
   priceFrom?: number;
   priceTo?: number;
   sizeFrom?: number;
