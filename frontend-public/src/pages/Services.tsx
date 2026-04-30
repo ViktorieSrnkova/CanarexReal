@@ -36,6 +36,7 @@ function Services() {
 
   return (
     <>
+      <h2>{t("news.workInProgress")}</h2>
       <img
         className="wawe"
         src="/general/vlnka-white-gray.svg"

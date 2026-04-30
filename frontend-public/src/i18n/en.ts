@@ -127,4 +127,7 @@ export const en = {
     collapsed: "show full description",
     expanded: "show less",
   },
+  news: {
+    workInProgress: "The content of this page is being worked on.",
+  },
 };

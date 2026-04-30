@@ -126,4 +126,7 @@ export const sk = {
     collapsed: "zobraziť celý popis",
     expanded: "zobraziť menej",
   },
+  news: {
+    workInProgress: "Na obsahu tejto stránky sa zatiaľ pracuje.",
+  },
 };
