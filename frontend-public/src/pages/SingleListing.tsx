@@ -163,7 +163,7 @@ function SingleListing() {
       <div className="listing-hero">
         <div className="first-row">
           <h1>{listing.inzeraty_preklady[0]?.titulek}</h1>
-          <div className="listing-hero-icons">
+          <div className="listing-hero-icons pc">
             {/*  <div
               onMouseEnter={() => setHoveredIcon("like")}
               onMouseLeave={() => setHoveredIcon(null)}
@@ -207,7 +207,24 @@ function SingleListing() {
           </div>
         </div>
         <div className="second-row">
-          <h3>
+          <div className="apt mobile">
+            <h3>
+              {` ${listing.typy_nemovitosti?.typy_nemovitosti_preklady[0]?.nazev} ${listing.statusy?.statusy_preklady[0]?.nazev?.toLowerCase()}`}
+            </h3>
+            <img
+              onClick={handleCopy}
+              src="/listings/copy.svg"
+              style={{
+                cursor: "pointer",
+                background: copied ? "#87ceeb" : "",
+                borderRadius: "0.5rem",
+                transition: "background 0.2s ease-out",
+              }}
+              alt="copy link"
+            />
+          </div>
+
+          <h3 className="pc">
             {` ${listing.typy_nemovitosti?.typy_nemovitosti_preklady[0]?.nazev} ${listing.statusy?.statusy_preklady[0]?.nazev?.toLowerCase()}`}
           </h3>
           <div className="prices ">
@@ -240,6 +257,11 @@ function SingleListing() {
         alt="vlnka-gray-to-white"
         src="/general/vlnka-gray-white-nm.svg"
       ></img>
+      <img
+        className="wawe mobile"
+        src="/general/small-vlnka-gray-white.svg"
+        alt="vlnka-gray-to-white"
+      />
       <ExpandableDescription content={content} />
       <div className="lower-section">
         <div className="details-wrapper">
@@ -263,6 +285,11 @@ function SingleListing() {
         src="/general/vlnka-white-gray.svg"
         alt="vlnka-white-to-gray"
       />
+      <img
+        className="wawe mobile"
+        src="/general/small-vlnka-white-gray.svg"
+        alt="vlnka-white-to-gray"
+      />
       <div className="contact gray">
         <h2>{t("form.titleDet")}</h2>
         <h3 className="padded-subtitle">{t("form.subtitleDet")}</h3>
@@ -276,6 +303,11 @@ function SingleListing() {
         alt="vlnka-gray-to-white"
         src="/general/vlnka-gray-white-nm.svg"
       ></img>
+      <img
+        className="wawe mobile"
+        src="/general/small-vlnka-gray-white.svg"
+        alt="vlnka-gray-to-white"
+      />
       <Carrousel
         similar={similar}
         loading={loadingSimilar}
@@ -287,6 +319,16 @@ function SingleListing() {
         className="wawe"
         src="/general/vlnka-white-gray.svg"
         alt="vlnka-white-to-gray"
+      />
+      <img
+        className="wawe mobile"
+        src="/general/small-vlnka-white-gray.svg"
+        alt="vlnka-white-to-gray"
+      />
+      <img
+        className="wawe mobile"
+        src="/general/small-vlnka-gray-white.svg"
+        alt="vlnka-gray-to-white"
       />
       <img
         className="wawe"

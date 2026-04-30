@@ -91,19 +91,19 @@ function Header() {
             </ul>
             <div className="mobile-socials">
               <a href="https://www.facebook.com/CanarexReal" target="_blank">
-                <img src={Facebook} alt="Facebook" />
+                <img src="/socials/Facebook.svg" alt="Facebook" />
               </a>
               <a
                 href="https://www.instagram.com/canarexreal/?hl=en"
                 target="_blank"
               >
-                <img src={Instagram} alt="Instagram" />
+                <img src="/socials/Instagram.svg" alt="Instagram" />
               </a>
               <a
                 href="https://www.tiktok.com/@canarexreal2?_t=ZN-8zTWsOtJa90&_r=1"
                 target="_blank"
               >
-                <img src={TikTok} alt="TikTok" />
+                <img src="/socials/TikTok.svg" alt="TikTok" />
               </a>
             </div>
           </nav>

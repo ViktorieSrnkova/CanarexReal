@@ -41,6 +41,11 @@ function Services() {
         src="/general/vlnka-white-gray.svg"
         alt="vlnka-white-to-gray"
       />
+      <img
+        className="wawe mobile"
+        src="/general/small-vlnka-white-gray.svg"
+        alt="vlnka-white-to-gray"
+      />
       <div className="services gray">
         <Carrousel
           similar={similar}
@@ -58,6 +63,11 @@ function Services() {
       <img
         className="wawe"
         src="/general/vlnka-gray-white-nm.svg"
+        alt="vlnka-gray-to-white"
+      />
+      <img
+        className="wawe mobile"
+        src="/general/small-vlnka-gray-white.svg"
         alt="vlnka-gray-to-white"
       />
       <div className="contact white">

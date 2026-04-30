@@ -19,6 +19,9 @@
 .gallery-image {
   width: 100%;
   max-width: 49.125rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .gallery-main img {

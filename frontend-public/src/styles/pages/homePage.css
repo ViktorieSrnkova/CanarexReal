@@ -3,9 +3,9 @@
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: flex-start;
-  max-width: 64.313rem;
+
   padding: 0.75em 0 3em 0;
 }
 

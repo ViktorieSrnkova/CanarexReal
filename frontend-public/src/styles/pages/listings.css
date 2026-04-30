@@ -10,7 +10,6 @@
   width: 100%;
 }
 .listings-wrapper .listings {
-  max-width: 64.313rem;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -18,6 +17,7 @@
 }
 .listings-wrapper .listings .hp-cards-wrapper {
   min-height: 38.75rem;
+  gap: 0.5rem;
 }
 .content {
   width: 100%;

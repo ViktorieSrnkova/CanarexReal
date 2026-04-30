@@ -4,6 +4,7 @@
   align-items: center;
   padding-top: 2em;
   padding-bottom: 2em;
+  padding-inline: 1rem;
   width: 100%;
 }
 
@@ -26,8 +27,8 @@
 .pict {
   width: 100%;
   max-width: 64.063rem;
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(86px, 1fr));
   flex-wrap: wrap;
   gap: 2.875rem;
 }
