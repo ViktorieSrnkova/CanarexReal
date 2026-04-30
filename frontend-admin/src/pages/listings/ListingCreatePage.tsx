@@ -21,7 +21,7 @@ import { liteEditorTools } from "../../config/lite-editor-tools";
 import { Row, Col } from "antd";
 import ToggleButton from "../../components/listings/ToggleButton";
 import { DndContext, closestCenter } from "@dnd-kit/core";
-import type { RcFile } from "antd/es/upload";
+import type { RcFile, UploadFile } from "antd/es/upload";
 import {
   SortableContext,
   arrayMove,
@@ -33,15 +33,21 @@ import { useImages } from "../../hooks/useImages";
 import EditorMinimal from "../../components/editor/RichMediaEditor";
 import { useListingSubmit } from "../../hooks/useListingForm";
 import { useEffect, useRef, useState } from "react";
-import { /* editListingTexts, */ postListing } from "../../api/listings";
+import { editListingTexts, postListing } from "../../api/listings";
 import { useEditedListing } from "../../hooks/useEditListing";
 
 type Props = {
   initialData?: CreateAdFormValues;
   onSuccess?: () => void;
+  onClose: () => void;
 };
 
-const ListingCreatePage: React.FC<Props> = ({ initialData, onSuccess }) => {
+const ListingCreatePage: React.FC<Props> = ({
+  initialData,
+  onSuccess,
+  onClose,
+}) => {
+  const [fileList, setFileList] = useState<UploadFile[]>([]);
   const readyMap = useRef<
     Record<Language, { desc: boolean; details: boolean }>
   >({
@@ -71,7 +77,10 @@ const ListingCreatePage: React.FC<Props> = ({ initialData, onSuccess }) => {
     images,
     selectedAddress,
   );
-  const { buildEditPayload } = useEditedListing(selectedAddress);
+  const { buildEditPayload, setEditorContent } = useEditedListing(
+    selectedAddress,
+    initialData,
+  );
 
   const onFinish = async (values: CreateAdFormValues) => {
     if (!images.length && !isEditMode) {
@@ -86,9 +95,10 @@ const ListingCreatePage: React.FC<Props> = ({ initialData, onSuccess }) => {
         const payload = await buildEditPayload(values);
 
         console.log("EDIT PAYLOAD:", payload);
-        //await editListingTexts(id, payload);
+        await editListingTexts(id, payload);
 
         message.success("Inzerát upraven");
+        onClose();
       } else {
         const payload = await buildPayload(values);
         const formData = new FormData();
@@ -145,32 +155,6 @@ const ListingCreatePage: React.FC<Props> = ({ initialData, onSuccess }) => {
       setSelectedAddress(initialData.address);
     }
   }, [initialData, form]);
-  useEffect(() => {
-    if (!initialData) return;
-
-    /* const lang = activeTab; */
-
-    /* const interval = setInterval(() => {
-      const descRef = descRefs.current[lang];
-      const detailsRef = detailsRefs.current[lang];
-
-      const desc = initialData.translations?.[lang]?.description;
-      const details = initialData.translations?.[lang]?.details;
-
-      const isReady =
-        readyMap.current[lang].desc && readyMap.current[lang].details;
-
-      if (isReady && descRef && detailsRef) {
-        if (desc) descRef.render(desc);
-        if (details) detailsRef.render(details);
-
-        clearInterval(interval);
-      }
-    }, 50); */
-
-    /*  return () => clearInterval(interval); */
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initialData, activeTab]);
 
   return (
     <div
@@ -340,82 +324,102 @@ const ListingCreatePage: React.FC<Props> = ({ initialData, onSuccess }) => {
           ))}
         </Row>
         {!isEditMode && (
-          <div
-            className="upload-row"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              columnGap: 16,
-              padding: "4px 4px 4px 0",
-            }}
-          >
-            <Upload
-              multiple
-              beforeUpload={() => false}
-              showUploadList={false}
-              onChange={(info) => {
-                const files = info.fileList
-                  .map((f) => f.originFileObj)
-                  .filter((f): f is RcFile => !!f);
-                if (!files.length) return;
-                handleUpload(files);
-                setUploading(false);
-              }}
-            >
-              <Button
-                type="primary"
-                loading={uploading}
-                onClick={handlePickImages}
-              >
-                {uploading ? "Načítám..." : "Nahrát obrázky"}
-              </Button>
-            </Upload>
-          </div>
-        )}
-        {images.length > 0 && (
-          <Tooltip title="Pořadí obrázků můžeš měnit přetažením myší">
-            <Typography.Text
+          <>
+            <div
+              className="upload-row"
               style={{
-                display: "block",
-                color: "#888",
+                display: "flex",
+                alignItems: "center",
+                columnGap: 16,
+                padding: "4px 4px 4px 0",
               }}
             >
-              Pořadí obrázků lze upravit jejich uchopením a přetažením
-            </Typography.Text>
-          </Tooltip>
+              <Upload
+                multiple
+                beforeUpload={() => false}
+                fileList={fileList}
+                showUploadList={false}
+                onChange={(info) => {
+                  const newList = info.fileList;
+
+                  setFileList(newList);
+
+                  const files = newList
+                    .map((f) => f.originFileObj)
+                    .filter((f): f is RcFile => !!f);
+
+                  handleUpload(files);
+
+                  setUploading(false);
+                }}
+              >
+                <Button
+                  type="primary"
+                  loading={uploading}
+                  onClick={handlePickImages}
+                >
+                  {uploading ? "Načítám..." : "Nahrát obrázky"}
+                </Button>
+              </Upload>
+            </div>
+
+            {images.length > 0 && (
+              <Tooltip title="Pořadí obrázků můžeš měnit přetažením myší">
+                <Typography.Text
+                  style={{
+                    display: "block",
+                    color: "#888",
+                  }}
+                >
+                  Pořadí obrázků lze upravit jejich uchopením jejich tmavého
+                  čtverečku v levém horním rohua přetažením
+                </Typography.Text>
+              </Tooltip>
+            )}
+            <div className="spacer" style={{ marginBottom: 16 }}>
+              <DndContext
+                collisionDetection={closestCenter}
+                onDragEnd={(event) => {
+                  const { active, over } = event;
+                  if (!over || active.id === over.id) return;
+
+                  setImages((items) => {
+                    const oldIndex = items.findIndex(
+                      (i) => i.uid === active.id,
+                    );
+                    const newIndex = items.findIndex((i) => i.uid === over.id);
+
+                    return arrayMove(items, oldIndex, newIndex);
+                  });
+                }}
+              >
+                <SortableContext
+                  items={images.map((i) => i.uid)}
+                  strategy={rectSortingStrategy}
+                >
+                  <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                    {images.map((img, index) => (
+                      <SortableImage
+                        key={img.uid}
+                        id={img.uid}
+                        image={img}
+                        isMain={index === 0}
+                        onDelete={() => {
+                          setImages((prev) =>
+                            prev.filter((i) => i.uid !== img.uid),
+                          );
+                          setFileList((prev) =>
+                            prev.filter((f) => f.uid !== img.uid),
+                          );
+                        }}
+                      />
+                    ))}
+                  </div>
+                </SortableContext>
+              </DndContext>
+            </div>
+          </>
         )}
-        <div className="spacer" style={{ marginBottom: 16 }}>
-          <DndContext
-            collisionDetection={closestCenter}
-            onDragEnd={(event) => {
-              const { active, over } = event;
-              if (!over || active.id === over.id) return;
-
-              setImages((items) => {
-                const oldIndex = items.findIndex((i) => i.uid === active.id);
-                const newIndex = items.findIndex((i) => i.uid === over.id);
-
-                return arrayMove(items, oldIndex, newIndex);
-              });
-            }}
-          >
-            <SortableContext
-              items={images.map((i) => i.uid)}
-              strategy={rectSortingStrategy}
-            >
-              <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-                {images.map((img, index) => (
-                  <SortableImage
-                    key={img.uid}
-                    id={img.uid}
-                    image={img}
-                    isMain={index === 0}
-                  />
-                ))}
-              </div>
-            </SortableContext>
-          </DndContext>
-        </div>
         <Form.Item
           hidden
           rules={[
@@ -446,14 +450,15 @@ const ListingCreatePage: React.FC<Props> = ({ initialData, onSuccess }) => {
             key: lang,
             label: lang.toUpperCase(),
             children: (
-              /*  activeTab === lang ? */
               <div style={{ display: activeTab === lang ? "block" : "none" }}>
-                <Form.Item
-                  name={["translations", lang, "alt"]}
-                  label="Alt text hlavního obrázku"
-                >
-                  <Input />
-                </Form.Item>
+                {!isEditMode && (
+                  <Form.Item
+                    name={["translations", lang, "alt"]}
+                    label="Alt text hlavního obrázku"
+                  >
+                    <Input />
+                  </Form.Item>
+                )}
                 <Form.Item
                   name={["translations", lang, "title"]}
                   label="Název inzerátu"
@@ -476,6 +481,15 @@ const ListingCreatePage: React.FC<Props> = ({ initialData, onSuccess }) => {
                     onReady={() => {
                       readyMap.current[lang].desc = true;
                     }}
+                    onChange={(data) => {
+                      setEditorContent((prev) => ({
+                        ...prev,
+                        [lang]: {
+                          ...prev[lang],
+                          description: data,
+                        },
+                      }));
+                    }}
                   />
                 </Form.Item>
 
@@ -494,10 +508,19 @@ const ListingCreatePage: React.FC<Props> = ({ initialData, onSuccess }) => {
                     onReady={() => {
                       readyMap.current[lang].details = true;
                     }}
+                    onChange={(data) => {
+                      setEditorContent((prev) => ({
+                        ...prev,
+                        [lang]: {
+                          ...prev[lang],
+                          details: data,
+                        },
+                      }));
+                    }}
                   />
                 </Form.Item>
               </div>
-            ) /* : null */,
+            ),
           }))}
         />
 

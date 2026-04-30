@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import type {
   AddressOption,
   CreateAdFormValues,
@@ -6,7 +6,25 @@ import type {
 } from "../types/listing_form";
 import type { Language } from "../types/general";
 import type { EditorMinimalRef } from "../components/editor/RichMediaEditor";
-export const useEditedListing = (selectedAddress: AddressOption | null) => {
+export const useEditedListing = (
+  selectedAddress: AddressOption | null,
+  initialData?: CreateAdFormValues,
+) => {
+  const initialRef = useRef<CreateAdFormValues | null>(null);
+  useEffect(() => {
+    if (!initialData) return;
+    initialRef.current = initialData;
+  }, [initialData]);
+  const [editorContent, setEditorContent] = useState<
+    Record<
+      Language,
+      { description?: EditorJS.OutputData; details?: EditorJS.OutputData }
+    >
+  >({
+    cs: {},
+    en: {},
+    sk: {},
+  });
   const descRefs = useRef<Record<Language, EditorMinimalRef | null>>({
     cs: null,
     en: null,
@@ -18,24 +36,28 @@ export const useEditedListing = (selectedAddress: AddressOption | null) => {
     en: null,
     sk: null,
   });
+  const hasContent = (data?: EditorJS.OutputData) => !!data?.blocks?.length;
 
   const buildEditPayload = async (values: CreateAdFormValues) => {
     const cleanedTranslations: CreateAdPayload["translations"] = {};
     for (const lang of ["cs", "en", "sk"] as const) {
       const base = values.translations?.[lang];
       console.log(descRefs.current[lang]);
-      const desc = await descRefs.current[lang]?.save();
-      const details = await detailsRefs.current[lang]?.save();
+      const description = hasContent(editorContent[lang]?.description)
+        ? editorContent[lang].description
+        : initialRef.current?.translations?.[lang]?.description;
 
+      const details = hasContent(editorContent[lang]?.details)
+        ? editorContent[lang].details
+        : initialRef.current?.translations?.[lang]?.details;
       const cleaned = {
-        alt: base?.alt,
         title: base?.title,
-        description: desc?.blocks?.length ? desc : undefined,
-        details: details?.blocks?.length ? details : undefined,
+        description,
+        details,
       };
 
       const hasAnyValue =
-        cleaned.alt || cleaned.title || cleaned.description || cleaned.details;
+        cleaned.title || cleaned.description || cleaned.details;
 
       if (hasAnyValue) {
         cleanedTranslations[lang] = cleaned;
@@ -66,5 +88,6 @@ export const useEditedListing = (selectedAddress: AddressOption | null) => {
     descRefs,
     detailsRefs,
     buildEditPayload,
+    setEditorContent,
   };
 };

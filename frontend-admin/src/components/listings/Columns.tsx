@@ -22,6 +22,7 @@ type Args = {
   filters: ListingFilters;
   pictogramOptions: ListingFilterOption[];
   onEdit: (id: number) => void;
+  onGalleryEdit?: (id: number) => void;
   onDelete: (id: number) => void;
   onToggleVisibility: (id: number, value: boolean) => void;
   onChangeStatus: (id: number, statusId: number) => void;
@@ -176,6 +177,7 @@ export function getColumns({
   filters,
   pictogramOptions,
   onEdit,
+  onGalleryEdit,
   onDelete,
   onToggleVisibility,
   onChangeStatus,
@@ -200,8 +202,9 @@ export function getColumns({
       render: (_, record) => (
         <Actions<number>
           value={record.id}
-          onEdit={onEdit}
           onDelete={onDelete}
+          onEditGallery={onGalleryEdit}
+          onEditTexts={onEdit}
         />
       ),
     },

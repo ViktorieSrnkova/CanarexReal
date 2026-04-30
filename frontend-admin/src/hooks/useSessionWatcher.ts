@@ -32,8 +32,7 @@ export function useSessionWatcher(onExpire: () => void) {
   useEffect(() => {
     runCheck();
 
-    const interval = setInterval(runCheck, 1000 * 60 * 30);
-
+    const interval = setInterval(runCheck, 4 * 60 * 60 * 1000);
     return () => clearInterval(interval);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [onExpire]);

@@ -112,3 +112,15 @@ export type RawListingDetail = {
     detaily: string | null;
   }[];
 };
+
+export type GalleryAlt = {
+  lang: number;
+  text: string;
+};
+
+export type Gallery = {
+  id: number;
+  order: number;
+  url: string;
+  alts: GalleryAlt[];
+};

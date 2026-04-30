@@ -9,6 +9,8 @@ import { Prisma } from "../generated/prisma/browser";
 import { upload } from "../middleware/uploader";
 import { replaceTranslations } from "../utils/saveTranslationsHelper";
 import { parseTranslations } from "../utils/parseTranslationsHelper";
+import { processGalleryImages } from "../utils/processGalleryImages";
+import { convertBufferToThumbnail } from "../utils/thumbnailMaker";
 
 const router = Router();
 router.use(requireRole([1, 3]));
@@ -314,80 +316,85 @@ router.post("/", upload.array("images"), async (req, res) => {
     }
     const geo = await reverseGeocode(lat, lon);
 
-    const result = await prisma.$transaction(async (tx) => {
-      const propertyType = await tx.typy_nemovitosti.findFirst({
-        where: { kod: values.propertyType },
-      });
-      if (!propertyType) {
-        throw new Error("Invalid property type");
-      }
-      const ad = await tx.inzeraty.create({
-        data: {
-          index: Number(values.index),
-          cena_v_eur: Number(values.price),
-          loznice: Number(values.bedrooms),
-          koupelny: Number(values.bathrooms),
-          velikost: Number(values.size),
-          reprezentativni: values.showOnHomepage,
-          statusy_id: 1,
-          typy_nemovitosti_id: propertyType.id,
-          adresy: {
-            create: {
-              lat: new Prisma.Decimal(lat),
-              lng: new Prisma.Decimal(lon),
-              ulice: geo.street ?? null,
-              cislo_popisne: geo.houseNumber ?? null,
-              lokace: location,
-              mesto: geo.city ?? null,
-              staty_id: 1,
-              smerovaci_cislo: geo.postcode ?? null,
-              cela_adresa: address.label,
-              nominatim_id: address.value,
+    const result = await prisma.$transaction(
+      async (tx) => {
+        const propertyType = await tx.typy_nemovitosti.findFirst({
+          where: { kod: values.propertyType },
+        });
+        if (!propertyType) {
+          throw new Error("Invalid property type");
+        }
+        const ad = await tx.inzeraty.create({
+          data: {
+            index: Number(values.index),
+            cena_v_eur: Number(values.price),
+            loznice: Number(values.bedrooms),
+            koupelny: Number(values.bathrooms),
+            velikost: Number(values.size),
+            reprezentativni: values.showOnHomepage,
+            statusy_id: 1,
+            typy_nemovitosti_id: propertyType.id,
+            adresy: {
+              create: {
+                lat: new Prisma.Decimal(lat),
+                lng: new Prisma.Decimal(lon),
+                ulice: geo.street ?? null,
+                cislo_popisne: geo.houseNumber ?? null,
+                lokace: location,
+                mesto: geo.city ?? null,
+                staty_id: 1,
+                smerovaci_cislo: geo.postcode ?? null,
+                cela_adresa: address.label,
+                nominatim_id: address.value,
+              },
             },
           },
-        },
-      });
-      if (selectedPictogramIds.length > 0) {
-        await tx.inzeraty_piktogramy.createMany({
-          data: selectedPictogramIds.map((id) => ({
-            inzeraty_id: ad.id,
-            piktogramy_id: id,
-          })),
         });
-      }
-      const languages = {
-        en: 1,
-        cs: 2,
-        sk: 3,
-      };
-
-      for (const [lang, langId] of Object.entries(languages)) {
-        const t = values.translations?.[lang];
-        if (!t) continue;
-        await tx.inzeraty_preklady.create({
-          data: {
-            titulek: t.title,
-            popis: JSON.stringify(t.description),
-            detaily: JSON.stringify(t.details),
-            jazyky_id: langId,
-            inzeraty_id: ad.id,
-          },
-        });
-      }
-
-      await processAdImages({
-        tx,
-        files: files,
-        translationsObj: values.translations ?? {},
-        inzeratId: ad.id,
-        langIdMap: {
+        if (selectedPictogramIds.length > 0) {
+          await tx.inzeraty_piktogramy.createMany({
+            data: selectedPictogramIds.map((id) => ({
+              inzeraty_id: ad.id,
+              piktogramy_id: id,
+            })),
+          });
+        }
+        const languages = {
           en: 1,
           cs: 2,
           sk: 3,
-        },
-      });
-      return ad;
-    });
+        };
+
+        for (const [lang, langId] of Object.entries(languages)) {
+          const t = values.translations?.[lang];
+          if (!t) continue;
+          await tx.inzeraty_preklady.create({
+            data: {
+              titulek: t.title,
+              popis: JSON.stringify(t.description),
+              detaily: JSON.stringify(t.details),
+              jazyky_id: langId,
+              inzeraty_id: ad.id,
+            },
+          });
+        }
+
+        await processAdImages({
+          tx,
+          files: files,
+          translationsObj: values.translations ?? {},
+          inzeratId: ad.id,
+          langIdMap: {
+            en: 1,
+            cs: 2,
+            sk: 3,
+          },
+        });
+        return ad;
+      },
+      {
+        timeout: 10000,
+      },
+    );
     return res.json({ success: true, data: result });
   } catch (err) {
     console.error("listings post error:", err);
@@ -599,6 +606,45 @@ router.get("/:id", async (req, res) => {
     });
   }
 });
+router.get("/:id/gallery", async (req, res) => {
+  try {
+    const id = Number(req.params.id);
+    if (!id) {
+      return res.status(400).json({ message: "Invalid ID" });
+    }
+    const images = await prisma.obrazky.findMany({
+      where: { inzeraty_id: id },
+      orderBy: { poradi: "asc" },
+      select: {
+        id: true,
+        poradi: true,
+        obrazky_preklady: {
+          select: {
+            alt_text: true,
+            jazyky_id: true,
+          },
+        },
+      },
+    });
+
+    const result = images.map((img) => ({
+      id: img.id,
+      order: img.poradi,
+      url: `/api/files/images/${img.id}`,
+      alts: img.obrazky_preklady.map((p) => ({
+        lang: Number(p.jazyky_id),
+        text: p.alt_text ?? "",
+      })),
+    }));
+    return res.json(result);
+  } catch (err) {
+    console.error("galery fetch error:", err);
+    res.status(500).json({
+      message: "Internal server error",
+      error: String(err),
+    });
+  }
+});
 router.patch("/:id/status", async (req, res) => {
   try {
     const id = Number(req.params.id);
@@ -768,4 +814,109 @@ router.put("/:id", async (req, res) => {
     res.status(500).json({ error: "Failed to update listing" });
   }
 });
+
+router.put("/gallery/save", upload.any(), async (req, res) => {
+  try {
+    const form = req.body;
+
+    const listingId = Number(form.listingId);
+
+    const existingImages = JSON.parse(form.existingImages ?? "[]");
+    const removedImageIds = JSON.parse(form.removedImageIds ?? "[]");
+    const newImagesMeta = JSON.parse(form.newImagesMeta ?? "[]");
+
+    const files = req.files as
+      | Express.Multer.File[]
+      | { [fieldname: string]: Express.Multer.File[] };
+
+    await prisma.$transaction(async (tx) => {
+      if (removedImageIds.length) {
+        await tx.obrazky.deleteMany({
+          where: {
+            id: { in: removedImageIds },
+            inzeraty_id: listingId,
+          },
+        });
+      }
+
+      for (const img of existingImages) {
+        await tx.obrazky.update({
+          where: { id: img.id },
+          data: { poradi: img.order },
+        });
+
+        for (const alt of img.alts) {
+          await tx.obrazky_preklady.upsert({
+            where: {
+              jazyky_id_obrazky_id: {
+                jazyky_id: alt.lang,
+                obrazky_id: img.id,
+              },
+            },
+            update: { alt_text: alt.text },
+            create: {
+              jazyky_id: alt.lang,
+              obrazky_id: img.id,
+              alt_text: alt.text,
+            },
+          });
+        }
+      }
+      await processGalleryImages({
+        tx,
+        files,
+        newImagesMeta,
+        listingId,
+      });
+      const imagesAfter = await tx.obrazky.findMany({
+        where: { inzeraty_id: listingId },
+        orderBy: { poradi: "asc" },
+      });
+
+      const currentMain = imagesAfter.find((i) => i.poradi === 1);
+      if (!currentMain?.data) {
+        throw new Error("Missing main image");
+      }
+      const currentThumb = imagesAfter.find((i) => i.poradi === 0);
+
+      if (currentThumb) {
+        await tx.obrazky.delete({
+          where: { id: currentThumb.id },
+        });
+      }
+
+      const buffer = Buffer.from(currentMain.data as Uint8Array);
+
+      const thumbBuffer = await convertBufferToThumbnail(buffer);
+
+      const mainAlts = await tx.obrazky_preklady.findMany({
+        where: { obrazky_id: currentMain.id },
+      });
+      const thumbImg = await tx.obrazky.create({
+        data: {
+          inzeraty_id: listingId,
+          poradi: 0,
+          data: new Uint8Array(thumbBuffer),
+          is_temp: false,
+          url: "",
+        },
+      });
+      for (const alt of mainAlts) {
+        await tx.obrazky_preklady.create({
+          data: {
+            jazyky_id: alt.jazyky_id,
+            obrazky_id: thumbImg.id,
+            alt_text: alt.alt_text,
+          },
+        });
+      }
+    });
+
+    return res.json({ success: true });
+  } catch (err: any) {
+    console.error("edit gallery error:", err);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
 export default router;

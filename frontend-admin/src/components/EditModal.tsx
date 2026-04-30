@@ -23,7 +23,6 @@ export function EditModal<T>({
       onCancel={onClose}
       width={1000}
       destroyOnHidden={true}
-      centered
     >
       {open && initialData && children({ data: initialData, onSuccess })}{" "}
     </Modal>

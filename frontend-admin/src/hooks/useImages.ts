@@ -22,7 +22,7 @@ export function useImages(form: FormInstance<CreateAdFormValues>) {
 
     requestAnimationFrame(() => {
       const mapped = fileList.slice(0, 30).map((file) => ({
-        uid: crypto.randomUUID(),
+        uid: file.uid,
         file,
         url: URL.createObjectURL(file),
       }));

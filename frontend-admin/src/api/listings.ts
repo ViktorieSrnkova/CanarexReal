@@ -1,4 +1,5 @@
-import type { RawListing, RawListingDetail } from "../types/api";
+import type { GallerySavePayload } from "../components/listings/GalleryModal";
+import type { Gallery, RawListing, RawListingDetail } from "../types/api";
 import type { CreateAdPayload } from "../types/listing_form";
 import type { ListingFilterOption, ListingFilters } from "../types/listings";
 import { api } from "./client";
@@ -98,4 +99,36 @@ export const deleteListing = async (id: number) => {
 export const getListingById = async (id: number): Promise<RawListingDetail> => {
   const res = await api.get<RawListingDetail>(`/listings/${id}`);
   return res.data;
+};
+
+export const getGalery = async (id: number): Promise<Gallery[]> => {
+  const { data } = await api.get<Gallery[]>(`/listings/${id}/gallery`);
+  return data;
+};
+
+export const saveGallery = async (payload: GallerySavePayload) => {
+  const formData = new FormData();
+
+  formData.append("listingId", String(payload.listingId));
+
+  formData.append("existingImages", JSON.stringify(payload.existingImages));
+
+  formData.append("removedImageIds", JSON.stringify(payload.removedImageIds));
+
+  formData.append(
+    "newImagesMeta",
+    JSON.stringify(
+      payload.newImages.map(({ tempId, order, alts }) => ({
+        tempId,
+        order,
+        alts,
+      })),
+    ),
+  );
+
+  payload.newImages.forEach((img) => {
+    formData.append(img.tempId, img.file);
+  });
+
+  return api.put("/listings/gallery/save", formData, {});
 };

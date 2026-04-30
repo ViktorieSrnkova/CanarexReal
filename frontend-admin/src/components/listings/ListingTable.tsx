@@ -16,6 +16,7 @@ type Props = {
   filters: ListingFilters;
   pictogramOptions: ListingFilterOption[];
   onEdit: (id: number) => void;
+  onGalleryEdit: (id: number) => void;
   onDelete: (id: number) => void;
   onToggleVisibility: (id: number, value: boolean) => void;
   onChangeStatus: (id: number, statusId: number) => void;
@@ -102,6 +103,7 @@ export function ListingTable({
   onPaginationChange,
   onFiltersChange,
   onEdit,
+  onGalleryEdit,
   onDelete,
   onToggleVisibility,
   onChangeStatus,
@@ -124,6 +126,7 @@ export function ListingTable({
         filters,
         pictogramOptions,
         onEdit,
+        onGalleryEdit,
         onDelete,
         onToggleVisibility,
         onChangeStatus,

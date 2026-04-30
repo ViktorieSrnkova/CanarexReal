@@ -15,6 +15,7 @@ import {
   getListings,
   patchListingStatus,
   patchListingVisibility,
+  getGalery,
 } from "../../api/listings";
 import Title from "antd/es/typography/Title";
 import DeleteConfirmModal from "../../components/DeleteModal";
@@ -23,10 +24,13 @@ import { EditModal } from "../../components/EditModal";
 import type { CreateAdFormValues } from "../../types/listing_form";
 import { mapRawListingToFormValues } from "../../utils/listingsMapper";
 import LoadingPage from "../system/LoadingPage";
+import ListingGalleryModal from "../../components/listings/GalleryModal";
+import type { Gallery } from "../../types/api";
 
 const ListingsPage: React.FC = () => {
   const [data, setData] = useState<ListingRow[]>([]);
   const [filters, setFilters] = useState<ListingFilters>({});
+  const [listingId, setListingId] = useState<number | undefined>();
   const [pictogramOptions, setPictogramOptions] = useState<
     ListingFilterOption[]
   >([]);
@@ -36,11 +40,13 @@ const ListingsPage: React.FC = () => {
   );
   const [deleteId, setDeleteId] = useState<number | null>(null);
   const [deleteOpen, setDeleteOpen] = useState(false);
+  const [galleryOpen, setGalleryOpen] = useState(false);
   const [pagination, setPagination] = useState({
     page: 1,
     limit: 20,
     total: 0,
   });
+  const [images, setImages] = useState<Gallery[]>([]);
 
   useEffect(() => {
     const loadFilterOptions = async () => {
@@ -168,6 +174,18 @@ const ListingsPage: React.FC = () => {
       console.error("Failed to load listing detail:", err);
     }
   };
+  const handleGalleryEdit = async (id: number) => {
+    try {
+      const res = await getGalery(id);
+      console.log(res);
+      setImages(res);
+      setGalleryOpen(true);
+      setListingId(id);
+    } catch (err) {
+      console.error("Failed to load listing detail gallery:", err);
+    }
+  };
+
   return (
     <div className="listings-page">
       <Title level={2}>Spravovat inzeráty</Title>
@@ -182,6 +200,7 @@ const ListingsPage: React.FC = () => {
         filters={filters}
         pictogramOptions={pictogramOptions}
         onEdit={handleEdit}
+        onGalleryEdit={handleGalleryEdit}
         onDelete={handleDeleteClick}
         onToggleVisibility={handleToggleVisibility}
         onChangeStatus={handleChangeStatus}
@@ -213,6 +232,7 @@ const ListingsPage: React.FC = () => {
             <ListingCreatePage
               key={selected?.listingIndex ?? "edit"}
               initialData={data}
+              onClose={() => setEditOpen(false)}
               onSuccess={async () => {
                 setEditOpen(false);
                 const res = await getListings({
@@ -226,6 +246,17 @@ const ListingsPage: React.FC = () => {
             />
           )}
         </EditModal>
+      )}
+      {galleryOpen && listingId && (
+        <ListingGalleryModal
+          listingId={listingId}
+          open={galleryOpen}
+          onClose={() => {
+            setGalleryOpen(false);
+            setSelected(null);
+          }}
+          images={images}
+        />
       )}
 
       {loading && <LoadingPage />}
