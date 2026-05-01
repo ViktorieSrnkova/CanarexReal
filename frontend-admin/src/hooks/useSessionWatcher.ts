@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+/* import { useEffect, useRef } from "react";
 import { checkSession } from "../api/sessionCheckApi";
 
 export function useSessionWatcher(onExpire: () => void) {
@@ -49,3 +49,4 @@ export function useSessionWatcher(onExpire: () => void) {
     };
   }, []);
 }
+ */

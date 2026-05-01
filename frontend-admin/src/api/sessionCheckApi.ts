@@ -1,4 +1,4 @@
-import { api } from "./client";
+/* import { api } from "./client";
 
 export const checkSession = async () => {
   const res = await api.get("/me", {
@@ -7,3 +7,4 @@ export const checkSession = async () => {
 
   return res.data;
 };
+ */

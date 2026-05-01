@@ -22,8 +22,8 @@ api.interceptors.response.use(
 
     if (
       error.response?.status === 401 &&
-      !originalRequest._retry &&
-      !originalRequest.skipAuthRefresh
+      !originalRequest._retry /*  &&
+      !originalRequest.skipAuthRefresh */
     ) {
       originalRequest._retry = true;
 
