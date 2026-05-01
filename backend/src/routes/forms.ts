@@ -11,11 +11,13 @@ const router = Router();
 router.use(detectLang);
 
 router.post("/", contactFormLimiter, async (req: PublicRequest, res) => {
+  console.log("FORM START");
   try {
     const payload = req.body;
     if (payload.website) {
       return res.status(400).json({ message: "Spam detected" });
     }
+    console.log("BODY:", req.body);
     const baseData = {
       jmeno: payload.name,
       prijmeni: payload.surname,
@@ -69,7 +71,7 @@ router.post("/", contactFormLimiter, async (req: PublicRequest, res) => {
       fullPhone: payload.fullPhone,
       message: payload.message,
     };
-
+    console.log("BEFORE RESPONSE");
     try {
       await Promise.all([
         sendContactEmail(payload.email, data),
