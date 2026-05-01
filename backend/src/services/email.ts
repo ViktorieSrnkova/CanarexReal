@@ -54,7 +54,7 @@ export const testSMTP = async () => {
 };
 
 export const sendAdminNotificationEmail = async (data: ContactEmailData) => {
-  const ADMIN_URL = process.env.VITE_API_URL;
+  const ADMIN_URL = process.env.ADMIN_URL;
   await transporter.sendMail({
     from: '"CanarexReal" <no-reply@canarexreal.com>',
     to: ADMIN_EMAILS.join(","),

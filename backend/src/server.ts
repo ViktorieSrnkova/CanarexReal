@@ -22,10 +22,10 @@ import { langMiddleware } from "./middleware/lang";
 dotenv.config();
 
 const app = express();
-
+const allowedOrigins = (process.env.ALLOWED_ORIGINS || "").split(",");
 app.use(
   cors({
-    origin: ["http://localhost:5173", "http://localhost:5174"],
+    origin: allowedOrigins,
     credentials: true,
   }),
 );
@@ -62,5 +62,5 @@ const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
   testSMTP();
-  console.log(`Server running on http://localhost:${PORT}`);
+  console.log(`Server running on ${PORT}`);
 });

@@ -14,7 +14,7 @@ type Props = {
 const NewsTable: React.FC<Props> = ({ data, onToggle, onEdit, onDelete }) => {
   const truncate = (text: string, max = 10) =>
     text.length > max ? text.slice(0, max) + "..." : text;
-  const API_URL = import.meta.env.VITE_API_URL;
+  const API_URL = import.meta.env.ADMIN_URL;
   const columns: ColumnsType<NewsAdminItem> = [
     {
       title: "",
