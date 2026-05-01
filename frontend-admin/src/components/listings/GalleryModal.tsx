@@ -69,6 +69,7 @@ export default function ListingGalleryModal({
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [removedImageIds, setRemovedImageIds] = useState<number[]>([]);
   const [uploading, setUploading] = useState(false);
+  const [saving, setSaving] = useState(false);
   const getAlt = (img: LocalImage, langId: number) =>
     img.alts.find((a) => Number(a.lang) === Number(langId))?.text ?? "";
   useEffect(() => {
@@ -176,40 +177,41 @@ export default function ListingGalleryModal({
   };
 
   const handleOk = async () => {
-    const payload: GallerySavePayload = {
-      listingId,
-      existingImages: localImages
-        .filter(
-          (i): i is Extract<LocalImage, { kind: "existing" }> =>
-            i.kind === "existing",
-        )
-        .map((i) => ({
-          id: i.id,
-          order: i.order,
-          alts: i.alts,
-        })),
-
-      newImages: localImages
-        .filter(
-          (i): i is Extract<LocalImage, { kind: "new" }> => i.kind === "new",
-        )
-        .map((i) => ({
-          tempId: i.tempId,
-          file: i.file,
-          order: i.order,
-          alts: i.alts,
-        })),
-      removedImageIds,
-    };
+    setSaving(true);
     try {
+      const payload: GallerySavePayload = {
+        listingId,
+        existingImages: localImages
+          .filter(
+            (i): i is Extract<LocalImage, { kind: "existing" }> =>
+              i.kind === "existing",
+          )
+          .map((i) => ({
+            id: i.id,
+            order: i.order,
+            alts: i.alts,
+          })),
+        newImages: localImages
+          .filter(
+            (i): i is Extract<LocalImage, { kind: "new" }> => i.kind === "new",
+          )
+          .map((i) => ({
+            tempId: i.tempId,
+            file: i.file,
+            order: i.order,
+            alts: i.alts,
+          })),
+        removedImageIds,
+      };
+
       await saveGallery(payload);
-      console.log("FINAL PAYLOAD:", localImages);
-      console.log("FINAL PAYLOAD:", payload);
       message.success("Inzerát upraven");
       onClose();
     } catch (e) {
       message.error("Nepodařilo se upravit inzerát");
       console.error("SAVE GALLERY FAILED", e);
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -220,6 +222,7 @@ export default function ListingGalleryModal({
       onCancel={onClose}
       onOk={handleOk}
       width={900}
+      confirmLoading={saving}
     >
       <Button
         onClick={() => fileInputRef.current?.click()}
