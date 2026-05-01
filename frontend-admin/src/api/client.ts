@@ -1,7 +1,9 @@
 import axios from "axios";
 
+const VITE_API_URL = import.meta.env.VITE_API_URL;
+
 export const api = axios.create({
-  baseURL: "https://canarexreal.onrender.com/api/admin",
+  baseURL: `${VITE_API_URL}/api/admin`,
   withCredentials: true,
 });
 
@@ -29,7 +31,7 @@ api.interceptors.response.use(
 
       try {
         const res = await axios.post(
-          "https://canarexreal.onrender.com/api/admin/refresh",
+          ` ${VITE_API_URL}/api/admin/refresh`,
           {},
           { withCredentials: true },
         );

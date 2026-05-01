@@ -1,40 +1,70 @@
 import type { Prisma } from "@prisma/client/extension";
 import { convertBufferToWebP } from "./thumbnailMaker.js";
-type alts = { lang: number; text: string };
-export async function processGalleryImages(params: {
-  tx: Prisma.TransactionClient;
-  files: Express.Multer.File[] | Record<string, Express.Multer.File[]>;
-  newImagesMeta: {
-    tempId: string;
-    order: number;
-    alts: { lang: number; text: string }[];
-  }[];
-  listingId: number;
+
+type Alts = { lang: number; text: string };
+
+type NewImageMeta = {
+  tempId: string;
+  order: number;
+  alts: Alts[];
+};
+
+type GalleryFiles =
+  | Express.Multer.File[]
+  | Record<string, Express.Multer.File[]>;
+
+type PreparedGalleryImage = {
+  order: number;
+  alts: Alts[];
+  data: Uint8Array;
+};
+
+const getFile = (files: GalleryFiles, key: string) => {
+  if (Array.isArray(files)) {
+    return files.find((file) => file.fieldname === key);
+  }
+
+  return files[key]?.[0];
+};
+
+export async function prepareGalleryImages(params: {
+  files: GalleryFiles;
+  newImagesMeta: NewImageMeta[];
 }) {
-  const { tx, files, newImagesMeta, listingId } = params;
+  const { files, newImagesMeta } = params;
+  const preparedImages: PreparedGalleryImage[] = [];
 
-  const createdImages: { id: number; order: number }[] = [];
-  const getFile = (
-    files: Express.Multer.File[] | Record<string, Express.Multer.File[]>,
-    key: string,
-  ) => {
-    if (Array.isArray(files)) {
-      return files.find((f) => f.fieldname === key);
-    }
-
-    return files[key]?.[0];
-  };
   for (const meta of newImagesMeta) {
     const file = getFile(files, meta.tempId);
     if (!file) continue;
 
     const webp = await convertBufferToWebP(file.buffer);
 
+    preparedImages.push({
+      order: meta.order,
+      alts: meta.alts ?? [],
+      data: new Uint8Array(webp),
+    });
+  }
+
+  return preparedImages;
+}
+
+export async function processGalleryImages(params: {
+  tx: Prisma.TransactionClient;
+  preparedImages: PreparedGalleryImage[];
+  listingId: number;
+}) {
+  const { tx, preparedImages, listingId } = params;
+
+  const createdImages: { id: number; order: number }[] = [];
+
+  for (const image of preparedImages) {
     const img = await tx.obrazky.create({
       data: {
-        data: new Uint8Array(webp),
+        data: image.data,
         inzeraty_id: listingId,
-        poradi: meta.order,
+        poradi: image.order,
         url: "",
         is_temp: false,
       },
@@ -47,7 +77,7 @@ export async function processGalleryImages(params: {
       },
     });
 
-    for (const alt of meta.alts ?? []) {
+    for (const alt of image.alts ?? []) {
       await tx.obrazky_preklady.upsert({
         where: {
           jazyky_id_obrazky_id: {
@@ -66,7 +96,7 @@ export async function processGalleryImages(params: {
 
     createdImages.push({
       id: img.id,
-      order: meta.order,
+      order: image.order,
     });
   }
 

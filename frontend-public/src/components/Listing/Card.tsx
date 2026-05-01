@@ -16,13 +16,13 @@ type Props = {
   alt: string;
   status_id: number;
 };
-
+const VITE_API_URL = import.meta.env.VITE_API_URL;
 function Card(props: Props) {
   return (
     <div className={`card ${props.status_id === 2 ? "status-2-active" : ""}`}>
       <Link to={`/listings/${props.id}`} className="card-image">
         <img
-          src={`https://canarexreal.onrender.com/api/files/images/${props.obrazekId}`}
+          src={` ${VITE_API_URL}/api/files/images/${props.obrazekId}`}
           alt={props.alt}
           className="card-img"
           loading="lazy"

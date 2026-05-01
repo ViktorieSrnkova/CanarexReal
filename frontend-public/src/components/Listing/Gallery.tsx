@@ -4,7 +4,7 @@ import "../../styles/listing/gallery.css";
 type Props = {
   imagesProp: { id: number }[];
 };
-
+const VITE_API_URL = import.meta.env.VITE_API_URL;
 export default function ListingGallery({ imagesProp }: Props) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
@@ -13,7 +13,7 @@ export default function ListingGallery({ imagesProp }: Props) {
   const touchStartX = useRef(0);
   const images = useMemo(() => {
     return imagesProp.map(
-      (img) => `https://canarexreal.onrender.com/api/files/images/${img.id}`,
+      (img) => ` ${VITE_API_URL}/api/files/images/${img.id}`,
     );
   }, [imagesProp]);
 

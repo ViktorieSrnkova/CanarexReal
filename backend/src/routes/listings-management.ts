@@ -9,7 +9,10 @@ import { getSelectedPictogramIds } from "../utils/mapPictogramsHelper.js";
 import { upload } from "../middleware/uploader.js";
 import { replaceTranslations } from "../utils/saveTranslationsHelper.js";
 import { parseTranslations } from "../utils/parseTranslationsHelper.js";
-import { processGalleryImages } from "../utils/processGalleryImages.js";
+import {
+  prepareGalleryImages,
+  processGalleryImages,
+} from "../utils/processGalleryImages.js";
 import { convertBufferToThumbnail } from "../utils/thumbnailMaker.js";
 import { Prisma } from "@prisma/client";
 
@@ -821,6 +824,9 @@ router.put("/gallery/save", upload.any(), async (req, res) => {
     const form = req.body;
 
     const listingId = Number(form.listingId);
+    if (!Number.isInteger(listingId)) {
+      return res.status(400).json({ message: "Invalid listing id" });
+    }
 
     const existingImages = JSON.parse(form.existingImages ?? "[]");
     const removedImageIds = JSON.parse(form.removedImageIds ?? "[]");
@@ -830,88 +836,126 @@ router.put("/gallery/save", upload.any(), async (req, res) => {
       | Express.Multer.File[]
       | { [fieldname: string]: Express.Multer.File[] };
 
-    await prisma.$transaction(async (tx: any) => {
-      if (removedImageIds.length) {
-        await tx.obrazky.deleteMany({
-          where: {
-            id: { in: removedImageIds },
-            inzeraty_id: listingId,
-          },
-        });
+    const preparedImages = await prepareGalleryImages({
+      files,
+      newImagesMeta,
+    });
+
+    const preparedMainImage = preparedImages.find((image) => image.order === 1);
+    let mainImageBuffer: Buffer;
+
+    if (preparedMainImage) {
+      mainImageBuffer = Buffer.from(preparedMainImage.data);
+    } else {
+      const reorderedMain = existingImages.find((img: any) => img.order === 1);
+      if (!reorderedMain) {
+        throw new Error("Missing main image");
       }
 
-      for (const img of existingImages) {
-        await tx.obrazky.update({
-          where: { id: img.id },
-          data: { poradi: img.order },
-        });
+      const mainImage = await prisma.obrazky.findFirst({
+        where: {
+          id: Number(reorderedMain.id),
+          inzeraty_id: listingId,
+        },
+        select: {
+          data: true,
+        },
+      });
 
-        for (const alt of img.alts) {
-          await tx.obrazky_preklady.upsert({
+      if (!mainImage?.data) {
+        throw new Error("Missing main image");
+      }
+
+      mainImageBuffer = Buffer.from(mainImage.data as Uint8Array);
+    }
+
+    const thumbBuffer = await convertBufferToThumbnail(mainImageBuffer);
+
+    await prisma.$transaction(
+      async (tx: any) => {
+        if (removedImageIds.length) {
+          await tx.obrazky.deleteMany({
             where: {
-              jazyky_id_obrazky_id: {
-                jazyky_id: alt.lang,
-                obrazky_id: img.id,
-              },
-            },
-            update: { alt_text: alt.text },
-            create: {
-              jazyky_id: alt.lang,
-              obrazky_id: img.id,
-              alt_text: alt.text,
+              id: { in: removedImageIds },
+              inzeraty_id: listingId,
             },
           });
         }
-      }
-      await processGalleryImages({
-        tx,
-        files,
-        newImagesMeta,
-        listingId,
-      });
-      const imagesAfter = await tx.obrazky.findMany({
-        where: { inzeraty_id: listingId },
-        orderBy: { poradi: "asc" },
-      });
 
-      const currentMain = imagesAfter.find((i: any) => i.poradi === 1);
-      if (!currentMain?.data) {
-        throw new Error("Missing main image");
-      }
-      const currentThumb = imagesAfter.find((i: any) => i.poradi === 0);
+        for (const img of existingImages) {
+          await tx.obrazky.update({
+            where: { id: img.id },
+            data: { poradi: img.order },
+          });
 
-      if (currentThumb) {
-        await tx.obrazky.delete({
-          where: { id: currentThumb.id },
+          for (const alt of img.alts) {
+            await tx.obrazky_preklady.upsert({
+              where: {
+                jazyky_id_obrazky_id: {
+                  jazyky_id: alt.lang,
+                  obrazky_id: img.id,
+                },
+              },
+              update: { alt_text: alt.text },
+              create: {
+                jazyky_id: alt.lang,
+                obrazky_id: img.id,
+                alt_text: alt.text,
+              },
+            });
+          }
+        }
+        await processGalleryImages({
+          tx,
+          preparedImages,
+          listingId,
         });
-      }
 
-      const buffer = Buffer.from(currentMain.data as Uint8Array);
+        const imagesAfter = await tx.obrazky.findMany({
+          where: { inzeraty_id: listingId },
+          orderBy: { poradi: "asc" },
+        });
 
-      const thumbBuffer = await convertBufferToThumbnail(buffer);
+        const currentMain = imagesAfter.find((i: any) => i.poradi === 1);
+        if (!currentMain?.data) {
+          throw new Error("Missing main image");
+        }
 
-      const mainAlts = await tx.obrazky_preklady.findMany({
-        where: { obrazky_id: currentMain.id },
-      });
-      const thumbImg = await tx.obrazky.create({
-        data: {
-          inzeraty_id: listingId,
-          poradi: 0,
-          data: new Uint8Array(thumbBuffer),
-          is_temp: false,
-          url: "",
-        },
-      });
-      for (const alt of mainAlts) {
-        await tx.obrazky_preklady.create({
+        const currentThumb = imagesAfter.find((i: any) => i.poradi === 0);
+
+        if (currentThumb) {
+          await tx.obrazky.delete({
+            where: { id: currentThumb.id },
+          });
+        }
+
+        const mainAlts = await tx.obrazky_preklady.findMany({
+          where: { obrazky_id: currentMain.id },
+        });
+        const thumbImg = await tx.obrazky.create({
           data: {
-            jazyky_id: alt.jazyky_id,
-            obrazky_id: thumbImg.id,
-            alt_text: alt.alt_text,
+            inzeraty_id: listingId,
+            poradi: 0,
+            data: new Uint8Array(thumbBuffer),
+            is_temp: false,
+            url: "",
           },
         });
-      }
-    });
+        for (const alt of mainAlts) {
+          await tx.obrazky_preklady.create({
+            data: {
+              jazyky_id: alt.jazyky_id,
+              obrazky_id: thumbImg.id,
+              alt_text: alt.alt_text,
+            },
+          });
+        }
+      },
+      {
+        maxWait: 10000,
+        timeout: 60000,
+      },
+    );
 
     return res.json({ success: true });
   } catch (err: any) {

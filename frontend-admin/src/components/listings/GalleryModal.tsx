@@ -286,6 +286,7 @@ export default function ListingGalleryModal({
     </Modal>
   );
 }
+const VITE_API_URL = import.meta.env.VITE_API_URL;
 function SortableImage({
   image,
   isMain,
@@ -339,7 +340,7 @@ function SortableImage({
         src={
           image.url.startsWith("blob:")
             ? image.url
-            : `https://canarexreal.onrender.com${image.url}`
+            : ` ${VITE_API_URL}${image.url}`
         }
         onClick={onClick}
         style={{
