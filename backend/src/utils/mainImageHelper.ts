@@ -2,7 +2,7 @@ import prisma from "../lib/db";
 import {
   convertBufferToThumbnail,
   convertBufferToWebP,
-} from "./thumbnailMaker";
+} from "./thumbnailMaker.js";
 
 export async function processMainImage(params: {
   file?: Express.Multer.File | undefined;

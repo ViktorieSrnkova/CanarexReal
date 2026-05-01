@@ -1,5 +1,5 @@
 import type { Prisma } from "@prisma/client/extension";
-import { convertBufferToWebP } from "./thumbnailMaker";
+import { convertBufferToWebP } from "./thumbnailMaker.js";
 type alts = { lang: number; text: string };
 export async function processGalleryImages(params: {
   tx: Prisma.TransactionClient;

@@ -1,4 +1,4 @@
-import type { Prisma } from "../generated/prisma/browser";
+import type { Prisma } from "../generated/prisma/browser.js";
 import {
   convertBufferToThumbnail,
   convertBufferToWebP,

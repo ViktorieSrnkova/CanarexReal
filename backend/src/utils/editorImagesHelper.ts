@@ -1,5 +1,5 @@
 import prisma from "../lib/db";
-import { extractImageId } from "./url";
+import { extractImageId } from "./url.js";
 
 export async function processEditorImages(params: {
   translationsObj: Record<
