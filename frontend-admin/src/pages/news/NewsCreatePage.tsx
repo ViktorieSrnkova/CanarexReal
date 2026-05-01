@@ -28,7 +28,7 @@ const NewsCreatePage: React.FC<Props> = ({ initialData, onSuccess }) => {
     const translations = mapNewsToTranslations(initialData);
 
     const image = initialData.obrazky?.find((img) => img.poradi === 0);
-    const API_URL = import.meta.env.ADMIN_URL;
+    const API_URL = import.meta.env.VITE_API_URL;
 
     formHook.setData((prev) => ({
       ...prev,
