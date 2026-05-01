@@ -1,5 +1,5 @@
 import { Router } from "express";
-import prisma from "../../lib/db";
+import prisma from "../lib/db";
 import { detectLang, type PublicRequest } from "../middleware/detectLang";
 import {
   sendAdminNotificationEmail,

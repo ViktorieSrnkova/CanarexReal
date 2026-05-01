@@ -1,7 +1,8 @@
+// @ts-ignore
 import { Router } from "express";
 import { requireRole, type AuthRequest } from "../middleware/auth";
-import { listingDetailSelect } from "../../lib/prismaSelect";
-import prisma from "../../lib/db";
+import { listingDetailSelect } from "../lib/prismaSelect";
+import prisma from "../lib/db";
 import { processAdImages } from "../utils/processImagesHelper";
 import { reverseGeocode } from "../utils/reverseGeocode";
 import { getSelectedPictogramIds } from "../utils/mapPictogramsHelper";
@@ -280,11 +281,11 @@ router.get("/filter-options", async (_req, res) => {
 
     const collator = new Intl.Collator("cs");
     const options = pictograms
-      .map((pictogram) => ({
+      .map((pictogram: any) => ({
         value: pictogram.id,
         label: pictogram.piktogramy_preklady[0]?.nazev ?? pictogram.nazev,
       }))
-      .sort((a, b) => collator.compare(a.label, b.label));
+      .sort((a: any, b: any) => collator.compare(a.label, b.label));
 
     return res.json({ pictograms: options });
   } catch (err) {
@@ -317,7 +318,7 @@ router.post("/", upload.array("images"), async (req, res) => {
     const geo = await reverseGeocode(lat, lon);
 
     const result = await prisma.$transaction(
-      async (tx) => {
+      async (tx: any) => {
         const propertyType = await tx.typy_nemovitosti.findFirst({
           where: { kod: values.propertyType },
         });
@@ -627,11 +628,11 @@ router.get("/:id/gallery", async (req, res) => {
       },
     });
 
-    const result = images.map((img) => ({
+    const result = images.map((img: any) => ({
       id: img.id,
       order: img.poradi,
       url: `/api/files/images/${img.id}`,
-      alts: img.obrazky_preklady.map((p) => ({
+      alts: img.obrazky_preklady.map((p: any) => ({
         lang: Number(p.jazyky_id),
         text: p.alt_text ?? "",
       })),
@@ -829,7 +830,7 @@ router.put("/gallery/save", upload.any(), async (req, res) => {
       | Express.Multer.File[]
       | { [fieldname: string]: Express.Multer.File[] };
 
-    await prisma.$transaction(async (tx) => {
+    await prisma.$transaction(async (tx: any) => {
       if (removedImageIds.length) {
         await tx.obrazky.deleteMany({
           where: {
@@ -873,11 +874,11 @@ router.put("/gallery/save", upload.any(), async (req, res) => {
         orderBy: { poradi: "asc" },
       });
 
-      const currentMain = imagesAfter.find((i) => i.poradi === 1);
+      const currentMain = imagesAfter.find((i: any) => i.poradi === 1);
       if (!currentMain?.data) {
         throw new Error("Missing main image");
       }
-      const currentThumb = imagesAfter.find((i) => i.poradi === 0);
+      const currentThumb = imagesAfter.find((i: any) => i.poradi === 0);
 
       if (currentThumb) {
         await tx.obrazky.delete({

@@ -1,11 +1,11 @@
 import { Router } from "express";
-import prisma from "../../lib/db";
+import prisma from "../lib/db";
 import { Prisma } from "../generated/prisma/browser";
 import {
   listingThumbnailSelect,
   listingDetailSelect,
   listingWithLangWhere,
-} from "../../lib/prismaSelect";
+} from "../lib/prismaSelect";
 import { detectLang, type PublicRequest } from "../middleware/detectLang";
 
 const router = Router();

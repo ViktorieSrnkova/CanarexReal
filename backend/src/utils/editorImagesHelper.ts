@@ -1,4 +1,4 @@
-import prisma from "../../lib/db";
+import prisma from "../lib/db";
 import { extractImageId } from "./url";
 
 export async function processEditorImages(params: {

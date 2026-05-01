@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { requireRole, type AuthRequest } from "../middleware/auth";
-import prisma from "../../lib/db";
+import prisma from "../lib/db";
 import type { PublicRequest } from "../middleware/detectLang";
 import {
   convertBufferToWebP,
