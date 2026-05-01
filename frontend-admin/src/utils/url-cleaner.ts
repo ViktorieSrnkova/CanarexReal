@@ -7,5 +7,5 @@ export function toFullImageUrl(url?: string | null): string {
 
   if (url.startsWith("blob:")) return "";
 
-  return `${API_URL}${url}`;
+  return `${API_URL}/${url}`;
 }
