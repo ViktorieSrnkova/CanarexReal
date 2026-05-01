@@ -1,12 +1,12 @@
 import { Router } from "express";
 import prisma from "../lib/db.js";
-import { Prisma } from "../generated/prisma/browser";
 import {
   listingThumbnailSelect,
   listingDetailSelect,
   listingWithLangWhere,
 } from "../lib/prismaSelect";
 import { detectLang, type PublicRequest } from "../middleware/detectLang";
+import type { Prisma } from "@prisma/client";
 
 const router = Router();
 router.use(detectLang);

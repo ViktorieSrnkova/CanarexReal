@@ -6,12 +6,12 @@ import prisma from "../lib/db.js";
 import { processAdImages } from "../utils/processImagesHelper";
 import { reverseGeocode } from "../utils/reverseGeocode";
 import { getSelectedPictogramIds } from "../utils/mapPictogramsHelper";
-import { Prisma } from "../generated/prisma/browser";
 import { upload } from "../middleware/uploader";
 import { replaceTranslations } from "../utils/saveTranslationsHelper";
 import { parseTranslations } from "../utils/parseTranslationsHelper";
 import { processGalleryImages } from "../utils/processGalleryImages";
 import { convertBufferToThumbnail } from "../utils/thumbnailMaker";
+import { Prisma } from "@prisma/client";
 
 const router = Router();
 router.use(requireRole([1, 3]));
