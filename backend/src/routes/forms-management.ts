@@ -54,20 +54,22 @@ router.get("/:id", async (req, res) => {
       select: {
         id: true,
         datum_vytvoreni: true,
-
         jmeno: true,
         prijmeni: true,
         email: true,
         telefon: true,
-
-        pocet_loznic: true,
-        pocet_koupelen: true,
-        minimalnni_velikost: true,
-        rozpocet: true,
         index_inzeratu: true,
         prilet: true,
         revidovano: true,
         text_zpravy: true,
+        rozpocet_od: true,
+        rozpocet_do: true,
+        velikost_do: true,
+        velikost_od: true,
+        pocet_loznic: true,
+        pocet_koupelen: true,
+
+        vi_prilet: true,
 
         odkud_formular: {
           select: {
@@ -147,8 +149,11 @@ router.patch("/:id/review", async (req, res) => {
         datum_vytvoreni: true,
         pocet_loznic: true,
         pocet_koupelen: true,
-        minimalnni_velikost: true,
-        rozpocet: true,
+        rozpocet_od: true,
+        rozpocet_do: true,
+        velikost_do: true,
+        velikost_od: true,
+        vi_prilet: true,
         index_inzeratu: true,
         prilet: true,
         revidovano: true,

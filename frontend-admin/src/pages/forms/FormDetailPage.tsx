@@ -195,8 +195,8 @@ const FormDetailPage = () => {
           <Text style={{ margin: "0 8px" }}>
             Rozpočet:{" "}
             <Tag color="gold">
-              {form.rozpocet
-                ? formatMoneyEUR(form.rozpocet)
+              {form.rozpocet_od
+                ? formatMoneyEUR(form.rozpocet_od)
                 : "Nespecifikováno"}
             </Tag>
           </Text>

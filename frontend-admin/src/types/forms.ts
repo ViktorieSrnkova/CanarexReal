@@ -20,8 +20,12 @@ export interface FormDetail extends FormSummary {
   pocet_loznic?: number;
   pocet_koupelen?: number;
   minimalnni_velikost?: number;
-  rozpocet?: number;
+  rozpocet_od?: number;
+  rozpocet_do?: number;
+  velikost_do?: number;
+  velikost_od?: number;
   index_inzeratu?: string;
   prilet?: Date;
+  vi_prilet?: true;
   text_zpravy?: string;
 }
