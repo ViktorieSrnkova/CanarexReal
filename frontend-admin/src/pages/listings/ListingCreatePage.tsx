@@ -39,7 +39,7 @@ import { useEditedListing } from "../../hooks/useEditListing";
 type Props = {
   initialData?: CreateAdFormValues;
   onSuccess?: () => void;
-  onClose: () => void;
+  onClose?: () => void;
 };
 
 const ListingCreatePage: React.FC<Props> = ({
@@ -98,7 +98,7 @@ const ListingCreatePage: React.FC<Props> = ({
         await editListingTexts(id, payload);
 
         message.success("Inzerát upraven");
-        onClose();
+        onClose?.();
       } else {
         const payload = await buildPayload(values);
         const formData = new FormData();

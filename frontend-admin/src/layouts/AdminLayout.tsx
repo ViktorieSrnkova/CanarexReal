@@ -10,7 +10,7 @@ import {
   ToolOutlined,
 } from "@ant-design/icons";
 import React, { useState } from "react";
-import { useSessionWatcher } from "../hooks/useSessionWatcher";
+//import { useSessionWatcher } from "../hooks/useSessionWatcher";
 
 const { Sider, Header, Content } = Layout;
 
@@ -41,11 +41,11 @@ export default function AdminLayout() {
     return "1";
   })();
 
-  useSessionWatcher(() => {
+  /* useSessionWatcher(() => {
     localStorage.removeItem("token");
     window.dispatchEvent(new Event("session-expired"));
     navigate("/login");
-  });
+  }); */
   React.useEffect(() => {
     if (window.innerWidth < 992) return;
     const keys: string[] = [];
