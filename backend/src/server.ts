@@ -22,6 +22,7 @@ import { langMiddleware } from "./middleware/lang.js";
 dotenv.config();
 
 const app = express();
+app.set("trust proxy", 1);
 const allowedOrigins = (process.env.ALLOWED_ORIGINS || "").split(",");
 app.use(
   cors({
