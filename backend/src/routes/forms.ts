@@ -4,7 +4,7 @@ import { detectLang, type PublicRequest } from "../middleware/detectLang.js";
 import {
   sendAdminNotificationEmail,
   sendContactEmail,
-} from "../services/email";
+} from "../services/email.js";
 import { contactFormLimiter } from "../middleware/rateLimit.js";
 
 const router = Router();
