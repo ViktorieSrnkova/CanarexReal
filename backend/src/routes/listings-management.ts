@@ -2,7 +2,7 @@
 import { Router } from "express";
 import { requireRole, type AuthRequest } from "../middleware/auth";
 import { listingDetailSelect } from "../lib/prismaSelect";
-import prisma from "../lib/db";
+import prisma from "../lib/db.js";
 import { processAdImages } from "../utils/processImagesHelper";
 import { reverseGeocode } from "../utils/reverseGeocode";
 import { getSelectedPictogramIds } from "../utils/mapPictogramsHelper";
