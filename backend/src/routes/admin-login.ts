@@ -39,8 +39,8 @@ router.post("/login", async (req, res) => {
 
     res.cookie("refresh_token", refreshToken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
+      secure: true /* process.env.NODE_ENV === "production" */,
+      sameSite: "none",
       maxAge: 4 * 60 * 60 * 1000,
     });
     res.json({ accessToken, message: "Logged in" });
