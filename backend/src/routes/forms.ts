@@ -1,11 +1,11 @@
 import { Router } from "express";
 import prisma from "../lib/db.js";
-import { detectLang, type PublicRequest } from "../middleware/detectLang";
+import { detectLang, type PublicRequest } from "../middleware/detectLang.js";
 import {
   sendAdminNotificationEmail,
   sendContactEmail,
 } from "../services/email";
-import { contactFormLimiter } from "../middleware/rateLimit";
+import { contactFormLimiter } from "../middleware/rateLimit.js";
 
 const router = Router();
 router.use(detectLang);

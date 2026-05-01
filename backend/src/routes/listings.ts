@@ -4,8 +4,8 @@ import {
   listingThumbnailSelect,
   listingDetailSelect,
   listingWithLangWhere,
-} from "../lib/prismaSelect";
-import { detectLang, type PublicRequest } from "../middleware/detectLang";
+} from "../lib/prismaSelect.js";
+import { detectLang, type PublicRequest } from "../middleware/detectLang.js";
 import type { Prisma } from "@prisma/client";
 
 const router = Router();

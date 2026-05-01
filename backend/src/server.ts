@@ -15,9 +15,9 @@ import uploadRouter from "./routes/upload.js";
 import formsRouter from "./routes/forms.js";
 import cors from "cors";
 import cron from "node-cron";
-import { cleanupTempImages } from "./jobs/cleanupImage";
-import { testSMTP } from "./services/email";
-import { langMiddleware } from "./middleware/lang";
+import { cleanupTempImages } from "./jobs/cleanupImage.js";
+import { testSMTP } from "./services/email.js";
+import { langMiddleware } from "./middleware/lang.js";
 
 dotenv.config();
 

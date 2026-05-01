@@ -2,7 +2,7 @@ import type { Prisma } from "@prisma/client";
 import {
   convertBufferToThumbnail,
   convertBufferToWebP,
-} from "./thumbnailMaker";
+} from "./thumbnailMaker.js";
 
 export async function processAdImages(params: {
   tx: Prisma.TransactionClient;

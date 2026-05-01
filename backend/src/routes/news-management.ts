@@ -1,13 +1,13 @@
 import { Router } from "express";
 import { requireRole, type AuthRequest } from "../middleware/auth.js";
 import prisma from "../lib/db.js";
-import type { PublicRequest } from "../middleware/detectLang";
+import type { PublicRequest } from "../middleware/detectLang.js";
 import {
   convertBufferToWebP,
   convertBufferToThumbnail,
-} from "../utils/thumbnailMaker";
+} from "../utils/thumbnailMaker.js";
 import { upload } from "../middleware/uploader.js";
-import { extractImageId } from "../utils/url";
+import { extractImageId } from "../utils/url.js";
 import { parseTranslations } from "../utils/parseTranslationsHelper.js";
 import { processEditorImages } from "../utils/editorImagesHelper.js";
 import { processMainImage } from "../utils/mainImageHelper.js";

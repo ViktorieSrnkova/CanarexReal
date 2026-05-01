@@ -1,5 +1,5 @@
 import express from "express";
-import { upload } from "../middleware/uploader";
+import { upload } from "../middleware/uploader.js";
 import prisma from "../lib/db.js";
 
 const router = express.Router();
