@@ -1,17 +1,17 @@
 import { Router } from "express";
-import { requireRole, type AuthRequest } from "../middleware/auth";
+import { requireRole, type AuthRequest } from "../middleware/auth.js";
 import prisma from "../lib/db.js";
 import type { PublicRequest } from "../middleware/detectLang";
 import {
   convertBufferToWebP,
   convertBufferToThumbnail,
 } from "../utils/thumbnailMaker";
-import { upload } from "../middleware/uploader";
+import { upload } from "../middleware/uploader.js";
 import { extractImageId } from "../utils/url";
-import { parseTranslations } from "../utils/parseTranslationsHelper";
-import { processEditorImages } from "../utils/editorImagesHelper";
-import { processMainImage } from "../utils/mainImageHelper";
-import { saveTranslations } from "../utils/saveTranslationsHelper";
+import { parseTranslations } from "../utils/parseTranslationsHelper.js";
+import { processEditorImages } from "../utils/editorImagesHelper.js";
+import { processMainImage } from "../utils/mainImageHelper.js";
+import { saveTranslations } from "../utils/saveTranslationsHelper.js";
 
 const router = Router();
 router.use(requireRole([1, 3]));

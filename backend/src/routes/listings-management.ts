@@ -1,16 +1,16 @@
 // @ts-ignore
 import { Router } from "express";
-import { requireRole, type AuthRequest } from "../middleware/auth";
-import { listingDetailSelect } from "../lib/prismaSelect";
+import { requireRole, type AuthRequest } from "../middleware/auth.js";
+import { listingDetailSelect } from "../lib/prismaSelect.js";
 import prisma from "../lib/db.js";
-import { processAdImages } from "../utils/processImagesHelper";
-import { reverseGeocode } from "../utils/reverseGeocode";
-import { getSelectedPictogramIds } from "../utils/mapPictogramsHelper";
-import { upload } from "../middleware/uploader";
-import { replaceTranslations } from "../utils/saveTranslationsHelper";
-import { parseTranslations } from "../utils/parseTranslationsHelper";
-import { processGalleryImages } from "../utils/processGalleryImages";
-import { convertBufferToThumbnail } from "../utils/thumbnailMaker";
+import { processAdImages } from "../utils/processImagesHelper.js";
+import { reverseGeocode } from "../utils/reverseGeocode.js";
+import { getSelectedPictogramIds } from "../utils/mapPictogramsHelper.js";
+import { upload } from "../middleware/uploader.js";
+import { replaceTranslations } from "../utils/saveTranslationsHelper.js";
+import { parseTranslations } from "../utils/parseTranslationsHelper.js";
+import { processGalleryImages } from "../utils/processGalleryImages.js";
+import { convertBufferToThumbnail } from "../utils/thumbnailMaker.js";
 import { Prisma } from "@prisma/client";
 
 const router = Router();
