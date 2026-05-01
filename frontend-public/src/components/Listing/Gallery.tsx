@@ -13,7 +13,7 @@ export default function ListingGallery({ imagesProp }: Props) {
   const touchStartX = useRef(0);
   const images = useMemo(() => {
     return imagesProp.map(
-      (img) => `http://localhost:3000/api/files/images/${img.id}`,
+      (img) => `https://canarexreal.onrender.com/api/files/images/${img.id}`,
     );
   }, [imagesProp]);
 

@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const api = axios.create({
-  baseURL: "http://localhost:3000/api/admin",
+  baseURL: "https://canarexreal.onrender.com/api/admin",
   withCredentials: true,
 });
 
@@ -29,7 +29,7 @@ api.interceptors.response.use(
 
       try {
         const res = await axios.post(
-          "http://localhost:3000/api/admin/refresh",
+          "https://canarexreal.onrender.com/api/admin/refresh",
           {},
           { withCredentials: true },
         );

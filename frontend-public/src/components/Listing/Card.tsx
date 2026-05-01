@@ -22,7 +22,7 @@ function Card(props: Props) {
     <div className={`card ${props.status_id === 2 ? "status-2-active" : ""}`}>
       <Link to={`/listings/${props.id}`} className="card-image">
         <img
-          src={`http://localhost:3000/api/files/images/${props.obrazekId}`}
+          src={`https://canarexreal.onrender.com/api/files/images/${props.obrazekId}`}
           alt={props.alt}
           className="card-img"
           loading="lazy"
