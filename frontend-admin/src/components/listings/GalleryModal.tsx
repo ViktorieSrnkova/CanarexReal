@@ -339,7 +339,7 @@ function SortableImage({
         src={
           image.url.startsWith("blob:")
             ? image.url
-            : `https://canarexreal.onrender.com/${image.url}`
+            : `https://canarexreal.onrender.com${image.url}`
         }
         onClick={onClick}
         style={{
