@@ -68,7 +68,7 @@ function HomePage() {
             {t("homepage.listings")}
           </Button>
           <Button
-            onClick={() => navigate(`/${lang}contact`)}
+            onClick={() => navigate(`/${lang}/contact`)}
             variant="secondary"
           >
             {t("homepage.contact")}
