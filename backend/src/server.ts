@@ -13,6 +13,7 @@ import formsManagementRouter from "./routes/forms-management.js";
 import filesRouter from "./routes/images.js";
 import uploadRouter from "./routes/upload.js";
 import formsRouter from "./routes/forms.js";
+import sitemapRoute from "./routes/sitemap.js";
 import cors from "cors";
 import cron from "node-cron";
 import { cleanupTempImages } from "./jobs/cleanupImage.js";
@@ -48,6 +49,7 @@ app.use("/api/favorites", favoritesRouter);
 app.use("/api/forms", formsRouter);
 
 app.use("/api/files", filesRouter);
+app.use("/", sitemapRoute);
 //app.use("/api/admin/uploads", express.static("uploads"));
 
 app.get("/", (req, res) => {

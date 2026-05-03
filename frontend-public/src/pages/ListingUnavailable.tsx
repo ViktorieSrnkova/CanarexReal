@@ -8,6 +8,7 @@ import Carrousel from "../components/Listing/Carrousel";
 import { useLang } from "../hooks/i18n/useLang";
 import { LANGUAGE_TO_ID } from "../types/general";
 import type { ListingThumbnail } from "../types/rawApi";
+import SEO from "../components/SEO/Meta";
 
 export function ListingUnavailable() {
   const t = useT();
@@ -35,21 +36,28 @@ export function ListingUnavailable() {
     loadSimilar();
   }, [id, langId]);
   return (
-    <div className="unavailable">
-      <h1>{t("listing.notAvailableTitle")}</h1>
-
-      <p>{t("listing.notAvailableText")}</p>
-
-      <Button onClick={() => navigate("/listings")}>
-        {t("listing.backToListings")}
-      </Button>
-      <Carrousel
-        similar={similar}
-        loading={loadingSimilar}
-        title={t("similar.title")}
-        loadTxt={t("general.loading")}
-        errTxt={t("similar.error")}
+    <>
+      <SEO
+        title={`${t("listing.notAvailableTitle")} | CanarexReal`}
+        description={t("listing.notAvailableText")}
+        noindex
       />
-    </div>
+      <div className="unavailable">
+        <h1>{t("listing.notAvailableTitle")}</h1>
+
+        <p>{t("listing.notAvailableText")}</p>
+
+        <Button onClick={() => navigate("/listings")}>
+          {t("listing.backToListings")}
+        </Button>
+        <Carrousel
+          similar={similar}
+          loading={loadingSimilar}
+          title={t("similar.title")}
+          loadTxt={t("general.loading")}
+          errTxt={t("similar.error")}
+        />
+      </div>
+    </>
   );
 }

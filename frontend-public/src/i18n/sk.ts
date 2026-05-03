@@ -129,4 +129,37 @@ export const sk = {
   news: {
     workInProgress: "Na obsahu tejto stránky sa zatiaľ pracuje.",
   },
+  SEO: {
+    HP_title: "CanarexReal | Nehnuteľnosti na Tenerife",
+    Contact_title: "Kontakt | CanarexReal",
+    Listings_title: "Ponuka nehnuteľností na predaj | CanarexReal",
+    ListingUnavailable_title: "",
+    Mortgage_title: "Hypotéky | CanarexReal",
+    News_title: "O Tenerife | CanarexReal",
+    Services_title: "Služby | CanarexReal",
+    FAQ_title: "FAQ | CanarexReal",
+    Fees_title: "Prehľad poplatkov | CanarexReal",
+    GDPR_title: "Osobné údaje | CanarexReal",
+    HP_description:
+      "Nehnuteľnosti na Tenerife pre Čechov a Slovákov. Predaj, kúpa, investície aj komplexné služby. Tenerife – miesto, kde sny majú adresu.",
+    Contact_description:
+      "Kontaktujte realitnú kanceláriu Canarex Real Tenerife. Pomáhame Čechom a Slovákom s nákupom, predajom aj investíciami do nehnuteľností.",
+    Listings_description:
+      "Predaj nehnuteľností na Tenerife bez starostí. Profesionálny marketing, právna istota a klienti z celej Európy.",
+    ListingUnavailable_description: "",
+    Mortgage_description:
+      "Hypotéky na Tenerife pre Čechov a Slovákov. Pomôžeme vám s financovaním nehnuteľnosti krok za krokom.",
+    News_description:
+      "Prečo bývať alebo investovať na Tenerife? Podnebie, dane, životný štýl a praktické informácie o živote a nehnuteľnostiach na ostrove.",
+    Services_description:
+      "Komplexné realitné služby na Tenerife. Kúpa, predaj, právne služby, hypotéky aj investičné poradenstvo pre Čechov a Slovákov.",
+    FAQ_description:
+      "FAQ – Najčastejšie otázky o živote a kúpe nehnuteľností na Tenerife",
+    Fees_description:
+      "Prehľad všetkých poplatkov pri kúpe nehnuteľnosti na Tenerife. Dane, notár, registrácia aj skutočné náklady prehľadne a zrozumiteľne.",
+    GDPR_description:
+      "Ochrana osobných údajov a GDPR. Ako Canarex Real spracováva a chráni vaše údaje pri využívaní realitných služieb.",
+    err404_title: "Stránka nenájdená | CanarexReal",
+    err404_description: "Táto stránka neexistuje alebo bola odstránená.",
+  },
 };

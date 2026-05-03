@@ -12,6 +12,7 @@ import hero from "/pages/hero.webp";
 import type { CSSProperties } from "react";
 import Medalion from "../components/Contact/Medalion";
 import "../styles/responsivity/resize.css";
+import SEO from "../components/SEO/Meta";
 type HeroStyle = CSSProperties & {
   "--hero"?: string;
 };
@@ -35,8 +36,23 @@ function HomePage() {
 
     load();
   }, [langId]);
+
   return (
     <>
+      <SEO
+        title={t("SEO.HP_title")}
+        description={t("SEO.HP_description")}
+        schema={{
+          "@context": "https://schema.org",
+          "@type": "RealEstateAgent",
+          name: "CanarexReal",
+          areaServed: {
+            "@type": "Place",
+            name: "Tenerife, Spain",
+          },
+          url: "https://canarex-real-public.vercel.app",
+        }}
+      />
       <div
         className="hero"
         style={

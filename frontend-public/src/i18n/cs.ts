@@ -129,4 +129,35 @@ export const cs = {
   news: {
     workInProgress: "Na obsahu této stránky se zatím pracuje.",
   },
+  SEO: {
+    HP_title: "CanarexReal | Reality Tenerife",
+    Contact_title: "Kontakt | CanarexReal",
+    Listings_title: "Nabídka nemovitostí k prodeji | CanarexReal",
+    Mortgage_title: "Hypotéky | CanarexReal",
+    News_title: "O Tenerife | CanarexReal",
+    Services_title: "Služby | CanarexReal",
+    FAQ_title: "FAQ | CanarexReal",
+    Fees_title: "Přehled poplatků | CanarexReal",
+    GDPR_title: "Osobní údaje | CanarexReal",
+    HP_description:
+      "Nemovitosti na Tenerife pro Čechy a Slováky. Prodej, koupě, investice i kompletní servis. Tenerife – místo, kde sny mají adresu.",
+    Contact_description:
+      "Kontaktujte realitní kancelář Canarex Real Tenerife. Pomáháme Čechům a Slovákům s koupí, prodejem i investicemi do nemovitostí.",
+    Listings_description:
+      "Prodej nemovitosti na Tenerife bez starostí. Profesionální marketing, právní jistota a klienti z celé Evropy.",
+    Mortgage_description:
+      "Hypotéky na Tenerife pro Čechy a Slováky. Pomůžeme s financováním nemovitosti krok za krokem.",
+    News_description:
+      "Proč bydlet nebo investovat na Tenerife? Klima, daně, životní styl i praktické informace o životě a nemovitostech na ostrově.",
+    Services_description:
+      "Kompletní realitní služby na Tenerife. Koupě, prodej, právní servis, hypotéky i investiční poradenství pro Čechy a Slováky.",
+    FAQ_description:
+      "FAQ – Nejčastější otázky o životě a koupi nemovitosti na Tenerife",
+    Fees_description:
+      "Přehled všech poplatků při koupi nemovitosti na Tenerife. Daně, notář, registrace i skutečné náklady přehledně a srozumitelně.",
+    GDPR_description:
+      "Ochrana osobních údajů a GDPR. Jak Canarex Real zpracovává a chrání vaše data při využívání realitních služeb.",
+    err404_title: "Stránka nenalezena | CanarexReal",
+    err404_description: "Tato stránka neexistuje nebo byla odstraněna.",
+  },
 };

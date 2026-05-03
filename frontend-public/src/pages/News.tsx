@@ -1,11 +1,19 @@
+import SEO from "../components/SEO/Meta";
 import { useT } from "../i18n";
 
 function News() {
   const t = useT();
   return (
-    <div style={{ margin: "auto", textAlign: "center" }}>
-      <h2>{t("news.workInProgress")}</h2>
-    </div>
+    <>
+      <SEO
+        title={t("SEO.News_title")}
+        description={t("SEO.News_description")}
+        noindex
+      />
+      <div style={{ margin: "auto", textAlign: "center" }}>
+        <h1>{t("news.workInProgress")}</h1>
+      </div>
+    </>
   );
 }
 

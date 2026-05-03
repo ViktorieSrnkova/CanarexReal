@@ -16,6 +16,7 @@ import { useSearchParams } from "react-router-dom";
 import type { FormValues } from "../types/forms";
 import { useT } from "../i18n";
 import NoFilters from "../components/Listing/NoFilters";
+import SEO from "../components/SEO/Meta";
 
 function Listings() {
   const t = useT();
@@ -129,172 +130,181 @@ function Listings() {
   };
 
   return (
-    <div className="content">
-      <button className="filters-toggle" onClick={() => setFiltersOpen(true)}>
-        Filtry
-      </button>
-      <div className="listings-wrapper">
-        <div className={`filters ${filtersOpen ? "open" : ""}`}>
-          <div className="filters-header">
-            <div className="close" onClick={() => setFiltersOpen(false)}>
-              ×
+    <>
+      <SEO
+        title={t("SEO.Listings_title")}
+        description={t("SEO.Listings_description")}
+      />
+      <div className="content">
+        <button className="filters-toggle" onClick={() => setFiltersOpen(true)}>
+          Filtry
+        </button>
+        <div className="listings-wrapper">
+          <div className={`filters ${filtersOpen ? "open" : ""}`}>
+            <div className="filters-header">
+              <div className="close" onClick={() => setFiltersOpen(false)}>
+                ×
+              </div>
+            </div>
+            <div className="view-switch">
+              <button
+                className={`list ${view === "list" ? "active" : ""}`}
+                onClick={() => setView("list")}
+              >
+                <img src="/listings/List.svg" />
+                {t("listings.list")}
+              </button>
+
+              <button
+                className={`map ${view === "map" ? "active" : ""}`}
+                onClick={() => setView("map")}
+              >
+                <img src="/listings/Map.svg" />
+                {t("listings.map")}
+              </button>
+            </div>
+            {view === "list" && (
+              <>
+                <h2> {t("listings.sort")}</h2>
+
+                <Dropdown
+                  label={t("listings.sortLabel")}
+                  value={sort}
+                  options={SORT_OPTIONS}
+                  onChange={(val) => setSort(val)}
+                />
+
+                <hr className="filter-hr" />
+              </>
+            )}
+            <h2> {t("listings.filter")}</h2>
+            <FiltersWrapper value={formFilters} onChange={setFormFilters} />
+            <div className="button-wrapper">
+              <Button onClick={handleSubmit}> {t("listings.submit")}</Button>
+              {!isDefault && (
+                <Button onClick={handleClear} variant="danger">
+                  {t("listings.clear")}
+                </Button>
+              )}
             </div>
           </div>
-          <div className="view-switch">
-            <button
-              className={`list ${view === "list" ? "active" : ""}`}
-              onClick={() => setView("list")}
-            >
-              <img src="/listings/List.svg" />
-              {t("listings.list")}
-            </button>
+          <div className="listings">
+            {view === "list" ? (
+              <>
+                <Pagination
+                  page={page}
+                  totalPages={totalPages}
+                  onChange={setPage}
+                />
+                {listings.length === 0 ? (
+                  <NoFilters />
+                ) : (
+                  <div className="hp-cards-wrapper">
+                    {listings.map((listing) => {
+                      const cardData = {
+                        id: listing.id,
+                        titulek: listing.inzeraty_preklady[0]?.titulek ?? "",
+                        lokace: listing.adresy?.lokace ?? "",
+                        typ:
+                          listing.typy_nemovitosti?.typy_nemovitosti_preklady[0]
+                            ?.nazev ?? "",
+                        status: listing.statusy.statusy_preklady[0].nazev ?? "",
+                        cena_v_eur: listing.cena_v_eur,
+                        loznice: listing.loznice,
+                        koupelny: listing.koupelny,
+                        velikost: listing.velikost,
+                        obrazekId: listing.obrazky[0]?.id ?? 0,
+                        alt:
+                          listing.obrazky[0]?.obrazky_preklady[0]?.alt_text ??
+                          "",
+                        status_id: listing.statusy_id,
+                      };
 
-            <button
-              className={`map ${view === "map" ? "active" : ""}`}
-              onClick={() => setView("map")}
-            >
-              <img src="/listings/Map.svg" />
-              {t("listings.map")}
-            </button>
-          </div>
-          {view === "list" && (
-            <>
-              <h2> {t("listings.sort")}</h2>
+                      return <Card key={listing.id} {...cardData} />;
+                    })}
+                  </div>
+                )}
+                <Pagination
+                  page={page}
+                  totalPages={totalPages}
+                  onChange={setPage}
+                />
+              </>
+            ) : (
+              <div className="map-wrapper-listing">
+                {listings.length === 0 ? (
+                  <NoFilters />
+                ) : (
+                  <>
+                    <SearchMap
+                      markers={listings.filter(hasCoords).map((l) => ({
+                        id: l.id,
+                        price: l.cena_v_eur,
+                        position: {
+                          lat: l.adresy?.lat,
+                          lng: l.adresy?.lng,
+                        },
+                      }))}
+                      selectedId={selectedListing}
+                      onMarkerClick={(id) => {
+                        handleMarkerClick(id);
+                        setClicked(true);
+                      }}
+                    />
+                    {clicked && (
+                      <div className="result">
+                        <div
+                          className="result-close"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setClicked(false);
+                            setSelectedListing(null);
+                          }}
+                        >
+                          ×
+                        </div>
 
-              <Dropdown
-                label={t("listings.sortLabel")}
-                value={sort}
-                options={SORT_OPTIONS}
-                onChange={(val) => setSort(val)}
-              />
-
-              <hr className="filter-hr" />
-            </>
-          )}
-          <h2> {t("listings.filter")}</h2>
-          <FiltersWrapper value={formFilters} onChange={setFormFilters} />
-          <div className="button-wrapper">
-            <Button onClick={handleSubmit}> {t("listings.submit")}</Button>
-            {!isDefault && (
-              <Button onClick={handleClear} variant="danger">
-                {t("listings.clear")}
-              </Button>
+                        {selected && (
+                          <Card
+                            id={selected.id}
+                            titulek={
+                              selected.inzeraty_preklady[0]?.titulek ?? ""
+                            }
+                            lokace={selected.adresy?.lokace ?? ""}
+                            typ={
+                              selected.typy_nemovitosti
+                                ?.typy_nemovitosti_preklady[0]?.nazev ?? ""
+                            }
+                            status={
+                              selected.statusy?.statusy_preklady[0]?.nazev ?? ""
+                            }
+                            cena_v_eur={selected.cena_v_eur}
+                            loznice={selected.loznice}
+                            koupelny={selected.koupelny}
+                            velikost={selected.velikost}
+                            obrazekId={selected.obrazky[0]?.id ?? 0}
+                            alt={
+                              selected.obrazky[0]?.obrazky_preklady[0]
+                                ?.alt_text ?? ""
+                            }
+                            status_id={selected.statusy_id}
+                          />
+                        )}
+                        <Button
+                          onClick={() => navigate(`/listings/${selected?.id}`)}
+                        >
+                          {t("listings.goTo")}
+                        </Button>
+                      </div>
+                    )}
+                  </>
+                )}
+              </div>
             )}
           </div>
         </div>
-        <div className="listings">
-          {view === "list" ? (
-            <>
-              <Pagination
-                page={page}
-                totalPages={totalPages}
-                onChange={setPage}
-              />
-              {listings.length === 0 ? (
-                <NoFilters />
-              ) : (
-                <div className="hp-cards-wrapper">
-                  {listings.map((listing) => {
-                    const cardData = {
-                      id: listing.id,
-                      titulek: listing.inzeraty_preklady[0]?.titulek ?? "",
-                      lokace: listing.adresy?.lokace ?? "",
-                      typ:
-                        listing.typy_nemovitosti?.typy_nemovitosti_preklady[0]
-                          ?.nazev ?? "",
-                      status: listing.statusy.statusy_preklady[0].nazev ?? "",
-                      cena_v_eur: listing.cena_v_eur,
-                      loznice: listing.loznice,
-                      koupelny: listing.koupelny,
-                      velikost: listing.velikost,
-                      obrazekId: listing.obrazky[0]?.id ?? 0,
-                      alt:
-                        listing.obrazky[0]?.obrazky_preklady[0]?.alt_text ?? "",
-                      status_id: listing.statusy_id,
-                    };
-
-                    return <Card key={listing.id} {...cardData} />;
-                  })}
-                </div>
-              )}
-              <Pagination
-                page={page}
-                totalPages={totalPages}
-                onChange={setPage}
-              />
-            </>
-          ) : (
-            <div className="map-wrapper-listing">
-              {listings.length === 0 ? (
-                <NoFilters />
-              ) : (
-                <>
-                  <SearchMap
-                    markers={listings.filter(hasCoords).map((l) => ({
-                      id: l.id,
-                      price: l.cena_v_eur,
-                      position: {
-                        lat: l.adresy?.lat,
-                        lng: l.adresy?.lng,
-                      },
-                    }))}
-                    selectedId={selectedListing}
-                    onMarkerClick={(id) => {
-                      handleMarkerClick(id);
-                      setClicked(true);
-                    }}
-                  />
-                  {clicked && (
-                    <div className="result">
-                      <div
-                        className="result-close"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setClicked(false);
-                          setSelectedListing(null);
-                        }}
-                      >
-                        ×
-                      </div>
-
-                      {selected && (
-                        <Card
-                          id={selected.id}
-                          titulek={selected.inzeraty_preklady[0]?.titulek ?? ""}
-                          lokace={selected.adresy?.lokace ?? ""}
-                          typ={
-                            selected.typy_nemovitosti
-                              ?.typy_nemovitosti_preklady[0]?.nazev ?? ""
-                          }
-                          status={
-                            selected.statusy?.statusy_preklady[0]?.nazev ?? ""
-                          }
-                          cena_v_eur={selected.cena_v_eur}
-                          loznice={selected.loznice}
-                          koupelny={selected.koupelny}
-                          velikost={selected.velikost}
-                          obrazekId={selected.obrazky[0]?.id ?? 0}
-                          alt={
-                            selected.obrazky[0]?.obrazky_preklady[0]
-                              ?.alt_text ?? ""
-                          }
-                          status_id={selected.statusy_id}
-                        />
-                      )}
-                      <Button
-                        onClick={() => navigate(`/listings/${selected?.id}`)}
-                      >
-                        {t("listings.goTo")}
-                      </Button>
-                    </div>
-                  )}
-                </>
-              )}
-            </div>
-          )}
-        </div>
       </div>
-    </div>
+    </>
   );
 }
 

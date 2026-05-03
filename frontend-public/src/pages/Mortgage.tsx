@@ -1,11 +1,17 @@
 import ContactForm from "../components/Forms/BaseForm";
+import SEO from "../components/SEO/Meta";
 import { useT } from "../i18n";
 
 function Mortgage() {
   const t = useT();
   return (
     <>
-      <h2>{t("news.workInProgress")}</h2>
+      <SEO
+        title={t("SEO.Mortgage_title")}
+        description={t("SEO.Mortgage_description")}
+        noindex
+      />
+      <h1>{t("news.workInProgress")}</h1>
 
       <div className="contact white mortgage">
         <h2>{t("footer.formTitle")}</h2>

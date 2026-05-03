@@ -3,10 +3,24 @@ import Map from "../components/General/Map";
 import BaseForm from "../components/Forms/BaseForm";
 import { useT } from "../i18n";
 import "../styles/pages/contact.css";
+import SEO from "../components/SEO/Meta";
 function Contact() {
   const t = useT();
   return (
     <>
+      <SEO
+        title={t("SEO.Contact_title")}
+        description={t("SEO.Contact_description")}
+        schema={{
+          "@context": "https://schema.org",
+          "@type": "RealEstateAgent",
+          name: "CanarexReal",
+          contactPoint: {
+            "@type": "ContactPoint",
+            telephone: "+420603257021",
+          },
+        }}
+      />
       <div className="contact-medalions contact white">
         <h2>{t("contact.title")}</h2>
         <h3 className="padded-subtitle">{t("contact.subtitle")}</h3>

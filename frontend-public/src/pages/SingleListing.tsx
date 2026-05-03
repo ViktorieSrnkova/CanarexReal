@@ -23,6 +23,8 @@ import ListingGallery from "../components/Listing/Gallery";
 import Map from "../components/General/Map";
 import EditorRendererWrapper from "../components/Editor/EditorRendererWrapper";
 import { ExpandableDescription } from "../components/Listing/ExpandableDescription";
+import SEO from "../components/SEO/Meta";
+import StructuredData from "../components/SEO/StructuredData";
 
 function SingleListing() {
   const t = useT();
@@ -158,8 +160,19 @@ function SingleListing() {
   const detContent = detail?.inzeraty_preklady?.[0]?.detaily;
   const content = detail?.inzeraty_preklady?.[0]?.popis;
   if (!content) return;
+  const VITE_API_URL = import.meta.env.VITE_API_URL;
   return (
     <>
+      <SEO
+        title={`${listing.inzeraty_preklady[0]?.titulek} | Reality`}
+        description={content.slice(0, 150)}
+      />
+      <StructuredData
+        name={listing.inzeraty_preklady[0]?.titulek}
+        description={content}
+        price={listing.cena_v_eur}
+        image={` ${VITE_API_URL}/api/files/images/${listing.obrazky[0]?.id}`}
+      />
       <div className="listing-hero">
         <div className="first-row">
           <h1>{listing.inzeraty_preklady[0]?.titulek}</h1>

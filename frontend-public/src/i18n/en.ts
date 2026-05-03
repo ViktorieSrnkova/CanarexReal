@@ -130,4 +130,37 @@ export const en = {
   news: {
     workInProgress: "The content of this page is being worked on.",
   },
+  SEO: {
+    HP_title: "CanarexReal | Real estate Tenerife",
+    Contact_title: "Contact | CanarexReal",
+    Listings_title: "List of properties for sale | CanarexReal",
+    ListingUnavailable_title: "",
+    Mortgage_title: "Mortgage | CanarexReal",
+    News_title: "About Tenerife | CanarexReal",
+    Services_title: "Services | CanarexReal",
+    FAQ_title: "FAQ | CanarexReal",
+    Fees_title: "Fees overview | CanarexReal",
+    GDPR_title: "GDPR | CanarexReal",
+    HP_description:
+      "CanarexReal is Your real estate agent in Tenerife. Come and choose from our listings or fill in our demand form.",
+    Contact_description:
+      "Contact the Canarex Real Tenerife real estate agency. We help Czechs and Slovaks with buying, selling, and investing in real estate.",
+    Listings_description:
+      "Listings of real estate for sale in Tenerife. Come find your dream house, villa, apartment, or other property.",
+    ListingUnavailable_description: "",
+    Mortgage_description:
+      "Mortgages in Tenerife for Czechs and Slovaks. We’ll help you finance your property step by step.",
+    News_description:
+      "Why live or invest in Tenerife? Climate, taxes, lifestyle, and practical information about life and real estate on the island.",
+    Services_description:
+      "Complete real estate services in Tenerife. Buying, selling, legal services, mortgages, and investment advice for Czechs and Slovaks.",
+    FAQ_description:
+      "FAQ – Frequently asked questions about life and buying property in Tenerife",
+    Fees_description:
+      "Overview of all fees involved in buying property in Tenerife. Taxes, notary fees, registration, and actual costs presented clearly and comprehensively.",
+    GDPR_description:
+      "Data protection and GDPR. How Canarex Real processes and protects your data when you use our real estate services.",
+    err404_title: "Page Not Found | CanarexReal",
+    err404_description: "This page does not exist or has been removed.",
+  },
 };

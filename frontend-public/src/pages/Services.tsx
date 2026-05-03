@@ -9,6 +9,7 @@ import Button from "../components/General/Button";
 import { useNavigate } from "react-router-dom";
 import "../styles/pages/services.css";
 import BaseForm from "../components/Forms/BaseForm";
+import SEO from "../components/SEO/Meta";
 
 function Services() {
   const t = useT();
@@ -36,7 +37,12 @@ function Services() {
 
   return (
     <>
-      <h2>{t("news.workInProgress")}</h2>
+      <SEO
+        title={t("SEO.Services_title")}
+        description={t("SEO.Services_description")}
+        noindex
+      />
+      <h1>{t("news.workInProgress")}</h1>
       <img
         className="wawe"
         src="/general/vlnka-white-gray.svg"

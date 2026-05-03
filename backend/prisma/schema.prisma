@@ -93,6 +93,7 @@ model inzeraty {
   velikost             Int
   reprezentativni      Boolean
   datum_vytvoreni      DateTime               @default(now()) @db.Timestamp(6)
+  datum_zmeny DateTime @updatedAt @db.Timestamp(6)
   statusy_id           Int
   typy_nemovitosti_id  Int
   adresy               adresy?
@@ -160,6 +161,7 @@ model obrazky {
   piktogramy       piktogramy[]
 
   @@index([aktuality_id], map: "idx_obr_akt")
+  @@index([inzeraty_id], map: "idx_obr_inz")
   @@index([is_temp], map: "idx_obrazky_temp")
 }
 
