@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import "../../styles/listing/card.css";
 import { formatMoneyEUR } from "../../utils/formatting";
+import { useLang } from "../../hooks/i18n/useLang";
 
 type Props = {
   id: number;
@@ -18,9 +19,10 @@ type Props = {
 };
 const VITE_API_URL = import.meta.env.VITE_API_URL;
 function Card(props: Props) {
+  const { lang } = useLang();
   return (
     <div className={`card ${props.status_id === 2 ? "status-2-active" : ""}`}>
-      <Link to={`/listings/${props.id}`} className="card-image">
+      <Link to={`/${lang}/listings/${props.id}`} className="card-image">
         <img
           src={` ${VITE_API_URL}/api/files/images/${props.obrazekId}`}
           alt={props.alt}
@@ -35,7 +37,7 @@ function Card(props: Props) {
       <div className="card-first-row">
         <div className="card-location">
           <img src="/utils/map-pin.svg" alt="map pin" />
-          <Link to={`/listings/${props.id}`} className="card-loc-link">
+          <Link to={`/${lang}/listings/${props.id}`} className="card-loc-link">
             {props.lokace}
           </Link>
         </div>

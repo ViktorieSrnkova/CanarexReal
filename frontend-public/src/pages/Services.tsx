@@ -62,7 +62,7 @@ function Services() {
           errTxt={t("similar.error")}
         />
         <div className="btn-row">
-          <Button onClick={() => navigate("/listings")}>
+          <Button onClick={() => navigate(`/${lang}/listings`)}>
             {t("services.more")}
           </Button>
         </div>

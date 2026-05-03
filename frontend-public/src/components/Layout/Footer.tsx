@@ -6,10 +6,11 @@ import ContactForm from "../Forms/BaseForm";
 import Phone from "../../assets/Phone.svg";
 import Mail from "../../assets/Mail.svg";
 import "../../styles/responsivity/resize.css";
+import { useLang } from "../../hooks/i18n/useLang";
 
 const Footer: React.FC = () => {
   const t = useT();
-
+  const { lang } = useLang();
   return (
     <>
       <img
@@ -75,7 +76,7 @@ const Footer: React.FC = () => {
         <div className="bottom-info">
           <p>{t("footer.copyright")}</p>
           <hr className="vert-line" />
-          <Link to="/gdpr">{t("footer.privacy")}</Link>
+          <Link to={`/${lang}/gdpr`}>{t("footer.privacy")}</Link>
         </div>
       </footer>
     </>

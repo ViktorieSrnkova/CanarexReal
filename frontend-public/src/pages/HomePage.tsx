@@ -64,10 +64,13 @@ function HomePage() {
         <h1>{t("homepage.title")}</h1>
         <h2>{t("homepage.subtitle")}</h2>
         <div className="buttons">
-          <Button onClick={() => navigate("/listings")}>
+          <Button onClick={() => navigate(`/${lang}/listings`)}>
             {t("homepage.listings")}
           </Button>
-          <Button onClick={() => navigate("/contact")} variant="secondary">
+          <Button
+            onClick={() => navigate(`/${lang}contact`)}
+            variant="secondary"
+          >
             {t("homepage.contact")}
           </Button>
         </div>
@@ -155,10 +158,13 @@ function HomePage() {
           </div>
         </div>
         <div className="buttons">
-          <Button onClick={() => navigate("/services")}>
+          <Button onClick={() => navigate(`/${lang}/services`)}>
             {t("homepage.services")}
           </Button>
-          <Button onClick={() => navigate("/contact")} variant="secondary">
+          <Button
+            onClick={() => navigate(`/${lang}/contact`)}
+            variant="secondary"
+          >
             {t("homepage.contactMe")}
           </Button>
         </div>

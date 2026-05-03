@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { api } from "../../api/axios";
 import "../../styles/login/loginPage.css";
 import { useT } from "../../i18n";
+import { useLang } from "../../hooks/i18n/useLang";
 
 type FormState = {
   email: string;
@@ -12,6 +13,7 @@ type FormState = {
 export default function LoginPage() {
   const navigate = useNavigate();
   const t = useT();
+  const { lang } = useLang();
 
   const [form, setForm] = useState<FormState>({
     email: "",
@@ -45,7 +47,7 @@ export default function LoginPage() {
       api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
       alert(t("login.success"));
-      navigate("/");
+      navigate(`/${lang}`);
     } catch {
       setError(t("login.error"));
     } finally {

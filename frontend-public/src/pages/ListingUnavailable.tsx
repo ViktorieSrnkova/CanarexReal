@@ -47,7 +47,7 @@ export function ListingUnavailable() {
 
         <p>{t("listing.notAvailableText")}</p>
 
-        <Button onClick={() => navigate("/listings")}>
+        <Button onClick={() => navigate(`/${lang}/listings`)}>
           {t("listing.backToListings")}
         </Button>
         <Carrousel

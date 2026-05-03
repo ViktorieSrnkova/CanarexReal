@@ -12,18 +12,20 @@ import CanarexReal from "../../assets/CanarexReal.svg";
 import { useT } from "../../i18n";
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
+import { useLang } from "../../hooks/i18n/useLang";
 
 function Header() {
   const t = useT();
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
+  const { lang } = useLang();
   const menuItems = [
-    { label: t("header.home"), path: "/" },
-    { label: t("header.listings"), path: "/listings" },
-    { label: t("header.services"), path: "/services" },
-    { label: t("header.mortgage"), path: "/mortgage" },
-    { label: t("header.news"), path: "/news" },
-    { label: t("header.contact"), path: "/contact" },
+    { label: t("header.home"), path: `/${lang}` },
+    { label: t("header.listings"), path: `/${lang}/listings` },
+    { label: t("header.services"), path: `/${lang}/services` },
+    { label: t("header.mortgage"), path: `/${lang}/mortgage` },
+    { label: t("header.news"), path: `/${lang}/news` },
+    { label: t("header.contact"), path: `/${lang}/contact` },
   ];
 
   return (
@@ -62,7 +64,7 @@ function Header() {
       </div>
       <div className="main-header-wrapper">
         <div className="main-header">
-          <div className="logo" onClick={() => navigate("/")}>
+          <div className="logo" onClick={() => navigate(`/${lang}`)}>
             <img src={CanarexReal} alt="logo" width={197} /> {t("header.logo")}
           </div>
           <div
@@ -83,6 +85,7 @@ function Header() {
                       isActive ? "active" : "nonactive"
                     }
                     onClick={() => setMenuOpen(false)}
+                    end
                   >
                     {item.label}
                   </NavLink>

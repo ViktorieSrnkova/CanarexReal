@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useMemo, useState } from "react";
 import Card from "../components/Listing/Card";
 import type { ListingThumbnail } from "../types/rawApi";
@@ -11,8 +12,7 @@ import Button from "../components/General/Button";
 import Dropdown from "../components/General/Dropdown";
 import { type ListingSort } from "../types/filters";
 import SearchMap from "../components/Listing/SearchMap";
-import { useNavigate } from "react-router-dom";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import type { FormValues } from "../types/forms";
 import { useT } from "../i18n";
 import NoFilters from "../components/Listing/NoFilters";
@@ -25,18 +25,19 @@ function Listings() {
   const langId = LANGUAGE_TO_ID[lang];
   const [listings, setListings] = useState<ListingThumbnail[]>([]);
   const [searchParams, setSearchParams] = useSearchParams();
-  const view = (searchParams.get("view") as "list" | "map") || "list";
-  const [clicked, setClicked] = useState(false);
-  const [page, setPage] = useState(1);
-  const [total, setTotal] = useState(0);
-  const [selectedListing, setSelectedListing] = useState<number | null>(null);
   const limit = 9;
+  const view = (searchParams.get("view") as "list" | "map") || "list";
+  const page = Number(searchParams.get("page") || 1);
+  const sort = (searchParams.get("sort") as ListingSort) || "date";
+  const [total, setTotal] = useState(0);
   const totalPages = Math.ceil(total / limit);
+  const [clicked, setClicked] = useState(false);
   const SORT_OPTIONS = [
     { label: t("listings.newest"), value: "date" },
     { label: t("listings.lowestPrice"), value: "price_asc" },
     { label: t("listings.highestPrice"), value: "price_desc" },
   ] as const;
+  const [selectedListing, setSelectedListing] = useState<number | null>(null);
   const defaultFilters: FormValues = {
     type: [],
     priceFrom: 80000,
@@ -48,10 +49,41 @@ function Listings() {
     arrivalMode: "unknown",
     arrival: null,
   };
-  const [sort, setSort] = useState<ListingSort>("date");
-  const [filters, setFilters] = useState<FormValues>(defaultFilters);
-  const [formFilters, setFormFilters] = useState<FormValues>(defaultFilters);
+
   const [filtersOpen, setFiltersOpen] = useState(false);
+  const parseArray = (val: string | null) =>
+    val ? val.split(",").map(Number) : [];
+  const filterString = searchParams.toString();
+  const filters = useMemo<FormValues>(
+    () => ({
+      type: parseArray(searchParams.get("type")),
+      priceFrom: Number(searchParams.get("priceFrom") || 80000),
+      priceTo: Number(searchParams.get("priceTo") || 1000000),
+      sizeFrom: Number(searchParams.get("sizeFrom") || 0),
+      sizeTo: Number(searchParams.get("sizeTo") || 300),
+      bedrooms: parseArray(searchParams.get("bedrooms")),
+      bathrooms: parseArray(searchParams.get("bathrooms")),
+      arrivalMode: "unknown",
+      arrival: null,
+    }),
+    [filterString],
+  );
+
+  const [formFilters, setFormFilters] = useState<FormValues>(() => filters);
+
+  const setURL = (updates: Record<string, string | number | null>) => {
+    setSearchParams((prev) => {
+      const p = new URLSearchParams(prev);
+
+      Object.entries(updates).forEach(([key, value]) => {
+        if (value === null || value === undefined) p.delete(key);
+        else p.set(key, String(value));
+      });
+
+      return p;
+    });
+  };
+
   useEffect(() => {
     const load = async () => {
       try {
@@ -61,6 +93,7 @@ function Listings() {
           filters,
           sort,
         });
+
         setListings(thumbnails);
         setTotal(total);
       } catch (err) {
@@ -69,7 +102,8 @@ function Listings() {
     };
 
     load();
-  }, [page, langId, filters, sort]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page, langId, filterString, sort]);
 
   const selected = useMemo(
     () => listings.find((l) => l.id === selectedListing),
@@ -77,7 +111,7 @@ function Listings() {
   );
   const handleMarkerClick = (id: number) => {
     if (window.innerWidth <= 600) {
-      navigate(`/listings/${id}`);
+      navigate(`/${lang}/listings/${id}`);
     } else {
       setSelectedListing(id);
     }
@@ -101,17 +135,31 @@ function Listings() {
   ): l is ListingThumbnail & { adresy: { lat: number; lng: number } } {
     return l.adresy?.lat != null && l.adresy?.lng != null && l.statusy_id === 1;
   }
-  const setView = (v: "list" | "map") => {
-    setSearchParams((prev) => {
-      const p = new URLSearchParams(prev);
-      p.set("view", v);
-      return p;
-    });
+
+  const setPage = (p: number) => {
+    setURL({ page: p });
   };
 
-  const handleSubmit = async () => {
-    setPage(1);
-    setFilters(formFilters);
+  const setSort = (val: ListingSort) => {
+    setURL({ sort: val, page: 1 });
+  };
+
+  const setView = (v: "list" | "map") => {
+    setURL({ view: v });
+  };
+
+  const handleSubmit = () => {
+    setURL({
+      page: 1,
+      priceFrom: formFilters.priceFrom,
+      priceTo: formFilters.priceTo,
+      sizeFrom: formFilters.sizeFrom,
+      sizeTo: formFilters.sizeTo,
+      type: formFilters.type.join(","),
+      bedrooms: formFilters.bedrooms.join(","),
+      bathrooms: formFilters.bathrooms.join(","),
+    });
+
     setFiltersOpen(false);
   };
 
@@ -124,8 +172,24 @@ function Listings() {
     formFilters.bedrooms.length === 0 &&
     formFilters.bathrooms.length === 0;
 
-  const handleClear = async () => {
-    setFilters(defaultFilters);
+  const handleClear = () => {
+    setSearchParams((prev) => {
+      const p = new URLSearchParams(prev);
+
+      [
+        "type",
+        "priceFrom",
+        "priceTo",
+        "sizeFrom",
+        "sizeTo",
+        "bedrooms",
+        "bathrooms",
+      ].forEach((key) => p.delete(key));
+
+      p.set("page", "1");
+
+      return p;
+    });
     setFormFilters(defaultFilters);
   };
 
@@ -178,7 +242,11 @@ function Listings() {
               </>
             )}
             <h2> {t("listings.filter")}</h2>
-            <FiltersWrapper value={formFilters} onChange={setFormFilters} />
+            <FiltersWrapper
+              key={filterString}
+              value={formFilters}
+              onChange={setFormFilters}
+            />
             <div className="button-wrapper">
               <Button onClick={handleSubmit}> {t("listings.submit")}</Button>
               {!isDefault && (
@@ -291,7 +359,9 @@ function Listings() {
                           />
                         )}
                         <Button
-                          onClick={() => navigate(`/listings/${selected?.id}`)}
+                          onClick={() =>
+                            navigate(`/${lang}/listings/${selected?.id}`)
+                          }
                         >
                           {t("listings.goTo")}
                         </Button>
