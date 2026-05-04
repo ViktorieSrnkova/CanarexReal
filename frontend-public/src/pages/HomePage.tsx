@@ -144,7 +144,7 @@ function HomePage() {
             image="/contact/stan.webp"
             alt="Stan Srnka"
             name="Stan Srnka"
-            role="Váš realitní agent na Tenerife"
+            role={t("homepage.agent")}
           />
           <div className="hp-2-contact mobile">
             <p>{t("homepage.servis")}</p>

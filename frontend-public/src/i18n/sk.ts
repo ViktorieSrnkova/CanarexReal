@@ -100,6 +100,7 @@ export const sk = {
     rent: "Zabezpečím prenájom vašej nehnuteľnosti",
     ideal: "Nájdem vám ideálnu nehnuteľnosť",
     manage: "Správa, upratovanie a rekonštrukcia",
+    agent: "Váš realitný agent na Tenerife",
   },
   similar: {
     error: "Momentálne nemáme podobné nehnuteľnosti.",

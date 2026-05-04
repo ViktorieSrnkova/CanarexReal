@@ -101,6 +101,7 @@ export const en = {
     rent: "I'll help you rent out your property",
     ideal: "I'll find you the perfect property",
     manage: "Management, cleaning, and renovation",
+    agent: "Your real estate agent in Tenerife",
   },
   similar: {
     error: "We currently do not have any similar properties.",
