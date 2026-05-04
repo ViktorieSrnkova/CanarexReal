@@ -224,7 +224,11 @@ const ListingCreatePage: React.FC<Props> = ({
             label="Index Inzerátu"
             getValueFromEvent={(e) => e.target.value.replace(/\D/g, "")}
           >
-            <Input style={{ maxWidth: 120 }} inputMode="numeric" />
+            <Input
+              maxLength={9}
+              style={{ maxWidth: 120 }}
+              inputMode="numeric"
+            />
           </Form.Item>
           <Form.Item
             required
@@ -239,7 +243,11 @@ const ListingCreatePage: React.FC<Props> = ({
               value: value ? Number(value).toLocaleString("cs-CZ") : "",
             })}
           >
-            <Input style={{ maxWidth: 120 }} inputMode="numeric" />
+            <Input
+              maxLength={9}
+              style={{ maxWidth: 120 }}
+              inputMode="numeric"
+            />
           </Form.Item>
           <Form.Item
             required
@@ -248,7 +256,11 @@ const ListingCreatePage: React.FC<Props> = ({
             label="Počet ložnic"
             getValueFromEvent={(e) => e.target.value.replace(/\D/g, "")}
           >
-            <Input style={{ maxWidth: 100 }} inputMode="numeric" />
+            <Input
+              maxLength={2}
+              style={{ maxWidth: 100 }}
+              inputMode="numeric"
+            />
           </Form.Item>
           <Form.Item
             required
@@ -257,7 +269,11 @@ const ListingCreatePage: React.FC<Props> = ({
             label="Počet koupelen"
             getValueFromEvent={(e) => e.target.value.replace(/\D/g, "")}
           >
-            <Input style={{ maxWidth: 120 }} inputMode="numeric" />
+            <Input
+              maxLength={2}
+              style={{ maxWidth: 120 }}
+              inputMode="numeric"
+            />
           </Form.Item>
           <Form.Item
             required
@@ -266,7 +282,11 @@ const ListingCreatePage: React.FC<Props> = ({
             label="Velikost v m²"
             getValueFromEvent={(e) => e.target.value.replace(/\D/g, "")}
           >
-            <Input style={{ maxWidth: 120 }} inputMode="numeric" />
+            <Input
+              maxLength={9}
+              style={{ maxWidth: 120 }}
+              inputMode="numeric"
+            />
           </Form.Item>
           <Form.Item
             required
