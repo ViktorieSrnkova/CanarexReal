@@ -17,6 +17,10 @@ export const getListingsThumbsHome = async (
   });
   return data.thumbnails;
 };
+export const getRanges = async () => {
+  const { data } = await api.get("/listings/ranges");
+  return data;
+};
 
 export type GetListingsParams = {
   page?: number;

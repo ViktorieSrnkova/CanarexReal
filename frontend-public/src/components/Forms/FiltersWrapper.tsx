@@ -4,6 +4,8 @@ import type { FormValues } from "../../types/forms";
 type Props = {
   value: FormValues;
   onChange: React.Dispatch<React.SetStateAction<FormValues>>;
+  priceRange?: number[];
+  sizeRange?: number[];
 };
 
 export default function FiltersWrapper(props: Props) {
@@ -13,6 +15,8 @@ export default function FiltersWrapper(props: Props) {
       hasDate={false}
       errors={{}}
       onChange={(patch) => props.onChange((prev) => ({ ...prev, ...patch }))}
+      priceRange={props.priceRange}
+      sizeRange={props.sizeRange}
     />
   );
 }

@@ -95,9 +95,9 @@ export default function ContactForm(props: Props): React.ReactElement {
       phonePrefix: "+420",
       phone: "",
       priceFrom: 80000,
-      priceTo: 1000000,
+      priceTo: 2000000,
       sizeFrom: 0,
-      sizeTo: 300,
+      sizeTo: 5000,
     },
   });
 

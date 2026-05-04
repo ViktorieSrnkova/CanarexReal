@@ -122,6 +122,26 @@ router.get("/fx-rates", async (req, res) => {
     });
   }
 });
+
+router.get("/ranges", async (req, res) => {
+  try {
+    const { _min, _max } = await prisma.inzeraty.aggregate({
+      _min: {
+        cena_v_eur: true,
+        velikost: true,
+      },
+      _max: {
+        cena_v_eur: true,
+        velikost: true,
+      },
+    });
+    res.json({ min: _min, max: _max });
+  } catch (err) {
+    console.error("Range fetch error:", err);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
 router.get("/", async (req: PublicRequest, res) => {
   try {
     const page = Number(req.query.page) || 1;

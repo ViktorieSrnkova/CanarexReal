@@ -17,8 +17,10 @@ import type { FormValues } from "../types/forms";
 import { useT } from "../i18n";
 import NoFilters from "../components/Listing/NoFilters";
 import SEO from "../components/SEO/Meta";
+import { useRanges } from "../RangesContext";
 
 function Listings() {
+  const ranges = useRanges();
   const t = useT();
   const { lang } = useLang();
   const navigate = useNavigate();
@@ -38,35 +40,58 @@ function Listings() {
     { label: t("listings.highestPrice"), value: "price_desc" },
   ] as const;
   const [selectedListing, setSelectedListing] = useState<number | null>(null);
-  const defaultFilters: FormValues = {
-    type: [],
-    priceFrom: 80000,
-    priceTo: 1000000,
-    sizeFrom: 0,
-    sizeTo: 300,
-    bedrooms: [],
-    bathrooms: [],
-    arrivalMode: "unknown",
-    arrival: null,
-  };
-
   const [filtersOpen, setFiltersOpen] = useState(false);
+  useEffect(() => {
+    if (filtersOpen) {
+      document.body.classList.add("no-scroll");
+    } else {
+      document.body.classList.remove("no-scroll");
+    }
+  }, [filtersOpen]);
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, [page]);
+
+  const priceRange = ranges === null ? [0, 0] : ranges.price;
+  const sizeRange = ranges === null ? [0, 0] : ranges.size;
+
   const parseArray = (val: string | null) =>
     val ? val.split(",").map(Number) : [];
+
   const filterString = searchParams.toString();
+  const filtersReady = !!priceRange && !!sizeRange;
+
+  const defaultFilters = useMemo<FormValues>(
+    () => ({
+      type: [],
+      priceFrom: priceRange[0],
+      priceTo: priceRange[1],
+      sizeFrom: sizeRange[0],
+      sizeTo: sizeRange[1],
+      bedrooms: [],
+      bathrooms: [],
+      arrivalMode: "unknown",
+      arrival: null,
+    }),
+    [priceRange, sizeRange],
+  );
+
   const filters = useMemo<FormValues>(
     () => ({
       type: parseArray(searchParams.get("type")),
-      priceFrom: Number(searchParams.get("priceFrom") || 80000),
-      priceTo: Number(searchParams.get("priceTo") || 1000000),
-      sizeFrom: Number(searchParams.get("sizeFrom") || 0),
-      sizeTo: Number(searchParams.get("sizeTo") || 300),
+      priceFrom: Number(searchParams.get("priceFrom") || priceRange[0]),
+      priceTo: Number(searchParams.get("priceTo") || priceRange[1]),
+      sizeFrom: Number(searchParams.get("sizeFrom") || sizeRange[0]),
+      sizeTo: Number(searchParams.get("sizeTo") || sizeRange[1]),
       bedrooms: parseArray(searchParams.get("bedrooms")),
       bathrooms: parseArray(searchParams.get("bathrooms")),
       arrivalMode: "unknown",
       arrival: null,
     }),
-    [filterString],
+    [filterString, priceRange, sizeRange],
   );
 
   const [formFilters, setFormFilters] = useState<FormValues>(() => filters);
@@ -102,7 +127,6 @@ function Listings() {
     };
 
     load();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, langId, filterString, sort]);
 
   const selected = useMemo(
@@ -116,19 +140,6 @@ function Listings() {
       setSelectedListing(id);
     }
   };
-  useEffect(() => {
-    if (filtersOpen) {
-      document.body.classList.add("no-scroll");
-    } else {
-      document.body.classList.remove("no-scroll");
-    }
-  }, [filtersOpen]);
-  useEffect(() => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  }, [page]);
 
   function hasCoords(
     l: ListingThumbnail,
@@ -192,6 +203,9 @@ function Listings() {
     });
     setFormFilters(defaultFilters);
   };
+  if (!filtersReady) {
+    return <p>{t("general.loading")}</p>;
+  }
 
   return (
     <>
@@ -246,6 +260,8 @@ function Listings() {
               key={filterString}
               value={formFilters}
               onChange={setFormFilters}
+              priceRange={priceRange}
+              sizeRange={sizeRange}
             />
             <div className="button-wrapper">
               <Button onClick={handleSubmit}> {t("listings.submit")}</Button>
