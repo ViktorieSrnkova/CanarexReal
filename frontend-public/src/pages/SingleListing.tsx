@@ -15,7 +15,11 @@ import type { AxiosError } from "axios";
 import { ListingUnavailable } from "./ListingUnavailable";
 import Carrousel from "../components/Listing/Carrousel";
 import Pictograms from "../components/Listing/Pictograms";
-import { formatMoneyEUR } from "../utils/formatting";
+import {
+  formatMoneyCZK,
+  formatMoneyEUR,
+  formatMoneyGBP,
+} from "../utils/formatting";
 import "../styles/pages/singlelisting.css";
 import { useFx } from "../FxContext";
 import Tooltip from "../components/General/Tooltip";
@@ -248,8 +252,9 @@ function SingleListing() {
             {price && (
               <h3 className="number czk">
                 {"("}
-                {price.toLocaleString()}{" "}
-                {langId === 2 ? "Kč" : langId === 1 ? "GBP" : "EUR"}
+                {langId === 2
+                  ? formatMoneyCZK(price)
+                  : formatMoneyGBP(price)}{" "}
                 {")"}
               </h3>
             )}

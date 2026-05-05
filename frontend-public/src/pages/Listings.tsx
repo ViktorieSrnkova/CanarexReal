@@ -54,7 +54,7 @@ function Listings() {
       behavior: "smooth",
     });
   }, [page]);
-
+  const rangesReady = ranges !== null;
   const priceRange = ranges === null ? [0, 0] : ranges.price;
   const sizeRange = ranges === null ? [0, 0] : ranges.size;
 
@@ -95,6 +95,11 @@ function Listings() {
   );
 
   const [formFilters, setFormFilters] = useState<FormValues>(() => filters);
+  useEffect(() => {
+    if (!rangesReady) return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setFormFilters(filters);
+  }, [rangesReady, filterString]);
 
   const setURL = (updates: Record<string, string | number | null>) => {
     setSearchParams((prev) => {
@@ -127,7 +132,7 @@ function Listings() {
     };
 
     load();
-  }, [page, langId, filterString, sort]);
+  }, [page, langId, filterString, sort, rangesReady]);
 
   const selected = useMemo(
     () => listings.find((l) => l.id === selectedListing),
@@ -256,13 +261,18 @@ function Listings() {
               </>
             )}
             <h2> {t("listings.filter")}</h2>
-            <FiltersWrapper
-              key={filterString}
-              value={formFilters}
-              onChange={setFormFilters}
-              priceRange={priceRange}
-              sizeRange={sizeRange}
-            />
+            {rangesReady ? (
+              <FiltersWrapper
+                key={filterString}
+                value={formFilters}
+                onChange={setFormFilters}
+                priceRange={priceRange}
+                sizeRange={sizeRange}
+              />
+            ) : (
+              <div className="loading-spinner" />
+            )}
+
             <div className="button-wrapper">
               <Button onClick={handleSubmit}> {t("listings.submit")}</Button>
               {!isDefault && (

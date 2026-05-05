@@ -12,6 +12,13 @@ export const formatMoneyEUR = (amount: number) =>
     maximumFractionDigits: 0,
   }).format(amount);
 
+export const formatMoneyGBP = (amount: number) =>
+  new Intl.NumberFormat("cs-CZ", {
+    style: "currency",
+    currency: "GBP",
+    maximumFractionDigits: 0,
+  }).format(amount);
+
 export const formatPhoneNumber = (phone: string) => {
   const cleaned = phone.replace(/\D/g, "");
   if (cleaned.length === 9) {
