@@ -2,7 +2,7 @@ import BaseForm from "../components/Forms/BaseForm";
 import Card from "../components/Listing/Card";
 import { useT, type Lang } from "../i18n";
 import { useParams } from "react-router-dom";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, /* useMemo,  */ useState } from "react";
 import type { ListingDetailResponse, ListingThumbnail } from "../types/rawApi";
 import {
   getListingById,
@@ -69,7 +69,7 @@ function SingleListing() {
 
     load();
   }, [id, langId]);
-
+  /* 
   const price = useMemo(() => {
     if (!listing) return null;
     if (!rates) return listing.cena_v_eur;
@@ -78,7 +78,18 @@ function SingleListing() {
     if (langId === 1) return listing.cena_v_eur * rates.GBP;
 
     return null;
-  }, [listing, rates, langId]);
+  }, [listing, rates, langId]); */
+  let price = null;
+
+  if (listing) {
+    if (!rates) {
+      price = listing.cena_v_eur;
+    } else if (langId === 2) {
+      price = listing.cena_v_eur * rates.CZK;
+    } else if (langId === 1) {
+      price = listing.cena_v_eur * rates.GBP;
+    }
+  }
 
   useEffect(() => {
     if (!id) return;

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, /* useMemo, */ useRef, useState } from "react";
 import "../../styles/listing/gallery.css";
 
 type Props = {
@@ -11,11 +11,14 @@ export default function ListingGallery({ imagesProp }: Props) {
   const thumbsRef = useRef<HTMLDivElement | null>(null);
   const activeThumbRef = useRef<HTMLImageElement | null>(null);
   const touchStartX = useRef(0);
-  const images = useMemo(() => {
+  /*   const images = useMemo(() => {
     return imagesProp.map(
       (img) => ` ${VITE_API_URL}/api/files/images/${img.id}`,
     );
-  }, [imagesProp]);
+  }, [imagesProp]); */
+  const images = imagesProp.map(
+    (img) => ` ${VITE_API_URL}/api/files/images/${img.id}`,
+  );
 
   const activeImage = images[activeIndex];
 
