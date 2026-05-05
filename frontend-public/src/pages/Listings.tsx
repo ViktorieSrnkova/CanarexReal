@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, /* useMemo,  */ useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Card from "../components/Listing/Card";
 import type { ListingThumbnail } from "../types/rawApi";
 import { getListingsThumbs } from "../api/listings";
@@ -64,7 +64,7 @@ function Listings() {
   const filterString = searchParams.toString();
   const filtersReady = !!priceRange && !!sizeRange;
 
-  /* const defaultFilters = useMemo<FormValues>(
+  const defaultFilters = useMemo<FormValues>(
     () => ({
       type: [],
       priceFrom: priceRange[0],
@@ -77,20 +77,9 @@ function Listings() {
       arrival: null,
     }),
     [priceRange, sizeRange],
-  ); */
-  const defaultFilters: FormValues = {
-    type: [],
-    priceFrom: priceRange[0],
-    priceTo: priceRange[1],
-    sizeFrom: sizeRange[0],
-    sizeTo: sizeRange[1],
-    bedrooms: [],
-    bathrooms: [],
-    arrivalMode: "unknown",
-    arrival: null,
-  };
+  );
 
-  /* const filters = useMemo<FormValues>(
+  const filters = useMemo<FormValues>(
     () => ({
       type: parseArray(searchParams.get("type")),
       priceFrom: Number(searchParams.get("priceFrom") || priceRange[0]),
@@ -103,18 +92,7 @@ function Listings() {
       arrival: null,
     }),
     [filterString, priceRange, sizeRange],
-  ); */
-  const filters: FormValues = {
-    type: parseArray(searchParams.get("type")),
-    priceFrom: Number(searchParams.get("priceFrom") || priceRange[0]),
-    priceTo: Number(searchParams.get("priceTo") || priceRange[1]),
-    sizeFrom: Number(searchParams.get("sizeFrom") || sizeRange[0]),
-    sizeTo: Number(searchParams.get("sizeTo") || sizeRange[1]),
-    bedrooms: parseArray(searchParams.get("bedrooms")),
-    bathrooms: parseArray(searchParams.get("bathrooms")),
-    arrivalMode: "unknown",
-    arrival: null,
-  };
+  );
 
   const [formFilters, setFormFilters] = useState<FormValues>(() => filters);
   useEffect(() => {
@@ -156,11 +134,10 @@ function Listings() {
     load();
   }, [page, langId, filterString, sort, rangesReady]);
 
-  /*   const selected = useMemo(
+  const selected = useMemo(
     () => listings.find((l) => l.id === selectedListing),
     [listings, selectedListing],
-  ); */
-  const selected = listings.find((l) => l.id === selectedListing);
+  );
   const handleMarkerClick = (id: number) => {
     if (window.innerWidth <= 600) {
       navigate(`/${lang}/listings/${id}`);

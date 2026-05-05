@@ -2,7 +2,7 @@ import BaseForm from "../components/Forms/BaseForm";
 import Card from "../components/Listing/Card";
 import { useT, type Lang } from "../i18n";
 import { useParams } from "react-router-dom";
-import { useEffect, /* useMemo,  */ useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { ListingDetailResponse, ListingThumbnail } from "../types/rawApi";
 import {
   getListingById,
@@ -69,7 +69,7 @@ function SingleListing() {
 
     load();
   }, [id, langId]);
-  /* 
+
   const price = useMemo(() => {
     if (!listing) return null;
     if (!rates) return listing.cena_v_eur;
@@ -78,18 +78,7 @@ function SingleListing() {
     if (langId === 1) return listing.cena_v_eur * rates.GBP;
 
     return null;
-  }, [listing, rates, langId]); */
-  let price = null;
-
-  if (listing) {
-    if (!rates) {
-      price = listing.cena_v_eur;
-    } else if (langId === 2) {
-      price = listing.cena_v_eur * rates.CZK;
-    } else if (langId === 1) {
-      price = listing.cena_v_eur * rates.GBP;
-    }
-  }
+  }, [listing, rates, langId]);
 
   useEffect(() => {
     if (!id) return;
@@ -285,11 +274,13 @@ function SingleListing() {
         className="wawe"
         alt="vlnka-gray-to-white"
         src="/general/vlnka-gray-white-nm.svg"
+        loading="lazy"
       ></img>
       <img
         className="wawe mobile"
         src="/general/small-vlnka-gray-white.svg"
         alt="vlnka-gray-to-white"
+        loading="lazy"
       />
       <ExpandableDescription content={content} />
       <div className="lower-section">
@@ -313,11 +304,13 @@ function SingleListing() {
         className="wawe"
         src="/general/vlnka-white-gray.svg"
         alt="vlnka-white-to-gray"
+        loading="lazy"
       />
       <img
         className="wawe mobile"
         src="/general/small-vlnka-white-gray.svg"
         alt="vlnka-white-to-gray"
+        loading="lazy"
       />
       <div className="contact gray">
         <h2>{t("form.titleDet")}</h2>
@@ -331,11 +324,13 @@ function SingleListing() {
         className="wawe"
         alt="vlnka-gray-to-white"
         src="/general/vlnka-gray-white-nm.svg"
+        loading="lazy"
       ></img>
       <img
         className="wawe mobile"
         src="/general/small-vlnka-gray-white.svg"
         alt="vlnka-gray-to-white"
+        loading="lazy"
       />
       <Carrousel
         similar={similar}
@@ -348,21 +343,25 @@ function SingleListing() {
         className="wawe"
         src="/general/vlnka-white-gray.svg"
         alt="vlnka-white-to-gray"
+        loading="lazy"
       />
       <img
         className="wawe mobile"
         src="/general/small-vlnka-white-gray.svg"
         alt="vlnka-white-to-gray"
+        loading="lazy"
       />
       <img
         className="wawe mobile"
         src="/general/small-vlnka-gray-white.svg"
         alt="vlnka-gray-to-white"
+        loading="lazy"
       />
       <img
         className="wawe"
         src="/general/vlnka-gray-white-nm.svg"
         alt="vlnka-gray-to-white"
+        loading="lazy"
       />
       <div className="contact white">
         <h2>{t("form.titleInq")}</h2>

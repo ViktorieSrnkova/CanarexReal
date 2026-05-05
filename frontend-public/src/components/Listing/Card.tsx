@@ -27,7 +27,7 @@ function Card(props: Props) {
           src={` ${VITE_API_URL}/api/files/images/${props.obrazekId}`}
           alt={props.alt}
           className="card-img"
-          /*  loading="lazy" */
+          loading="lazy"
         />{" "}
         <div className={`card-status status-${props.status_id}`}>
           {props.status}
@@ -36,17 +36,17 @@ function Card(props: Props) {
 
       <div className="card-first-row">
         <div className="card-location">
-          <img src="/utils/map-pin.svg" alt="map pin" />
+          <img src="/utils/map-pin.svg" alt="map pin" loading="lazy" />
           <Link to={`/${lang}/listings/${props.id}`} className="card-loc-link">
             {props.lokace}
           </Link>
         </div>
         <div className="card-icons">
-          <img src="/utils/bed.svg" alt="map pin" />
+          <img src="/utils/bed.svg" alt="bed" loading="lazy" />
           <p className="spaced6 number">{props.loznice}</p>
-          <img src="/utils/bath.svg" alt="map pin" />
+          <img src="/utils/bath.svg" alt="bath" loading="lazy" />
           <p className="spaced6 number">{props.koupelny}</p>
-          <img src="/utils/size.svg" alt="map pin" />
+          <img src="/utils/size.svg" alt="size" loading="lazy" />
           <p className="number">{props.velikost} m²</p>
         </div>
       </div>

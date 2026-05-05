@@ -27,15 +27,33 @@ export default function FloatingMobileActions() {
         {open && (
           <div className="fab-menu">
             <a href="tel:+420603257021" className="fab-item">
-              <img src={Phone} alt="call" height={32} width={32} />
+              <img
+                src={Phone}
+                alt="call"
+                height={32}
+                width={32}
+                loading="lazy"
+              />
             </a>
 
             <a href="https://wa.me/34604198470" className="fab-item">
-              <img src={Whatsapp} alt="whatsapp" height={32} width={32} />
+              <img
+                src={Whatsapp}
+                alt="whatsapp"
+                height={32}
+                width={32}
+                loading="lazy"
+              />
             </a>
 
             <a href="mailto:info@canarexreal.com" className="fab-item">
-              <img src={Mail} alt="mail" height={32} width={32} />
+              <img
+                src={Mail}
+                alt="mail"
+                height={32}
+                width={32}
+                loading="lazy"
+              />
             </a>
           </div>
         )}
