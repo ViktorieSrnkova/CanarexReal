@@ -1,3 +1,4 @@
+import { lazy, Suspense, useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import PublicLayout from "../layouts/PublicLayout";
 
@@ -16,7 +17,6 @@ const SingleNews = lazy(() => import("../pages/SingleNews"));
 import { LangGuard } from "../components/SEO/LangGuard";
 import type { FxRates } from "../types/general";
 import { RangesContext, type Ranges } from "../RangesContext";
-import { lazy, Suspense, useEffect, useState } from "react";
 import { getFxRates, getRanges } from "../api/listings";
 import { FxContext } from "../FxContext";
 

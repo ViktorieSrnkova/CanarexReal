@@ -34,7 +34,7 @@ function Contact() {
             email="stan@canarexreal.com"
             alt="Stanislav Srnka"
             image="/contact/stan.webp"
-            flagPath={["/flags/cz.png", "/flags/es.png"]}
+            flagPath={["/flags/cz.svg", "/flags/es.svg"]}
             flagAlts={["cz flag", "es flag"]}
           />
           <Medalion
@@ -44,7 +44,7 @@ function Contact() {
             email="chloe@canarexreal.com"
             alt="Chloe Golem"
             image="/contact/chloe.webp"
-            flagPath={["/flags/sk.png"]}
+            flagPath={["/flags/sk.svg"]}
             flagAlts={["sk flag"]}
           />
         </div>

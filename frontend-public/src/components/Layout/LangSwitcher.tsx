@@ -8,9 +8,9 @@ function LangSwitcher() {
   const location = useLocation();
 
   const languages = [
-    { code: "cs", flag: "/flags/cz.png", label: "Čeština" },
-    { code: "en", flag: "/flags/en.png", label: "English" },
-    { code: "sk", flag: "/flags/sk.png", label: "Slovenčina" },
+    { code: "cs", flag: "/flags/cz.svg", label: "Čeština" },
+    { code: "en", flag: "/flags/en.svg", label: "English" },
+    { code: "sk", flag: "/flags/sk.svg", label: "Slovenčina" },
   ] as const;
 
   const pathWithoutLang = location.pathname.replace(/^\/(cs|en|sk)/, "");

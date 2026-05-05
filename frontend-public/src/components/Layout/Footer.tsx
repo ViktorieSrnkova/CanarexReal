@@ -57,18 +57,18 @@ const Footer: React.FC = () => {
             <h2 className="contacts-h2">{t("footer.contactsTitle")}</h2>
             <div className="contacts">
               <div className="phone">
-                <img src="/flags/cz.png" alt="cz flag" loading="lazy" />
+                <img src="/flags/cz.svg" alt="cz flag" loading="lazy" />
                 <img src={Phone} alt="phone" height={16} loading="lazy" />
                 <p className="number">+420 603 257 021</p>
               </div>
               <div className="phone">
-                <img src="/flags/sk.png" alt="sk flag" loading="lazy" />
+                <img src="/flags/sk.svg" alt="sk flag" loading="lazy" />
                 <img src={Phone} alt="phoneSK" height={16} loading="lazy" />
                 <p className="number">+421 919 490 980</p>
               </div>
 
               <div className="phone">
-                <img src="/flags/es.png" alt="es flag" loading="lazy" />
+                <img src="/flags/es.svg" alt="es flag" loading="lazy" />
                 <img src={Phone} alt="phoneES" height={16} loading="lazy" />
                 <p className="number">+34 604 198 470</p>
               </div>
