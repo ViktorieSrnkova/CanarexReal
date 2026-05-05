@@ -84,7 +84,7 @@ function HomePage() {
       {!listings.length ? (
         <div style={{ minHeight: "44.125rem" }}>{t("general.loading")}</div>
       ) : (
-        <div className="content">
+        <div className="content" style={{ minHeight: "44.125rem" }}>
           <div className="hp-cards-wrapper">
             {listings.slice(0, 6).map((listing) => {
               const cardData = {
