@@ -17,6 +17,7 @@ const Footer: React.FC = () => {
         className="wawe mobile"
         src="/general/small-vlnka-white-gray.svg"
         alt="vlnka-white-to-gray"
+        loading="lazy"
       />
       <footer className="vert-f">
         <div className="actual-footer">
@@ -30,41 +31,49 @@ const Footer: React.FC = () => {
 
             <div className="icons">
               <a href="https://www.facebook.com/CanarexReal" target="_blank">
-                <img src="/socials/Facebook.svg" alt="Facebook" />
+                <img
+                  src="/socials/Facebook.svg"
+                  alt="Facebook"
+                  loading="lazy"
+                />
               </a>
               <a
                 href="https://www.instagram.com/canarexreal/?hl=en"
                 target="_blank"
               >
-                <img src="/socials/Instagram.svg" alt="Instagram" />
+                <img
+                  src="/socials/Instagram.svg"
+                  alt="Instagram"
+                  loading="lazy"
+                />
               </a>
               <a
                 href="https://www.tiktok.com/@canarexreal2?_t=ZN-8zTWsOtJa90&_r=1"
                 target="_blank"
               >
-                <img src="/socials/TikTok.svg" alt="TikTok" />
+                <img src="/socials/TikTok.svg" alt="TikTok" loading="lazy" />
               </a>
             </div>
             <h2 className="contacts-h2">{t("footer.contactsTitle")}</h2>
             <div className="contacts">
               <div className="phone">
-                <img src="/flags/cz.png" alt="cz flag" />
-                <img src={Phone} alt="phone" height={16} />
+                <img src="/flags/cz.png" alt="cz flag" loading="lazy" />
+                <img src={Phone} alt="phone" height={16} loading="lazy" />
                 <p className="number">+420 603 257 021</p>
               </div>
               <div className="phone">
-                <img src="/flags/sk.png" alt="sk flag" />
-                <img src={Phone} alt="phoneSK" height={16} />
+                <img src="/flags/sk.png" alt="sk flag" loading="lazy" />
+                <img src={Phone} alt="phoneSK" height={16} loading="lazy" />
                 <p className="number">+421 919 490 980</p>
               </div>
 
               <div className="phone">
-                <img src="/flags/es.png" alt="es flag" />
-                <img src={Phone} alt="phoneES" height={16} />
+                <img src="/flags/es.png" alt="es flag" loading="lazy" />
+                <img src={Phone} alt="phoneES" height={16} loading="lazy" />
                 <p className="number">+34 604 198 470</p>
               </div>
               <div className="mail">
-                <img src={Mail} alt="email" height={14} />
+                <img src={Mail} alt="email" height={14} loading="lazy" />
                 <a href={`mailto:${t("contact.email")}`} className="number">
                   {t("contact.email")}
                 </a>

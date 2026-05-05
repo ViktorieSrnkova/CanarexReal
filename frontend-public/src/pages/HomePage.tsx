@@ -9,13 +9,9 @@ import Button from "../components/General/Button";
 import { useNavigate } from "react-router-dom";
 import { useT } from "../i18n";
 import hero from "/pages/hero.webp";
-import type { CSSProperties } from "react";
 import Medalion from "../components/Contact/Medalion";
 import "../styles/responsivity/resize.css";
 import SEO from "../components/SEO/Meta";
-type HeroStyle = CSSProperties & {
-  "--hero"?: string;
-};
 
 function HomePage() {
   const navigate = useNavigate();
@@ -53,26 +49,26 @@ function HomePage() {
           url: "https://canarex-real-public.vercel.app",
         }}
       />
-      <div
-        className="hero"
-        style={
-          {
-            "--hero": `url(${hero})`,
-          } as HeroStyle
-        }
-      >
-        <h1>{t("homepage.title")}</h1>
-        <h2>{t("homepage.subtitle")}</h2>
-        <div className="buttons">
-          <Button onClick={() => navigate(`/${lang}/listings`)}>
-            {t("homepage.listings")}
-          </Button>
-          <Button
-            onClick={() => navigate(`/${lang}/contact`)}
-            variant="secondary"
-          >
-            {t("homepage.contact")}
-          </Button>
+      <div className="hero">
+        <img src={hero} alt="" className="heroImage" fetchPriority="high" />
+
+        <div className="heroOverlay" />
+        <div className="heroContent">
+          <h1>{t("homepage.title")}</h1>
+          <h2>{t("homepage.subtitle")}</h2>
+
+          <div className="buttons">
+            <Button onClick={() => navigate(`/${lang}/listings`)}>
+              {t("homepage.listings")}
+            </Button>
+
+            <Button
+              onClick={() => navigate(`/${lang}/contact`)}
+              variant="secondary"
+            >
+              {t("homepage.contact")}
+            </Button>
+          </div>
         </div>
       </div>
       <img
@@ -118,21 +114,25 @@ function HomePage() {
         className="wawe"
         src="/general/vlnka-white-gray.svg"
         alt="vlnka-white-to-gray"
+        loading="lazy"
       />
       <img
         className="wawe mobile"
         src="/general/small-vlnka-white-gray.svg"
         alt="vlnka-white-to-gray"
+        loading="lazy"
       />
       <img
         className="wawe mobile"
         src="/general/small-vlnka-gray-white.svg"
         alt="vlnka-gray-to-white"
+        loading="lazy"
       />
       <img
         className="wawe"
         src="/general/vlnka-gray-white-nm.svg"
         alt="vlnka-gray-to-white"
+        loading="lazy"
       />
       <div className="hp-contact-wrapper">
         <div className="hp-contact">

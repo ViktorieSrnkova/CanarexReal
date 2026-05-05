@@ -62,6 +62,19 @@
 }
 
 @media screen and (max-width: 1112px) {
+  .lang-btn img,
+  .socials img,
+  .info-left img {
+    width: 1.5rem !important;
+    height: 1.5rem !important;
+  }
+  .info-left a,
+  .info-left .phone {
+    font-size: 1em !important;
+  }
+  .info-line {
+    height: 2.5rem;
+  }
   .none-filter h2 {
     padding-inline: 1rem;
     text-align: center;

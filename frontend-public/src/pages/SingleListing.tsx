@@ -2,7 +2,7 @@ import BaseForm from "../components/Forms/BaseForm";
 import Card from "../components/Listing/Card";
 import { useT, type Lang } from "../i18n";
 import { useParams } from "react-router-dom";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, lazy, Suspense } from "react";
 import type { ListingDetailResponse, ListingThumbnail } from "../types/rawApi";
 import {
   getListingById,
@@ -24,7 +24,7 @@ import "../styles/pages/singlelisting.css";
 import { useFx } from "../FxContext";
 import Tooltip from "../components/General/Tooltip";
 import ListingGallery from "../components/Listing/Gallery";
-import Map from "../components/General/Map";
+const Map = lazy(() => import("../components/General/Map"));
 import EditorRendererWrapper from "../components/Editor/EditorRendererWrapper";
 import { ExpandableDescription } from "../components/Listing/ExpandableDescription";
 import SEO from "../components/SEO/Meta";
@@ -297,7 +297,9 @@ function SingleListing() {
             <img src="/utils/map-pin.svg" alt="map pin" />
             <p>{formatLocation(detail?.adresy.cela_adresa, lang)}</p>
           </div>
-          <Map height="20rem" lat={lat} lng={lng} zoom={12} />
+          <Suspense fallback={<div>Loading map...</div>}>
+            <Map height="20rem" lat={lat} lng={lng} zoom={12} />
+          </Suspense>
         </div>
       </div>
       <img

@@ -73,11 +73,11 @@
 
 .main-header .active:hover {
   cursor: pointer;
-  color: crimson;
+  color: #a80000;
 }
 
 .main-header .active {
-  color: crimson;
+  color: #a80000;
   text-decoration: none;
 }
 
@@ -88,7 +88,7 @@
 
 .nonactive:hover {
   cursor: pointer;
-  color: crimson;
+  color: #a80000;
 }
 .nav {
   display: flex;

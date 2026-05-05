@@ -1,5 +1,6 @@
+import { lazy, Suspense } from "react";
 import Medalion from "../components/Contact/Medalion";
-import Map from "../components/General/Map";
+const Map = lazy(() => import("../components/General/Map"));
 import BaseForm from "../components/Forms/BaseForm";
 import { useT } from "../i18n";
 import "../styles/pages/contact.css";
@@ -53,12 +54,15 @@ function Contact() {
         </div>
       </div>
       <div className="contact-map">
-        <Map lat={28.239334} lng={-16.840377} height="20rem" zoom={16} />
+        <Suspense fallback={<div>Loading map...</div>}>
+          <Map lat={28.239334} lng={-16.840377} height="20rem" zoom={16} />
+        </Suspense>
       </div>
       <img
         className="wawe"
         src="/general/vlnka-gray-white-nm.svg"
         alt="vlnka-gray-to-white"
+        loading="lazy"
       />
       <div className="contact white">
         <h2>{t("form.titleInq")}</h2>

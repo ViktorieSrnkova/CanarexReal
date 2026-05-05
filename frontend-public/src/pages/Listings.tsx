@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, lazy, Suspense } from "react";
 import Card from "../components/Listing/Card";
 import type { ListingThumbnail } from "../types/rawApi";
 import { getListingsThumbs } from "../api/listings";
@@ -11,7 +11,7 @@ import FiltersWrapper from "../components/Forms/FiltersWrapper";
 import Button from "../components/General/Button";
 import Dropdown from "../components/General/Dropdown";
 import { type ListingSort } from "../types/filters";
-import SearchMap from "../components/Listing/SearchMap";
+const SearchMap = lazy(() => import("../components/Listing/SearchMap"));
 import { useNavigate, useSearchParams } from "react-router-dom";
 import type { FormValues } from "../types/forms";
 import { useT } from "../i18n";
@@ -330,21 +330,23 @@ function Listings() {
                   <NoFilters />
                 ) : (
                   <>
-                    <SearchMap
-                      markers={listings.filter(hasCoords).map((l) => ({
-                        id: l.id,
-                        price: l.cena_v_eur,
-                        position: {
-                          lat: l.adresy?.lat,
-                          lng: l.adresy?.lng,
-                        },
-                      }))}
-                      selectedId={selectedListing}
-                      onMarkerClick={(id) => {
-                        handleMarkerClick(id);
-                        setClicked(true);
-                      }}
-                    />
+                    <Suspense fallback={<div>Loading map...</div>}>
+                      <SearchMap
+                        markers={listings.filter(hasCoords).map((l) => ({
+                          id: l.id,
+                          price: l.cena_v_eur,
+                          position: {
+                            lat: l.adresy?.lat,
+                            lng: l.adresy?.lng,
+                          },
+                        }))}
+                        selectedId={selectedListing}
+                        onMarkerClick={(id) => {
+                          handleMarkerClick(id);
+                          setClicked(true);
+                        }}
+                      />
+                    </Suspense>
                     {clicked && (
                       <div className="result">
                         <div

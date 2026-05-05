@@ -6,7 +6,7 @@
   justify-content: center;
   align-items: flex-start;
 
-  padding: 0.75em 0 3em 0;
+  padding: 0.75em 2em 3em 2em;
 }
 
 .wawe {
@@ -31,25 +31,31 @@
   padding-left: 8.875em;
   padding-right: 1em;
 }
-
-.hero::before {
-  content: "";
+.heroImage {
   position: absolute;
   inset: 0;
-  background-image: var(--hero);
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-
-  opacity: 0.5;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
   z-index: 0;
 }
-
-.hero > * {
-  position: relative;
+.heroOverlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.5); /* odpovídá opacity 0.5 */
   z-index: 1;
 }
-.hero h1 {
+.heroContent {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  color: #1e1e1e;
+}
+
+.heroContent h1 {
   font-size: 4.5em;
   font-weight: 700;
   line-height: 120%;
@@ -57,7 +63,7 @@
   margin-bottom: 0.625rem;
   margin-top: 4rem;
 }
-.hero h2 {
+.heroContent h2 {
   font-size: 2em;
   font-style: normal;
   font-weight: 400;
@@ -65,7 +71,7 @@
   margin-top: 0;
   margin-bottom: 1.375rem;
 }
-.hero .buttons {
+.heroContent .buttons {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
