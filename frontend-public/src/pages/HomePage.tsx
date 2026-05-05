@@ -82,7 +82,7 @@ function HomePage() {
         alt="vlnka-gray-to-white"
       />
       {!listings.length ? (
-        <div style={{ minHeight: "44.125rem" }}>{t("general.loading")}</div>
+        <div style={{ minHeight: "50.75rem" }}>{t("general.loading")}</div>
       ) : (
         <div className="content" style={{ minHeight: "44.125rem" }}>
           <div className="hp-cards-wrapper">
