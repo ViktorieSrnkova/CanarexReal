@@ -25,7 +25,7 @@ function RangeSlider({
       <div className="range-header">
         <label className="range">{label}</label>
         <span className="range number">
-          {value[0]} – {value[1]} <label>{valueLabel}</label>
+          {value[0]} – {value[1]} <span>{valueLabel}</span>
         </span>
       </div>
 

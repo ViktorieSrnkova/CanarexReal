@@ -34,7 +34,10 @@ export default function SearchMap({
       zoom={10}
       style={{ height: "100%", width: "100%" }}
     >
-      <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+      <TileLayer
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        detectRetina={true}
+      />
       <MarkerClusterGroup
         chunkedLoading
         maxClusterRadius={window.innerWidth <= 600 ? 40 : 60}
