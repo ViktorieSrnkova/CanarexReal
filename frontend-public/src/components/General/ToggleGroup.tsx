@@ -24,8 +24,8 @@ export default function ToggleGroup<T extends number>({
 
   return (
     <div className="toggle-section">
-      <label htmlFor={label}>{label}</label>
-      <div id={label} className="toggle-group">
+      <span className="toggle-buttons">{label}</span>
+      <div className="toggle-group">
         {options.map((opt) => (
           <ToggleButton
             key={opt.value}
