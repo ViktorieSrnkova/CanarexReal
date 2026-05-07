@@ -1,5 +1,6 @@
 import ReactDOM from "react-dom/client";
 import App from "./App";
+import "./styles/fonts.css";
 import "./styles/global.css";
 import { LangProvider } from "./i18n/LangProvider";
 
