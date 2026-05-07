@@ -12,9 +12,10 @@
   border-radius: 50%;
   border: none;
   background: #87ceeb;
-  font-size: 1.5rem;
+  font-size: 1.5em;
   cursor: pointer;
   box-shadow: 2px 2px 3px 2px #e3e3e3;
+  letter-spacing: normal;
 }
 
 .fab-menu {
@@ -183,6 +184,9 @@
   }
   .contact .card {
     min-width: 20.688rem !important;
+  }
+  .home-page .hp-cards-wrapper {
+    padding: 0.75em 0 3em 0 !important;
   }
 }
 @media screen and (max-width: 850px) {
@@ -586,5 +590,8 @@
     min-width: 0 !important;
     width: 100% !important;
     max-width: 20.688rem !important;
+  }
+  .card {
+    width: 100% !important;
   }
 }
