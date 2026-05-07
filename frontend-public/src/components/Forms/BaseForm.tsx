@@ -159,8 +159,9 @@ export default function ContactForm(props: Props): React.ReactElement {
         >
           <div className={props.what === 3 ? "long" : "grid-2"}>
             <div className="field">
-              <label>{t("form.name")} *</label>
+              <label htmlFor="name">{t("form.name")} *</label>
               <input
+                id="name"
                 {...register("name")}
                 className={errors.name ? "input error-input" : "input"}
               />
@@ -170,8 +171,9 @@ export default function ContactForm(props: Props): React.ReactElement {
             </div>
 
             <div className="field">
-              <label>{t("form.surname")} *</label>
+              <label htmlFor="surname">{t("form.surname")} *</label>
               <input
+                id="surname"
                 {...register("surname")}
                 className={errors.surname ? "input error-input" : "input"}
               />
@@ -181,8 +183,9 @@ export default function ContactForm(props: Props): React.ReactElement {
             </div>
 
             <div className="field">
-              <label>{t("form.email")} *</label>
+              <label htmlFor="email">{t("form.email")} *</label>
               <input
+                id="email"
                 type="email"
                 {...register("email")}
                 className={errors.email ? "input error-input" : "input"}
@@ -193,9 +196,9 @@ export default function ContactForm(props: Props): React.ReactElement {
             </div>
 
             <div className="field">
-              <label>{t("form.phone")} *</label>
+              <label htmlFor="phone-group">{t("form.phone")} *</label>
 
-              <div className="phone-row">
+              <div id="phone-group" className="phone-row">
                 <input
                   {...register("phonePrefix")}
                   placeholder="+420"
@@ -231,8 +234,9 @@ export default function ContactForm(props: Props): React.ReactElement {
           <div
             className={`field full ${props.what === 3 ? "long" : ""} ${props.what === 2 ? "short" : ""}`}
           >
-            <label>{t("form.text")} *</label>
+            <label htmlFor="textarea">{t("form.text")} *</label>
             <textarea
+              id="textarea"
               {...register("message")}
               placeholder={t("form.text_placeholder")}
               className={`input ${errors.message ? " error-input" : ""} ${
@@ -245,8 +249,8 @@ export default function ContactForm(props: Props): React.ReactElement {
           </div>
 
           <div className={`gdpr-col ${props.what === 3 ? "long" : ""}`}>
-            <label className="gdpr">
-              <input type="checkbox" {...register("gdpr")} />
+            <label htmlFor="checkbox" className="gdpr">
+              <input id="checkbox" type="checkbox" {...register("gdpr")} />
               <span>{t("form.gdpr")} *</span>
             </label>
             {errors.gdpr && (
