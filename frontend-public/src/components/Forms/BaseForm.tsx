@@ -162,6 +162,7 @@ export default function ContactForm(props: Props): React.ReactElement {
             <div className="field">
               <label htmlFor="name">{t("form.name")} *</label>
               <input
+                autoComplete="given-name"
                 id="name"
                 {...register("name")}
                 className={errors.name ? "input error-input" : "input"}
@@ -174,6 +175,7 @@ export default function ContactForm(props: Props): React.ReactElement {
             <div className="field">
               <label htmlFor="surname">{t("form.surname")} *</label>
               <input
+                autoComplete="family-name"
                 id="surname"
                 {...register("surname")}
                 className={errors.surname ? "input error-input" : "input"}
@@ -186,6 +188,7 @@ export default function ContactForm(props: Props): React.ReactElement {
             <div className="field">
               <label htmlFor="email">{t("form.email")} *</label>
               <input
+                autoComplete="email"
                 id="email"
                 type="email"
                 {...register("email")}
@@ -201,6 +204,7 @@ export default function ContactForm(props: Props): React.ReactElement {
 
               <div id="phone-group" className="phone-row">
                 <input
+                  autoComplete="tel-country-code"
                   {...register("phonePrefix")}
                   placeholder="+420"
                   className={
@@ -211,6 +215,7 @@ export default function ContactForm(props: Props): React.ReactElement {
                 />
 
                 <input
+                  autoComplete="tel"
                   {...register("phone")}
                   placeholder="123 456 789"
                   type="tel"

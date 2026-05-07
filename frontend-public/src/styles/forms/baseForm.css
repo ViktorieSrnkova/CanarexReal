@@ -49,7 +49,8 @@
   gap: 0.5rem;
 }
 
-.field span {
+.field span,
+.field label {
   font-size: 0.875em;
   color: #333;
 }
