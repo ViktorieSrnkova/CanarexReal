@@ -37,6 +37,7 @@ function RangeSlider({
         value={value}
         onChange={(val) => onChange(val as [number, number])}
         className="range-input"
+        ariaLabelForHandle={[`${label} minimum`, `${label} maximum`]}
       />
     </div>
   );
