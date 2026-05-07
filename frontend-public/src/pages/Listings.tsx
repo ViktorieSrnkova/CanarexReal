@@ -18,6 +18,7 @@ import { useT } from "../i18n";
 import NoFilters from "../components/Listing/NoFilters";
 import SEO from "../components/SEO/Meta";
 import { useRanges } from "../RangesContext";
+import CardSkeleton from "../components/Listing/SkeletonCard";
 
 function Listings() {
   const ranges = useRanges();
@@ -291,7 +292,11 @@ function Listings() {
                   onChange={setPage}
                 />
                 {listings.length === 0 ? (
-                  <NoFilters />
+                  <div className="hp-cards-wrapper">
+                    {Array.from({ length: 9 }).map((_, i) => (
+                      <CardSkeleton key={i} />
+                    ))}
+                  </div>
                 ) : (
                   <div className="hp-cards-wrapper">
                     {listings.map((listing) => {

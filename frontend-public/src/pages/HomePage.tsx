@@ -12,6 +12,7 @@ import hero from "/pages/hero.webp";
 import Medalion from "../components/Contact/Medalion";
 import "../styles/responsivity/resize.css";
 import SEO from "../components/SEO/Meta";
+import CardSkeleton from "../components/Listing/SkeletonCard";
 
 function HomePage() {
   const navigate = useNavigate();
@@ -82,9 +83,15 @@ function HomePage() {
         alt="vlnka-gray-to-white"
       />
       {!listings.length ? (
-        <div style={{ minHeight: "44.125rem" }}>{t("general.loading")}</div>
+        <div className="content home-page">
+          <div className="hp-cards-wrapper">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <CardSkeleton key={i} />
+            ))}
+          </div>
+        </div>
       ) : (
-        <div className="content" style={{ minHeight: "50.75rem" }}>
+        <div className="content home-page">
           <div className="hp-cards-wrapper">
             {listings.slice(0, 6).map((listing) => {
               const cardData = {

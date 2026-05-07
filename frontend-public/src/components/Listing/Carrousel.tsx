@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Card from "./Card";
 import type { ListingThumbnail } from "../../types/rawApi";
 import "../../styles/listing/carrousel.css";
+import CardSkeleton from "./SkeletonCard";
 
 type Props = {
   similar: ListingThumbnail[];
@@ -68,8 +69,23 @@ function Carrousel(props: Props) {
   if (props.loading) {
     return (
       <div className="crsl-wrapper">
-        <h2>{props.title}</h2>
-        <div>{props.loadTxt}</div>
+        <div className="crsl-first-row">
+          <h2>{props.title}</h2>
+        </div>
+        <div className="crsl-second-row">
+          <div className="arrow-left" onClick={prev}></div>
+          <div className="crsl-listings-wrapper">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <CardSkeleton key={i} />
+            ))}
+          </div>
+          <div className="arrow-right" onClick={next}></div>
+        </div>
+        <div className="crsl-third-row">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <div key={i} className="dot skeleton-dot" />
+          ))}
+        </div>
       </div>
     );
   }
