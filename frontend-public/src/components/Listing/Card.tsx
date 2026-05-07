@@ -28,7 +28,9 @@ function Card(props: Props) {
           alt={props.alt}
           className="card-img"
           loading="lazy"
-        />{" "}
+          width={"315"}
+          height={"218"}
+        />
         <div className={`card-status status-${props.status_id}`}>
           {props.status}
         </div>
