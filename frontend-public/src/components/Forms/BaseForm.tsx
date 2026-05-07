@@ -197,7 +197,7 @@ export default function ContactForm(props: Props): React.ReactElement {
             </div>
 
             <div className="field">
-              <label htmlFor="phone-group">{t("form.phone")} *</label>
+              <span>{t("form.phone")} *</span>
 
               <div id="phone-group" className="phone-row">
                 <input
