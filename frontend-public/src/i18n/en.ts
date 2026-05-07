@@ -89,6 +89,7 @@ export const en = {
     goTo: "View Property",
     clear: "Clear filter",
     none: "We currently do not have any properties that would match the selected filters.",
+    filters: "Filters",
   },
   homepage: {
     title: "Tenerife, where dreams come true",

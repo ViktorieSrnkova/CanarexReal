@@ -221,7 +221,7 @@ function Listings() {
       />
       <div className="content">
         <button className="filters-toggle" onClick={() => setFiltersOpen(true)}>
-          Filtry
+          {t("listings.filters")}
         </button>
         <div className="listings-wrapper">
           <div className={`filters ${filtersOpen ? "open" : ""}`}>

@@ -23,6 +23,7 @@ function Dropdown<T extends string | number>({
     <div className="dropdown-wrapper">
       <label htmlFor="select">{label}</label>
       <select
+        id="select"
         value={String(value)}
         onChange={(e) => {
           const selected = options.find(

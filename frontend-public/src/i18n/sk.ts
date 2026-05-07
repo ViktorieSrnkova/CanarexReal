@@ -88,6 +88,7 @@ export const sk = {
     goTo: "Zobraziť nehnuteľnosť",
     clear: "Zrušiť filtre",
     none: "V súčasnosti nemáme v ponuke žiadne nehnuteľnosti, ktoré by spĺňali zvolené filtre.",
+    filters: "Filtry",
   },
   homepage: {
     title: "Tenerife, kde sny majú adresu",

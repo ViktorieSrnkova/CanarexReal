@@ -88,6 +88,7 @@ export const cs = {
     goTo: "Zobrazit nemovitost",
     clear: "Zrušit filtry",
     none: "Momentálně nemáme v nabídce žádné nemovitosti, které by splňovaly zvolené filtry.",
+    filters: "Filtry",
   },
   homepage: {
     title: "Tenerife, kde sny mají adresu",
