@@ -23,7 +23,7 @@ function RangeSlider({
   return (
     <div className="range-slider">
       <div className="range-header">
-        <label className="range">{label}</label>
+        <span className="range">{label}</span>
         <span className="range number">
           {value[0]} – {value[1]} <span>{valueLabel}</span>
         </span>
