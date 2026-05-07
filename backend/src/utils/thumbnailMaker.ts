@@ -11,6 +11,6 @@ export const convertBufferToThumbnail = async (
 ): Promise<Buffer> => {
   return sharp(buffer)
     .resize({ width, height })
-    .webp({ quality: 80 })
+    .webp({ quality: 100 })
     .toBuffer();
 };
