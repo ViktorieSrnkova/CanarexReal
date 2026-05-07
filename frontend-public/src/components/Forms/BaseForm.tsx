@@ -141,6 +141,7 @@ export default function ContactForm(props: Props): React.ReactElement {
     });
 
     clearErrors();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lang]);
   return (
     <FormProvider {...methods}>

@@ -30,6 +30,7 @@ function Map({ lat, lng, zoom, height }: Props) {
       <TileLayer
         attribution="&copy; OpenStreetMap"
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        detectRetina={true}
       />
 
       <Marker position={position} icon={redIcon} />
