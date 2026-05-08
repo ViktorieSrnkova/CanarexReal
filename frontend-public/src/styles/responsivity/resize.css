@@ -567,7 +567,7 @@
     display: none !important;
   }
 }
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 400px) {
   .long {
     display: flex !important;
     flex-direction: column;

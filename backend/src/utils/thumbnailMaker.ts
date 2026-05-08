@@ -6,8 +6,8 @@ export const convertBufferToWebP = async (buffer: Buffer): Promise<Buffer> => {
 
 export const convertBufferToThumbnail = async (
   buffer: Buffer,
-  width = 500,
-  height = 346,
+  width = 400,
+  height = 276,
 ): Promise<Buffer> => {
   return sharp(buffer)
     .resize({ width, height })
