@@ -25,13 +25,13 @@ function Card(props: Props) {
     <div className={`card ${props.status_id === 2 ? "status-2-active" : ""}`}>
       <Link to={`/${lang}/listings/${props.id}`} className="card-image">
         <img
+          loading={props.fetchpriority ? "lazy" : "eager"}
+          fetchPriority={props.fetchpriority ? "high" : "auto"}
           src={` ${VITE_API_URL}/api/files/images/${props.obrazekId}`}
           alt={props.alt}
           className="card-img"
           width={"315"}
           height={"218"}
-          loading="lazy"
-          fetchPriority={props.fetchpriority ? "high" : "auto"}
         />
         <div className={`card-status status-${props.status_id}`}>
           {props.status}
