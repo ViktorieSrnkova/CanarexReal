@@ -27,6 +27,7 @@ router.get("/images/:id", async (req, res) => {
     res.setHeader("Content-Type", "image/webp");
     res.setHeader("Cache-Control", "public, max-age=31536000, immutable");
     res.setHeader("Content-Length", image.data.length);
+    res.setHeader("ETag", `"img-${id}-${image.data.length}"`);
 
     res.send(Buffer.from(image.data));
   } catch (err) {
