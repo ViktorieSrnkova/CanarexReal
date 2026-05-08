@@ -11,6 +11,7 @@ export const en = {
   header: {
     home: "Home",
     listings: "Listings",
+    map: "Map",
     services: "Services",
     news: "About Tenerife",
     mortgage: "Mortgage",
@@ -136,7 +137,7 @@ export const en = {
     HP_title: "CanarexReal | Real estate Tenerife",
     Contact_title: "Contact | CanarexReal",
     Listings_title: "List of properties for sale | CanarexReal",
-    ListingUnavailable_title: "",
+    Map_title: "Interactive Search Map | CanarexReal",
     Mortgage_title: "Mortgage | CanarexReal",
     News_title: "About Tenerife | CanarexReal",
     Services_title: "Services | CanarexReal",
@@ -149,7 +150,8 @@ export const en = {
       "Contact the Canarex Real Tenerife real estate agency. We help Czechs and Slovaks with buying, selling, and investing in real estate.",
     Listings_description:
       "Listings of real estate for sale in Tenerife. Come find your dream house, villa, apartment, or other property.",
-    ListingUnavailable_description: "",
+    Map_description:
+      "Discover properties in Tenerife at a glance on an interactive map. Select a location, browse listings in the area, and find your ideal home faster.",
     Mortgage_description:
       "Mortgages in Tenerife for Czechs and Slovaks. We’ll help you finance your property step by step.",
     News_description:

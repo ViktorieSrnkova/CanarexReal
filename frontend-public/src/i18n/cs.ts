@@ -11,6 +11,7 @@ export const cs = {
   header: {
     home: "Domů",
     listings: "Prodej",
+    map: "Mapa",
     services: "Služby",
     mortgage: "Hypotéka",
     news: "O Tenerife",
@@ -135,6 +136,7 @@ export const cs = {
     HP_title: "CanarexReal | Reality Tenerife",
     Contact_title: "Kontakt | CanarexReal",
     Listings_title: "Nabídka nemovitostí k prodeji | CanarexReal",
+    Map_title: "Interaktivní vyhledávací mapa | CanarexReal",
     Mortgage_title: "Hypotéky | CanarexReal",
     News_title: "O Tenerife | CanarexReal",
     Services_title: "Služby | CanarexReal",
@@ -147,6 +149,8 @@ export const cs = {
       "Kontaktujte realitní kancelář Canarex Real Tenerife. Pomáháme Čechům a Slovákům s koupí, prodejem i investicemi do nemovitostí.",
     Listings_description:
       "Prodej nemovitosti na Tenerife bez starostí. Profesionální marketing, právní jistota a klienti z celé Evropy.",
+    Map_description:
+      "Objevte nemovitosti na Tenerife přehledně na interaktivní mapě. Vyberte lokalitu, prohlédněte nabídky v okolí a najděte ideální domov rychleji.",
     Mortgage_description:
       "Hypotéky na Tenerife pro Čechy a Slováky. Pomůžeme s financováním nemovitosti krok za krokem.",
     News_description:

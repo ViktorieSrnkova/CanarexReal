@@ -9,6 +9,7 @@ import FAQ from "../pages/FAQ";
 import Fees from "../pages/Fees";
 import GDPR from "../pages/GDPR";
 const Listings = lazy(() => import("../pages/Listings"));
+const Map = lazy(() => import("../pages/Map"));
 const Mortgage = lazy(() => import("../pages/Mortgage"));
 const News = lazy(() => import("../pages/News"));
 const Services = lazy(() => import("../pages/Services"));
@@ -66,6 +67,14 @@ export default function Router() {
               element={
                 <RangesContext.Provider value={ranges}>
                   <Listings />
+                </RangesContext.Provider>
+              }
+            />
+            <Route
+              path="map"
+              element={
+                <RangesContext.Provider value={ranges}>
+                  <Map />
                 </RangesContext.Provider>
               }
             />

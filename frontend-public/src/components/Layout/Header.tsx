@@ -22,6 +22,7 @@ function Header() {
   const menuItems = [
     { label: t("header.home"), path: `/${lang}` },
     { label: t("header.listings"), path: `/${lang}/listings` },
+    { label: t("header.map"), path: `/${lang}/map` },
     { label: t("header.services"), path: `/${lang}/services` },
     { label: t("header.mortgage"), path: `/${lang}/mortgage` },
     { label: t("header.news"), path: `/${lang}/news` },

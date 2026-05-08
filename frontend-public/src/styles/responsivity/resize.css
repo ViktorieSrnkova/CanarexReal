@@ -188,6 +188,56 @@
   .home-page .hp-cards-wrapper {
     padding: 0.75em 0 3em 0 !important;
   }
+  .filters {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    max-width: 21rem !important;
+    background: white;
+    z-index: 999999999;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    padding-inline: 1rem;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 1rem;
+  }
+  .close {
+    font-size: 3rem;
+    line-height: 0;
+    margin-top: 1rem;
+    display: flex !important;
+    width: 100%;
+    justify-content: flex-end;
+    cursor: pointer;
+  }
+  .filters.open .filters-header {
+    margin-bottom: 2rem;
+  }
+  .filters.open {
+    transform: translateX(0);
+  }
+  .filters-toggle {
+    position: fixed;
+    left: 0;
+    top: 42%;
+    transform: translateY(-50%) rotate(-90deg);
+    transform-origin: left top;
+    display: block !important;
+    background: black;
+    color: white;
+    padding: 8px 16px;
+    cursor: pointer;
+    z-index: 900;
+  }
+  .map-wrapper-listing {
+    width: 100%;
+    height: 80vh !important;
+    margin-bottom: 0 !important;
+    z-index: 0;
+  }
 }
 @media screen and (max-width: 850px) {
   .contact .details-form {
@@ -438,59 +488,7 @@
     height: 2.25rem !important;
     font-size: 0.813em !important ;
   }
-  .filters {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    background: white;
-    z-index: 999999999;
-    max-width: none !important;
-    transform: translateX(-100%);
-    transition: transform 0.3s ease;
-    padding-inline: 1rem;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    padding-bottom: 1rem;
-  }
-  .close {
-    font-size: 3rem;
-    line-height: 0;
-    margin-top: 1rem;
-    display: flex !important;
-    width: 100%;
-    justify-content: flex-end;
-  }
-  .view-switch {
-    max-width: 240px;
-  }
-  .view-switch button {
-    margin-top: 0 !important;
-  }
 
-  .filters.open {
-    transform: translateX(0);
-  }
-  .filters-toggle {
-    position: fixed;
-    left: 0;
-    top: 42%;
-    transform: translateY(-50%) rotate(-90deg);
-    transform-origin: left top;
-    display: block !important;
-    background: black;
-    color: white;
-    padding: 8px 16px;
-    cursor: pointer;
-    z-index: 900;
-  }
-  .map-wrapper-listing {
-    width: 100%;
-    height: 80vh !important;
-    margin-bottom: 0 !important;
-    z-index: 0;
-  }
   .content {
     padding: 0 !important;
     padding-top: 1rem !important;
@@ -565,6 +563,9 @@
   .tall {
     min-height: 0 !important;
   }
+  .map-wrapper-listing .result {
+    display: none !important;
+  }
 }
 @media screen and (max-width: 500px) {
   .long {
@@ -593,5 +594,8 @@
   }
   .card {
     width: 100% !important;
+  }
+  .filters {
+    max-width: none !important;
   }
 }
