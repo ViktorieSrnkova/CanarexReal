@@ -61,6 +61,7 @@ function Listings() {
               page={page}
               totalPages={totalPages}
               onChange={setPage}
+              loading={listings.length === 0}
             />
             {listings.length === 0 ? (
               <div className="hp-cards-wrapper">

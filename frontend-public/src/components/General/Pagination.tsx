@@ -5,9 +5,10 @@ type Props = {
   page: number;
   totalPages: number;
   onChange: (page: number) => void;
+  loading?: boolean;
 };
 
-function Pagination({ page, totalPages, onChange }: Props) {
+function Pagination({ page, totalPages, onChange, loading = false }: Props) {
   const t = useT();
 
   const getPages = () => {
@@ -23,21 +24,17 @@ function Pagination({ page, totalPages, onChange }: Props) {
   };
 
   return (
-    <div className="pagination">
-      <button
-        className="btn"
-        onClick={() => onChange(page - 1)}
-        disabled={page === 1}
-      >
+    <div className={`pagination ${loading ? "loading" : ""}`}>
+      <button className="btn" disabled>
         <img
           className="arrow-pg"
           src="/utils/arrow-left.svg"
           alt="arrow left"
-        />{" "}
+        />
         {t("listings.back")}
       </button>
 
-      {getPages().map((p, i) =>
+      {(loading ? [1, 2, 3, 4, 5] : getPages()).map((p, i) =>
         p === "..." ? (
           <span key={`dots-${i}`} className="dots">
             ...
@@ -46,19 +43,16 @@ function Pagination({ page, totalPages, onChange }: Props) {
           <button
             key={p}
             className={`number ${p === page ? "active" : ""}`}
-            onClick={() => onChange(p as number)}
+            onClick={() => !loading && onChange(p as number)}
+            disabled={loading}
           >
             {p}
           </button>
         ),
       )}
 
-      <button
-        className="btn"
-        onClick={() => onChange(page + 1)}
-        disabled={page === totalPages}
-      >
-        {t("listings.next")}{" "}
+      <button className="btn" disabled>
+        {t("listings.next")}
         <img
           className="arrow-pg"
           src="/utils/arrow-right.svg"

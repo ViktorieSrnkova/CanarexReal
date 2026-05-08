@@ -3,6 +3,13 @@
   align-items: center;
   gap: 0.5rem;
 }
+.pagination {
+  min-height: 2.188rem;
+}
+
+.pagination.loading {
+  visibility: hidden;
+}
 
 .pagination button {
   border: none;
