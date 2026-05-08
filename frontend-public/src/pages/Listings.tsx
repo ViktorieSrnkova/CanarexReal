@@ -109,7 +109,7 @@ function Listings() {
 
                   return (
                     <Card
-                      fetchpriority={i === 0}
+                      fetchpriority={i < 2}
                       key={listing.id}
                       {...cardData}
                     />
