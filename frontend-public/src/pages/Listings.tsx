@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import Card from "../components/Listing/Card";
 import "../styles/pages/listings.css";
 import Pagination from "../components/General/Pagination";
