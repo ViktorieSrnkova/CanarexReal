@@ -36,16 +36,28 @@ function Listings() {
   useEffect(() => {
     if (!listings.length) return;
 
-    const preload = document.createElement("link");
+    const preloads: HTMLLinkElement[] = [];
 
-    preload.rel = "preload";
-    preload.as = "image";
-    preload.href = `${VITE_API_URL}/api/files/images/${listings[0].obrazky[0].id}`;
+    listings.slice(0, 2).forEach((listing) => {
+      const imageId = listing.obrazky[0]?.id;
 
-    document.head.appendChild(preload);
+      if (!imageId) return;
+
+      const preload = document.createElement("link");
+
+      preload.rel = "preload";
+      preload.as = "image";
+      preload.href = `${VITE_API_URL}/api/files/images/${imageId}`;
+
+      document.head.appendChild(preload);
+
+      preloads.push(preload);
+    });
 
     return () => {
-      document.head.removeChild(preload);
+      preloads.forEach((preload) => {
+        document.head.removeChild(preload);
+      });
     };
   }, [listings]);
   if (!filtersReady) {
