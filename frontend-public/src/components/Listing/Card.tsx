@@ -27,7 +27,7 @@ function Card(props: Props) {
         <img
           loading={props.fetchpriority ? "eager" : "lazy"}
           fetchPriority={props.fetchpriority ? "high" : "auto"}
-          src={` ${VITE_API_URL}/api/files/images/${props.obrazekId}`}
+          src={`${VITE_API_URL}/api/files/images/${props.obrazekId}`}
           alt={props.alt}
           className="card-img"
           width={"315"}
