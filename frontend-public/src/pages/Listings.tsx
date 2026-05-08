@@ -90,7 +90,7 @@ function Listings() {
                     status_id: listing.statusy_id,
                   };
 
-                  return <Card key={listing.id} {...cardData} />;
+                  return <Card fetchpriority key={listing.id} {...cardData} />;
                 })}
               </div>
             )}

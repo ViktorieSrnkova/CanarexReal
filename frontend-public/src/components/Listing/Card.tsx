@@ -16,6 +16,7 @@ type Props = {
   velikost: number;
   alt: string;
   status_id: number;
+  fetchpriority?: boolean;
 };
 const VITE_API_URL = import.meta.env.VITE_API_URL;
 function Card(props: Props) {
@@ -30,6 +31,7 @@ function Card(props: Props) {
           loading="lazy"
           width={"315"}
           height={"218"}
+          fetchPriority={props.fetchpriority ? "high" : "auto"}
         />
         <div className={`card-status status-${props.status_id}`}>
           {props.status}
