@@ -111,7 +111,7 @@ function HomePage() {
                 status_id: 4,
               };
 
-              return <Card key={listing.id} {...cardData} />;
+              return <Card fetchpriority key={listing.id} {...cardData} />;
             })}
           </div>
         </div>
