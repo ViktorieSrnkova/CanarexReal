@@ -97,6 +97,24 @@ function SingleListing() {
 
     loadSimilar();
   }, [id, langId]);
+  useEffect(() => {
+    if (!detail) return;
+
+    const imageId = detail.obrazky?.[0]?.id;
+    if (!imageId) return;
+
+    const preload = document.createElement("link");
+
+    preload.rel = "preload";
+    preload.as = "image";
+    preload.href = `${VITE_API_URL}/api/files/images/${imageId}`;
+
+    document.head.appendChild(preload);
+
+    return () => {
+      document.head.removeChild(preload);
+    };
+  }, [detail]);
 
   if (notAvailable) {
     return <ListingUnavailable />;

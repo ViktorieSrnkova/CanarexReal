@@ -92,17 +92,19 @@ export default function InqueryFormPart({
           <span>{t("form.since") + "*"}</span>
 
           <div className="radio-group">
-            <span>
+            <label htmlFor="radio1">
               <input
+                id="radio1"
                 type="radio"
                 checked={mode === "date"}
                 onChange={() => onChange({ arrivalMode: "date" })}
               />
               {t("form.date")}
-            </span>
+            </label>
 
-            <span>
+            <label htmlFor="radio2">
               <input
+                id="radio2"
                 type="radio"
                 checked={mode === "unknown"}
                 onChange={() =>
@@ -113,7 +115,7 @@ export default function InqueryFormPart({
                 }
               />
               {t("form.unsetDate")}
-            </span>
+            </label>
           </div>
 
           {mode === "date" && (

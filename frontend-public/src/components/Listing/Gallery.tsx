@@ -85,7 +85,11 @@ export default function ListingGallery({ imagesProp }: Props) {
             onTouchStart={onTouchStart}
             onTouchEnd={onTouchEnd}
           >
-            <img src={activeImage} className="lightbox-image" />
+            <img
+              fetchPriority="high"
+              src={activeImage}
+              className="lightbox-image"
+            />
           </div>
 
           <div
@@ -121,6 +125,7 @@ export default function ListingGallery({ imagesProp }: Props) {
           <img
             key={img + i}
             src={img}
+            alt=""
             onClick={() => setActiveIndex(i)}
             ref={i === activeIndex ? activeThumbRef : null}
             className={`thumb ${i === activeIndex ? "active" : ""}`}
