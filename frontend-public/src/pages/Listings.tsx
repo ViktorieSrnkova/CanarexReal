@@ -6,6 +6,7 @@ import SEO from "../components/SEO/Meta";
 import CardSkeleton from "../components/Listing/SkeletonCard";
 import { useListings } from "../hooks/useListings";
 import Filters from "../components/General/Filters";
+import { useEffect } from "react";
 
 function Listings() {
   const t = useT();
@@ -30,7 +31,23 @@ function Listings() {
   } = useListings({
     paginated: true,
   });
+  const VITE_API_URL = import.meta.env.VITE_API_URL;
 
+  useEffect(() => {
+    if (!listings.length) return;
+
+    const preload = document.createElement("link");
+
+    preload.rel = "preload";
+    preload.as = "image";
+    preload.href = `${VITE_API_URL}/api/files/images/${listings[0].obrazky[0].id}`;
+
+    document.head.appendChild(preload);
+
+    return () => {
+      document.head.removeChild(preload);
+    };
+  }, [listings]);
   if (!filtersReady) {
     return <p>{t("general.loading")}</p>;
   }
@@ -71,7 +88,7 @@ function Listings() {
               </div>
             ) : (
               <div className="hp-cards-wrapper">
-                {listings.map((listing) => {
+                {listings.map((listing, i) => {
                   const cardData = {
                     id: listing.id,
                     titulek: listing.inzeraty_preklady[0]?.titulek ?? "",
@@ -90,7 +107,13 @@ function Listings() {
                     status_id: listing.statusy_id,
                   };
 
-                  return <Card fetchpriority key={listing.id} {...cardData} />;
+                  return (
+                    <Card
+                      fetchpriority={i === 0}
+                      key={listing.id}
+                      {...cardData}
+                    />
+                  );
                 })}
               </div>
             )}
