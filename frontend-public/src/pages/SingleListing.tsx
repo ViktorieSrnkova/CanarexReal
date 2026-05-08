@@ -121,7 +121,7 @@ function SingleListing() {
   }
 
   if (!listing) {
-    return <div>{t("general.loading")}</div>;
+    return <div style={{ minHeight: "25rem" }}>{t("general.loading")}</div>;
   }
   const cardData = {
     id: listing.id,
@@ -243,9 +243,9 @@ function SingleListing() {
         </div>
         <div className="second-row">
           <div className="apt mobile">
-            <h3>
+            <h2 className="mobile-h2">
               {` ${listing.typy_nemovitosti?.typy_nemovitosti_preklady[0]?.nazev} ${listing.statusy?.statusy_preklady[0]?.nazev?.toLowerCase()}`}
-            </h3>
+            </h2>
             <img
               onClick={handleCopy}
               src="/listings/copy.svg"
@@ -259,9 +259,9 @@ function SingleListing() {
             />
           </div>
 
-          <h3 className="pc">
+          <h2 className="pc dektop-h2">
             {` ${listing.typy_nemovitosti?.typy_nemovitosti_preklady[0]?.nazev} ${listing.statusy?.statusy_preklady[0]?.nazev?.toLowerCase()}`}
-          </h3>
+          </h2>
           <div className="prices ">
             <h3 className="number euro">
               {formatMoneyEUR(listing.cena_v_eur)}
