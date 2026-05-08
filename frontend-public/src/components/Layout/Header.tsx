@@ -66,7 +66,13 @@ function Header() {
       <div className="main-header-wrapper">
         <div className="main-header">
           <div className="logo" onClick={() => navigate(`/${lang}`)}>
-            <img src={CanarexReal} alt="logo" width={197} /> {t("header.logo")}
+            <img
+              src={CanarexReal}
+              alt="logo"
+              width={197}
+              fetchPriority="high"
+            />
+            {t("header.logo")}
           </div>
           <div
             className={`burger ${menuOpen ? "open" : ""}`}
