@@ -45,7 +45,7 @@ export default function Router() {
   }, []);
   return (
     <BrowserRouter>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<PublicLayout />}>
         <Routes>
           <Route path="/" element={<Navigate to="/cs" replace />} />
           <Route

@@ -18,7 +18,7 @@ function Carrousel(props: Props) {
   const total = similar.length;
   const [visibleCount, setVisibleCount] = useState(3);
   const isEmpty = total === 0;
-  const isStatic = total > 0 && total <= 3;
+
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth <= 1112) {
@@ -56,7 +56,9 @@ function Carrousel(props: Props) {
       return similar[index];
     });
   };
+  const shouldDisableCarousel = total <= visibleCount;
 
+  const visibleItems = shouldDisableCarousel ? similar : getVisibleItems();
   const next = () => {
     if (!similar.length) return;
     setStartIndex((prev) => (prev + 1) % similar.length);
@@ -72,19 +74,15 @@ function Carrousel(props: Props) {
         <div className="crsl-first-row">
           <h2>{props.title}</h2>
         </div>
+
         <div className="crsl-second-row">
-          <div className="arrow-left" onClick={prev}></div>
+          <div className="arrow-left" />
           <div className="crsl-listings-wrapper">
-            {Array.from({ length: 3 }).map((_, i) => (
+            {Array.from({ length: visibleCount }).map((_, i) => (
               <CardSkeleton key={i} />
             ))}
           </div>
-          <div className="arrow-right" onClick={next}></div>
-        </div>
-        <div className="crsl-third-row">
-          {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="dot skeleton-dot" />
-          ))}
+          <div className="arrow-right" />
         </div>
       </div>
     );
@@ -102,25 +100,7 @@ function Carrousel(props: Props) {
       </div>
     );
   }
-  if (isStatic) {
-    return (
-      <div className="crsl-wrapper">
-        <div className="crsl-first-row">
-          <h2>{props.title}</h2>
-        </div>
 
-        <div className="crsl-second-row">
-          <div className="crsl-listings-wrapper">
-            {similar.map((sim) => (
-              <Card key={sim.id} {...mapCard(sim)} />
-            ))}
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  const visibleItems = getVisibleItems();
   return (
     <div className="crsl-wrapper">
       <div className="crsl-first-row">
@@ -128,7 +108,9 @@ function Carrousel(props: Props) {
       </div>
 
       <div className="crsl-second-row">
-        <div className="arrow-left" onClick={prev}></div>
+        {!shouldDisableCarousel && (
+          <div className="arrow-left" onClick={prev} />
+        )}
 
         <div className="crsl-listings-wrapper">
           {visibleItems.map((sim) => (
@@ -136,18 +118,22 @@ function Carrousel(props: Props) {
           ))}
         </div>
 
-        <div className="arrow-right" onClick={next}></div>
+        {!shouldDisableCarousel && (
+          <div className="arrow-right" onClick={next} />
+        )}
       </div>
 
-      <div className="crsl-third-row">
-        {similar.map((_, i) => (
-          <div
-            key={i}
-            className={`dot ${i === startIndex ? "active" : ""}`}
-            onClick={() => setStartIndex(i)}
-          />
-        ))}
-      </div>
+      {!shouldDisableCarousel && (
+        <div className="crsl-third-row">
+          {similar.map((_, i) => (
+            <div
+              key={i}
+              className={`dot ${i === startIndex ? "active" : ""}`}
+              onClick={() => setStartIndex(i)}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

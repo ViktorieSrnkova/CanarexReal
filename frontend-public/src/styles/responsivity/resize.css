@@ -248,6 +248,7 @@
     padding: 0 !important;
     padding-inline: 1rem !important;
     margin-top: 0.875rem !important;
+    min-height: 3.563rem !important;
   }
   .listing-hero h1 {
     font-size: 1.25rem !important;
@@ -313,11 +314,53 @@
     min-height: 5rem !important;
     flex: 0 0 auto !important;
   }
+  .listing-hero .second-row {
+    margin-bottom: 0.25rem !important;
+  }
+  .skeleton-title {
+    height: 1.5rem !important;
+  }
+
+  .skeleton-icon {
+    width: 2.038rem !important;
+    height: 0.963rem !important;
+  }
+
+  .skeleton-price {
+    height: 1.05rem !important;
+  }
+  .skeleton-price-small {
+    height: 1.05rem !important;
+  }
 }
 
 @media screen and (max-width: 780px) {
+  .skeleton-title {
+    height: 1.139rem !important;
+    margin-top: 0.5rem !important;
+  }
+  .skeleton-subtitle {
+    height: 1.063rem !important;
+  }
+  .skeleton-icon {
+    width: 1.271rem !important;
+    height: 0.6rem !important;
+  }
+
+  .skeleton-price-small {
+    height: 0.975rem !important;
+    margin-bottom: 0.25rem;
+  }
   .gallery-main {
     gap: 0 !important;
+  }
+  .skeleton-gallery-wrapper .gallery-image {
+    width: 100%;
+    min-height: 20rem !important;
+    max-height: 20rem !important;
+    height: 100%;
+    max-width: none !important;
+    max-height: 100%;
   }
   .gallery-main img {
     width: 100%;
@@ -337,6 +380,7 @@
   }
   .listing-hero {
     margin-top: 0 !important;
+    min-height: 4.827rem !important;
   }
   .listing-hero h1 {
     font-size: 0.95rem !important;

@@ -6,6 +6,7 @@
   padding-bottom: 2em;
   padding-inline: 1rem;
   width: 100%;
+  min-height: 8.375rem;
 }
 
 .pictogram {

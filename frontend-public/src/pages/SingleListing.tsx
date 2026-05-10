@@ -29,6 +29,7 @@ import EditorRendererWrapper from "../components/Editor/EditorRendererWrapper";
 import { ExpandableDescription } from "../components/Listing/ExpandableDescription";
 import SEO from "../components/SEO/Meta";
 import StructuredData from "../components/SEO/StructuredData";
+import GallerySkeleton from "../components/Listing/GallerySkeleton";
 
 function SingleListing() {
   const t = useT();
@@ -114,15 +115,60 @@ function SingleListing() {
     return () => {
       document.head.removeChild(preload);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [detail]);
 
   if (notAvailable) {
     return <ListingUnavailable />;
   }
 
-  if (!listing) {
-    return <div style={{ minHeight: "25rem" }}>{t("general.loading")}</div>;
+  if (!listing || !detail) {
+    return (
+      <>
+        <div className="listing-hero skeleton-wrapper">
+          <div className="first-row">
+            <div className="skeleton skeleton-title" />
+            <div className="skeleton skeleton-icon pc" />
+          </div>
+
+          <div className="second-row">
+            <div className="apt mobile">
+              <div className="skeleton skeleton-subtitle mobile-h2" />
+              <div className="skeleton skeleton-icon" />
+            </div>
+            <div className="skeleton skeleton-subtitle pc dektop-h2" />
+
+            <div className="prices">
+              <div className="skeleton skeleton-price" />
+              <div className="skeleton skeleton-price-small" />
+            </div>
+          </div>
+        </div>
+
+        <GallerySkeleton />
+
+        <div className="pictograms gray">
+          <div className="pict">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div key={i} className="pictogram">
+                <div className="top-part">
+                  <div className="skeleton skeleton-pict-icon" />
+                  <div className="skeleton skeleton-pict-number" />
+                </div>
+
+                <div className="skeleton skeleton-pict-label" />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="description-wrapper">
+          <div className="skeleton skeleton-heading" />
+        </div>
+      </>
+    );
   }
+
   const cardData = {
     id: listing.id,
     titulek: listing.inzeraty_preklady[0]?.titulek ?? "",
@@ -183,6 +229,7 @@ function SingleListing() {
   const content = detail?.inzeraty_preklady?.[0]?.popis;
   if (!content) return;
   const VITE_API_URL = import.meta.env.VITE_API_URL;
+
   return (
     <>
       <SEO

@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import "../../styles/listing/gallery.css";
+import GallerySkeleton from "./GallerySkeleton";
 
 type Props = {
   imagesProp: { id: number }[];
@@ -8,6 +9,7 @@ const VITE_API_URL = import.meta.env.VITE_API_URL;
 export default function ListingGallery({ imagesProp }: Props) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
+  const [loaded, setLoaded] = useState(false);
   const thumbsRef = useRef<HTMLDivElement | null>(null);
   const activeThumbRef = useRef<HTMLImageElement | null>(null);
   const touchStartX = useRef(0);
@@ -43,6 +45,17 @@ export default function ListingGallery({ imagesProp }: Props) {
       document.body.style.overflow = "";
     };
   }, [isOpen]);
+  useEffect(() => {
+    if (!images.length) return;
+
+    const img = new Image();
+
+    img.src = images[0];
+
+    img.onload = () => {
+      setLoaded(true);
+    };
+  }, [images]);
   const prev = useCallback(() => {
     setActiveIndex((i) => (i === 0 ? images.length - 1 : i - 1));
   }, [images.length]);
@@ -64,6 +77,10 @@ export default function ListingGallery({ imagesProp }: Props) {
   }, [isOpen, next, prev]);
 
   if (!images.length) return null;
+
+  if (!loaded) {
+    return <GallerySkeleton />;
+  }
 
   const onTouchStart = (e: React.TouchEvent) => {
     touchStartX.current = e.touches[0].clientX;
@@ -115,7 +132,7 @@ export default function ListingGallery({ imagesProp }: Props) {
       <div className="gallery-main">
         <div onClick={prev} className="arrow arrow-left"></div>
         <div className="gallery-image" onClick={() => setIsOpen(true)}>
-          <img src={activeImage} alt="" />
+          <img src={activeImage} alt="" decoding="async" fetchPriority="high" />
         </div>
         <div onClick={next} className="arrow arrow-right"></div>
       </div>
@@ -123,6 +140,7 @@ export default function ListingGallery({ imagesProp }: Props) {
       <div className="gallery-thumbs " ref={thumbsRef}>
         {images.map((img, i) => (
           <img
+            loading="lazy"
             key={img + i}
             src={img}
             alt=""
