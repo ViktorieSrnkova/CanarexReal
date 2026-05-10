@@ -15,24 +15,28 @@ export default function ListingGallery({ imagesProp }: Props) {
   const touchStartX = useRef(0);
   const images = useMemo(() => {
     return imagesProp.map(
-      (img) => ` ${VITE_API_URL}/api/files/images/${img.id}`,
+      (img) => `${VITE_API_URL}/api/files/images/${img.id}`,
     );
   }, [imagesProp]);
 
-  const activeImage = images[activeIndex];
+  const activeImage = useMemo(() => images[activeIndex], [images, activeIndex]);
 
-  useEffect(() => {
+  /* useEffect(() => {
     images.forEach((src) => {
       const img = new Image();
       img.src = src;
     });
-  }, [images]);
+  }, [images]); */
   useEffect(() => {
-    activeThumbRef.current?.scrollIntoView({
-      behavior: "smooth",
-      block: "nearest",
-      inline: "nearest",
+    const id = requestAnimationFrame(() => {
+      activeThumbRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+        inline: "nearest",
+      });
     });
+
+    return () => cancelAnimationFrame(id);
   }, [activeIndex]);
   useEffect(() => {
     if (isOpen) {
@@ -78,10 +82,6 @@ export default function ListingGallery({ imagesProp }: Props) {
 
   if (!images.length) return null;
 
-  if (!loaded) {
-    return <GallerySkeleton />;
-  }
-
   const onTouchStart = (e: React.TouchEvent) => {
     touchStartX.current = e.touches[0].clientX;
   };
@@ -93,7 +93,13 @@ export default function ListingGallery({ imagesProp }: Props) {
     if (diff < -50) next();
   };
   return (
-    <div className="gallery">
+    <div className="gallery" style={{ position: "relative" }}>
+      {!loaded && (
+        <div className="gallery-skeleton-overlay">
+          <GallerySkeleton />
+        </div>
+      )}
+
       {isOpen && (
         <div className="lightbox" onClick={() => setIsOpen(false)}>
           <div
@@ -129,7 +135,7 @@ export default function ListingGallery({ imagesProp }: Props) {
           </div>
         </div>
       )}
-      <div className="gallery-main">
+      <div style={{ opacity: loaded ? 1 : 0 }} className="gallery-main">
         <div onClick={prev} className="arrow arrow-left"></div>
         <div className="gallery-image" onClick={() => setIsOpen(true)}>
           <img src={activeImage} alt="" decoding="async" fetchPriority="high" />
