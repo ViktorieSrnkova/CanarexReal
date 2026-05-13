@@ -1,0 +1,37 @@
+.gdpr h1 {
+  text-align: center;
+  font-size: 1.5em;
+  margin-bottom: 2rem;
+}
+.gdpr ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+.gdpr h2 {
+  font-size: 1.125em !important;
+  margin-bottom: 0.25rem;
+  margin-top: 1rem;
+}
+.gdpr p,
+.gdpr span,
+.gdpr a {
+  font-size: 1em;
+}
+.gdpr.description-wrapper {
+  gap: 0 !important;
+}
+.has-margin {
+  margin-bottom: 1rem !important;
+}
+.gdpr h3 {
+  font-size: 1em;
+  color: #1e1e1e;
+}
+.gdpr * {
+  color: #1e1e1e;
+}
+.gdpr a {
+  color: #237798;
+}

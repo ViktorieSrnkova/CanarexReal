@@ -167,4 +167,78 @@ export const en = {
     err404_title: "Page Not Found | CanarexReal",
     err404_description: "This page does not exist or has been removed.",
   },
+  GDPR: {
+    title: "Principles of personal data processing",
+    intro:
+      "Stanislav Srnka – CanarexReal with headquarters at Av. Quinto Centenario, 60, portal A, 38683 Santiago del Teide, Santa Cruz de Tenerife, Spain NIE: Y7051572Q presents its clients with information on the processing of personal data, i.e. what are our principles for the processing of personal data, what personal data do we process, what is the source of these data, for what purpose and for how long we keep the data, to whom we provide it and what are your rights as the subject of this data.",
+    principles: "WHAT IS OUR PRIVACY POLICY",
+    li_1it_1:
+      "when processing personal data, we proceed in accordance with applicable legal regulations",
+    li_1it_2:
+      "we pay attention to security when processing personal data and limit the scope of their processing to a minimum",
+    li_1it_3:
+      "we will inform the client of the principles for the processing of personal data when concluding a transaction or when providing a service",
+    li_1it_4:
+      "this document is freely available at the headquarters and main office of our company and on our website www.realspektrum.cz.",
+    what: "WHAT PERSONAL DATA WE PROCESS",
+    li_2it_1:
+      "identification data: name, surname, title, date of birth, social security number (if assigned), marital status, including any adjustment of the scope of joint property of the spouses,",
+    li_2it_2:
+      "contact details of the client: telephone number, e-mail address, address of permanent residence or other place of residence in the Czech Republic, correspondence address (if it is different from the address of permanent residence),",
+    li_2it_3:
+      "natural person doing business - business firm, distinguishing addendum, place of business, ID number, tax identification number,",
+    li_2it_4:
+      "data processed for the purpose of fulfilling obligations arising from Act. No. 253/2008 Coll., on certain measures against the legalization of proceeds from criminal activities and the financing of terrorism: place of birth, citizenship, gender, type and number of identity card, state/authority that issued the identity card, period of validity of the identity card,",
+    p2: "The above data are necessary for us to prepare contractual documents with our clients; therefore, as our client, you provide such data to us voluntarily for this purpose. In the event that we would like to use this data for a purpose other than the activity resulting from our contractual relationship with you, or to fulfill our obligations arising from legal regulations, we need your consent to process your data.",
+    p3: "In addition to the above data, we also collect cookies and other web analysis tools that automatically obtain information about you when you use the www.realspektrum.cz website. These data include, for example:",
+    li_3it_1: "information about which web browser you are using,",
+    li_3it_2: "details of the websites you have viewed,",
+    li_3it_3: "links you clicked on,",
+    li_3it_4: "etc.",
+    p4: "You can find more information about the use of cookies and tools for analysis in order to improve the quality of service provision on the website www.realspektrum.cz ",
+    here: "here.",
+    from: "FROM WHAT SOURCES DO WE OBTAIN PERSONAL DATA",
+    li_4it_1:
+      "directly from the client when requesting information about our services or when negotiating real estate brokerage or during the subsequent implementation of real estate brokerage,",
+    li_4it_2:
+      "from public registers and lists (commercial register, trade register, real estate cadastre records, etc.),",
+    for: "FOR WHAT PURPOSE AND FOR HOW LONG DO WE PROCESS PERSONAL DATA",
+    u1: "⇒ without the client's consent",
+    li_5it_1:
+      "for the purpose of implementing a business relationship or providing a service - the processing of personal data is necessary for the proper fulfillment of rights and obligations arising from the contractual relationship with the client; for this purpose, on the basis of legitimate interest, the client's personal data are entered into our database",
+    li_5it_2:
+      "for the fulfillment of obligations arising from the law (e.g. according to Act No. 563/1991 Coll., on accounting, Act No. 253/2008 Coll., on some measures against the legalization of proceeds from criminal activity and the financing of terrorism, etc.)​",
+    li_5it_3:
+      "in order to protect their rights and legally protected interests",
+    u2: "⇒ with the client's consent",
+    li_6it_1: "for other purposes - especially for marketing purposes, etc.",
+    p5: "We keep personal data only for the time necessary to implement the business relationship or provide the service; in the case of consent to the processing of personal data, then for the period specified in this consent.",
+    whom: "TO WHICH THIRD PARTIES WE PROVIDE PERSONAL DATA",
+    li_7it_1:
+      "We process personal data as an administrator through our employees or through third parties - processors, all this to ensure a high level of security of our clients' personal data.",
+    li_7it_2:
+      "We also transfer personal data to third parties for the purpose of protecting our rights and legally protected interests (e.g. to our cooperating law firms). In this case, the scope of personal data provided will be limited to the data necessary for the successful application of our claim.",
+    li_7it_3:
+      "At the request of the client, we will also provide his personal data to other third parties, but always to the extent strictly necessary and only in connection with the services that are necessary for our company or these third parties will provide for the client. This is, for example, our collaborating expert for the purpose of preparing an expert opinion on the price of real estate or a financial advisor for the purpose of processing an offer for financing the purchase of real estate, etc.",
+    how: "HOW WE PROCESS PERSONAL DATA",
+    li_8it_1:
+      "We process and store personal data in electronic form by means of computer technology, as well as in paper form.",
+    li_8it_2:
+      "We store the personal data of clients in paper and electronic form in the office premises of our company, where access to unauthorized persons is prohibited by the usual means (locked doors, personal supervision of company employees, etc.). Access to personal data is limited only to company employees and the aforementioned workers. All such persons are bound by statutory or contractual confidentiality.",
+    li_8it_3:
+      "Access to the client's personal data is also protected by a system of access passwords and rights.",
+    rights: "WHAT RIGHTS YOU HAVE AS A DATA SUBJECT",
+    li_9it_1: "request information about what personal data we process",
+    li_9it_2: "request access to the data and have it updated or corrected",
+    li_9it_3:
+      "request the erasure of personal data, but only on the condition that there is no legal reason for their further processing",
+    li_9it_4: "revoke or change the scope of the granted consent",
+    li_9it_5:
+      "exercise your possible objections to the processing of personal data in one of the following ways:",
+    li_9it_5_sub: "in person at our company headquarters or head office",
+    li_9it_5_sub2: "by e-mail to:",
+    li_9it_5_sub3: "by phone at the number:",
+    outro:
+      "You can also contact the Office for the Protection of Personal Data with your suggestions.",
+  },
 };
