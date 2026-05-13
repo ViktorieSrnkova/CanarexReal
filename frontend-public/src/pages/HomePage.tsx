@@ -8,7 +8,6 @@ import { LANGUAGE_TO_ID } from "../types/general";
 import Button from "../components/General/Button";
 import { useNavigate } from "react-router-dom";
 import { useT } from "../i18n";
-import hero from "/pages/hero.webp";
 import Medalion from "../components/Contact/Medalion";
 import "../styles/responsivity/resize.css";
 import SEO from "../components/SEO/Meta";
@@ -33,7 +32,35 @@ function HomePage() {
 
     load();
   }, [langId]);
+  const VITE_API_URL = import.meta.env.VITE_API_URL;
 
+  useEffect(() => {
+    if (!listings.length) return;
+
+    const preloads: HTMLLinkElement[] = [];
+
+    listings.slice(0, 2).forEach((listing) => {
+      const imageId = listing.obrazky[0]?.id;
+
+      if (!imageId) return;
+
+      const preload = document.createElement("link");
+
+      preload.rel = "preload";
+      preload.as = "image";
+      preload.href = `${VITE_API_URL}/api/files/images/${imageId}`;
+
+      document.head.appendChild(preload);
+
+      preloads.push(preload);
+    });
+
+    return () => {
+      preloads.forEach((preload) => {
+        document.head.removeChild(preload);
+      });
+    };
+  }, [listings]);
   return (
     <>
       <SEO
@@ -51,7 +78,12 @@ function HomePage() {
         }}
       />
       <div className="hero">
-        <img src={hero} alt="" className="heroImage" fetchPriority="high" />
+        <img
+          fetchPriority="high"
+          src="/pages/hero.webp"
+          alt=""
+          className="heroImage"
+        />
 
         <div className="heroOverlay" />
         <div className="heroContent">
@@ -93,7 +125,7 @@ function HomePage() {
       ) : (
         <div className="content home-page">
           <div className="hp-cards-wrapper">
-            {listings.slice(0, 6).map((listing) => {
+            {listings.slice(0, 6).map((listing, i) => {
               const cardData = {
                 id: listing.id,
                 titulek: listing.inzeraty_preklady[0]?.titulek ?? "",
@@ -111,7 +143,9 @@ function HomePage() {
                 status_id: 4,
               };
 
-              return <Card fetchpriority key={listing.id} {...cardData} />;
+              return (
+                <Card fetchpriority={i < 2} key={listing.id} {...cardData} />
+              );
             })}
           </div>
         </div>
