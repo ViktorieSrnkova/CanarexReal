@@ -1,0 +1,4 @@
+    {
+      "source": "/sitemap.xml",
+      "destination": "https://canarexreal.onrender.com/sitemap.xml"
+    },
