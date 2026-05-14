@@ -79,6 +79,9 @@ const Footer: React.FC = () => {
                 </a>
               </div>
             </div>
+            <Link to={`/${lang}/faq`} className="faq-link">
+              <h2> {t("footer.faq")}</h2>
+            </Link>
           </div>
         </div>
 

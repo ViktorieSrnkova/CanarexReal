@@ -1,7 +1,8 @@
 .gdpr h1 {
   text-align: center;
-  font-size: 1.5em;
+  font-size: 1.75em;
   margin-bottom: 2rem;
+  margin-top: 2rem;
 }
 .gdpr ul {
   display: flex;
@@ -12,15 +13,16 @@
 .gdpr h2 {
   font-size: 1.125em !important;
   margin-bottom: 0.25rem;
-  margin-top: 1rem;
+  margin-top: 3rem;
 }
 .gdpr p,
-.gdpr span,
+.gdpr-link,
 .gdpr a {
   font-size: 1em;
 }
 .gdpr.description-wrapper {
   gap: 0 !important;
+  padding-inline: 2rem !important;
 }
 .has-margin {
   margin-bottom: 1rem !important;

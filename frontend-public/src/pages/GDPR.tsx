@@ -36,7 +36,7 @@ function GDPR() {
           <li>{t("GDPR.li_3it_3")}</li>
           <li>{t("GDPR.li_3it_4")}</li>
         </ul>
-        <span className="has-margin">
+        <span className="has-margin gdpr-link">
           {t("GDPR.p4")}{" "}
           <a href="https://www.realspektrum.cz/">{t("GDPR.here")}</a>
         </span>

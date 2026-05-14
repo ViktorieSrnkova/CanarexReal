@@ -142,6 +142,10 @@
     gap: 1rem !important;
     justify-content: space-between !important;
   }
+  .toggle-buttons {
+    font-size: 0.875em !important;
+    padding: 0.25rem !important;
+  }
   .toggle-btn {
     font-size: 0.813em !important;
     padding: 0.25rem !important;
@@ -173,9 +177,7 @@
   h3 {
     font-size: 1em !important;
   }
-  label {
-    font-size: 0.813em !important;
-  }
+
   .range-header {
     max-width: 97% !important;
   }
@@ -335,6 +337,9 @@
 }
 
 @media screen and (max-width: 780px) {
+  .middle-footer {
+    align-items: center !important;
+  }
   .skeleton-title {
     height: 1.139rem !important;
     margin-top: 0.5rem !important;
