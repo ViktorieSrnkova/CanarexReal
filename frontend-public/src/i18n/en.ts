@@ -290,4 +290,36 @@ export const en = {
     p16: "That's what we're here for. We provide interpreting, legal services, communication with the authorities, and organization of the entire process so that buying a property in Tenerife is",
     bold1: "stress-free and risk-free for you.",
   },
+  mortgage: {
+    title:
+      "Mortgage from the Czech Republic for real estate in the Canary Islands",
+    subtitle1: "Basic info:",
+    li_1it_1: "You shop in Tenerife you are liable in the Czech Republic.",
+    li_1it_2: "Loan up to 100% of the value of the property you are buying.",
+    li_1it_3: "Up to 30% of the mortgage can be used for equipment.",
+    subtitle2: "Why work with us?",
+    li_2it_1:
+      "We offer you our know how to get a mortgage to buy a property in Tenerifeza on the best possible terms. Czech Bank finances property on Tenerife with an interesting interest rate and conditions.",
+    li_2it_2:
+      "We are only able to offer you this product thanks to our long-standing and mutually proven cooperation with banking institutions in the country.",
+    li_2it_3: 'So the answer to the above question is "Because we can".',
+    subtitle3: "Mortgage example:",
+    mortgageTable: [
+      ["Property price", "300\u00A0000€", "approx. 7\u00A0500\u00A0000CZK"],
+      ["Amount required", "240\u00A0000€", "approx. 6\u00A0000\u00A0000 CZK"],
+      ["Repayment period", "25 years"],
+      ["Monthly payment", "1\u00A0465€", "approx. 36\u00A0600 CZK"],
+      ["Interest rate", "5,44 %"],
+      ["Loan insurance", "82 €/month", "approx. 2\u00A0048 CZK/month"],
+    ],
+    subtitle4: "Concerns and our solutions",
+    li_3it_1: "Not sure if you will pass the bank's hard scoring?",
+    li_3it_2: "We'll check your mortgage options in advance.",
+    subtitle5: "Rate",
+    p1: "Are you worried about financial loss when converting from CZK to EUR? Our clients are looking for a better solution when using dealing according to our instructions, they have the exchange rate at the time of conversion as with Revolut.",
+    subtitle6: "Too much bureaucracy",
+    p2: "Yes we will require many documents, confirmations, statements from you. Everything will be detailed for you We will explain them in detail, give you a list and ask you for nothing more than the minimum necessary. to meet the terms of the loan.",
+    subtitle7: "The whole process of obtaining financing is free!",
+    formTitle: "Do you want more information? Contact us!",
+  },
 };

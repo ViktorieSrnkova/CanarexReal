@@ -32,7 +32,7 @@ type Paths<T> = T extends object
 export function useT() {
   const { lang } = useLang();
 
-  return (path: Paths<TranslationSchema>): string => {
+  return <T = string>(path: Paths<TranslationSchema>): T => {
     const keys = path.split(".");
     let value: unknown = translations[lang];
 
@@ -40,10 +40,10 @@ export function useT() {
       if (typeof value === "object" && value !== null) {
         value = (value as Record<string, unknown>)[key];
       } else {
-        return path;
+        return path as T;
       }
     }
 
-    return typeof value === "string" ? value : path;
+    return value as T;
   };
 }

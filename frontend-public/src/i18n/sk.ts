@@ -288,4 +288,38 @@ export const sk = {
     p16: "Na to sme tu my. Poskytujeme tlmočnícke a právne služby, komunikáciu s úradmi a organizáciu celého procesu, aby bol nákup nehnuteľnosti na Tenerife pre vás",
     bold1: "bez stresu a rizika.",
   },
+  mortgage: {
+    title: "Hypotéka zo Slovenska na nehnuteľnosť na Kanárskych ostrovoch",
+    subtitle1: "Základné info:",
+    li_1it_1: "Pri kúpe na Tenerife ručíte zo Slovenska.",
+    li_1it_2: "Pôžička až do 100 % hodnoty kupovanej nehnuteľnosti.",
+    li_1it_3:
+      "Až 30 % z hypotéky môžete využiť napríklad na vybavenie nehnuteľnosti.",
+    subtitle2: "Prečo spolupracovať s nami?",
+    li_2it_1:
+      "Ponúkame svoje know-how, ako získať hypotéku na kúpu nehnuteľnosti na Tenerife za najlepších možných podmienok. Česká banka financuje nehnuteľnosť na Tenerife za zaujímavý úrok a podmienky.",
+    li_2it_2:
+      "Tento produkt vám vieme ponúknuť vďaka dlhodobej a overenej spolupráci s bankami v SR.",
+    li_2it_3:
+      "Odpoveď na otázku „prečo s nami?“ je jednoducho: „Pretože to vieme“.",
+    subtitle3: "Príklad hypotéky:",
+    mortgageTable: [
+      ["Cena nehnuteľnosti:", "300\u00A0000€"],
+      ["Požadovaná čiastka:", "240\u00A0000€"],
+      ["Doba splácania", "25 rokov"],
+      ["Mesačná splátka:", "1\u00A0465€"],
+      ["Úroková sadzba:", "5,44 %"],
+      ["Poistenie úveru:", "82 €/mes. "],
+    ],
+    subtitle4: "Obavy a naše riešenie:",
+    li_3it_1: "Tvrdý scoring v banke: Možnosť hypotéky preveríme vopred.",
+    li_3it_2:
+      "Byrokracia: Áno, budeme požadovať dokumenty, potvrdenia a výpisy, ale všetko podrobne vysvetlíme a pripravíme presný zoznam – nič navyše, len minimum potrebné na získanie úveru.",
+    subtitle5: "",
+    p1: "",
+    subtitle6: "",
+    p2: "",
+    subtitle7: "Celý proces získania financovania je zadarmo!",
+    formTitle: "Chcete viac informácií? Odošlite vyplnený dotazník.",
+  },
 };

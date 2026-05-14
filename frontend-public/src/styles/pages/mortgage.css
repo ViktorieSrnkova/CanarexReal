@@ -1,0 +1,50 @@
+.mortgage {
+  margin-bottom: 2rem;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1.5rem;
+  overflow: hidden;
+  border-radius: 1rem;
+  background: white;
+}
+
+tbody tr {
+  border-bottom: 1px solid #e5e5e5;
+}
+
+tbody tr:last-child {
+  border-bottom: none;
+}
+
+td {
+  padding: 1rem 1.25rem;
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+td:first-child {
+  font-weight: 600;
+  color: #1e1e1e;
+  width: 35%;
+}
+
+td:not(:first-child) {
+  text-align: right;
+  color: #4b4b4b;
+}
+
+tbody tr:nth-child(even) {
+  background: #f8f8f8;
+}
+.mortgage .form-title-mortgage {
+  margin-bottom: 2rem;
+}
+
+@media (max-width: 700px) {
+  td {
+    padding: 0.5rem;
+    font-size: 0.875rem !important;
+  }
+}
