@@ -62,6 +62,9 @@
 }
 
 @media screen and (max-width: 1112px) {
+  .s-first {
+    width: 100% !important;
+  }
   .none-filter h2 {
     padding-inline: 1rem;
     text-align: center;
@@ -614,6 +617,35 @@
   }
   .map-wrapper-listing .result {
     display: none !important;
+  }
+  .s-first,
+  .s-second {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .s-bottom {
+    max-width: 28.125rem !important;
+    width: 100%;
+  }
+  .s-text {
+    min-width: 0 !important;
+    max-width: 28.125rem !important;
+  }
+
+  .services-img {
+    margin-bottom: 2rem;
+  }
+  .serv {
+    padding: 1rem !important;
+  }
+  .stan {
+    max-width: 25rem !important;
+  }
+  .livingroom {
+    max-width: 25rem !important;
+  }
+  .garden {
+    max-width: 25rem !important;
   }
 }
 @media screen and (max-width: 400px) {
