@@ -1,0 +1,19 @@
+.news {
+  padding-inline: 20px;
+  width: 100%;
+}
+.news .content {
+  padding-top: 0 !important;
+}
+.news h1 {
+  font-size: 1.75em;
+  text-align: center;
+  margin-top: 2rem;
+}
+.news .content .hp-cards-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  width: 100%;
+}

@@ -110,3 +110,19 @@ export type PictogramDTO = {
 export type ListingDetailResponse = listingDetailSelect & {
   inzeraty_piktogramy: PictogramDTO[];
 };
+
+export type NewsThumbnailImage = {
+  id: number;
+  alt: string | null;
+};
+
+export type NewsThumbnail = {
+  id: number;
+  datum_vytvoreni: string;
+  titulek: string | null;
+  image: NewsThumbnailImage | null;
+};
+export type NewsThumbsResponse = {
+  thumbnails: NewsThumbnail[];
+  total: number;
+};

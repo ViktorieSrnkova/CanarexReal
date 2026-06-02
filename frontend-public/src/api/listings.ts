@@ -58,19 +58,6 @@ export const getListingsThumbs = async (
   return data;
 };
 
-/* export const getListingsThumbs = async (
-  langId: number,
-  params: GetListingsQuery,
-): Promise<ListingsThumbResponse> => {
-  const { data } = await api.get("/listings/", {
-    params,
-    headers: {
-      "x-lang-id": langId,
-    },
-  });
-  return data;
-}; */
-
 export const getListingById = async (
   id: string | number,
   langId: number,

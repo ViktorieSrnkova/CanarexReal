@@ -128,7 +128,7 @@ export const sk = {
     expanded: "zobraziť menej",
   },
   news: {
-    workInProgress: "Na obsahu tejto stránky sa zatiaľ pracuje.",
+    title: "Novinky a informácie o Tenerife",
   },
   SEO: {
     HP_title: "CanarexReal | Nehnuteľnosti na Tenerife",

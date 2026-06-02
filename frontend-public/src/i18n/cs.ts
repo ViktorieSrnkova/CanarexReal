@@ -127,7 +127,7 @@ export const cs = {
     expanded: "zobrazit méně",
   },
   news: {
-    workInProgress: "Na obsahu této stránky se zatím pracuje.",
+    title: "Novinky a informace o Tenerife",
   },
   SEO: {
     HP_title: "CanarexReal | Reality Tenerife",

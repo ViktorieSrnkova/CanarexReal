@@ -180,6 +180,14 @@
   h3 {
     font-size: 1em !important;
   }
+  .contact h1,
+  .serv h1,
+  .news h1,
+  .gdpr h1,
+  .mortgage h1,
+  .faq h1 {
+    font-size: 1.5em !important;
+  }
 
   .range-header {
     max-width: 97% !important;
@@ -258,6 +266,7 @@
   .listing-hero h1 {
     font-size: 1.25rem !important;
   }
+
   .listing-hero h3 {
     font-size: 0.875rem !important;
   }

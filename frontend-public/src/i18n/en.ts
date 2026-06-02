@@ -128,7 +128,7 @@ export const en = {
     expanded: "show less",
   },
   news: {
-    workInProgress: "The content of this page is being worked on.",
+    title: "News and Information about Tenerife",
   },
   SEO: {
     HP_title: "CanarexReal | Real estate Tenerife",

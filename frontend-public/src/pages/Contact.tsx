@@ -23,7 +23,7 @@ function Contact() {
         }}
       />
       <div className="contact-medalions contact white">
-        <h2>{t("contact.title")}</h2>
+        <h1>{t("contact.title")}</h1>
         <h3 className="padded-subtitle">{t("contact.subtitle")}</h3>
         <div className="medalion-group">
           <Medalion

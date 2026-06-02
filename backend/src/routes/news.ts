@@ -7,36 +7,75 @@ router.use(detectLang);
 
 router.get("/", async (req: PublicRequest, res) => {
   try {
-    const news = await prisma.aktuality.findMany({
-      where: {
-        viditelnost: true,
-      },
-      orderBy: {
-        datum_vytvoreni: "desc",
-      },
-      select: {
-        id: true,
-        datum_vytvoreni: true,
-
-        aktuality_preklady: {
-          where: { jazyky_id: req.userLangId ?? 2 },
-          select: {
-            titulek: true,
-          },
-          take: 1,
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.limit) || 6;
+    const skip = (page - 1) * limit;
+    const langId = req.langId ?? 2;
+    const [thumbnails, total] = await Promise.all([
+      prisma.aktuality.findMany({
+        skip,
+        take: limit,
+        orderBy: {
+          datum_vytvoreni: "desc",
         },
-
-        obrazky: {
-          orderBy: { poradi: "asc" },
-          select: {
-            id: true,
-          },
-          take: 1,
+        where: {
+          viditelnost: true,
+          ...newsWithLangWhere(langId),
         },
-      },
+        select: {
+          id: true,
+          datum_vytvoreni: true,
+
+          aktuality_preklady: {
+            where: { jazyky_id: langId },
+            select: {
+              titulek: true,
+            },
+            take: 1,
+          },
+
+          obrazky: {
+            orderBy: { poradi: "asc" },
+            take: 1,
+            select: {
+              id: true,
+              obrazky_preklady: {
+                where: { jazyky_id: langId },
+                take: 1,
+                select: {
+                  alt_text: true,
+                },
+              },
+            },
+          },
+        },
+      }),
+      prisma.aktuality.count({
+        where: {
+          viditelnost: true,
+          ...newsWithLangWhere(langId),
+        },
+      }),
+    ]);
+
+    const normalized = thumbnails.map((item) => {
+      const img = item.obrazky?.[0];
+      const imgTr = img?.obrazky_preklady?.[0];
+
+      return {
+        id: item.id,
+        datum_vytvoreni: item.datum_vytvoreni,
+        titulek: item.aktuality_preklady?.[0]?.titulek ?? null,
+
+        image: img
+          ? {
+              id: img.id,
+              alt: imgTr?.alt_text ?? null,
+            }
+          : null,
+      };
     });
-
-    res.json({ news });
+    res.json({ thumbnails: normalized, total });
   } catch (err) {
     console.error("News thumbnails error:", err);
     res.status(500).json({
@@ -93,5 +132,15 @@ router.get("/:id", async (req: PublicRequest, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 });
+
+export function newsWithLangWhere(langId: number) {
+  return {
+    aktuality_preklady: {
+      some: {
+        jazyky_id: langId,
+      },
+    },
+  };
+}
 
 export default router;
