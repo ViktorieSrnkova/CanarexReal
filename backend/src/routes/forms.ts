@@ -79,7 +79,7 @@ router.post("/", contactFormLimiter, async (req: PublicRequest, res) => {
       listingId: payload.index,
       vi_prilet: payload.arrivalMode,
     };
-    try {
+    /*   try {
       await Promise.all([
         sendContactEmail(payload.email, data),
         sendAdminNotificationEmail(data),
@@ -87,7 +87,7 @@ router.post("/", contactFormLimiter, async (req: PublicRequest, res) => {
     } catch (err) {
       console.error("Email failed:", err);
     }
-
+ */
     res.status(201).json({ message: "Form created", form });
   } catch (err) {
     console.error("form save error:", err);
