@@ -15,6 +15,7 @@ type ContactEmailData = {
   bathrooms?: number[];
   date?: string;
   listingId?: number;
+  vi_prilet?: boolean;
 };
 
 function typeIDsToNames(typeIds: number[] | undefined): string[] | undefined {
@@ -74,7 +75,8 @@ export const sendContactEmail = async (
         ${data.sizeFrom && data.sizeTo ? `<li><b>Velikost:</b> ${data.sizeFrom} m² - ${data.sizeTo} m²</li>` : ""}
         ${data.bedrooms ? `<li><b>Ložnice:</b> ${data.bedrooms.join(", ")}</li>` : ""}
         ${data.bathrooms ? `<li><b>Koupelny:</b> ${data.bathrooms.join(", ")}</li>` : ""}
-        ${data.date ? `<li><b>Datum:</b> ${formatDate(data.date)}</li>` : `<li><b>Datum:</b> Nevím</li>`}
+        ${data.vi_prilet ? `${data.date ? `<li><b>Datum:</b> ${formatDate(data.date)}</li>` : `<li><b>Datum:</b> Nevím</li>`}` : ""}
+        
         ${data.listingId ? `<li><b>ID inzerce:</b> ${data.listingId}</li>` : ""}
       <br>
         <li><b>Zpráva:</b> ${data.message}</li>
@@ -113,7 +115,7 @@ export const sendAdminNotificationEmail = async (data: ContactEmailData) => {
         ${data.sizeFrom && data.sizeTo ? `<li><b>Velikost:</b> ${data.sizeFrom} m² - ${data.sizeTo} m²</li>` : ""}
         ${data.bedrooms ? `<li><b>Ložnice:</b> ${data.bedrooms.join(", ")}</li>` : ""}
         ${data.bathrooms ? `<li><b>Koupelny:</b> ${data.bathrooms.join(", ")}</li>` : ""}
-        ${data.date ? `<li><b>Datum:</b> ${formatDate(data.date)}</li>` : `<li><b>Datum:</b> Nevím</li>`}
+        ${data.vi_prilet ? `${data.date ? `<li><b>Datum:</b> ${formatDate(data.date)}</li>` : `<li><b>Datum:</b> Nevím</li>`}` : ""}
         ${data.listingId ? `<li><b>ID inzerce:</b> ${data.listingId}</li>` : ""}
       <br>
          <li><b>Zpráva:</b> ${data.message}</li>

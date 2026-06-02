@@ -77,6 +77,7 @@ router.post("/", contactFormLimiter, async (req: PublicRequest, res) => {
       bathrooms: payload.bathrooms,
       date: payload.arrival,
       listingId: payload.index,
+      vi_prilet: payload.arrivalMode,
     };
     try {
       await Promise.all([
