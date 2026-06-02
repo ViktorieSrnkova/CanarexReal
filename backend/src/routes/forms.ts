@@ -68,15 +68,24 @@ router.post("/", contactFormLimiter, async (req: PublicRequest, res) => {
       email: payload.email,
       fullPhone: payload.fullPhone,
       message: payload.message,
+      type: payload.type,
+      priceFrom: payload.priceFrom,
+      priceTo: payload.priceTo,
+      sizeFrom: payload.sizeFrom,
+      sizeTo: payload.sizeTo,
+      bedrooms: payload.bedrooms,
+      bathrooms: payload.bathrooms,
+      date: payload.arrival,
+      listingId: payload.index,
     };
-    /*    try {
+    try {
       await Promise.all([
         sendContactEmail(payload.email, data),
         sendAdminNotificationEmail(data),
       ]);
     } catch (err) {
       console.error("Email failed:", err);
-    } */
+    }
 
     res.status(201).json({ message: "Form created", form });
   } catch (err) {

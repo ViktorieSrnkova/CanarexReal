@@ -90,7 +90,6 @@ router.get("/:id", async (req, res) => {
             typy_nemovitosti: {
               select: {
                 id: true,
-                kod: true,
               },
             },
           },
@@ -113,8 +112,15 @@ router.get("/:id", async (req, res) => {
     if (!form) {
       return res.status(404).json({ message: "Form not found" });
     }
+    const normalized = {
+      ...form,
 
-    return res.json({ form });
+      typy_nemovitosti: form.formulare_typy_nemovitosti.map((t) => ({
+        id: t.typy_nemovitosti.id,
+      })),
+    };
+
+    return res.json({ form: normalized });
   } catch (err) {
     console.error("forms one error:", err);
     return res.status(500).json({

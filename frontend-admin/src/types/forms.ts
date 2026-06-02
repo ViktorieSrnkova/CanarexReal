@@ -17,9 +17,9 @@ export interface FormSummary {
 }
 
 export interface FormDetail extends FormSummary {
+  typy_nemovitosti?: { id: number }[];
   pocet_loznic?: number;
   pocet_koupelen?: number;
-  minimalnni_velikost?: number;
   rozpocet_od?: number;
   rozpocet_do?: number;
   velikost_do?: number;

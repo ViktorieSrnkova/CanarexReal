@@ -44,7 +44,19 @@ const FormDetailPage = () => {
   };
 
   if (loading || !form) return <Spin size="large" />;
+  function typeIDsToNames(typeIds: number[] | undefined): string[] | undefined {
+    if (!typeIds) return undefined;
 
+    const typeMap: Record<number, string> = {
+      1: "Apartmán",
+      2: "Dům",
+      3: "Vila",
+      4: "Garsonka",
+      5: "Pozemek",
+    };
+
+    return typeIds.map((id) => typeMap[id] || `Neznámý typ (${id})`);
+  }
   return (
     <div>
       <div
@@ -169,6 +181,19 @@ const FormDetailPage = () => {
           }}
         >
           <Text style={{ marginRight: "8px" }}>
+            Typ nemovitosti:{" "}
+            {form.typy_nemovitosti?.length ? (
+              form.typy_nemovitosti.map((t) => (
+                <Tag key={t.id} color="geekblue">
+                  {typeIDsToNames([t.id])}
+                </Tag>
+              ))
+            ) : (
+              <Tag>Nespecifikováno</Tag>
+            )}
+          </Text>
+
+          <Text style={{ marginRight: "8px" }}>
             Počet ložnic:{" "}
             <Tag color="geekblue">
               {form.pocet_loznic ? form.pocet_loznic : "Nespecifikováno"}
@@ -183,10 +208,10 @@ const FormDetailPage = () => {
           </Text>
 
           <Text style={{ margin: "0 8px" }}>
-            Minimální velikost:{" "}
+            Velikost:{" "}
             <Tag color="orange">
-              {form.minimalnni_velikost
-                ? form.minimalnni_velikost
+              {form.velikost_od && form.velikost_do
+                ? `${form.velikost_od}  m² - ${form.velikost_do}`
                 : "Nespecifikováno"}{" "}
               m²
             </Tag>
@@ -195,8 +220,8 @@ const FormDetailPage = () => {
           <Text style={{ margin: "0 8px" }}>
             Rozpočet:{" "}
             <Tag color="gold">
-              {form.rozpocet_od
-                ? formatMoneyEUR(form.rozpocet_od)
+              {form.rozpocet_od && form.rozpocet_do
+                ? `${formatMoneyEUR(form.rozpocet_od)} - ${formatMoneyEUR(form.rozpocet_do)}`
                 : "Nespecifikováno"}
             </Tag>
           </Text>
