@@ -91,7 +91,7 @@ router.get("/:id", async (req: PublicRequest, res) => {
     if (isNaN(id)) {
       return res.status(400).json({ message: "Invalid ID" });
     }
-
+    const langId = req.langId ?? 2;
     const news = await prisma.aktuality.findFirst({
       where: {
         id,
@@ -101,7 +101,7 @@ router.get("/:id", async (req: PublicRequest, res) => {
         id: true,
         datum_vytvoreni: true,
         aktuality_preklady: {
-          where: { jazyky_id: req.userLangId ?? 2 },
+          where: { jazyky_id: langId },
           select: {
             titulek: true,
             text: true,
@@ -109,8 +109,18 @@ router.get("/:id", async (req: PublicRequest, res) => {
           take: 1,
         },
         obrazky: {
-          orderBy: { poradi: "asc" },
-          select: { id: true },
+          where: { poradi: 1 },
+          take: 1,
+          select: {
+            id: true,
+            obrazky_preklady: {
+              where: { jazyky_id: langId },
+              take: 1,
+              select: {
+                alt_text: true,
+              },
+            },
+          },
         },
       },
     });
@@ -121,12 +131,19 @@ router.get("/:id", async (req: PublicRequest, res) => {
     const formatted = {
       id: news.id,
       datum_vytvoreni: news.datum_vytvoreni,
-      obrazky: news.obrazky,
-      titulek: news.aktuality_preklady[0]?.titulek,
-      text: news.aktuality_preklady[0]?.text,
+
+      titulek: news.aktuality_preklady[0]?.titulek ?? null,
+      text: news.aktuality_preklady[0]?.text ?? null,
+
+      obrazek: news.obrazky?.[0]
+        ? {
+            id: news.obrazky[0].id,
+            alt: news.obrazky[0].obrazky_preklady?.[0]?.alt_text ?? null,
+          }
+        : null,
     };
 
-    res.json({ formatted });
+    res.json(formatted);
   } catch (err) {
     console.error("News detail error:", err);
     res.status(500).json({ message: "Internal server error" });

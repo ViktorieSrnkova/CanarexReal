@@ -1,4 +1,4 @@
-import type { NewsThumbsResponse } from "../types/rawApi";
+import type { NewsDetail, NewsThumbsResponse } from "../types/rawApi";
 import { api } from "./axios";
 
 export const getNewsThumbsHome = async (
@@ -15,5 +15,17 @@ export const getNewsThumbsHome = async (
       limit,
     },
   });
+  return data;
+};
+export const getNewsDetail = async (
+  id: string | number,
+  langId: number,
+): Promise<NewsDetail> => {
+  const { data } = await api.get(`/news/${id}`, {
+    headers: {
+      "x-lang-id": langId,
+    },
+  });
+
   return data;
 };

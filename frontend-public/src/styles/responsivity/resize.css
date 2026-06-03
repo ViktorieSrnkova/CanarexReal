@@ -185,7 +185,8 @@
   .news h1,
   .gdpr h1,
   .mortgage h1,
-  .faq h1 {
+  .faq h1,
+  .single-news h1 {
     font-size: 1.5em !important;
   }
 

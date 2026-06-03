@@ -126,3 +126,13 @@ export type NewsThumbsResponse = {
   thumbnails: NewsThumbnail[];
   total: number;
 };
+export type NewsDetail = {
+  id: number;
+  datum_vytvoreni: string;
+  titulek: string | null;
+  text: string | null;
+  obrazek: {
+    id: number;
+    alt: string | null;
+  } | null;
+};

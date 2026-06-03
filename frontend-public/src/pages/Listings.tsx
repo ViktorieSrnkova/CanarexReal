@@ -59,6 +59,7 @@ function Listings() {
         document.head.removeChild(preload);
       });
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [listings]);
   if (!filtersReady) {
     return <p>{t("general.loading")}</p>;

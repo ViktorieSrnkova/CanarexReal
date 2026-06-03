@@ -28,3 +28,7 @@
   font-style: normal;
   text-align: center;
 }
+.news-card-link {
+  text-decoration: none;
+  color: inherit;
+}
