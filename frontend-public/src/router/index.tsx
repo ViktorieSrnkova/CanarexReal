@@ -6,7 +6,6 @@ import HomePage from "../pages/HomePage";
 import Page404 from "../pages/404";
 import Contact from "../pages/Contact";
 import FAQ from "../pages/FAQ";
-import Fees from "../pages/Fees";
 import GDPR from "../pages/GDPR";
 const Listings = lazy(() => import("../pages/Listings"));
 const Map = lazy(() => import("../pages/Map"));
@@ -63,7 +62,6 @@ export default function Router() {
             <Route index element={<HomePage />} />
             <Route path="contact" element={<Contact />} />
             <Route path="faq" element={<FAQ />} />
-            <Route path="fees" element={<Fees />} />
             <Route path="gdpr" element={<GDPR />} />
 
             <Route

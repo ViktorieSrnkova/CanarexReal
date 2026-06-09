@@ -1,5 +1,3 @@
-import type { PropertyType } from "./filters";
-
 export type ContactFormValues = {
   name: string;
   surname: string;
@@ -50,7 +48,7 @@ export type DetailListingPayload = FormPayload<DetailListingFormValues>;
 export type InqueryPayload = FormPayload<InqueryFormValues>;
 
 export type FormValues = {
-  type: PropertyType[];
+  type: number[];
   priceFrom: number;
   priceTo: number;
   sizeFrom: number;
