@@ -23,7 +23,7 @@ import { FxContext } from "../FxContext";
 import { ProtectedRoute } from "../Auth/protectedRoute";
 import UserSettings from "../pages/UserSettings";
 import Favorites from "../pages/Favorites";
-import ResetPasswordForm from "../components/Login/ResetPasswordForm";
+import ResetPassword from "../pages/ResetPassword";
 
 export default function Router() {
   const [rates, setRates] = useState<FxRates | null>(null);
@@ -93,7 +93,7 @@ export default function Router() {
                 </ProtectedRoute>
               }
             />
-            <Route path="reset-password" element={<ResetPasswordForm />} />
+            <Route path="reset-password" element={<ResetPassword />} />
             <Route
               path="favorites"
               element={
