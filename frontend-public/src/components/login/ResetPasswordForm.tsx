@@ -95,7 +95,6 @@ function ResetPasswordForm() {
       toast.success(t("resetPwd.success"));
       window.dispatchEvent(new CustomEvent("open-login"));
       navigate(`/${lang}`);
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch {
       setError(t("resetPwd.error"));
     } finally {
