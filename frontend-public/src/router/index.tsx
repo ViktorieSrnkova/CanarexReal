@@ -20,6 +20,10 @@ import type { FxRates } from "../types/general";
 import { RangesContext, type Ranges } from "../RangesContext";
 import { getFxRates, getRanges } from "../api/listings";
 import { FxContext } from "../FxContext";
+import { ProtectedRoute } from "../Auth/protectedRoute";
+import UserSettings from "../pages/UserSettings";
+import Favorites from "../pages/Favorites";
+import ResetPasswordForm from "../components/Login/ResetPasswordForm";
 
 export default function Router() {
   const [rates, setRates] = useState<FxRates | null>(null);
@@ -81,6 +85,23 @@ export default function Router() {
             <Route path="mortgage" element={<Mortgage />} />
             <Route path="news" element={<News />} />
             <Route path="services" element={<Services />} />
+            <Route
+              path="me"
+              element={
+                <ProtectedRoute>
+                  <UserSettings />
+                </ProtectedRoute>
+              }
+            />
+            <Route path="reset-password" element={<ResetPasswordForm />} />
+            <Route
+              path="favorites"
+              element={
+                <ProtectedRoute>
+                  <Favorites />
+                </ProtectedRoute>
+              }
+            />
             <Route
               path="listings/:id"
               element={

@@ -3,9 +3,12 @@ import App from "./App";
 import "./styles/fonts.css";
 import "./styles/global.css";
 import { LangProvider } from "./i18n/LangProvider";
+import { AuthProvider } from "./Auth/AuthProvider";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <LangProvider>
-    <App />
-  </LangProvider>,
+  <AuthProvider>
+    <LangProvider>
+      <App />
+    </LangProvider>
+  </AuthProvider>,
 );

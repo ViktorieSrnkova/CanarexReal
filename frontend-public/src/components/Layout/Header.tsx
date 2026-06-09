@@ -2,7 +2,6 @@ import { useNavigate } from "react-router-dom";
 import "../../styles/layout/header.css";
 import "../../styles/responsivity/resize.css";
 import LangSwitcher from "./LangSwitcher";
-
 import Phone from "../../assets/Phone.svg";
 import Mail from "../../assets/Mail.svg";
 import Facebook from "../../assets/Facebook.svg";
@@ -10,24 +9,15 @@ import Instagram from "../../assets/Instagram.svg";
 import TikTok from "../../assets/Tiktok.svg";
 import CanarexReal from "../../assets/CanarexReal.svg";
 import { useT } from "../../i18n";
-import { NavLink } from "react-router-dom";
 import { useState } from "react";
 import { useLang } from "../../hooks/i18n/useLang";
+import Nav from "./Nav";
 
 function Header() {
   const t = useT();
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
   const { lang } = useLang();
-  const menuItems = [
-    { label: t("header.home"), path: `/${lang}` },
-    { label: t("header.listings"), path: `/${lang}/listings` },
-    { label: t("header.map"), path: `/${lang}/map` },
-    { label: t("header.services"), path: `/${lang}/services` },
-    { label: t("header.mortgage"), path: `/${lang}/mortgage` },
-    { label: t("header.news"), path: `/${lang}/news` },
-    { label: t("header.contact"), path: `/${lang}/contact` },
-  ];
 
   return (
     <header className="header">
@@ -83,22 +73,8 @@ function Header() {
             <span />
           </div>
           <nav className={`nav ${menuOpen ? "open" : ""}`}>
-            <ul>
-              {menuItems.map((item) => (
-                <li key={item.path}>
-                  <NavLink
-                    to={item.path}
-                    className={({ isActive }) =>
-                      isActive ? "active" : "nonactive"
-                    }
-                    onClick={() => setMenuOpen(false)}
-                    end
-                  >
-                    {item.label}
-                  </NavLink>
-                </li>
-              ))}
-            </ul>
+            <Nav onLinkClick={() => setMenuOpen(false)} />
+
             <div className="mobile-socials">
               <a href="https://www.facebook.com/CanarexReal" target="_blank">
                 <img src="/socials/Facebook.svg" alt="Facebook" />

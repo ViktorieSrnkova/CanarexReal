@@ -5,7 +5,7 @@ import "../../styles/layout/langSwitcher.css";
 function LangSwitcher() {
   const { lang } = useLang();
   const navigate = useNavigate();
-  const location = useLocation();
+  const { pathname, search } = useLocation();
 
   const languages = [
     { code: "cs", flag: "/flags/cz.svg", label: "Čeština" },
@@ -13,7 +13,7 @@ function LangSwitcher() {
     { code: "sk", flag: "/flags/sk.svg", label: "Slovenčina" },
   ] as const;
 
-  const pathWithoutLang = location.pathname.replace(/^\/(cs|en|sk)/, "");
+  const pathWithoutLang = pathname.replace(/^\/(cs|en|sk)/, "");
 
   return (
     <div className="lang-switch">
@@ -21,7 +21,7 @@ function LangSwitcher() {
         <button
           key={l.code}
           onClick={() => {
-            navigate(`/${l.code}${pathWithoutLang}`);
+            navigate(`/${l.code}${pathWithoutLang}${search}`);
           }}
           className={`lang-btn ${lang === l.code ? "active" : ""}`}
           title={l.label}

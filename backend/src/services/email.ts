@@ -129,3 +129,87 @@ export const sendAdminNotificationEmail = async (data: ContactEmailData) => {
     `,
   });
 };
+
+export const sendPasswordResetEmail = async (email: string, token: string) => {
+  const FRONTEND_URL = process.env.VITE_API_URL; //zmen zpet
+  await transporter.sendMail({
+    from: '"CanarexReal" <no-reply@canarexreal.com>',
+    to: email,
+    subject: "Resetování hesla",
+    html: `
+      <h2>Resetování hesla</h2>
+      <p>Klikněte na níže uvedené odkaz pro resetování vašeho hesla:</p>
+     <a href="${FRONTEND_URL}/cs/reset-password?token=${token}" target="_blank">Resetovat heslo</a>
+      <p>Tento odkaz vyprší za 1 hodinu.</p>
+    `,
+  });
+};
+export const sendRegistrationThanksEmail = async (email: string) => {
+  await transporter.sendMail({
+    from: '"CanarexReal" <no-reply@canarexreal.com>',
+    to: email,
+    subject: "Vítejte v CanarexReal ",
+
+    html: `
+      <div style="font-family: Arial, sans-serif; background:#f9f9f9; padding:24px;">
+        <div style="max-width:600px; margin:0 auto; background:#ffffff; padding:24px; border-radius:12px;">
+
+          <h1 style="margin-bottom:16px; color:#222;">
+            Vítejte v CanarexReal 
+          </h1>
+
+          <p style="font-size:16px; color:#444; line-height:1.5;">
+            Děkujeme za registraci! Jsme rádi, že jste s námi.
+          </p>
+
+          <p style="font-size:16px; color:#444; line-height:1.5;">
+            Váš účet je nyní aktivní a můžete začít prohlížet nabídky, ukládat oblíbené nemovitosti a spravovat svůj profil.
+          </p>
+
+          <div style="margin:24px 0;">
+            <a href="${process.env.FRONTEND_URL}"
+               style="
+                 display:inline-block;
+                 padding:12px 20px;
+                 background:#1f6feb;
+                 color:#fff;
+                 text-decoration:none;
+                 border-radius:8px;
+                 font-weight:bold;
+               ">
+              Přejít na web
+            </a>
+          </div>
+
+          <hr style="border:none; border-top:1px solid #eee; margin:24px 0;" />
+
+          <h3 style="margin-bottom:8px; color:#222;">
+           Newsletter
+          </h3>
+
+          <p style="font-size:14px; color:#555;">
+            Chcete dostávat nové nabídky a tipy jako první?
+          </p>
+
+          <a href="#"
+             style="
+               display:inline-block;
+               padding:10px 16px;
+               background:#111;
+               color:#fff;
+               text-decoration:none;
+               border-radius:8px;
+               font-size:14px;
+             ">
+            Přihlásit se k odběru (zatím neaktivní)
+          </a>
+
+          <p style="margin-top:24px; font-size:12px; color:#999;">
+            CanarexReal © ${new Date().getFullYear()}
+          </p>
+
+        </div>
+      </div>
+    `,
+  });
+};

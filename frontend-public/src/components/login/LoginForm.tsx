@@ -4,54 +4,112 @@ import { api } from "../../api/axios";
 import "../../styles/login/loginPage.css";
 import { useT } from "../../i18n";
 import { useLang } from "../../hooks/i18n/useLang";
+import eye from "../../assets/eye.svg";
+import noeye from "../../assets/noeye.svg";
+import { useAuth } from "../../Auth/authStore";
+import toast from "react-hot-toast";
 
 type FormState = {
   email: string;
   password: string;
 };
 
-export default function LoginPage() {
+type Errors = {
+  email?: string;
+  password?: string;
+};
+type AuthMode = "login" | "register" | "forgot";
+type Props = {
+  onSwitch: (mode: AuthMode) => void;
+  onClose: () => void;
+};
+
+import { z } from "zod";
+
+const loginSchema = z.object({
+  email: z.string().min(1, "Email je povinný").email("Neplatný email"),
+
+  password: z.string().min(1, "Heslo je povinné"),
+});
+
+export default function LoginPage({ onSwitch, onClose }: Props) {
   const navigate = useNavigate();
   const t = useT();
   const { lang } = useLang();
+  const { login } = useAuth();
 
   const [form, setForm] = useState<FormState>({
     email: "",
     password: "",
   });
 
+  const [showPassword, setShowPassword] = useState(false);
+  const [errors, setErrors] = useState<Errors>({});
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+
+  const validate = () => {
+    const result = loginSchema.safeParse(form);
+
+    if (result.success) {
+      setErrors({});
+      return true;
+    }
+
+    const fieldErrors = result.error.flatten().fieldErrors;
+
+    setErrors({
+      email: fieldErrors.email?.[0],
+      password: fieldErrors.password?.[0],
+    });
+
+    return false;
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setErrors((prev) => ({
+      ...prev,
+      [name]: undefined,
+    }));
     setForm((prev) => ({
       ...prev,
-      [e.target.name]: e.target.value,
+      [name]: value,
     }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (loading) return;
+    if (!validate()) return;
+
     setLoading(true);
-    setError(null);
 
     try {
-      const res = await api.post("/login", {
+      await api.post("/auth/login", {
         email: form.email,
         password: form.password,
       });
 
-      const token = res.data.accessToken;
+      await login();
+      toast.success(t("login.success"));
 
-      localStorage.setItem("token", token);
-      api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-
-      alert(t("login.success"));
+      onClose();
       navigate(`/${lang}`);
-    } catch {
-      setError(t("login.error"));
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      if (err?.response?.status === 401) {
+        setErrors({
+          password: t("login.error"),
+        });
+        return;
+      }
+
+      setErrors({
+        password: t("login.generalErr"),
+      });
     } finally {
-      setLoading(false);
+      setTimeout(() => setLoading(false), 300);
     }
   };
 
@@ -59,7 +117,7 @@ export default function LoginPage() {
     <div className="login-card">
       <h2>{t("login.title")}</h2>
 
-      <form onSubmit={handleSubmit} className="login-form">
+      <form onSubmit={handleSubmit} className="login-form" noValidate>
         <label>
           {t("login.email")}
           <input
@@ -67,28 +125,63 @@ export default function LoginPage() {
             name="email"
             value={form.email}
             onChange={handleChange}
-            placeholder={t("login.email")}
-            required
           />
+          {errors.email && <span className="login-error">{errors.email}</span>}
         </label>
 
         <label>
           {t("login.password")}
-          <input
-            type="password"
-            name="password"
-            value={form.password}
-            onChange={handleChange}
-            placeholder={t("login.password")}
-            required
-          />
+          <div className="password-wrapper">
+            <input
+              type={showPassword ? "text" : "password"}
+              name="password"
+              value={form.password}
+              onChange={handleChange}
+            />
+
+            <button
+              type="button"
+              className="toggle-password"
+              onClick={() => setShowPassword((p) => !p)}
+            >
+              {showPassword ? (
+                <img src={noeye} alt="Hide password" height="20" />
+              ) : (
+                <img src={eye} alt="Show password" height="20" />
+              )}
+            </button>
+          </div>
+
+          {errors.password && (
+            <span className="login-error">{errors.password}</span>
+          )}
         </label>
 
-        {error && <p className="error">{error}</p>}
-
-        <button type="submit" disabled={loading}>
+        <button className="submit-button" type="submit" disabled={loading}>
           {loading ? t("login.loading") : t("login.submit")}
         </button>
+
+        <div className="login-links">
+          <button
+            type="button"
+            className="link-button"
+            onClick={() => {
+              onSwitch("forgot");
+            }}
+          >
+            {t("login.forgotPassword")}
+          </button>
+
+          <button
+            type="button"
+            className="link-button"
+            onClick={() => {
+              onSwitch("register");
+            }}
+          >
+            {t("login.register")}
+          </button>
+        </div>
       </form>
     </div>
   );
