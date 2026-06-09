@@ -1,0 +1,14 @@
+.favorited-list {
+	position: absolute;
+	top: 12px;
+	right: 12px;
+	cursor: pointer;
+	z-index: 2;
+}
+.favorited-item {
+	cursor: pointer;
+}
+.favorited-image {
+	width: 3rem;
+	cursor: pointer;
+}
