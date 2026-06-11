@@ -467,4 +467,12 @@ export const en = {
     b34: "Tenerife, a place where your dreams have an address, and we will give you the keys to it.",
     more: "More properties",
   },
+  favorites: {
+    add: "Favorite",
+    remove: "Unfavorite",
+    confirm: "Remove from favorites?",
+    ok: "Remove",
+    cancel: "Keep",
+    loginNeeded: "You must be logged in to add this to your favorites.",
+  },
 };

@@ -6,7 +6,7 @@ export type ListingThumbnail = {
   koupelny: number;
   velikost: number;
   statusy_id: number;
-
+  is_favorite: boolean;
   obrazky: {
     id: number;
     obrazky_preklady: {
@@ -58,7 +58,7 @@ export type listingDetailSelect = {
   reprezentativni: boolean;
   datum_vytvoreni: string;
   statusy_id: number;
-
+  is_favorite: boolean;
   inzeraty_preklady: {
     titulek: string;
     popis: string;

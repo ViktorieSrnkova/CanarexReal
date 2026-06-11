@@ -10,6 +10,8 @@ import { useLang } from "../hooks/i18n/useLang";
 import Filters from "../components/General/Filters";
 import Card from "../components/Listing/Card";
 import "../styles/pages/listings.css";
+import toast from "react-hot-toast";
+import { useAuth } from "../Auth/authStore";
 const SearchMap = lazy(() => import("../components/Listing/SearchMap"));
 
 function Map() {
@@ -26,6 +28,8 @@ function Map() {
     filtersReady,
     filtersOpen,
     setFiltersOpen,
+    toggleFavoriteApi,
+    setListings,
   } = useListings({
     paginated: false,
   });
@@ -35,6 +39,7 @@ function Map() {
   const selectedIdFromUrl = Number(searchParams.get("selected") || 0) || null;
   const clicked = !!selectedIdFromUrl;
   const zoom = Number(searchParams.get("z") || 10);
+  const { user } = useAuth();
 
   const center: [number, number] = [
     Number(searchParams.get("lat") || 28.2),
@@ -87,6 +92,28 @@ function Map() {
       p.delete("selected");
       return p;
     });
+  };
+  const handleToggleFavorite = async (id: number, isFavorite: boolean) => {
+    if (!user) {
+      toast.error(t("favorites.loginNeeded"));
+      return;
+    }
+
+    setListings((prev) =>
+      prev.map((item) =>
+        item.id === id ? { ...item, is_favorite: !isFavorite } : item,
+      ),
+    );
+
+    try {
+      await toggleFavoriteApi(id, isFavorite);
+    } catch {
+      setListings((prev) =>
+        prev.map((item) =>
+          item.id === id ? { ...item, is_favorite: isFavorite } : item,
+        ),
+      );
+    }
   };
   if (!filtersReady) {
     return <p>{t("general.loading")}</p>;
@@ -146,6 +173,13 @@ function Map() {
 
                       {selected && (
                         <Card
+                          favorited={selected.is_favorite}
+                          onToggleFavorite={() =>
+                            handleToggleFavorite(
+                              selected.id,
+                              selected.is_favorite,
+                            )
+                          }
                           id={selected.id}
                           titulek={selected.inzeraty_preklady[0]?.titulek ?? ""}
                           lokace={selected.adresy?.lokace ?? ""}

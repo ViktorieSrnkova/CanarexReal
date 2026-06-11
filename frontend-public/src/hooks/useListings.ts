@@ -7,6 +7,8 @@ import type { ListingThumbnail } from "../types/rawApi";
 import type { FormValues } from "../types/forms";
 import type { ListingSort } from "../types/filters";
 import { getListingsThumbs } from "../api/listings";
+import { addFavorite, removeFavorite } from "../api/favorites";
+
 type Props = {
   paginated?: boolean;
 };
@@ -173,6 +175,13 @@ export function useListings({ paginated = true }: Props) {
     formFilters.sizeTo === defaultFilters.sizeTo &&
     formFilters.bedrooms.length === 0 &&
     formFilters.bathrooms.length === 0;
+  async function toggleFavoriteApi(id: number, isFavorite: boolean) {
+    if (isFavorite) {
+      await removeFavorite(id);
+    } else {
+      await addFavorite(id);
+    }
+  }
 
   return {
     listings,
@@ -180,13 +189,13 @@ export function useListings({ paginated = true }: Props) {
     totalPages,
     page,
     sort,
-
+    toggleFavoriteApi,
     formFilters,
     setFormFilters,
     filtersReady,
     filtersOpen,
     setFiltersOpen,
-
+    setListings,
     handleSubmit,
     handleClear,
 

@@ -1,143 +1,143 @@
 .card {
-	width: 20.688rem;
-	border: none;
-	border-radius: 0.5rem;
-	padding: 0.5em;
-	display: flex;
-	flex-direction: column;
-	justify-content: start;
-	align-items: center;
-	background-color: #f5f5f5;
-	box-shadow: 2px 2px 3px 2px #e3e3e3;
-	color: #1e1e1e;
-	margin: 0.25rem;
-	margin-bottom: 0.5rem;
-	min-height: 20.751rem;
+  width: 20.688rem;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.5em;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  background-color: #f5f5f5;
+  box-shadow: 2px 2px 3px 2px #e3e3e3;
+  color: #1e1e1e;
+  margin: 0.25rem;
+  margin-bottom: 0.5rem;
+  min-height: 20.751rem;
 }
 .card {
-	position: relative;
-	/* 	overflow: hidden;
+  position: relative;
+  /* 	overflow: hidden;
  */
 }
 
 .card-image {
-	position: relative;
-	display: block;
-	overflow: hidden;
-	width: 100%;
-	text-decoration: none;
-	color: black;
-	border-radius: 0.5rem;
-	aspect-ratio: 315/222;
+  position: relative;
+  display: block;
+  overflow: hidden;
+  width: 100%;
+  text-decoration: none;
+  color: black;
+  border-radius: 0.5rem;
+  aspect-ratio: 315/222;
 }
 
 .card-img {
-	width: 100%;
-	height: 100%;
-	object-fit: cover;
-	background-position: center;
-	background-repeat: no-repeat;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 .card-first-row,
 .card-second-row,
 .card-third-row {
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-	width: 100%;
-	padding-top: 0.5em;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  padding-top: 0.5em;
 }
 .card p {
-	margin: 0;
+  margin: 0;
 }
 
 .status {
-	font-size: 1em;
+  font-size: 1em;
 }
 .card-location {
-	font-size: 0.875em;
+  font-size: 0.875em;
 
-	display: flex;
-	flex-direction: row;
-	gap: 0.5rem;
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
 }
 .card-location img {
-	width: 0.75rem;
-	height: 0.875rem;
+  width: 0.75rem;
+  height: 0.875rem;
 }
 .card-second-row {
-	font-size: 0.875em;
-	min-height: 3rem;
-	line-height: 140%;
+  font-size: 0.875em;
+  min-height: 3rem;
+  line-height: 140%;
 }
 .card-loc-link {
-	color: #1e1e1e;
+  color: #1e1e1e;
 }
 .card-icons {
-	display: flex;
-	flex-direction: row;
-	gap: 0.125rem;
-	height: 0.875rem;
-	font-size: 0.875em;
-	min-height: 0.875rem;
+  display: flex;
+  flex-direction: row;
+  gap: 0.125rem;
+  height: 0.875rem;
+  font-size: 0.875em;
+  min-height: 0.875rem;
 }
 .spaced6 {
-	padding-right: 0.25em;
+  padding-right: 0.25em;
 }
 .card-third-row {
-	padding-left: 1em;
-	line-height: 140%;
-	height: 1.375rem;
-	align-items: center;
+  padding-left: 1em;
+  line-height: 140%;
+  height: 1.375rem;
+  align-items: center;
 }
 .card-price {
-	font-size: 1em;
-	font-style: normal;
+  font-size: 1em;
+  font-style: normal;
 }
 .card-status {
-	padding: 0.063em 0.5em;
-	justify-content: center;
-	align-items: center;
-	position: absolute;
-	left: 0.25rem;
-	top: 0.25rem;
-	border-radius: 0 0.5rem;
-	width: fit-content;
-	font-size: 1em;
-	line-height: 140%;
-	z-index: 10;
+  padding: 0.063em 0.5em;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  left: 0.25rem;
+  top: 0.25rem;
+  border-radius: 0 0.5rem;
+  width: fit-content;
+  font-size: 1em;
+  line-height: 140%;
+  z-index: 10;
 }
 .card-second-row p {
-	display: -webkit-box;
-	-webkit-line-clamp: 2;
-	-webkit-box-orient: vertical;
-	overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 .status-1 {
-	background: white;
-	color: #380401;
+  background: white;
+  color: #380401;
 }
 
 .status-3 {
-	background: #fff1c2;
-	color: #380401;
+  background: #fff1c2;
+  color: #380401;
 }
 .status-4 {
-	background: #a80000;
-	color: #fff;
+  background: #a80000;
+  color: #fff;
 }
 
 .status-2 {
-	background: #380401;
-	color: white;
+  background: #380401;
+  color: white;
 }
 .card.status-2-active {
-	background-color: #b3b3b3;
+  background-color: #b3b3b3;
 }
 
 .card.status-2-active .card-image::after {
-	content: "";
-	position: absolute;
-	inset: 0;
-	background: rgba(211, 211, 211, 0.5);
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(211, 211, 211, 0.5);
 }

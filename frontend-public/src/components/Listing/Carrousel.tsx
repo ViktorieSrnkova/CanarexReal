@@ -3,6 +3,10 @@ import Card from "./Card";
 import type { ListingThumbnail } from "../../types/rawApi";
 import "../../styles/listing/carrousel.css";
 import CardSkeleton from "./SkeletonCard";
+import toast from "react-hot-toast";
+import { useAuth } from "../../Auth/authStore";
+import { addFavorite, removeFavorite } from "../../api/favorites";
+import { useT } from "../../i18n";
 
 type Props = {
   similar: ListingThumbnail[];
@@ -13,12 +17,17 @@ type Props = {
 };
 
 function Carrousel(props: Props) {
-  const similar = props.similar;
+  const [items, setItems] = useState<ListingThumbnail[]>(props.similar);
   const [startIndex, setStartIndex] = useState(0);
-  const total = similar.length;
+  const total = items.length;
   const [visibleCount, setVisibleCount] = useState(3);
   const isEmpty = total === 0;
-
+  const { user } = useAuth();
+  const t = useT();
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setItems(props.similar);
+  }, [props.similar]);
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth <= 1112) {
@@ -49,24 +58,53 @@ function Carrousel(props: Props) {
   });
 
   const getVisibleItems = () => {
-    if (similar.length === 0) return [];
+    if (items.length === 0) return [];
 
     return Array.from({ length: visibleCount }).map((_, i) => {
-      const index = (startIndex + i) % similar.length;
-      return similar[index];
+      const index = (startIndex + i) % items.length;
+      return items[index];
     });
   };
   const shouldDisableCarousel = total <= visibleCount;
 
-  const visibleItems = shouldDisableCarousel ? similar : getVisibleItems();
+  const visibleItems = shouldDisableCarousel ? items : getVisibleItems();
   const next = () => {
-    if (!similar.length) return;
-    setStartIndex((prev) => (prev + 1) % similar.length);
+    if (!items.length) return;
+    setStartIndex((prev) => (prev + 1) % items.length);
   };
 
   const prev = () => {
-    if (!similar.length) return;
-    setStartIndex((prev) => (prev - 1 + similar.length) % similar.length);
+    if (!items.length) return;
+    setStartIndex((prev) => (prev - 1 + items.length) % items.length);
+  };
+  async function toggleFavoriteApi(id: number, isFavorite: boolean) {
+    if (isFavorite) {
+      await removeFavorite(id);
+    } else {
+      await addFavorite(id);
+    }
+  }
+  const handleToggleFavorite = async (id: number, isFavorite: boolean) => {
+    if (!user) {
+      toast.error(t("favorites.loginNeeded"));
+      return;
+    }
+
+    setItems((prev) =>
+      prev.map((item) =>
+        item.id === id ? { ...item, is_favorite: !isFavorite } : item,
+      ),
+    );
+
+    try {
+      await toggleFavoriteApi(id, isFavorite);
+    } catch {
+      setItems((prev) =>
+        prev.map((item) =>
+          item.id === id ? { ...item, is_favorite: isFavorite } : item,
+        ),
+      );
+    }
   };
   if (props.loading) {
     return (
@@ -114,7 +152,14 @@ function Carrousel(props: Props) {
 
         <div className="crsl-listings-wrapper">
           {visibleItems.map((sim) => (
-            <Card key={sim.id} {...mapCard(sim)} />
+            <Card
+              key={sim.id}
+              favorited={sim.is_favorite}
+              onToggleFavorite={() =>
+                handleToggleFavorite(sim.id, sim.is_favorite)
+              }
+              {...mapCard(sim)}
+            />
           ))}
         </div>
 
@@ -125,7 +170,7 @@ function Carrousel(props: Props) {
 
       {!shouldDisableCarousel && (
         <div className="crsl-third-row">
-          {similar.map((_, i) => (
+          {items.map((_, i) => (
             <div
               key={i}
               className={`dot ${i === startIndex ? "active" : ""}`}

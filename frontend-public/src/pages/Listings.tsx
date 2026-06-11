@@ -7,6 +7,8 @@ import CardSkeleton from "../components/Listing/SkeletonCard";
 import { useListings } from "../hooks/useListings";
 import Filters from "../components/General/Filters";
 import { useEffect } from "react";
+import { useAuth } from "../Auth/authStore";
+import toast from "react-hot-toast";
 
 function Listings() {
   const t = useT();
@@ -28,11 +30,13 @@ function Listings() {
     filtersReady,
     filtersOpen,
     setFiltersOpen,
+    toggleFavoriteApi,
+    setListings,
   } = useListings({
     paginated: true,
   });
   const VITE_API_URL = import.meta.env.VITE_API_URL;
-
+  const { user } = useAuth();
   useEffect(() => {
     if (!listings.length) return;
 
@@ -61,6 +65,28 @@ function Listings() {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [listings]);
+  const handleToggleFavorite = async (id: number, isFavorite: boolean) => {
+    if (!user) {
+      toast.error(t("favorites.loginNeeded"));
+      return;
+    }
+
+    setListings((prev) =>
+      prev.map((item) =>
+        item.id === id ? { ...item, is_favorite: !isFavorite } : item,
+      ),
+    );
+
+    try {
+      await toggleFavoriteApi(id, isFavorite);
+    } catch {
+      setListings((prev) =>
+        prev.map((item) =>
+          item.id === id ? { ...item, is_favorite: isFavorite } : item,
+        ),
+      );
+    }
+  };
   if (!filtersReady) {
     return <p>{t("general.loading")}</p>;
   }
@@ -124,6 +150,10 @@ function Listings() {
                     <Card
                       fetchpriority={i < 2}
                       key={listing.id}
+                      favorited={listing.is_favorite}
+                      onToggleFavorite={() =>
+                        handleToggleFavorite(listing.id, listing.is_favorite)
+                      }
                       {...cardData}
                     />
                   );

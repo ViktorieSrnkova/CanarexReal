@@ -42,11 +42,12 @@
 .logged-list {
   display: flex;
   flex-direction: column !important;
-  padding-left: 0 !important;
+  padding: 0 !important;
   gap: 0 !important;
 }
 .logged-list li {
   padding: 0.875rem !important;
+  text-align: left !important;
 }
 .logged-list li a {
   color: #000;

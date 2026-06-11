@@ -1,7 +1,7 @@
 .crsl-listings-wrapper {
   display: flex;
   gap: 1.25rem;
-  overflow: hidden;
+
   transition: transform 0.3s ease;
   align-items: center;
   justify-content: center;

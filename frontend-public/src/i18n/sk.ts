@@ -469,4 +469,12 @@ export const sk = {
     b34: "Tenerife, miesto, kde majú vaše sny adresu a my vám k nim dáme kľúče.",
     more: "Ďalšie nehnuteľnosti",
   },
+  favorites: {
+    add: "Pridať do obľúbených",
+    remove: "Odstrániť z obľúbených",
+    confirm: "Odstrániť z obľúbených?",
+    ok: "Odstrániť",
+    cancel: "Nechávať",
+    loginNeeded: "Na pridanie do obľúbených sa musíte prihlásiť.",
+  },
 };

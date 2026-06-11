@@ -1,9 +1,9 @@
 import { Router } from "express";
 import prisma from "../lib/db.js";
 import {
-	listingThumbnailSelect,
-	listingDetailSelect,
-	listingWithLangWhere,
+  listingThumbnailSelect,
+  listingDetailSelect,
+  listingWithLangWhere,
 } from "../lib/prismaSelect.js";
 import { detectLang, type PublicRequest } from "../middleware/detectLang.js";
 import type { Prisma } from "@prisma/client";
@@ -13,363 +13,385 @@ const router = Router();
 router.use(detectLang);
 
 const normalizeArray = (value: unknown): unknown[] => {
-	if (!value) return [];
+  if (!value) return [];
 
-	return Array.isArray(value) ? value : [value];
+  return Array.isArray(value) ? value : [value];
 };
 
 const toNumberArray = (value: unknown): number[] => {
-	const arr = normalizeArray(value);
+  const arr = normalizeArray(value);
 
-	return arr
-		.flatMap((v) =>
-			typeof v === "string" && v.includes(",") ? v.split(",") : v,
-		)
-		.map((v) => Number(v))
-		.filter((v) => !Number.isNaN(v));
+  return arr
+    .flatMap((v) =>
+      typeof v === "string" && v.includes(",") ? v.split(",") : v,
+    )
+    .map((v) => Number(v))
+    .filter((v) => !Number.isNaN(v));
 };
 
 const toValidNumber = (value: unknown): number | undefined => {
-	if (value === undefined) return undefined;
+  if (value === undefined) return undefined;
 
-	const num = Number(value);
-	return Number.isNaN(num) ? undefined : num;
+  const num = Number(value);
+  return Number.isNaN(num) ? undefined : num;
 };
 
 const toRange = (
-	from?: unknown,
-	to?: unknown,
+  from?: unknown,
+  to?: unknown,
 ): Prisma.IntFilter | undefined => {
-	const gte = toValidNumber(from);
-	const lte = toValidNumber(to);
+  const gte = toValidNumber(from);
+  const lte = toValidNumber(to);
 
-	const filter: Prisma.IntFilter = {};
+  const filter: Prisma.IntFilter = {};
 
-	if (gte !== undefined) filter.gte = gte;
-	if (lte !== undefined) filter.lte = lte;
+  if (gte !== undefined) filter.gte = gte;
+  if (lte !== undefined) filter.lte = lte;
 
-	return Object.keys(filter).length > 0 ? filter : undefined;
+  return Object.keys(filter).length > 0 ? filter : undefined;
 };
 
 const toInFilter = (arr: unknown): { in: number[] } | undefined => {
-	const numbers = toNumberArray(arr);
+  const numbers = toNumberArray(arr);
 
-	if (numbers.length === 0) return undefined;
+  if (numbers.length === 0) return undefined;
 
-	return { in: numbers };
+  return { in: numbers };
 };
 
 const getQueryArray = (query: any, key: string) => {
-	return query[key] ?? query[`${key}[]`];
+  return query[key] ?? query[`${key}[]`];
 };
 
 const buildPublicListingsWhere = (query: any): Prisma.inzeratyWhereInput => {
-	const where: Prisma.inzeratyWhereInput = {};
+  const where: Prisma.inzeratyWhereInput = {};
 
-	const types = toInFilter(getQueryArray(query, "type"));
-	if (types) {
-		where.typy_nemovitosti_id = types;
-	}
+  const types = toInFilter(getQueryArray(query, "type"));
+  if (types) {
+    where.typy_nemovitosti_id = types;
+  }
 
-	const price = toRange(query.priceFrom, query.priceTo);
-	if (price) {
-		where.cena_v_eur = price;
-	}
+  const price = toRange(query.priceFrom, query.priceTo);
+  if (price) {
+    where.cena_v_eur = price;
+  }
 
-	const size = toRange(query.sizeFrom, query.sizeTo);
-	if (size) {
-		where.velikost = size;
-	}
+  const size = toRange(query.sizeFrom, query.sizeTo);
+  if (size) {
+    where.velikost = size;
+  }
 
-	const bedrooms = toInFilter(getQueryArray(query, "bedrooms"));
-	if (bedrooms) {
-		where.loznice = bedrooms;
-	}
+  const bedrooms = toInFilter(getQueryArray(query, "bedrooms"));
+  if (bedrooms) {
+    where.loznice = bedrooms;
+  }
 
-	const bathrooms = toInFilter(getQueryArray(query, "bathrooms"));
-	if (bathrooms) {
-		where.koupelny = bathrooms;
-	}
+  const bathrooms = toInFilter(getQueryArray(query, "bathrooms"));
+  if (bathrooms) {
+    where.koupelny = bathrooms;
+  }
 
-	return where;
+  return where;
 };
 
 const SORT_MAP = {
-	price_asc: { cena_v_eur: "asc" },
-	price_desc: { cena_v_eur: "desc" },
-	newest: { datum_vytvoreni: "desc" },
+  price_asc: { cena_v_eur: "asc" },
+  price_desc: { cena_v_eur: "desc" },
+  newest: { datum_vytvoreni: "desc" },
 } satisfies Record<string, Prisma.inzeratyOrderByWithRelationInput>;
 
 const buildOrderBy = (sort?: string) =>
-	SORT_MAP[sort as keyof typeof SORT_MAP] ?? SORT_MAP.newest;
+  SORT_MAP[sort as keyof typeof SORT_MAP] ?? SORT_MAP.newest;
 
 router.get("/fx-rates", async (req, res) => {
-	try {
-		const resFx = await fetch("https://api.frankfurter.app/latest?from=EUR", {
-			redirect: "follow",
-		});
+  try {
+    const resFx = await fetch("https://api.frankfurter.app/latest?from=EUR", {
+      redirect: "follow",
+    });
 
-		const text = await resFx.text();
+    const text = await resFx.text();
 
-		const data = JSON.parse(text);
-		console.log("rates fetched");
-		return res.json({
-			CZK: data.rates?.CZK ?? null,
-			GBP: data.rates?.GBP ?? null,
-		});
-	} catch (err) {
-		return res.status(500).json({
-			message: "FX endpoint crashed",
-		});
-	}
+    const data = JSON.parse(text);
+    console.log("rates fetched");
+    return res.json({
+      CZK: data.rates?.CZK ?? null,
+      GBP: data.rates?.GBP ?? null,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      message: "FX endpoint crashed",
+    });
+  }
 });
 
 router.get("/ranges", async (req, res) => {
-	try {
-		const { _min, _max } = await prisma.inzeraty.aggregate({
-			_min: {
-				cena_v_eur: true,
-				velikost: true,
-			},
-			_max: {
-				cena_v_eur: true,
-				velikost: true,
-			},
-		});
-		res.json({ min: _min, max: _max });
-	} catch (err) {
-		console.error("Range fetch error:", err);
-		res.status(500).json({ message: "Internal server error" });
-	}
+  try {
+    const { _min, _max } = await prisma.inzeraty.aggregate({
+      _min: {
+        cena_v_eur: true,
+        velikost: true,
+      },
+      _max: {
+        cena_v_eur: true,
+        velikost: true,
+      },
+    });
+    res.json({ min: _min, max: _max });
+  } catch (err) {
+    console.error("Range fetch error:", err);
+    res.status(500).json({ message: "Internal server error" });
+  }
 });
 
 router.get("/", optionalUser, async (req: AuthRequest, res) => {
-	try {
-		const page = Number(req.query.page) || 1;
-		const limit = Number(req.query.limit) || 12;
-		const skip = (page - 1) * limit;
-		const langId = req.langId ?? 2;
-		const where = buildPublicListingsWhere(req.query);
-		const orderBy = buildOrderBy(req.query.sort as string);
-		const userId = req.user?.userId ?? undefined;
+  try {
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.limit) || 12;
+    const skip = (page - 1) * limit;
+    const langId = req.langId ?? 2;
+    const where = buildPublicListingsWhere(req.query);
+    const orderBy = buildOrderBy(req.query.sort as string);
+    const userId = req.user?.userId ?? undefined;
 
-		const [thumbnails, total] = await Promise.all([
-			prisma.inzeraty.findMany({
-				skip,
-				take: limit,
-				orderBy,
-				where: { ...listingWithLangWhere(langId), ...where },
-				select: listingThumbnailSelect(langId, userId),
-			}),
+    const [thumbnails, total] = await Promise.all([
+      prisma.inzeraty.findMany({
+        skip,
+        take: limit,
+        orderBy,
+        where: { ...listingWithLangWhere(langId), ...where },
+        select: listingThumbnailSelect(langId, userId),
+      }),
 
-			prisma.inzeraty.count({
-				where: {
-					...listingWithLangWhere(langId),
-					...where,
-				},
-			}),
-		]);
-		const mapped = thumbnails.map((thumbnail) => {
-			const { uzivatelske_oblibene, ...rest } = thumbnail;
+      prisma.inzeraty.count({
+        where: {
+          ...listingWithLangWhere(langId),
+          ...where,
+        },
+      }),
+    ]);
+    const mapped = thumbnails.map((thumbnail) => {
+      const { uzivatelske_oblibene, ...rest } = thumbnail;
 
-			return {
-				...rest,
-				is_favorite: Boolean(userId && uzivatelske_oblibene?.length),
-			};
-		});
+      return {
+        ...rest,
+        is_favorite: Boolean(userId && uzivatelske_oblibene?.length),
+      };
+    });
 
-		res.json({
-			thumbnails: mapped,
-			total,
-		});
-	} catch (err) {
-		console.error("Thumbnails error:", err);
-		res
-			.status(500)
-			.json({ message: "Internal server error", error: String(err) });
-	}
+    res.json({
+      thumbnails: mapped,
+      total,
+    });
+  } catch (err) {
+    console.error("Thumbnails error:", err);
+    res
+      .status(500)
+      .json({ message: "Internal server error", error: String(err) });
+  }
 });
 
-router.get("/home", async (req: PublicRequest, res) => {
-	try {
-		const langId = req.langId ?? 2;
-		const thumbnails = await prisma.inzeraty.findMany({
-			where: {
-				reprezentativni: true,
-				statusy_id: 1,
-				inzeraty_preklady: {
-					some: {
-						jazyky_id: langId,
-					},
-				},
-			},
-			orderBy: { datum_vytvoreni: "desc" },
-			take: 6,
-			select: listingThumbnailSelect(langId),
-		});
+router.get("/home", optionalUser, async (req: AuthRequest, res) => {
+  try {
+    const langId = req.langId ?? 2;
+    const userId = req.user?.userId ?? undefined;
+    const thumbnailsRaw = await prisma.inzeraty.findMany({
+      where: {
+        reprezentativni: true,
+        statusy_id: 1,
+        inzeraty_preklady: {
+          some: {
+            jazyky_id: langId,
+          },
+        },
+      },
+      orderBy: { datum_vytvoreni: "desc" },
+      take: 6,
+      select: listingThumbnailSelect(langId, userId),
+    });
+    const thumbnails = thumbnailsRaw.map((item) => {
+      const { uzivatelske_oblibene, ...rest } = item;
 
-		res.json({ thumbnails });
-	} catch (err) {
-		console.error("Thumbnails error:", err);
-		res
-			.status(500)
-			.json({ message: "Internal server error", error: String(err) });
-	}
+      return {
+        ...rest,
+        is_favorite: Boolean(userId && uzivatelske_oblibene?.length),
+      };
+    });
+    res.json({ thumbnails });
+  } catch (err) {
+    console.error("Thumbnails error:", err);
+    res
+      .status(500)
+      .json({ message: "Internal server error", error: String(err) });
+  }
 });
 router.get("/thumb/:id", async (req: PublicRequest, res) => {
-	try {
-		const id = Number(req.params.id);
-		const langId = req.langId ?? 2;
+  try {
+    const id = Number(req.params.id);
+    const langId = req.langId ?? 2;
 
-		const thumb = await prisma.inzeraty.findUnique({
-			where: {
-				id,
-				inzeraty_preklady: {
-					some: {
-						jazyky_id: langId,
-					},
-				},
-			},
-			select: listingThumbnailSelect(langId),
-		});
+    const thumb = await prisma.inzeraty.findUnique({
+      where: {
+        id,
+        inzeraty_preklady: {
+          some: {
+            jazyky_id: langId,
+          },
+        },
+      },
+      select: listingThumbnailSelect(langId),
+    });
 
-		if (!thumb) {
-			return res.status(404).json({
-				code: "LISTING_NOT_AVAILABLE_IN_LANGUAGE",
-			});
-		}
+    if (!thumb) {
+      return res.status(404).json({
+        code: "LISTING_NOT_AVAILABLE_IN_LANGUAGE",
+      });
+    }
 
-		res.json({ thumb });
-	} catch (err) {
-		console.error("Listing thumb error:", err);
-		res.status(500).json({ message: "Internal server error" });
-	}
+    res.json({ thumb });
+  } catch (err) {
+    console.error("Listing thumb error:", err);
+    res.status(500).json({ message: "Internal server error" });
+  }
 });
 
-router.get("/:id", async (req: PublicRequest, res) => {
-	try {
-		const id = Number(req.params.id);
-		const langId = req.langId ?? 2;
+router.get("/:id", optionalUser, async (req: AuthRequest, res) => {
+  try {
+    const id = Number(req.params.id);
+    const langId = req.langId ?? 2;
+    const userId = req.user?.userId ?? undefined;
+    const listing = await prisma.inzeraty.findFirst({
+      where: {
+        id,
+        inzeraty_preklady: {
+          some: {
+            jazyky_id: langId,
+          },
+        },
+      },
+      select: listingDetailSelect(langId, userId),
+    });
 
-		const listing = await prisma.inzeraty.findFirst({
-			where: {
-				id,
-				inzeraty_preklady: {
-					some: {
-						jazyky_id: langId,
-					},
-				},
-			},
-			select: listingDetailSelect(langId),
-		});
+    if (!listing) {
+      return res.status(404).json({ message: "Listing not found" });
+    }
+    const listingPictograms = await prisma.inzeraty_piktogramy.findMany({
+      where: { inzeraty_id: id },
+      select: { piktogramy_id: true },
+    });
 
-		if (!listing) {
-			return res.status(404).json({ message: "Listing not found" });
-		}
-		const listingPictograms = await prisma.inzeraty_piktogramy.findMany({
-			where: { inzeraty_id: id },
-			select: { piktogramy_id: true },
-		});
+    const dynamicIds = listingPictograms.map((p) => p.piktogramy_id);
 
-		const dynamicIds = listingPictograms.map((p) => p.piktogramy_id);
+    const allIds = [...new Set([1, 2, 3, ...dynamicIds])];
 
-		const allIds = [...new Set([1, 2, 3, ...dynamicIds])];
+    const pictograms = await prisma.piktogramy.findMany({
+      where: { id: { in: allIds } },
+      include: {
+        obrazky: { select: { icon_svg: true } },
+        piktogramy_preklady: {
+          where: { jazyky_id: langId },
+          select: { nazev: true },
+        },
+      },
+    });
+    const result = pictograms.map((p) => ({
+      id: p.id,
+      name: p.piktogramy_preklady[0]?.nazev ?? null,
+      iconSvg: p.obrazky?.icon_svg ?? null,
+    }));
+    const FIXED = [1, 2, 3];
+    const SPECIAL = 14;
 
-		const pictograms = await prisma.piktogramy.findMany({
-			where: { id: { in: allIds } },
-			include: {
-				obrazky: { select: { icon_svg: true } },
-				piktogramy_preklady: {
-					where: { jazyky_id: langId },
-					select: { nazev: true },
-				},
-			},
-		});
-		const result = pictograms.map((p) => ({
-			id: p.id,
-			name: p.piktogramy_preklady[0]?.nazev ?? null,
-			iconSvg: p.obrazky?.icon_svg ?? null,
-		}));
-		const FIXED = [1, 2, 3];
-		const SPECIAL = 14;
+    const ORDER = [4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 16];
+    const orderMap = new Map(ORDER.map((id, i) => [id, i]));
 
-		const ORDER = [4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 16];
-		const orderMap = new Map(ORDER.map((id, i) => [id, i]));
+    const fixedItems = result.filter((p) => FIXED.includes(p.id));
+    const specialItem = result.find((p) => p.id === SPECIAL);
+    const rest = result.filter(
+      (p) => !FIXED.includes(p.id) && p.id !== SPECIAL,
+    );
 
-		const fixedItems = result.filter((p) => FIXED.includes(p.id));
-		const specialItem = result.find((p) => p.id === SPECIAL);
-		const rest = result.filter(
-			(p) => !FIXED.includes(p.id) && p.id !== SPECIAL,
-		);
+    rest.sort((a, b) => {
+      const aOrder = orderMap.get(a.id) ?? 999;
+      const bOrder = orderMap.get(b.id) ?? 999;
+      return aOrder - bOrder;
+    });
 
-		rest.sort((a, b) => {
-			const aOrder = orderMap.get(a.id) ?? 999;
-			const bOrder = orderMap.get(b.id) ?? 999;
-			return aOrder - bOrder;
-		});
+    const sortedPictograms = [
+      ...fixedItems.sort((a, b) => a.id - b.id),
+      ...(specialItem ? [specialItem] : []),
+      ...rest,
+    ];
 
-		const sortedPictograms = [
-			...fixedItems.sort((a, b) => a.id - b.id),
-			...(specialItem ? [specialItem] : []),
-			...rest,
-		];
-		const response = {
-			...listing,
-			inzeraty_piktogramy: sortedPictograms,
-		};
-		res.json({ listing: response });
-	} catch (err) {
-		console.error("Listing detail error:", err);
-		res.status(500).json({ message: "Internal server error" });
-	}
+    const response = {
+      ...listing,
+      inzeraty_piktogramy: sortedPictograms,
+      is_favorite: !!userId && !!listing.uzivatelske_oblibene?.length,
+    };
+
+    res.json({ listing: response });
+  } catch (err) {
+    console.error("Listing detail error:", err);
+    res.status(500).json({ message: "Internal server error" });
+  }
 });
 
-router.get("/:id/similar", async (req: PublicRequest, res) => {
-	try {
-		const id = Number(req.params.id);
-		const langId = req.langId ?? 2;
+router.get("/:id/similar", optionalUser, async (req: AuthRequest, res) => {
+  try {
+    const id = Number(req.params.id);
+    const langId = req.langId ?? 2;
+    const userId = req.user?.userId ?? undefined;
 
-		const baseListing = await prisma.inzeraty.findUnique({
-			where: { id },
-			select: {
-				cena_v_eur: true,
-				typy_nemovitosti_id: true,
-			},
-		});
+    const baseListing = await prisma.inzeraty.findUnique({
+      where: { id },
+      select: {
+        cena_v_eur: true,
+        typy_nemovitosti_id: true,
+      },
+    });
 
-		if (!baseListing) {
-			return res.status(404).json({ message: "Listing not found" });
-		}
+    if (!baseListing) {
+      return res.status(404).json({ message: "Listing not found" });
+    }
 
-		const minPrice = Math.floor(baseListing.cena_v_eur * 0.8);
-		const maxPrice = Math.ceil(baseListing.cena_v_eur * 1.2);
+    const minPrice = Math.floor(baseListing.cena_v_eur * 0.8);
+    const maxPrice = Math.ceil(baseListing.cena_v_eur * 1.2);
 
-		const candidates = await prisma.inzeraty.findMany({
-			where: {
-				id: { not: id },
-				statusy_id: 1,
-				typy_nemovitosti_id: baseListing.typy_nemovitosti_id,
-				cena_v_eur: {
-					gte: minPrice,
-					lte: maxPrice,
-				},
-				inzeraty_preklady: {
-					some: {
-						jazyky_id: langId,
-					},
-				},
-			},
-			take: 20,
-			select: listingThumbnailSelect(langId),
-		});
+    const candidates = await prisma.inzeraty.findMany({
+      where: {
+        id: { not: id },
+        statusy_id: 1,
+        typy_nemovitosti_id: baseListing.typy_nemovitosti_id,
+        cena_v_eur: {
+          gte: minPrice,
+          lte: maxPrice,
+        },
+        inzeraty_preklady: {
+          some: {
+            jazyky_id: langId,
+          },
+        },
+      },
+      take: 20,
+      select: listingThumbnailSelect(langId, userId),
+    });
 
-		const similar = candidates.sort(() => Math.random() - 0.5).slice(0, 5);
+    const similar = candidates
+      .map((item) => {
+        const { uzivatelske_oblibene, ...rest } = item;
 
-		res.json({ similar });
-	} catch (err) {
-		console.error("Similar listings error:", err);
-		res.status(500).json({ message: "Internal server error" });
-	}
+        return {
+          ...rest,
+          is_favorite: Boolean(userId && uzivatelske_oblibene?.length),
+        };
+      })
+      .sort(() => Math.random() - 0.5)
+      .slice(0, 5);
+
+    res.json({ similar });
+  } catch (err) {
+    console.error("Similar listings error:", err);
+    res.status(500).json({ message: "Internal server error" });
+  }
 });
 
 export default router;

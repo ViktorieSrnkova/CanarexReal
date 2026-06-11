@@ -12,6 +12,9 @@ import Medalion from "../components/Contact/Medalion";
 import "../styles/responsivity/resize.css";
 import SEO from "../components/SEO/Meta";
 import CardSkeleton from "../components/Listing/SkeletonCard";
+import { useAuth } from "../Auth/authStore";
+import { addFavorite, removeFavorite } from "../api/favorites";
+import toast from "react-hot-toast";
 
 function HomePage() {
   const navigate = useNavigate();
@@ -19,6 +22,7 @@ function HomePage() {
   const [listings, setListings] = useState<ListingThumbnail[]>([]);
   const { lang } = useLang();
   const langId = LANGUAGE_TO_ID[lang];
+  const { user } = useAuth();
 
   useEffect(() => {
     const load = async () => {
@@ -60,7 +64,37 @@ function HomePage() {
         document.head.removeChild(preload);
       });
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [listings]);
+  async function toggleFavoriteApi(id: number, isFavorite: boolean) {
+    if (isFavorite) {
+      await removeFavorite(id);
+    } else {
+      await addFavorite(id);
+    }
+  }
+  const handleToggleFavorite = async (id: number, isFavorite: boolean) => {
+    if (!user) {
+      toast.error(t("favorites.loginNeeded"));
+      return;
+    }
+
+    setListings((prev) =>
+      prev.map((item) =>
+        item.id === id ? { ...item, is_favorite: !isFavorite } : item,
+      ),
+    );
+
+    try {
+      await toggleFavoriteApi(id, isFavorite);
+    } catch {
+      setListings((prev) =>
+        prev.map((item) =>
+          item.id === id ? { ...item, is_favorite: isFavorite } : item,
+        ),
+      );
+    }
+  };
   return (
     <>
       <SEO
@@ -144,7 +178,15 @@ function HomePage() {
               };
 
               return (
-                <Card fetchpriority={i < 2} key={listing.id} {...cardData} />
+                <Card
+                  fetchpriority={i < 2}
+                  key={listing.id}
+                  favorited={listing.is_favorite}
+                  onToggleFavorite={() =>
+                    handleToggleFavorite(listing.id, listing.is_favorite)
+                  }
+                  {...cardData}
+                />
               );
             })}
           </div>
