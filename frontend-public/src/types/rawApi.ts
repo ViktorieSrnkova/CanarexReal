@@ -136,3 +136,12 @@ export type NewsDetail = {
     alt: string | null;
   } | null;
 };
+
+export type MeResponse = {
+  jmeno: string;
+  prijmeni: string | null;
+  email: string;
+  telefon: string | null;
+  favoritesCount: number;
+  formsCount: number;
+};

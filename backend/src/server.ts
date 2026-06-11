@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 import adminRoutes from "./routes/admin-login.js";
 import dashboardRoutes from "./routes/dashboard.js";
 import authRoutes from "./routes/user-auth.js";
+import userRoutes from "./routes/user.js";
 import favoritesRouter from "./routes/favorites.js";
 import adminListingsRouter from "./routes/listings-management.js";
 import listingsRouter from "./routes/listings.js";
@@ -45,6 +46,7 @@ app.use("/api/admin/files", uploadRouter);
 app.use("/api/listings", listingsRouter);
 app.use("/api/news", newsRouter);
 app.use("/api/auth", authRoutes);
+app.use("/api/user", userRoutes);
 app.use("/api/favorites", favoritesRouter);
 app.use("/api/forms", formsRouter);
 
