@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { requireUser, type AuthRequest } from "../middleware/auth";
+import { requireUser, type AuthRequest } from "../middleware/auth.js";
 import prisma from "../lib/db";
 import bcrypt from "bcrypt";
 
