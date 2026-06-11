@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { requireUser, type AuthRequest } from "../middleware/auth.js";
-import prisma from "../lib/db";
+import prisma from "../lib/db.js";
 import bcrypt from "bcrypt";
 
 const router = Router();
