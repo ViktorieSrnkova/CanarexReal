@@ -6,9 +6,9 @@ import { LangProvider } from "./i18n/LangProvider";
 import { AuthProvider } from "./Auth/AuthProvider";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <AuthProvider>
-    <LangProvider>
+  <LangProvider>
+    <AuthProvider>
       <App />
-    </LangProvider>
-  </AuthProvider>,
+    </AuthProvider>
+  </LangProvider>,
 );

@@ -1,9 +1,7 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { api } from "../../api/axios";
 import "../../styles/login/loginPage.css";
 import { useT } from "../../i18n";
-import { useLang } from "../../hooks/i18n/useLang";
 import eye from "../../assets/eye.svg";
 import noeye from "../../assets/noeye.svg";
 import { useAuth } from "../../Auth/authStore";
@@ -33,9 +31,7 @@ const loginSchema = z.object({
 });
 
 export default function LoginPage({ onSwitch, onClose }: Props) {
-  const navigate = useNavigate();
   const t = useT();
-  const { lang } = useLang();
   const { login } = useAuth();
 
   const [form, setForm] = useState<FormState>({
@@ -95,7 +91,6 @@ export default function LoginPage({ onSwitch, onClose }: Props) {
       toast.success(t("login.success"));
 
       onClose();
-      navigate(`/${lang}`);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       if (err?.response?.status === 401) {

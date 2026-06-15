@@ -3,8 +3,6 @@ import { api } from "../../api/axios";
 import "../../styles/login/loginPage.css";
 import { useT } from "../../i18n";
 import { z } from "zod";
-import { useNavigate } from "react-router-dom";
-import { useLang } from "../../hooks/i18n/useLang";
 import { useAuth } from "../../Auth/authStore";
 import { isValidPhoneNumber } from "libphonenumber-js";
 import eye from "../../assets/eye.svg";
@@ -38,8 +36,6 @@ type Props = {
 
 function RegisterForm({ onSwitch, onClose }: Props) {
   const t = useT();
-  const { lang } = useLang();
-  const navigate = useNavigate();
   const { login } = useAuth();
   const [form, setForm] = useState<FormState>({
     jmeno: "",
@@ -146,7 +142,6 @@ function RegisterForm({ onSwitch, onClose }: Props) {
       await login();
       toast.success(t("register.success"));
       onClose();
-      navigate(`/${lang}`);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       const code = err?.response?.data?.code;

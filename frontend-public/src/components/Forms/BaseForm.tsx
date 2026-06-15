@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { isValidPhoneNumber } from "libphonenumber-js";
+import { isValidPhoneNumber, parsePhoneNumber } from "libphonenumber-js";
 import { useT } from "../../i18n";
 import "../../styles/forms/baseForm.css";
 import Button from "../General/Button";
@@ -10,6 +10,8 @@ import type { ContactFormValues, InqueryFormValues } from "../../types/forms";
 import { createForm } from "../../api/forms";
 import { useLang } from "../../hooks/i18n/useLang";
 import InqueryFormPartRHF from "./InqueryFormPartRHF";
+import { useAuth } from "../../Auth/authStore";
+
 type Props =
   | { from: number; what: 1 }
   | { from: number; what: 2; index: number }
@@ -19,11 +21,13 @@ type FormValues = ContactFormValues & Partial<InqueryFormValues>;
 
 export default function ContactForm(props: Props): React.ReactElement {
   const t = useT();
+  const { rich } = useAuth();
   const { lang } = useLang();
   const [submitStatus, setSubmitStatus] = useState<
     "idle" | "success" | "error"
   >("idle");
   const [submitMessage, setSubmitMessage] = useState("");
+
   const getSchema = (what: number) => {
     const base = z
       .object({
@@ -129,6 +133,7 @@ export default function ContactForm(props: Props): React.ReactElement {
     handleSubmit,
     reset,
     clearErrors,
+    setValue,
     formState: { errors, isSubmitting },
   } = methods;
 
@@ -143,6 +148,24 @@ export default function ContactForm(props: Props): React.ReactElement {
     clearErrors();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lang]);
+
+  const fillFromProfile = () => {
+    if (!rich) return;
+
+    console.log(rich.jmeno, rich.prijmeni, rich.email, rich.telefon);
+
+    setValue("name", rich.jmeno);
+    setValue("surname", rich.prijmeni ?? "");
+    setValue("email", rich.email);
+    const phone = parsePhoneNumber(rich.telefon);
+    const fixedPhone = phone?.nationalNumber ?? "";
+    setValue("phone", fixedPhone);
+  };
+  const showPrefill =
+    rich &&
+    !methods.watch("name") &&
+    !methods.watch("surname") &&
+    !methods.watch("email");
   return (
     <FormProvider {...methods}>
       <form
@@ -158,6 +181,17 @@ export default function ContactForm(props: Props): React.ReactElement {
         <div
           className={props.what === 2 ? "details-form-wrapper" : "base-form"}
         >
+          {showPrefill && (
+            <div className="profile-prefill">
+              <Button
+                variant="secondary"
+                type="button"
+                onClick={fillFromProfile}
+              >
+                {t("form.fillProfile")}
+              </Button>
+            </div>
+          )}
           <div className={props.what === 3 ? "long" : "grid-2"}>
             <div className="field">
               <label htmlFor="name">{t("form.name")} *</label>

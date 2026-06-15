@@ -186,3 +186,8 @@ textarea {
   width: 100%;
   max-width: 63.875rem;
 }
+.profile-prefill {
+  display: flex;
+  width: 100%;
+  justify-content: end;
+}

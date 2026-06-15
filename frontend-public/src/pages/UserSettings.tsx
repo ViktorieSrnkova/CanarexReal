@@ -9,41 +9,49 @@ import noeye from "../assets/noeye.svg";
 import Button from "../components/General/Button";
 import Modal from "../components/General/Modal";
 import type { FormState, PasswordForm } from "../types/users";
+import { useT } from "../i18n";
+import "../styles/pages/settings.css";
+import { useAuth } from "../Auth/authStore";
 
-const profileSchema = z.object({
-  jmeno: z.string().min(1, "Jméno je povinné").max(100),
+const profileSchema = (t: ReturnType<typeof useT>) =>
+  z.object({
+    jmeno: z.string().min(1, t("usrSettings.nameReq")).max(100),
 
-  prijmeni: z.string().max(100).optional().or(z.literal("")),
+    prijmeni: z.string().max(100).optional().or(z.literal("")),
 
-  email: z.string().email("Neplatný email").max(50),
+    email: z.string().email(t("usrSettings.emailInv")).max(50),
 
-  telefon: z
-    .string()
-    .optional()
-    .or(z.literal(""))
-    .refine((val) => {
-      if (!val) return true;
+    telefon: z
+      .string()
+      .optional()
+      .or(z.literal(""))
+      .refine((val) => {
+        if (!val) return true;
 
-      const cleaned = val.replace(/\s/g, "");
+        const cleaned = val.replace(/\s/g, "");
 
-      return /^(\+?[0-9]{9,15})$/.test(cleaned);
-    }, "Neplatné telefonní číslo"),
-});
-
-const passwordSchema = z
-  .object({
-    currentPassword: z.string().min(1, "Zadejte současné heslo"),
-
-    newPassword: z.string().min(8, "Heslo musí mít alespoň 8 znaků").max(100),
-
-    confirmPassword: z.string(),
-  })
-  .refine((data) => data.newPassword === data.confirmPassword, {
-    path: ["confirmPassword"],
-    message: "Hesla se neshodují",
+        return /^(\+?[0-9]{9,15})$/.test(cleaned);
+      }, t("usrSettings.phoneInv")),
   });
 
+const passwordSchema = (t: ReturnType<typeof useT>) =>
+  z
+    .object({
+      currentPassword: z.string().min(1, t("usrSettings.currPwd")),
+
+      newPassword: z.string().min(8, t("usrSettings.validPwd")).max(100),
+
+      confirmPassword: z.string(),
+    })
+    .refine((data) => data.newPassword === data.confirmPassword, {
+      path: ["confirmPassword"],
+      message: t("usrSettings.diffPwd"),
+    });
+
 function UserSettings() {
+  const t = useT();
+  const { refreshUser } = useAuth();
+
   const [form, setForm] = useState<FormState>({
     jmeno: "",
     prijmeni: "",
@@ -110,17 +118,18 @@ function UserSettings() {
           formsCount: data.formsCount,
         });
       } catch {
-        toast.error("Nepodařilo se načíst profil");
+        toast.error(t("usrSettings.loadErr"));
       } finally {
         setLoading(false);
       }
     };
 
     load();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleSave = async () => {
-    const parsed = profileSchema.safeParse(form);
+    const parsed = profileSchema(t).safeParse(form);
 
     if (!parsed.success) {
       setErrors(mapZodErrors(parsed.error));
@@ -144,11 +153,11 @@ function UserSettings() {
         email: updated.email,
         telefon: updated.telefon ?? "",
       });
-
+      await refreshUser();
       setEditing(false);
-      toast.success("Profil byl uložen");
+      toast.success(t("usrSettings.savedUsr"));
     } catch {
-      toast.error("Nepodařilo se uložit profil");
+      toast.error(t("usrSettings.saveErr"));
     }
   };
   const updateField = (field: keyof FormState, value: string) => {
@@ -159,7 +168,7 @@ function UserSettings() {
 
     setForm(nextForm);
 
-    const result = profileSchema.safeParse(nextForm);
+    const result = profileSchema(t).safeParse(nextForm);
 
     if (result.success) {
       setErrors((prev) => {
@@ -177,12 +186,12 @@ function UserSettings() {
     }
   };
   const passwordErrorMap: Record<string, string> = {
-    PASSWORD_SAME_AS_OLD: "Nové heslo musí být jiné než staré",
-    CURRENT_PASSWORD_INVALID: "Současné heslo není správné",
-    PASSWORDS_DO_NOT_MATCH: "Hesla se neshodují",
+    PASSWORD_SAME_AS_OLD: t("usrSettings.samePwd"),
+    CURRENT_PASSWORD_INVALID: t("usrSettings.incorrectPwd"),
+    PASSWORDS_DO_NOT_MATCH: t("usrSettings.diffPwd"),
   };
   const handlePasswordChange = async () => {
-    const parsed = passwordSchema.safeParse({
+    const parsed = passwordSchema(t).safeParse({
       currentPassword,
       newPassword,
       confirmPassword,
@@ -208,7 +217,7 @@ function UserSettings() {
       setNewPassword("");
       setConfirmPassword("");
 
-      toast.success("Heslo bylo změněno");
+      toast.success(t("usrSettings.changedPwd"));
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       const code = err?.response?.data?.code;
@@ -216,7 +225,7 @@ function UserSettings() {
       const message =
         passwordErrorMap[code] ??
         err?.response?.data?.message ??
-        "Chyba při změně hesla";
+        t("usrSettings.changedErr");
 
       toast.error(message);
     } finally {
@@ -235,7 +244,7 @@ function UserSettings() {
     if (field === "newPassword") setNewPassword(value);
     if (field === "confirmPassword") setConfirmPassword(value);
 
-    const result = passwordSchema.safeParse(next);
+    const result = passwordSchema(t).safeParse(next);
 
     if (result.success) {
       setPasswordErrors({});
@@ -250,200 +259,211 @@ function UserSettings() {
     }));
   };
 
-  if (loading) return <p>Načítání...</p>;
+  if (loading) return <p>{t("general.loading")}</p>;
 
   return (
-    <div style={{ maxWidth: 600 }}>
-      <h2>Nastavení účtu</h2>
-      <h3>Profil</h3>
+    <>
+      <div className="faq">
+        <h1>{t("usrSettings.title")}</h1>
+      </div>
+      <div className="settings">
+        <div className="settings-infosection">
+          {/*   <h3>{t("usrSettings.subtitle")}</h3> */}
 
-      {!editing ? (
-        <table>
-          <tbody>
-            <tr>
-              <td>Jméno: </td>
-              <td>{form.jmeno}</td>
-            </tr>
-            <tr>
-              <td>Příjmení: </td>
-              <td>{form.prijmeni}</td>
-            </tr>
-            <tr>
-              <td>Email: </td>
-              <td>{form.email}</td>
-            </tr>
-            <tr>
-              <td>Telefon: </td>
-              <td>{form.telefon}</td>
-            </tr>
-            <tr>
-              <td>Počet oblíbených inzerátů:</td>
-              <td>{stats.favoritesCount}</td>
-            </tr>
-            <tr>
-              <td>Počet vyplněných formulářů:</td>
-              <td>{stats.formsCount}</td>
-            </tr>
-          </tbody>
-        </table>
-      ) : (
-        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-          <FieldRow label="Jméno" error={errors.jmeno}>
-            <input
-              placeholder="Jméno"
-              value={form.jmeno}
-              onChange={(e) => updateField("jmeno", e.target.value)}
-            />
-          </FieldRow>
-
-          <FieldRow label="Příjmení" error={errors.prijmeni}>
-            <input
-              placeholder="Příjmení"
-              value={form.prijmeni}
-              onChange={(e) => updateField("prijmeni", e.target.value)}
-            />
-          </FieldRow>
-          <FieldRow label="Email" error={errors.email}>
-            <input
-              placeholder="Email"
-              value={form.email}
-              onChange={(e) => updateField("email", e.target.value)}
-            />
-          </FieldRow>
-          <FieldRow label="Telefon" error={errors.telefon}>
-            <input
-              placeholder="Telefon"
-              value={form.telefon}
-              onChange={(e) => updateField("telefon", e.target.value)}
-            />
-          </FieldRow>
-        </div>
-      )}
-
-      <div className="modal-actions">
-        <div style={{ marginTop: 10 }}>
           {!editing ? (
-            <Button variant="primary" onClick={() => setEditing(true)}>
-              Upravit profil
-            </Button>
+            <table>
+              <tbody>
+                <tr>
+                  <td>{t("form.name")}: </td>
+                  <td>{form.jmeno}</td>
+                </tr>
+                <tr>
+                  <td>{t("form.surname")}: </td>
+                  <td>{form.prijmeni}</td>
+                </tr>
+                <tr>
+                  <td>{t("form.email")}: </td>
+                  <td>{form.email}</td>
+                </tr>
+                <tr>
+                  <td>{t("form.phone")}: </td>
+                  <td>{form.telefon}</td>
+                </tr>
+                <tr>
+                  <td>{t("usrSettings.numFav")} </td>
+                  <td>{stats.favoritesCount}</td>
+                </tr>
+                <tr>
+                  <td>{t("usrSettings.numForm")}</td>
+                  <td>{stats.formsCount}</td>
+                </tr>
+              </tbody>
+            </table>
           ) : (
-            <div className="modal-actions">
-              <Button variant="primary" onClick={handleSave}>
-                Uložit
-              </Button>
-              <Button
-                variant="secondary"
-                onClick={() => {
-                  setForm(savedForm);
-                  setErrors({});
-                  setEditing(false);
-                }}
-              >
-                Zrušit
-              </Button>
+            <div className="setting-fields">
+              <FieldRow label={t("form.name")} error={errors.jmeno}>
+                <input
+                  placeholder={t("form.name")}
+                  value={form.jmeno}
+                  onChange={(e) => updateField("jmeno", e.target.value)}
+                />
+              </FieldRow>
+
+              <FieldRow label={t("form.surname")} error={errors.prijmeni}>
+                <input
+                  placeholder={t("form.surname")}
+                  value={form.prijmeni}
+                  onChange={(e) => updateField("prijmeni", e.target.value)}
+                />
+              </FieldRow>
+              <FieldRow label={t("form.email")} error={errors.email}>
+                <input
+                  placeholder={t("form.email")}
+                  value={form.email}
+                  onChange={(e) => updateField("email", e.target.value)}
+                />
+              </FieldRow>
+              <FieldRow label={t("form.phone")} error={errors.telefon}>
+                <input
+                  placeholder={t("form.phone")}
+                  value={form.telefon}
+                  onChange={(e) => updateField("telefon", e.target.value)}
+                />
+              </FieldRow>
             </div>
           )}
+
+          <div className="modal-actions">
+            <div style={{ marginTop: 10 }}>
+              {!editing ? (
+                <Button variant="primary" onClick={() => setEditing(true)}>
+                  {t("usrSettings.edit")}
+                </Button>
+              ) : (
+                <div className="modal-actions">
+                  <Button variant="primary" onClick={handleSave}>
+                    {t("usrSettings.save")}
+                  </Button>
+                  <Button
+                    variant="secondary"
+                    onClick={() => {
+                      setForm(savedForm);
+                      setErrors({});
+                      setEditing(false);
+                    }}
+                  >
+                    {t("usrSettings.cancel")}
+                  </Button>
+                </div>
+              )}
+            </div>
+            <Button
+              variant="primary"
+              onClick={() => setPasswordModalOpen(true)}
+              style={{ marginTop: "10px" }}
+            >
+              {t("usrSettings.change")}
+            </Button>
+          </div>
         </div>
-        <Button
-          variant="primary"
-          onClick={() => setPasswordModalOpen(true)}
-          style={{ marginTop: "10px" }}
+        <Modal
+          open={passwordModalOpen}
+          onClose={() => setPasswordModalOpen(false)}
         >
-          Změnit heslo
-        </Button>
+          <h3 style={{ marginTop: 30 }}>{t("usrSettings.changeTit")}</h3>
+
+          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+            <FieldRow
+              label={t("usrSettings.curr")}
+              error={passwordErrors.currentPassword}
+            >
+              <div className="password-wrapper">
+                <input
+                  type={showCurrentPassword ? "text" : "password"}
+                  value={currentPassword}
+                  onChange={(e) =>
+                    updatePasswordField("currentPassword", e.target.value)
+                  }
+                />
+                <button
+                  type="button"
+                  className="toggle-password"
+                  onClick={() => setShowCurrentPassword((p) => !p)}
+                >
+                  {showCurrentPassword ? (
+                    <img src={noeye} alt="Hide password" height="20" />
+                  ) : (
+                    <img src={eye} alt="Show password" height="20" />
+                  )}
+                </button>
+              </div>
+            </FieldRow>
+
+            <FieldRow
+              label={t("usrSettings.new")}
+              error={passwordErrors.newPassword}
+            >
+              <div className="password-wrapper">
+                <input
+                  type={showNewPassword ? "text" : "password"}
+                  value={newPassword}
+                  onChange={(e) =>
+                    updatePasswordField("newPassword", e.target.value)
+                  }
+                />
+                <button
+                  type="button"
+                  className="toggle-password"
+                  onClick={() => setShowNewPassword((p) => !p)}
+                >
+                  {showNewPassword ? (
+                    <img src={noeye} alt="Hide password" height="20" />
+                  ) : (
+                    <img src={eye} alt="Show password" height="20" />
+                  )}
+                </button>
+              </div>
+            </FieldRow>
+
+            <FieldRow
+              label={t("usrSettings.check")}
+              error={passwordErrors.confirmPassword}
+            >
+              <div className="password-wrapper">
+                <input
+                  type={showConfirmPassword ? "text" : "password"}
+                  value={confirmPassword}
+                  onChange={(e) =>
+                    updatePasswordField("confirmPassword", e.target.value)
+                  }
+                />
+                <button
+                  type="button"
+                  className="toggle-password"
+                  onClick={() => setShowConfirmPassword((p) => !p)}
+                >
+                  {showConfirmPassword ? (
+                    <img src={noeye} alt="Hide password" height="20" />
+                  ) : (
+                    <img src={eye} alt="Show password" height="20" />
+                  )}
+                </button>
+              </div>
+            </FieldRow>
+
+            <Button
+              variant="primary"
+              onClick={handlePasswordChange}
+              disabled={passwordLoading}
+            >
+              {passwordLoading
+                ? t("usrSettings.saving")
+                : t("usrSettings.change")}
+            </Button>
+          </div>
+        </Modal>
       </div>
-      <Modal
-        open={passwordModalOpen}
-        onClose={() => setPasswordModalOpen(false)}
-      >
-        <h3 style={{ marginTop: 30 }}>Změna hesla</h3>
-
-        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-          <FieldRow
-            label="Současné heslo"
-            error={passwordErrors.currentPassword}
-          >
-            <div className="password-wrapper">
-              <input
-                type={showCurrentPassword ? "text" : "password"}
-                value={currentPassword}
-                onChange={(e) =>
-                  updatePasswordField("currentPassword", e.target.value)
-                }
-              />
-              <button
-                type="button"
-                className="toggle-password"
-                onClick={() => setShowCurrentPassword((p) => !p)}
-              >
-                {showCurrentPassword ? (
-                  <img src={noeye} alt="Hide password" height="20" />
-                ) : (
-                  <img src={eye} alt="Show password" height="20" />
-                )}
-              </button>
-            </div>
-          </FieldRow>
-
-          <FieldRow label="Nové heslo" error={passwordErrors.newPassword}>
-            <div className="password-wrapper">
-              <input
-                type={showNewPassword ? "text" : "password"}
-                value={newPassword}
-                onChange={(e) =>
-                  updatePasswordField("newPassword", e.target.value)
-                }
-              />
-              <button
-                type="button"
-                className="toggle-password"
-                onClick={() => setShowNewPassword((p) => !p)}
-              >
-                {showNewPassword ? (
-                  <img src={noeye} alt="Hide password" height="20" />
-                ) : (
-                  <img src={eye} alt="Show password" height="20" />
-                )}
-              </button>
-            </div>
-          </FieldRow>
-
-          <FieldRow
-            label="Potvrzení hesla"
-            error={passwordErrors.confirmPassword}
-          >
-            <div className="password-wrapper">
-              <input
-                type={showConfirmPassword ? "text" : "password"}
-                value={confirmPassword}
-                onChange={(e) =>
-                  updatePasswordField("confirmPassword", e.target.value)
-                }
-              />
-              <button
-                type="button"
-                className="toggle-password"
-                onClick={() => setShowConfirmPassword((p) => !p)}
-              >
-                {showConfirmPassword ? (
-                  <img src={noeye} alt="Hide password" height="20" />
-                ) : (
-                  <img src={eye} alt="Show password" height="20" />
-                )}
-              </button>
-            </div>
-          </FieldRow>
-
-          <Button
-            variant="primary"
-            onClick={handlePasswordChange}
-            disabled={passwordLoading}
-          >
-            {passwordLoading ? "Ukládám..." : "Změnit heslo"}
-          </Button>
-        </div>
-      </Modal>
-    </div>
+    </>
   );
 }
 
