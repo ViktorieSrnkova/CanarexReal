@@ -97,9 +97,10 @@
   text-align: center;
 }
 .hp-2-contact p {
-  background: #c1e6f5;
+  background: linear-gradient(180deg, #cdf1ff8f 31.57894736842105%, #fff 100%);
   padding: 0.5em;
   border-radius: 0 1rem;
+  padding-bottom: 1rem;
 }
 .hp-contact-wrapper {
   display: flex;

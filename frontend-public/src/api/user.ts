@@ -24,3 +24,12 @@ export const changePassword = async (payload: {
   const { data } = await api.patch("/user/me/password", payload);
   return data;
 };
+
+export const subToNewsletter = async () => {
+  const { data } = await api.patch("/user/newsletter/subscribe");
+  return data;
+};
+export const unsubFromNewsletter = async () => {
+  const { data } = await api.patch("/user/newsletter/unsubscribe");
+  return data;
+};

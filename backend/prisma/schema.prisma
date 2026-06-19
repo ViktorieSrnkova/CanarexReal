@@ -283,6 +283,7 @@ model uzivatele {
   role                  role?                   @relation(fields: [role_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "role_id")
   uzivatelske_formulare uzivatelske_formulare[]
   uzivatelske_oblibene  uzivatelske_oblibene[]
+  odber_newsletter      odber_newsletter?
 }
 
 model uzivatelske_formulare {
@@ -311,4 +312,19 @@ model staty {
   kod           String          @unique @db.VarChar(5)
   adresy        adresy[]
   stat_preklady stat_preklady[]
+}
+
+model odber_newsletter {
+  id                String    @id @default(uuid())
+
+  uzivatel_id       Int?      @unique
+  email             String?   @unique
+  telefon           String?  
+
+  ma_odber          Boolean   @default(true)
+
+  datum_odberu      DateTime  @default(now())
+  datum_zruseni     DateTime?
+
+  uzivatel          uzivatele? @relation(fields: [uzivatel_id], references: [id], onDelete: Cascade)
 }

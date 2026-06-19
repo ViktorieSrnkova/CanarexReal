@@ -460,16 +460,25 @@
     font-size: 0.875em !important;
   }
   .hp-2-contact {
-    gap: 1rem !important;
+    gap: 0rem !important;
     max-width: none !important;
     padding-inline: 1rem;
     width: 100%;
-    margin-top: -2rem;
+    margin-top: -1rem;
   }
   .hp-2-contact p {
     margin: 0 !important;
     width: 100%;
     font-size: 0.813em;
+    border-radius: 0 !important;
+    background: rgb(242, 250, 255) !important;
+  }
+  .hp-2-contact p:first-child {
+    border-top-right-radius: 2rem !important;
+  }
+
+  .hp-2-contact p:last-child {
+    border-bottom-left-radius: 2rem !important;
   }
   .nav {
     width: 100%;

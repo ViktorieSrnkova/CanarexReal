@@ -67,7 +67,7 @@ function Favorites() {
       <div className="faq">
         <h1>Oblíbené inzeráty</h1>
       </div>
-      <div className="listings">
+      <div className="listings favorites">
         {listings.length === 0 ? (
           <div className="hp-cards-wrapper">
             {Array.from({ length: 9 }).map((_, i) => (

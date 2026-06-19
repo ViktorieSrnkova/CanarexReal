@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { NavLink } from "react-router-dom";
 import User from "../../assets/user.svg";
 import LoggedIn from "../../assets/userLogin.svg";
@@ -28,6 +28,19 @@ function Navbar({ onLinkClick }: Props) {
   ];
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [authMode, setAuthMode] = useState<"login" | "register" | null>(null);
+  const menuRef = useRef<HTMLLIElement | null>(null);
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (!menuRef.current) return;
+
+      if (!menuRef.current.contains(event.target as Node)) {
+        setUserMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   useEffect(() => {
     const handler = () => setAuthMode("login");
@@ -52,6 +65,7 @@ function Navbar({ onLinkClick }: Props) {
         ))}
 
         <li
+          ref={menuRef}
           style={{
             position: "relative",
             listStyle: "none",
@@ -76,6 +90,7 @@ function Navbar({ onLinkClick }: Props) {
               {!user ? (
                 <>
                   <button
+                    className="hoverRed"
                     type="button"
                     onClick={() => {
                       setAuthMode("login");
@@ -86,6 +101,7 @@ function Navbar({ onLinkClick }: Props) {
                   </button>
 
                   <button
+                    className="hoverRed"
                     type="button"
                     onClick={() => {
                       setAuthMode("register");
@@ -112,7 +128,7 @@ function Navbar({ onLinkClick }: Props) {
                       </NavLink>
                     </li>
                   </ul>
-                  <button type="button" onClick={logout}>
+                  <button className="hoverRed" type="button" onClick={logout}>
                     {t("auth.logout")}
                   </button>
                 </>

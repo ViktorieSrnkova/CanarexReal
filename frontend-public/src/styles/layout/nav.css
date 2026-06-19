@@ -26,7 +26,6 @@
   background: none;
   border: none;
   cursor: pointer;
-  padding: 0;
   border-radius: 100%;
   padding: 0.25rem;
   height: 1.75rem;
@@ -54,7 +53,10 @@
   text-decoration: none;
   white-space: nowrap;
 }
-
+.logged-list li a:hover,
+.hoverRed:hover {
+  color: #a80000;
+}
 @media (max-width: 768px) {
   .user-dropdown {
     left: 50%;
@@ -65,5 +67,9 @@
   .user-icon {
     height: 2rem;
     width: 2rem;
+  }
+  .user-menu-button.open {
+    height: auto;
+    padding-inline: 0.35rem;
   }
 }

@@ -2,6 +2,7 @@ import { Router } from "express";
 import { requireUser, type AuthRequest } from "../middleware/auth.js";
 import prisma from "../lib/db.js";
 import bcrypt from "bcrypt";
+import { Prisma } from "@prisma/client";
 
 const router = Router();
 
@@ -18,7 +19,11 @@ router.get("/me", requireUser, async (req: AuthRequest, res) => {
         prijmeni: true,
         email: true,
         telefon: true,
-
+        odber_newsletter: {
+          select: {
+            ma_odber: true,
+          },
+        },
         _count: {
           select: {
             uzivatelske_oblibene: true,
@@ -41,6 +46,7 @@ router.get("/me", requireUser, async (req: AuthRequest, res) => {
       telefon: user.telefon,
       favoritesCount: user._count.uzivatelske_oblibene,
       formsCount: user._count.uzivatelske_formulare,
+      newsletter: user.odber_newsletter?.ma_odber,
     });
   } catch (err) {
     console.error("Get profile error:", err);
@@ -140,6 +146,13 @@ router.patch("/me", requireUser, async (req: AuthRequest, res) => {
         });
       }
     }
+    const existing = await prisma.uzivatele.findUnique({
+      where: { email },
+    });
+
+    if (existing) {
+      return res.status(409).json({ code: "EMAIL_ALREADY_EXISTS" });
+    }
 
     const updatedUser = await prisma.uzivatele.update({
       where: { id: userId },
@@ -160,11 +173,12 @@ router.patch("/me", requireUser, async (req: AuthRequest, res) => {
     res.json(updatedUser);
   } catch (err: any) {
     console.error("Update profile error:", err);
-
-    if (err.code === "P2002") {
-      return res.status(409).json({
-        message: "Email already exists",
-      });
+    if (err instanceof Prisma.PrismaClientKnownRequestError) {
+      if (err.code === "P2002") {
+        return res.status(409).json({
+          code: "EMAIL_ALREADY_EXISTS",
+        });
+      }
     }
 
     res.status(500).json({
@@ -173,4 +187,55 @@ router.patch("/me", requireUser, async (req: AuthRequest, res) => {
   }
 });
 
+router.patch(
+  "/newsletter/subscribe",
+  requireUser,
+  async (req: AuthRequest, res) => {
+    try {
+      const userId = req.user!.userId;
+
+      const subscription = await prisma.odber_newsletter.upsert({
+        where: {
+          uzivatel_id: userId,
+        },
+        update: {
+          ma_odber: true,
+          datum_odberu: new Date(),
+          datum_zruseni: null,
+        },
+        create: {
+          uzivatel_id: userId,
+          ma_odber: true,
+        },
+      });
+
+      return res.json(subscription);
+    } catch (err) {
+      return res.status(500).json({ message: "Subscribe failed" });
+    }
+  },
+);
+router.patch(
+  "/newsletter/unsubscribe",
+  requireUser,
+  async (req: AuthRequest, res) => {
+    try {
+      const userId = req.user!.userId;
+
+      const subscription = await prisma.odber_newsletter.update({
+        where: {
+          uzivatel_id: userId,
+        },
+        data: {
+          ma_odber: false,
+          datum_zruseni: new Date(),
+        },
+      });
+
+      return res.json(subscription);
+    } catch (err) {
+      return res.status(500).json({ message: "Unsubscribe failed" });
+    }
+  },
+);
 export default router;

@@ -9,9 +9,11 @@ import { useLang } from "../hooks/i18n/useLang";
 import { LANGUAGE_TO_ID } from "../types/general";
 import type { ListingThumbnail } from "../types/rawApi";
 import SEO from "../components/SEO/Meta";
+import { useAuth } from "../Auth/authStore";
 
 export function ListingUnavailable() {
   const t = useT();
+  const { user } = useAuth();
   const navigate = useNavigate();
   const { id } = useParams();
   const { lang } = useLang();
@@ -34,7 +36,7 @@ export function ListingUnavailable() {
     };
 
     loadSimilar();
-  }, [id, langId]);
+  }, [id, langId, user]);
   return (
     <>
       <SEO

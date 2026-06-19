@@ -35,7 +35,7 @@ function HomePage() {
     };
 
     load();
-  }, [langId]);
+  }, [langId, user]);
   const VITE_API_URL = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
@@ -148,6 +148,7 @@ function HomePage() {
         src="/general/small-vlnka-gray-white.svg"
         alt="vlnka-gray-to-white"
       />
+
       {!listings.length ? (
         <div className="content home-page">
           <div className="hp-cards-wrapper">
@@ -167,7 +168,7 @@ function HomePage() {
                 typ:
                   listing.typy_nemovitosti?.typy_nemovitosti_preklady[0]
                     ?.nazev ?? "",
-                status: "NOVÉ",
+                status: t("home.status"),
                 cena_v_eur: listing.cena_v_eur,
                 loznice: listing.loznice,
                 koupelny: listing.koupelny,

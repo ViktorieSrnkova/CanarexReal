@@ -61,28 +61,37 @@ router.post("/register", registerLimiter, async (req, res) => {
     }
 
     const hashed = await bcrypt.hash(password, 10);
-
-    const user = await prisma.uzivatele.create({
-      data: {
-        datum_vytvoreni: new Date(),
-        email: email,
-        heslo_hash: hashed,
-        jmeno: name,
-        prijmeni: surname,
-        telefon: phone,
-        role_id: 2,
-      },
+    const result = await prisma.$transaction(async (tx) => {
+      const user = await tx.uzivatele.create({
+        data: {
+          datum_vytvoreni: new Date(),
+          email: email,
+          heslo_hash: hashed,
+          jmeno: name,
+          prijmeni: surname,
+          telefon: phone,
+          role_id: 2,
+        },
+      });
+      await tx.odber_newsletter.updateMany({
+        where: { email: user.email },
+        data: {
+          uzivatel_id: user.id,
+          email: null,
+          telefon: null,
+        },
+      });
+      return user;
     });
-
     const token = jwt.sign(
-      { userId: user.id, roleId: user.role_id },
+      { userId: result.id, roleId: result.role_id },
       process.env.JWT_SECRET!,
       { expiresIn: "3d" },
     );
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
+      secure: true /*  process.env.NODE_ENV === "production" */,
+      sameSite: "none",
       maxAge: 3 * 24 * 60 * 60 * 1000,
     });
     await sendRegistrationThanksEmail(email);
@@ -118,8 +127,8 @@ router.post("/login", loginLimiter, async (req, res) => {
     );
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
+      secure: true /* process.env.NODE_ENV === "production" */,
+      sameSite: "none",
       maxAge: 3 * 24 * 60 * 60 * 1000,
     });
 

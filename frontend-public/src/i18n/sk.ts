@@ -100,6 +100,9 @@ export const sk = {
     subtitleDet:
       "Radi Vám poskytneme všetky informácie, upresnite prosím Vašu otázku.",
     fillProfile: "Vyplniť z môjho profilu",
+    newsletter: "Chcem odoberať newsletter",
+    cancelNewsletter: "Zrušiť odber newslettra",
+    newsletterLog: " Pre newsletter použite prihlásený e-mail:",
   },
   property_type: {
     vila: "Vila",
@@ -506,5 +509,10 @@ export const sk = {
     new: "Nové heslo",
     check: "Potvrdenie hesla",
     saving: "Ukladám...",
+    sameEmail: "Zadaná e-mailová adresa už patrí inému používateľovi.",
+  },
+  home: {
+    news: "Novinky",
+    status: "NOVÉ",
   },
 };

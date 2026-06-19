@@ -4,6 +4,7 @@ import RangeSlider from "../General/RangeSlider";
 import { useT } from "../../i18n";
 import type { FormValues, InquiryFormPatch } from "../../types/forms";
 import type { FormErrorMap } from "./InqueryFormPartRHF";
+import { useId } from "react";
 
 type Props = {
   value: FormValues;
@@ -23,6 +24,9 @@ export default function InqueryFormPart({
   sizeRange,
 }: Props) {
   const t = useT();
+  const id = useId();
+  const radioDateId = `${id}- radioDateId`;
+  const radioUnknownId = `${id}- radioUnknownId`;
 
   const mode = value.arrivalMode;
 
@@ -92,9 +96,9 @@ export default function InqueryFormPart({
           <span>{t("form.since") + "*"}</span>
 
           <div className="radio-group">
-            <label htmlFor="radio1">
+            <label htmlFor={radioDateId}>
               <input
-                id="radio1"
+                id={radioDateId}
                 type="radio"
                 checked={mode === "date"}
                 onChange={() => onChange({ arrivalMode: "date" })}
@@ -102,9 +106,9 @@ export default function InqueryFormPart({
               {t("form.date")}
             </label>
 
-            <label htmlFor="radio2">
+            <label htmlFor={radioUnknownId}>
               <input
-                id="radio2"
+                id={radioUnknownId}
                 type="radio"
                 checked={mode === "unknown"}
                 onChange={() =>

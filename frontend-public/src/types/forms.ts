@@ -7,6 +7,7 @@ export type ContactFormValues = {
   message: string;
   gdpr: boolean;
   website?: string;
+  newsletter: boolean;
 };
 
 export type DetailListingFormValues = ContactFormValues & {

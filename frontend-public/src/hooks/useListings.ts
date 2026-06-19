@@ -8,6 +8,7 @@ import type { FormValues } from "../types/forms";
 import type { ListingSort } from "../types/filters";
 import { getListingsThumbs } from "../api/listings";
 import { addFavorite, removeFavorite } from "../api/favorites";
+import { useAuth } from "../Auth/authStore";
 
 type Props = {
   paginated?: boolean;
@@ -15,11 +16,12 @@ type Props = {
 export function useListings({ paginated = true }: Props) {
   const ranges = useRanges();
   const { lang } = useLang();
+  const { user } = useAuth();
   const langId = LANGUAGE_TO_ID[lang];
 
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const limit = paginated ? 9 : 9999;
+  const limit = paginated ? 6 : 9999;
 
   const [listings, setListings] = useState<ListingThumbnail[]>([]);
   const [total, setTotal] = useState(0);
@@ -123,7 +125,7 @@ export function useListings({ paginated = true }: Props) {
 
     load();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, langId, filterString, sort, rangesReady]);
+  }, [page, langId, filterString, sort, rangesReady, user]);
 
   const setPage = (p: number) => {
     setURL({ page: p });

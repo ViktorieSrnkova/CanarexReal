@@ -144,4 +144,5 @@ export type MeResponse = {
   telefon: string | null;
   favoritesCount: number;
   formsCount: number;
+  newsletter: boolean;
 };

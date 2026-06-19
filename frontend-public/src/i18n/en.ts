@@ -100,6 +100,9 @@ export const en = {
     subtitleDet:
       "We will be happy to provide you with all the information, please specify your question.",
     fillProfile: "Fill from my profile",
+    newsletter: "I want to subscribe to the newsletter.",
+    cancelNewsletter: "Unsubscribe from the newsletter",
+    newsletterLog: " To receive the newsletter, use your signed-in email:",
   },
   property_type: {
     vila: "Villa",
@@ -504,5 +507,11 @@ export const en = {
     new: "New password",
     check: "Confirm password",
     saving: "Saving...",
+    sameEmail:
+      "The email address you entered is already taken by another user.",
+  },
+  home: {
+    news: "New listings",
+    status: "NEW",
   },
 };

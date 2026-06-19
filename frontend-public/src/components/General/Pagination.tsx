@@ -23,9 +23,17 @@ function Pagination({ page, totalPages, onChange, loading = false }: Props) {
     return [1, "...", page - 1, page, page + 1, "...", totalPages];
   };
 
+  const goPrev = () => {
+    if (!loading && page > 1) onChange(page - 1);
+  };
+
+  const goNext = () => {
+    if (!loading && page < totalPages) onChange(page + 1);
+  };
+
   return (
     <div className={`pagination ${loading ? "loading" : ""}`}>
-      <button className="btn" disabled>
+      <button className="btn" disabled={loading || page === 1} onClick={goPrev}>
         <img
           className="arrow-pg"
           src="/utils/arrow-left.svg"
@@ -51,7 +59,11 @@ function Pagination({ page, totalPages, onChange, loading = false }: Props) {
         ),
       )}
 
-      <button className="btn" disabled>
+      <button
+        className="btn"
+        disabled={loading || page === totalPages}
+        onClick={goNext}
+      >
         {t("listings.next")}
         <img
           className="arrow-pg"

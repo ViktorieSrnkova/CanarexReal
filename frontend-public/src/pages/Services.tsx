@@ -15,9 +15,11 @@ import beach from "../assets/beach.avif";
 import livingroom from "../assets/livingroom.avif";
 import villa from "../assets/villa.avif";
 import garden from "../assets/garden.avif";
+import { useAuth } from "../Auth/authStore";
 
 function Services() {
   const t = useT();
+  const { user } = useAuth();
   const navigate = useNavigate();
   const [similar, setSimilar] = useState<ListingThumbnail[]>([]);
   const [loadingSimilar, setLoadingSimilar] = useState(false);
@@ -38,7 +40,7 @@ function Services() {
     };
 
     loadSimilar();
-  }, [langId]);
+  }, [langId, user]);
 
   const list1 = t<string[]>("services.list1");
   const list2 = t<string[]>("services.list2");

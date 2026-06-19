@@ -1,5 +1,11 @@
 import { useEffect, useState } from "react";
-import { changePassword, getMe, updateMe } from "../api/user";
+import {
+  changePassword,
+  getMe,
+  subToNewsletter,
+  unsubFromNewsletter,
+  updateMe,
+} from "../api/user";
 import toast from "react-hot-toast";
 import type { MeResponse } from "../types/rawApi";
 import { z } from "zod";
@@ -97,6 +103,7 @@ function UserSettings() {
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [passwordModalOpen, setPasswordModalOpen] = useState(false);
+  const [isSubbed, setIsSubbed] = useState(false);
 
   const mapMeToForm = (data: MeResponse): FormState => ({
     jmeno: data.jmeno,
@@ -117,6 +124,7 @@ function UserSettings() {
           favoritesCount: data.favoritesCount,
           formsCount: data.formsCount,
         });
+        setIsSubbed(data.newsletter);
       } catch {
         toast.error(t("usrSettings.loadErr"));
       } finally {
@@ -156,8 +164,15 @@ function UserSettings() {
       await refreshUser();
       setEditing(false);
       toast.success(t("usrSettings.savedUsr"));
-    } catch {
-      toast.error(t("usrSettings.saveErr"));
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      const code = err?.response?.data?.code;
+
+      if (code === "EMAIL_ALREADY_EXISTS") {
+        toast.error(t("usrSettings.sameEmail"));
+      } else {
+        toast.error(t("usrSettings.saveErr"));
+      }
     }
   };
   const updateField = (field: keyof FormState, value: string) => {
@@ -261,6 +276,17 @@ function UserSettings() {
 
   if (loading) return <p>{t("general.loading")}</p>;
 
+  const toggleNewsletter = async () => {
+    const next = !isSubbed;
+    setIsSubbed(next);
+
+    try {
+      if (next) await subToNewsletter();
+      else await unsubFromNewsletter();
+    } catch {
+      setIsSubbed(!next);
+    }
+  };
   return (
     <>
       <div className="faq">
@@ -357,14 +383,28 @@ function UserSettings() {
                 </div>
               )}
             </div>
-            <Button
-              variant="primary"
-              onClick={() => setPasswordModalOpen(true)}
-              style={{ marginTop: "10px" }}
-            >
-              {t("usrSettings.change")}
-            </Button>
           </div>
+        </div>
+        <div className="button-section">
+          <Button
+            className="setting-btn"
+            variant="primary"
+            onClick={() => setPasswordModalOpen(true)}
+          >
+            {t("usrSettings.change")}
+          </Button>
+          <Button
+            className="setting-btn"
+            onClick={toggleNewsletter}
+            variant={!isSubbed ? "primary" : "secondary"}
+          >
+            {isSubbed ? t("form.cancelNewsletter") : t("form.newsletter")}
+          </Button>
+          <img
+            src="/pages/newsletter_graphic.svg"
+            alt="newsletter graphic"
+            loading="lazy"
+          />
         </div>
         <Modal
           open={passwordModalOpen}

@@ -11,3 +11,6 @@
   gap: 1rem;
   align-items: center;
 }
+.favorites .hp-cards-wrapper {
+  padding-bottom: 1rem;
+}

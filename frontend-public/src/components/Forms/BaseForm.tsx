@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useId } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -11,6 +11,7 @@ import { createForm } from "../../api/forms";
 import { useLang } from "../../hooks/i18n/useLang";
 import InqueryFormPartRHF from "./InqueryFormPartRHF";
 import { useAuth } from "../../Auth/authStore";
+import toast from "react-hot-toast";
 
 type Props =
   | { from: number; what: 1 }
@@ -21,6 +22,14 @@ type FormValues = ContactFormValues & Partial<InqueryFormValues>;
 
 export default function ContactForm(props: Props): React.ReactElement {
   const t = useT();
+  const id = useId();
+  const gdprId = `${id}-gdpr`;
+  const newsletterId = `${id}-newsletter`;
+  const nameId = `${id}-name`;
+  const surnameId = `${id}-surname`;
+  const emailId = `${id}-email`;
+  const phoneId = `${id}-phone`;
+  const textId = `${id}-text`;
   const { rich } = useAuth();
   const { lang } = useLang();
   const [submitStatus, setSubmitStatus] = useState<
@@ -40,6 +49,7 @@ export default function ContactForm(props: Props): React.ReactElement {
         gdpr: z.boolean().refine((val) => val === true, {
           message: t("form.required"),
         }),
+        newsletter: z.boolean(),
       })
       .superRefine((data, ctx) => {
         const fullPhone = `${data.phonePrefix}${data.phone}`;
@@ -102,12 +112,14 @@ export default function ContactForm(props: Props): React.ReactElement {
       priceTo: 2000000,
       sizeFrom: 0,
       sizeTo: 5000,
+      newsletter: false,
     },
   });
 
   const onSubmit = async (data: ContactFormValues): Promise<void> => {
     try {
       setSubmitStatus("idle");
+
       const payload = {
         ...data,
         fullPhone: `${data.phonePrefix}${data.phone}`,
@@ -115,15 +127,27 @@ export default function ContactForm(props: Props): React.ReactElement {
         what: props.what,
         ...(props.what === 2 ? { index: props.index } : {}),
       };
-      console.log(payload);
+
       await createForm(payload);
+
       setSubmitStatus("success");
       setSubmitMessage(t("form.success"));
       reset();
+
       setTimeout(() => {
         setSubmitStatus("idle");
       }, 4000);
-    } catch {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      const code = error.response?.data?.code;
+
+      if (code === "NEWSLETTER_EMAIL_MISMATCH") {
+        toast.error(
+          `${t("form.newsletterLog")} ${error.response.data.expectedEmail}`,
+        );
+        return;
+      }
+
       setSubmitStatus("error");
       setSubmitMessage(t("form.error"));
     }
@@ -194,10 +218,10 @@ export default function ContactForm(props: Props): React.ReactElement {
           )}
           <div className={props.what === 3 ? "long" : "grid-2"}>
             <div className="field">
-              <label htmlFor="name">{t("form.name")} *</label>
+              <label htmlFor={nameId}>{t("form.name")} *</label>
               <input
                 autoComplete="given-name"
-                id="name"
+                id={nameId}
                 {...register("name")}
                 className={errors.name ? "input error-input" : "input"}
               />
@@ -207,10 +231,10 @@ export default function ContactForm(props: Props): React.ReactElement {
             </div>
 
             <div className="field">
-              <label htmlFor="surname">{t("form.surname")} *</label>
+              <label htmlFor={surnameId}>{t("form.surname")} *</label>
               <input
                 autoComplete="family-name"
-                id="surname"
+                id={surnameId}
                 {...register("surname")}
                 className={errors.surname ? "input error-input" : "input"}
               />
@@ -220,10 +244,10 @@ export default function ContactForm(props: Props): React.ReactElement {
             </div>
 
             <div className="field">
-              <label htmlFor="email">{t("form.email")} *</label>
+              <label htmlFor={emailId}>{t("form.email")} *</label>
               <input
                 autoComplete="email"
-                id="email"
+                id={emailId}
                 type="email"
                 {...register("email")}
                 className={errors.email ? "input error-input" : "input"}
@@ -236,7 +260,7 @@ export default function ContactForm(props: Props): React.ReactElement {
             <div className="field">
               <span>{t("form.phone")} *</span>
 
-              <div id="phone-group" className="phone-row">
+              <div id={phoneId} className="phone-row">
                 <input
                   autoComplete="tel-country-code"
                   {...register("phonePrefix")}
@@ -274,9 +298,9 @@ export default function ContactForm(props: Props): React.ReactElement {
           <div
             className={`field full ${props.what === 3 ? "long" : ""} ${props.what === 2 ? "short" : ""}`}
           >
-            <label htmlFor="textarea">{t("form.text")} *</label>
+            <label htmlFor={textId}>{t("form.text")} *</label>
             <textarea
-              id="textarea"
+              id={textId}
               {...register("message")}
               placeholder={t("form.text_placeholder")}
               className={`input ${errors.message ? " error-input" : ""} ${
@@ -289,13 +313,23 @@ export default function ContactForm(props: Props): React.ReactElement {
           </div>
 
           <div className={`gdpr-col ${props.what === 3 ? "long" : ""}`}>
-            <label htmlFor="checkbox" className="gdpr">
-              <input id="checkbox" type="checkbox" {...register("gdpr")} />
+            <label htmlFor={gdprId} className="gdpr">
+              <input id={gdprId} type="checkbox" {...register("gdpr")} />
               <span>{t("form.gdpr")} *</span>
             </label>
             {errors.gdpr && (
               <span className="error">{errors.gdpr.message}</span>
             )}
+          </div>
+          <div className={`gdpr-col ${props.what === 3 ? "long" : ""}`}>
+            <label htmlFor={newsletterId} className="gdpr">
+              <input
+                id={newsletterId}
+                type="checkbox"
+                {...register("newsletter")}
+              />
+              <span>{t("form.newsletter")}</span>
+            </label>
           </div>
           <input
             type="text"

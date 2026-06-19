@@ -75,7 +75,7 @@ function SingleListing() {
     };
 
     load();
-  }, [id, langId]);
+  }, [id, langId, user]);
   useEffect(() => {
     if (!detail) return;
 
@@ -125,7 +125,7 @@ function SingleListing() {
     };
 
     loadSimilar();
-  }, [id, langId]);
+  }, [id, langId, user]);
   useEffect(() => {
     if (!detail) return;
 
