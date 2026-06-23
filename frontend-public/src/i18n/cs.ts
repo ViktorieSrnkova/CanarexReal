@@ -520,4 +520,13 @@ export const cs = {
     unsubscribe: "Zrušit odběr",
     unsubscribeConfirm: "Opravdu si přejete zrušit odběr newsletteru?",
   },
+  reviews: {
+    title: "Google Recenze",
+    button: "Ohodnoťte nás na Google",
+    translatedWith: "Přeloženo přes DeepL",
+    showOriginal: "Zobrazit originál",
+    showTranslation: "Zobrazit překlad",
+    showMore: "Zobrazit víc",
+    showLess: "Zobrazit míň",
+  },
 };

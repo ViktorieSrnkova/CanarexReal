@@ -117,3 +117,10 @@
 .mobile {
   display: none;
 }
+.reviews {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+}

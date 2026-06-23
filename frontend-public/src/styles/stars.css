@@ -1,0 +1,28 @@
+.wrapper-rating-stars {
+  display: flex;
+  gap: 4px;
+}
+
+.star-wrapper {
+  position: relative;
+  overflow: hidden;
+}
+
+.star-wrapper::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("/general/star.svg") no-repeat center;
+  background-size: contain;
+  opacity: 0.2;
+}
+
+.star-fill {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.star-fill img {
+  display: block;
+}

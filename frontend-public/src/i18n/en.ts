@@ -522,4 +522,13 @@ export const en = {
     unsubscribeConfirm:
       "Are you sure you want to unsubscribe from the newsletter?",
   },
+  reviews: {
+    title: "Google Reviews",
+    button: "Rate us on Google",
+    translatedWith: "Translated with DeepL",
+    showOriginal: "See original",
+    showTranslation: "See translation",
+    showMore: "Read more",
+    showLess: "Read less",
+  },
 };

@@ -15,6 +15,7 @@ import CardSkeleton from "../components/Listing/SkeletonCard";
 import { useAuth } from "../Auth/authStore";
 import { addFavorite, removeFavorite } from "../api/favorites";
 import toast from "react-hot-toast";
+import Reviews from "../components/Reviews/Reviews";
 
 function HomePage() {
   const navigate = useNavigate();
@@ -206,6 +207,10 @@ function HomePage() {
         alt="vlnka-white-to-gray"
         loading="lazy"
       />
+      <div className="reviews gray">
+        <Reviews />
+      </div>
+
       <img
         className="wawe mobile"
         src="/general/small-vlnka-gray-white.svg"

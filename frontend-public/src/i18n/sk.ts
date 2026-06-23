@@ -522,4 +522,13 @@ export const sk = {
     unsubscribe: "Zrušiť odber",
     unsubscribeConfirm: "Naozaj chcete zrušiť odber newslettra?",
   },
+  reviews: {
+    title: "Recenzie na Google",
+    button: "Ohodnoťte nás na Google",
+    translatedWith: "Preložené cez DeepL",
+    showOriginal: "Zobraziť  originál",
+    showTranslation: "Zobraziť  preklad",
+    showMore: "Zobraziť viac",
+    showLess: "Zobraziť menej",
+  },
 };
