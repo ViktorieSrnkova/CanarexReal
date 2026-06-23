@@ -274,16 +274,16 @@ model uzivatele {
   email                 String                  @unique(map: "unique_email") @db.VarChar(50)
   heslo_hash            String
   jmeno                 String                  @db.VarChar(100)
-  prijmeni                   String?                       @db.VarChar(100)
-  telefon                    String?                       @db.VarChar(20)
   datum_vytvoreni       DateTime                @default(now()) @db.Timestamp(6)
   role_id               Int?
   reset_token           String?                 @db.VarChar(255)
-  reset_token_expirace  DateTime?              @db.Timestamp(6)
+  reset_token_expirace  DateTime?               @db.Timestamp(6)
+  prijmeni              String?                 @db.VarChar(100)
+  telefon               String?                 @db.VarChar(20)
+  odber_newsletter      odber_newsletter?
   role                  role?                   @relation(fields: [role_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "role_id")
   uzivatelske_formulare uzivatelske_formulare[]
   uzivatelske_oblibene  uzivatelske_oblibene[]
-  odber_newsletter      odber_newsletter?
 }
 
 model uzivatelske_formulare {
@@ -315,16 +315,12 @@ model staty {
 }
 
 model odber_newsletter {
-  id                String    @id @default(uuid())
-
-  uzivatel_id       Int?      @unique
-  email             String?   @unique
-  telefon           String?  
-
-  ma_odber          Boolean   @default(true)
-
-  datum_odberu      DateTime  @default(now())
-  datum_zruseni     DateTime?
-
-  uzivatel          uzivatele? @relation(fields: [uzivatel_id], references: [id], onDelete: Cascade)
+  id            String     @id @default(uuid())
+  uzivatel_id   Int?       @unique
+  email         String?    @unique
+  telefon       String?
+  ma_odber      Boolean    @default(true)
+  datum_odberu  DateTime   @default(now())
+  datum_zruseni DateTime?
+  uzivatel      uzivatele? @relation(fields: [uzivatel_id], references: [id], onDelete: Cascade)
 }
