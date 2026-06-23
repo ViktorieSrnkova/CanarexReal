@@ -34,6 +34,7 @@ import Favorite from "../components/General/Favorite";
 import { useListings } from "../hooks/useListings";
 import { useAuth } from "../Auth/authStore";
 import toast from "react-hot-toast";
+import Reviews from "../components/Reviews/Reviews";
 
 function SingleListing() {
   const t = useT();
@@ -447,6 +448,9 @@ function SingleListing() {
         alt="vlnka-white-to-gray"
         loading="lazy"
       />
+      <div className="reviews gray">
+        <Reviews />
+      </div>
       <img
         className="wawe mobile"
         src="/general/small-vlnka-gray-white.svg"
