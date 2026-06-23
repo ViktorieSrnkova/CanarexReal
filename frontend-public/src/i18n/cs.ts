@@ -156,6 +156,8 @@ export const cs = {
   },
   general: {
     loading: "Načítání ...",
+    ok: "OK",
+    cancel: "Zrušit",
   },
   carrousel: {
     title: "Nabídka nemovitostí",
@@ -506,9 +508,16 @@ export const cs = {
     check: "Potvrzení hesla",
     saving: "Ukládám...",
     sameEmail: "Zadaný email už patří jinému uživateli.",
+    newsletterSub: "Úspěšně jste se přihlásili k newsletteru.",
+    newsletterUnsub: "Už neodebíráte newsletter.",
   },
   home: {
     news: "Novinky",
     status: "NOVÉ",
+  },
+  newsletter: {
+    cancel: "Zachovat",
+    unsubscribe: "Zrušit odběr",
+    unsubscribeConfirm: "Opravdu si přejete zrušit odběr newsletteru?",
   },
 };

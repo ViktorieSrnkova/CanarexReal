@@ -10,11 +10,13 @@ import { LANGUAGE_TO_ID } from "../types/general";
 import { getFavoritesList, removeFavorite } from "../api/favorites";
 import ConfirmModal from "../components/General/ConfirmModal";
 import "../styles/pages/favorites.css";
+import { useT } from "../i18n";
 
 function Favorites() {
   const { page, setPage } = useListings({
     paginated: true,
   });
+  const t = useT();
   const { lang } = useLang();
   const langId = LANGUAGE_TO_ID[lang];
   const [listings, setListings] = useState<ListingThumbnail[]>([]);
@@ -108,6 +110,9 @@ function Favorites() {
         )}
         <ConfirmModal
           open={confirmOpen}
+          title={t("favorites.confirm")}
+          confirmText={t("favorites.ok")}
+          cancelText={t("favorites.cancel")}
           onCancel={() => {
             setConfirmOpen(false);
             setSelectedId(null);

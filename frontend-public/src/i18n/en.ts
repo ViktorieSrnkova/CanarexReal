@@ -509,9 +509,17 @@ export const en = {
     saving: "Saving...",
     sameEmail:
       "The email address you entered is already taken by another user.",
+    newsletterSub: "You have successfully subscribed to the newsletter.",
+    newsletterUnsub: "You are no longer subscribed to the newsletter.",
   },
   home: {
     news: "New listings",
     status: "NEW",
+  },
+  newsletter: {
+    cancel: "Keep",
+    unsubscribe: "Unsubscribe",
+    unsubscribeConfirm:
+      "Are you sure you want to unsubscribe from the newsletter?",
   },
 };

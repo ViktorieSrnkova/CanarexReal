@@ -510,9 +510,16 @@ export const sk = {
     check: "Potvrdenie hesla",
     saving: "Ukladám...",
     sameEmail: "Zadaná e-mailová adresa už patrí inému používateľovi.",
+    newsletterSub: "Úspešne ste sa prihlásili k odberu newslettra.",
+    newsletterUnsub: "Newsletter už neodoberáte.",
   },
   home: {
     news: "Novinky",
     status: "NOVÉ",
+  },
+  newsletter: {
+    cancel: "Zachovať",
+    unsubscribe: "Zrušiť odber",
+    unsubscribeConfirm: "Naozaj chcete zrušiť odber newslettra?",
   },
 };

@@ -18,6 +18,7 @@ import type { FormState, PasswordForm } from "../types/users";
 import { useT } from "../i18n";
 import "../styles/pages/settings.css";
 import { useAuth } from "../Auth/authStore";
+import ConfirmModal from "../components/General/ConfirmModal";
 
 const profileSchema = (t: ReturnType<typeof useT>) =>
   z.object({
@@ -104,6 +105,7 @@ function UserSettings() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [passwordModalOpen, setPasswordModalOpen] = useState(false);
   const [isSubbed, setIsSubbed] = useState(false);
+  const [showUnsubConfirm, setShowUnsubConfirm] = useState(false);
 
   const mapMeToForm = (data: MeResponse): FormState => ({
     jmeno: data.jmeno,
@@ -277,14 +279,28 @@ function UserSettings() {
   if (loading) return <p>{t("general.loading")}</p>;
 
   const toggleNewsletter = async () => {
-    const next = !isSubbed;
-    setIsSubbed(next);
+    if (isSubbed) {
+      setShowUnsubConfirm(true);
+      return;
+    }
+    setIsSubbed(true);
+    try {
+      await subToNewsletter();
+      toast.success(t("usrSettings.newsletterSub"));
+    } catch {
+      setIsSubbed(false);
+    }
+  };
+
+  const confirmUnsubscribe = async () => {
+    setShowUnsubConfirm(false);
+    setIsSubbed(false);
 
     try {
-      if (next) await subToNewsletter();
-      else await unsubFromNewsletter();
+      await unsubFromNewsletter();
+      toast.success(t("usrSettings.newsletterUnsub"));
     } catch {
-      setIsSubbed(!next);
+      setIsSubbed(true);
     }
   };
   return (
@@ -502,6 +518,14 @@ function UserSettings() {
             </Button>
           </div>
         </Modal>
+        <ConfirmModal
+          open={showUnsubConfirm}
+          title={t("newsletter.unsubscribeConfirm")}
+          confirmText={t("newsletter.unsubscribe")}
+          cancelText={t("newsletter.cancel")}
+          onCancel={() => setShowUnsubConfirm(false)}
+          onConfirm={confirmUnsubscribe}
+        />
       </div>
     </>
   );
