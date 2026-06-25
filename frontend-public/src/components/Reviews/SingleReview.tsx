@@ -64,7 +64,12 @@ function SingleReview(props: Props) {
         </div>
 
         <div className="who-when">
-          <a href={props.reviewLink} className="review-link">
+          <a
+            href={props.reviewLink}
+            className="review-link"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <h3>{props.name}</h3>
           </a>
 

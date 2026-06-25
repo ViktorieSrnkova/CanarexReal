@@ -23,6 +23,7 @@ import { ProtectedRoute } from "../Auth/protectedRoute";
 import UserSettings from "../pages/UserSettings";
 import Favorites from "../pages/Favorites";
 import ResetPassword from "../pages/ResetPassword";
+import Forms from "../pages/Forms";
 
 export default function Router() {
   const [rates, setRates] = useState<FxRates | null>(null);
@@ -97,6 +98,14 @@ export default function Router() {
               element={
                 <ProtectedRoute>
                   <Favorites />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="forms"
+              element={
+                <ProtectedRoute>
+                  <Forms />
                 </ProtectedRoute>
               }
             />

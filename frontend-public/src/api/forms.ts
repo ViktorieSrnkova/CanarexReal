@@ -2,6 +2,7 @@ import { api } from "./axios";
 import type {
   ContactFormPayload,
   DetailListingPayload,
+  FormDetail,
   InqueryPayload,
 } from "../types/forms";
 
@@ -12,4 +13,9 @@ export const createForm = async (
 ): Promise<{ message: string }> => {
   const { data } = await api.post("/forms", payload);
   return data;
+};
+
+export const getUserForms = async (): Promise<FormDetail[]> => {
+  const { data } = await api.get("/forms/me");
+  return data.forms;
 };

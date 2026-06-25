@@ -224,20 +224,43 @@ router.get("/home", optionalUser, async (req: AuthRequest, res) => {
       .json({ message: "Internal server error", error: String(err) });
   }
 });
-router.get("/thumb/:id", async (req: PublicRequest, res) => {
+router.get("/thumb", async (req: PublicRequest, res) => {
   try {
-    const id = Number(req.params.id);
+    const parseNumber = (v: unknown) =>
+      typeof v === "string" && v !== "" ? Number(v) : undefined;
+
+    const id = parseNumber(req.query.id);
+    const index = parseNumber(req.query.index);
+
     const langId = req.langId ?? 2;
 
-    const thumb = await prisma.inzeraty.findUnique({
-      where: {
-        id,
-        inzeraty_preklady: {
-          some: {
-            jazyky_id: langId,
-          },
-        },
-      },
+    if ((id && index) || (!id && !index)) {
+      return res.status(400).json({
+        code: "INVALID_QUERY",
+      });
+    }
+
+    const where =
+      id !== undefined
+        ? {
+            id,
+            inzeraty_preklady: {
+              some: {
+                jazyky_id: langId,
+              },
+            },
+          }
+        : {
+            index: index!,
+            inzeraty_preklady: {
+              some: {
+                jazyky_id: langId,
+              },
+            },
+          };
+
+    const thumb = await prisma.inzeraty.findFirst({
+      where,
       select: listingThumbnailSelect(langId),
     });
 

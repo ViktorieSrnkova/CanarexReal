@@ -19,6 +19,7 @@ import { useT } from "../i18n";
 import "../styles/pages/settings.css";
 import { useAuth } from "../Auth/authStore";
 import ConfirmModal from "../components/General/ConfirmModal";
+import { Link } from "react-router-dom";
 
 const profileSchema = (t: ReturnType<typeof useT>) =>
   z.object({
@@ -329,15 +330,23 @@ function UserSettings() {
                 </tr>
                 <tr>
                   <td>{t("form.phone")}: </td>
-                  <td>{form.telefon}</td>
+                  <td className="number">{form.telefon}</td>
                 </tr>
                 <tr>
                   <td>{t("usrSettings.numFav")} </td>
-                  <td>{stats.favoritesCount}</td>
+                  <td>
+                    <Link to="/favorites" className="number">
+                      {stats.favoritesCount}
+                    </Link>
+                  </td>
                 </tr>
                 <tr>
                   <td>{t("usrSettings.numForm")}</td>
-                  <td>{stats.formsCount}</td>
+                  <td>
+                    <Link to="/forms" className="number">
+                      {stats.formsCount}
+                    </Link>
+                  </td>
                 </tr>
               </tbody>
             </table>

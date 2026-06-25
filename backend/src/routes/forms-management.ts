@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { requireRole, type AuthRequest } from "../middleware/auth.js";
 import prisma from "../lib/db.js";
+import { fullFormSelect } from "../lib/prismaSelect.js";
 
 const router = Router();
 router.use(requireRole([1, 3]));
@@ -51,62 +52,7 @@ router.get("/:id", async (req, res) => {
 
     const form = await prisma.formulare.findUnique({
       where: { id },
-      select: {
-        id: true,
-        datum_vytvoreni: true,
-        jmeno: true,
-        prijmeni: true,
-        email: true,
-        telefon: true,
-        index_inzeratu: true,
-        prilet: true,
-        revidovano: true,
-        text_zpravy: true,
-        rozpocet_od: true,
-        rozpocet_do: true,
-        velikost_do: true,
-        velikost_od: true,
-        pocet_loznic: true,
-        pocet_koupelen: true,
-
-        vi_prilet: true,
-
-        odkud_formular: {
-          select: {
-            id: true,
-            nazev: true,
-          },
-        },
-
-        typy_formulare: {
-          select: {
-            id: true,
-            nazev: true,
-          },
-        },
-
-        formulare_typy_nemovitosti: {
-          select: {
-            typy_nemovitosti: {
-              select: {
-                id: true,
-              },
-            },
-          },
-        },
-
-        uzivatelske_formulare: {
-          select: {
-            uzivatele: {
-              select: {
-                id: true,
-                email: true,
-              },
-            },
-          },
-          take: 1,
-        },
-      },
+      select: fullFormSelect,
     });
 
     if (!form) {

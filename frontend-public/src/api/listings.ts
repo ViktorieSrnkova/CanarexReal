@@ -58,17 +58,24 @@ export const getListingsThumbs = async (
   return data;
 };
 
-export const getListingById = async (
-  id: string | number,
+type ListingThumbQuery =
+  | { id: number; index?: never }
+  | { index: number; id?: never };
+
+export const getListingByThumb = async (
+  params: ListingThumbQuery,
   langId: number,
 ): Promise<ListingThumbnail> => {
-  const { data } = await api.get(`/listings/thumb/${id}`, {
+  const { data } = await api.get("/listings/thumb", {
+    params,
     headers: {
       "x-lang-id": langId,
     },
   });
+
   return data.thumb;
 };
+
 export const getSimilarListings = async (
   id: number | string,
   langId: number,

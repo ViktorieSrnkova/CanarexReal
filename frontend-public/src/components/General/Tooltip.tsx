@@ -4,10 +4,11 @@ type Props = {
   message: string;
   top?: number;
   left?: number;
+  right?: number;
 };
-function Tooltip({ message, top = 0, left = 0 }: Props) {
+function Tooltip({ message, top = 0, left, right }: Props) {
   return (
-    <div className="tooltip-wrapper" style={{ top, left }}>
+    <div className="tooltip-wrapper" style={{ top, left, right }}>
       {message}
       <div className="tooltip-arrow" />
     </div>

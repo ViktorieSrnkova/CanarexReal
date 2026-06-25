@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useMemo, useState, lazy, Suspense } from "react";
 import type { ListingDetailResponse, ListingThumbnail } from "../types/rawApi";
 import {
-  getListingById,
+  getListingByThumb,
   getListingDetail,
   getSimilarListings,
 } from "../api/listings";
@@ -57,7 +57,7 @@ function SingleListing() {
 
     const load = async () => {
       try {
-        const data = await getListingById(id, langId);
+        const data = await getListingByThumb({ id: Number(id) }, langId);
         setListing(data);
         const detail = await getListingDetail(id, langId);
         setDetail(detail);
@@ -269,7 +269,7 @@ function SingleListing() {
               <Favorite
                 list={false}
                 top={-32}
-                left={-95}
+                right={0}
                 favorited={isFavorite}
                 onToggleFavorite={() => handleToggle()}
               />
@@ -277,7 +277,13 @@ function SingleListing() {
             <div
               onMouseEnter={() => setHoveredIcon("copy")}
               onMouseLeave={() => setHoveredIcon(null)}
-              style={{ position: "relative" }}
+              style={{
+                position: "relative",
+                width: "3rem",
+                cursor: "pointer",
+                display: "flex",
+                justifyContent: "center",
+              }}
             >
               <img
                 onClick={handleCopy}
@@ -291,11 +297,7 @@ function SingleListing() {
                 alt="copy link"
               />
               {hoveredIcon === "copy" && (
-                <Tooltip
-                  message="Zkopírovat URL inzerátu"
-                  top={-34}
-                  left={-105}
-                />
+                <Tooltip message={t("listing.copy")} top={-34} right={0} />
               )}
             </div>
           </div>
@@ -310,7 +312,7 @@ function SingleListing() {
               <Favorite
                 list={false}
                 top={-32}
-                left={-95}
+                right={0}
                 favorited={isFavorite}
                 onToggleFavorite={() => handleToggle()}
               />

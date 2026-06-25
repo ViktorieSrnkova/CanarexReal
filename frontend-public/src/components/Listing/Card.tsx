@@ -20,7 +20,7 @@ type Props = {
   fetchpriority?: boolean;
   favorited?: boolean;
   onToggleFavorite?: () => void;
-  isHomepage?: boolean;
+  inForms?: boolean;
 };
 const VITE_API_URL = import.meta.env.VITE_API_URL;
 function Card(props: Props) {
@@ -41,7 +41,7 @@ function Card(props: Props) {
           {props.status}
         </div>
       </Link>
-      {props.isHomepage ?? (
+      {!props.inForms && (
         <div
           style={{
             position: "absolute",
@@ -68,7 +68,7 @@ function Card(props: Props) {
             onToggleFavorite={props.onToggleFavorite}
             list={true}
             top={-16}
-            left={-60}
+            right={0}
           />
         </div>
       )}

@@ -60,3 +60,39 @@ export type FormValues = {
   arrival?: Date | null;
 };
 export type InquiryFormPatch = Partial<FormValues>;
+
+export interface FormSummary {
+  id: number;
+  jmeno: string;
+  prijmeni: string;
+  email: string;
+  telefon: string;
+  revidovano: boolean;
+  datum_vytvoreni: string;
+  odkud_formular?: {
+    nazev: string;
+  };
+
+  typy_formulare?: {
+    id: number;
+    nazev: string;
+  };
+}
+
+export interface FormDetail extends FormSummary {
+  pocet_loznic?: number[];
+  pocet_koupelen?: number[];
+  rozpocet_od?: number;
+  rozpocet_do?: number;
+  velikost_do?: number;
+  velikost_od?: number;
+  index_inzeratu?: string;
+  prilet?: string;
+  vi_prilet?: boolean;
+  text_zpravy?: string;
+  formulare_typy_nemovitosti?: {
+    typy_nemovitosti: {
+      id: number;
+    };
+  }[];
+}

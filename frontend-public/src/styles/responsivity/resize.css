@@ -252,6 +252,10 @@
     margin-bottom: 0 !important;
     z-index: 0;
   }
+  .button {
+    height: 2.25rem !important;
+    font-size: 0.813em !important ;
+  }
 }
 @media screen and (max-width: 850px) {
   .contact .details-form {
@@ -301,9 +305,11 @@
   .pict-det {
     padding-left: 0.25rem !important;
   }
-  .listing-hero-icons,
-  .listing-hero-icons img {
-    height: 0.875rem;
+  .toggle-btn {
+    width: 100%;
+  }
+  .filters .filter-type {
+    width: unset !important;
   }
   .gallery {
     flex-direction: column !important;
@@ -433,6 +439,10 @@
   }
   .padded-subtitle {
     margin-bottom: 0 !important ;
+    text-align: center;
+  }
+  .contact h2 {
+    text-align: center;
   }
   .pc {
     display: none !important;
@@ -557,10 +567,6 @@
   .hero h2 {
     font-size: 1.15rem !important;
   }
-  .button {
-    height: 2.25rem !important;
-    font-size: 0.813em !important ;
-  }
 
   .content {
     padding: 0 !important;
@@ -672,11 +678,13 @@
     display: none;
   }
 }
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 500px) {
   .long {
     display: flex !important;
     flex-direction: column;
   }
+}
+@media screen and (max-width: 400px) {
   .toggle-group {
     gap: 0.25rem !important;
     flex-wrap: wrap;

@@ -5,7 +5,7 @@ import "../../styles/reviews.css";
 import SingleReview from "./SingleReview";
 import RatingStars from "./RatingStars";
 import { reviews } from "../../data/reviews.ts";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const generateWhenAgo = (when: Date, locale: "cs" | "sk" | "en"): string => {
   const now = new Date();
@@ -42,13 +42,17 @@ function Reviews() {
   const t = useT();
   const { lang } = useLang();
   const [startIndex, setStartIndex] = useState(0);
+  const [visibleCards, setVisibleCards] = useState(3);
 
   const reviewsArray = Object.values(reviews);
   const averageRating =
     reviewsArray.reduce((sum, review) => sum + review.rating, 0) /
     reviewsArray.length;
-  const visibleCards = 3;
-  const maxIndex = reviewsArray.length - visibleCards;
+  const maxIndex = Math.max(0, reviewsArray.length - visibleCards);
+  const totalPositions = maxIndex + 1;
+  const CARD_WIDTH = 320;
+  const GAP = 32;
+  const STEP = CARD_WIDTH + GAP;
 
   const next = () => {
     setStartIndex((prev) => (prev >= maxIndex ? 0 : prev + 1));
@@ -57,10 +61,23 @@ function Reviews() {
   const prev = () => {
     setStartIndex((prev) => (prev <= 0 ? maxIndex : prev - 1));
   };
-  const totalPositions = reviewsArray.length - visibleCards + 1;
-  const CARD_WIDTH = 320;
-  const GAP = 32;
-  const STEP = CARD_WIDTH + GAP;
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth <= 780) {
+        setVisibleCards(1);
+      } else if (window.innerWidth <= 1112) {
+        setVisibleCards(2);
+      } else {
+        setVisibleCards(3);
+      }
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
   return (
     <div className="reviews-wrapper">
       <div className="top-section">
@@ -80,7 +97,9 @@ function Reviews() {
           rel="noopener noreferrer"
           style={{ textDecoration: "none" }}
         >
-          <Button variant="primary">{t("reviews.button")}</Button>
+          <Button variant="primary" className="w-600">
+            {t("reviews.button")}
+          </Button>
         </a>
       </div>
       <div className="review-carrousel">

@@ -13,3 +13,11 @@ export type FxRates = {
   CZK: number;
   GBP: number;
 };
+
+export const PROPERTY_TYPE_LABELS: Record<number, string> = {
+  1: "Apartmán",
+  2: "Vila",
+  3: "Dům",
+  4: "Garsonka",
+  5: "Pozemek",
+};

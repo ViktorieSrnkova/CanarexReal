@@ -123,6 +123,14 @@ function Navbar({ onLinkClick }: Props) {
                       </NavLink>
                     </li>
                     <li>
+                      <NavLink
+                        to="/forms"
+                        onClick={() => setUserMenuOpen(false)}
+                      >
+                        {t("auth.forms")}
+                      </NavLink>
+                    </li>
+                    <li>
                       <NavLink to="/me" onClick={() => setUserMenuOpen(false)}>
                         {t("auth.settings")}
                       </NavLink>

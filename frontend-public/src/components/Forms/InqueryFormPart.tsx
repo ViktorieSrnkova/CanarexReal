@@ -33,6 +33,7 @@ export default function InqueryFormPart({
   return (
     <div className="inquiry-form">
       <ToggleGroup
+        className="filter-type"
         label={t("form.type")}
         options={[
           { label: t("property_type.vila"), value: 3 },

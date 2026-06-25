@@ -8,10 +8,18 @@ type Props = {
   onToggleFavorite?: () => void;
   list: boolean;
   top: number;
-  left: number;
+  left?: number;
+  right?: number;
 };
 
-function Favorite({ favorited, onToggleFavorite, list, top, left }: Props) {
+function Favorite({
+  favorited,
+  onToggleFavorite,
+  list,
+  top,
+  left,
+  right,
+}: Props) {
   const [hoveredIcon, setHoveredIcon] = useState<"like" | null>(null);
   const t = useT();
   return (
@@ -34,6 +42,7 @@ function Favorite({ favorited, onToggleFavorite, list, top, left }: Props) {
           message={favorited ? t("favorites.remove") : t("favorites.add")}
           top={top}
           left={left}
+          right={right}
         />
       )}
     </div>

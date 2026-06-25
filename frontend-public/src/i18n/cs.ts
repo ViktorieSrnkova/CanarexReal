@@ -49,6 +49,7 @@ export const cs = {
     favorites: "Oblíbené",
     settings: "Nastavení profilu",
     logout: "Odhlásit se",
+    forms: "Formuláře",
   },
   header: {
     home: "Domů",
@@ -173,6 +174,7 @@ export const cs = {
     city: "Město:",
     collapsed: "zobrazit celý popis",
     expanded: "zobrazit méně",
+    copy: "Zkopírovat URL inzerátu",
   },
   news: {
     title: "Novinky a informace o Tenerife",

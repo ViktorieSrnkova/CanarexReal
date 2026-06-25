@@ -48,6 +48,7 @@ export const en = {
     favorites: "Favorites",
     settings: "Profile settings",
     logout: "Logout",
+    forms: "Forms",
   },
   header: {
     home: "Home",
@@ -171,6 +172,7 @@ export const en = {
     city: "City:",
     collapsed: "show full description",
     expanded: "show less",
+    copy: "Copy listing URL",
   },
   news: {
     title: "News and Information about Tenerife",

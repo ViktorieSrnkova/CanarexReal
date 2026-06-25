@@ -6,7 +6,12 @@ import {
   sendContactEmail,
 } from "../services/email.js";
 import { contactFormLimiter } from "../middleware/rateLimit.js";
-import { optionalUser, type AuthRequest } from "../middleware/auth.js";
+import {
+  optionalUser,
+  requireUser,
+  type AuthRequest,
+} from "../middleware/auth.js";
+import { fullFormSelect } from "../lib/prismaSelect.js";
 
 const router = Router();
 router.use(detectLang);
@@ -172,5 +177,30 @@ router.post(
     }
   },
 );
+router.get("/me", requireUser, async (req: AuthRequest, res) => {
+  try {
+    if (req.user?.userId) {
+      const forms = await prisma.formulare.findMany({
+        where: {
+          uzivatelske_formulare: {
+            some: {
+              uzivatele_id: req.user.userId,
+            },
+          },
+        },
+        orderBy: { id: "desc" },
+        select: fullFormSelect,
+      });
+
+      return res.json({ forms });
+    }
+  } catch (err) {
+    console.error("user forms error:", err);
+    return res.status(500).json({
+      message: "Internal server error",
+      error: String(err),
+    });
+  }
+});
 
 export default router;

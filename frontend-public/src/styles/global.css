@@ -68,3 +68,6 @@ button {
 .bold-num {
   font-family: "Roboto", sans-serif;
 }
+.w-600 {
+  font-weight: 600;
+}

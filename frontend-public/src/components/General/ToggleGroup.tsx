@@ -6,6 +6,7 @@ type Props<T extends number> = {
   value: T[];
   onChange: (value: T[]) => void;
   label: string;
+  className?: string;
 };
 
 export default function ToggleGroup<T extends number>({
@@ -13,6 +14,7 @@ export default function ToggleGroup<T extends number>({
   value,
   onChange,
   label,
+  className,
 }: Props<T>) {
   const toggle = (val: T) => {
     if (value.includes(val)) {
@@ -28,6 +30,7 @@ export default function ToggleGroup<T extends number>({
       <div className="toggle-group">
         {options.map((opt) => (
           <ToggleButton
+            className={className}
             key={opt.value}
             label={opt.label}
             active={value.includes(opt.value)}
