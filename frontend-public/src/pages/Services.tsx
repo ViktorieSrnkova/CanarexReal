@@ -16,8 +16,15 @@ import livingroom from "../assets/livingroom.avif";
 import villa from "../assets/villa.avif";
 import garden from "../assets/garden.avif";
 import { useAuth } from "../Auth/authStore";
+import useImagePreloader from "../hooks/useImagePreloader";
+import Vlnka from "/general/vlnka-white-gray.svg";
+import MobileVlnka from "/general/small-vlnka-white-gray.svg";
+
+const preloadSrcList: string[] = [stan, Vlnka, MobileVlnka];
 
 function Services() {
+  const { imagesPreloaded } = useImagePreloader(preloadSrcList);
+
   const t = useT();
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -49,6 +56,10 @@ function Services() {
   const list5 = t<string[]>("services.list5");
   const list6 = t<string[]>("services.list6");
   const list7 = t<string[]>("services.list7");
+
+  if (!imagesPreloaded) {
+    return <p>Preloading Assets</p>;
+  }
   return (
     <>
       <SEO
@@ -60,7 +71,12 @@ function Services() {
       <div className="white faq serv beggining">
         <h1>{t("services.title")}</h1>
         <div className="s-first">
-          <img className="services-img stan pc" src={stan} alt="Stan Srnka" />
+          <img
+            className="services-img stan pc"
+            src={stan}
+            alt="Stan Srnka"
+            fetchPriority="high"
+          />
           <div className="s-text">
             <h2>{t("services.subtitle1")}</h2>
             <span>
@@ -92,13 +108,15 @@ function Services() {
       </div>
       <img
         className="wawe"
-        src="/general/vlnka-white-gray.svg"
+        src={Vlnka}
         alt="vlnka-white-to-gray"
+        fetchPriority="high"
       />
       <img
         className="wawe mobile"
-        src="/general/small-vlnka-white-gray.svg"
+        src={MobileVlnka}
         alt="vlnka-white-to-gray"
+        fetchPriority="high"
       />
       <div className="gray faq serv">
         <div className="s-first">

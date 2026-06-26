@@ -3,6 +3,7 @@ import "../../styles/listing/card.css";
 import { formatMoneyEUR } from "../../utils/formatting";
 import { useLang } from "../../hooks/i18n/useLang";
 import Favorite from "../General/Favorite";
+import { useState } from "react";
 
 type Props = {
   id: number;
@@ -25,9 +26,17 @@ type Props = {
 const VITE_API_URL = import.meta.env.VITE_API_URL;
 function Card(props: Props) {
   const { lang } = useLang();
+  const [loading, setLoading] = useState(false);
+  const handleNavigate = () => {
+    setLoading(true);
+  };
   return (
     <div className={`card ${props.status_id === 2 ? "status-2-active" : ""}`}>
-      <Link to={`/${lang}/listings/${props.id}`} className="card-image">
+      <Link
+        to={`/${lang}/listings/${props.id}`}
+        className="card-image"
+        onClick={handleNavigate}
+      >
         <img
           loading={props.fetchpriority ? "eager" : "lazy"}
           fetchPriority={props.fetchpriority ? "high" : "auto"}
@@ -37,6 +46,11 @@ function Card(props: Props) {
           width={"315"}
           height={"218"}
         />
+        {loading && (
+          <div className="image-loader-overlay">
+            <div className="spinner" />
+          </div>
+        )}
         <div className={`card-status status-${props.status_id}`}>
           {props.status}
         </div>
@@ -76,7 +90,11 @@ function Card(props: Props) {
       <div className="card-first-row">
         <div className="card-location">
           <img src="/utils/map-pin.svg" alt="map pin" loading="lazy" />
-          <Link to={`/${lang}/listings/${props.id}`} className="card-loc-link">
+          <Link
+            to={`/${lang}/listings/${props.id}`}
+            className="card-loc-link"
+            state={{ scrollToMap: true }}
+          >
             {props.lokace}
           </Link>
         </div>

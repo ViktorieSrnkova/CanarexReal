@@ -5,8 +5,20 @@ import BaseForm from "../components/Forms/BaseForm";
 import { useT } from "../i18n";
 import "../styles/pages/contact.css";
 import SEO from "../components/SEO/Meta";
+
+import Stan from "/contact/stan.webp";
+import Chloe from "/contact/chloe.webp";
+import useImagePreloader from "../hooks/useImagePreloader";
+
+const preloadSrcList: string[] = [Stan, Chloe];
+
 function Contact() {
+  const { imagesPreloaded } = useImagePreloader(preloadSrcList);
+
   const t = useT();
+  if (!imagesPreloaded) {
+    return <p>Preloading Assets</p>;
+  }
   return (
     <>
       <SEO
@@ -33,7 +45,7 @@ function Contact() {
             phoneSecondary="+34 604 198 470"
             email="stan@canarexreal.com"
             alt="Stanislav Srnka"
-            image="/contact/stan.webp"
+            image={Stan}
             flagPath={["/flags/cz.svg", "/flags/es.svg"]}
             flagAlts={["cz flag", "es flag"]}
           />
@@ -43,7 +55,7 @@ function Contact() {
             phoneMain="+421 919 490 980"
             email="chloe@canarexreal.com"
             alt="Chloe Golem"
-            image="/contact/chloe.webp"
+            image={Chloe}
             flagPath={["/flags/sk.svg"]}
             flagAlts={["sk flag"]}
           />

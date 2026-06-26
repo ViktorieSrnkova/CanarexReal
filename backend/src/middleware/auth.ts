@@ -1,66 +1,66 @@
 import type { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 export interface AuthRequest extends Request {
-	user?: { userId: number; roleId: number };
+  user?: { userId: number; roleId: number };
 }
 interface JwtPayload {
-	userId: number;
-	roleId: number;
+  userId: number;
+  roleId: number;
 }
 
 export function requireRole(allowedRoles: number[]) {
-	return (req: AuthRequest, res: Response, next: NextFunction) => {
-		const authHeader = req.headers.authorization;
-		if (!authHeader) return res.status(401).json({ message: "Missing token" });
+  return (req: AuthRequest, res: Response, next: NextFunction) => {
+    const authHeader = req.headers.authorization;
+    if (!authHeader) return res.status(401).json({ message: "Missing token" });
 
-		const token = authHeader.split(" ")[1];
-		if (!token) return res.status(401).json({ message: "Missing token" });
+    const token = authHeader.split(" ")[1];
+    if (!token) return res.status(401).json({ message: "Missing token" });
 
-		try {
-			const payload = jwt.verify(token, process.env.JWT_SECRET!) as JwtPayload;
+    try {
+      const payload = jwt.verify(token, process.env.JWT_SECRET!) as JwtPayload;
 
-			if (!allowedRoles.includes(payload.roleId)) {
-				return res.status(403).json({ message: "Forbidden" });
-			}
+      if (!allowedRoles.includes(payload.roleId)) {
+        return res.status(403).json({ message: "Forbidden" });
+      }
 
-			req.user = payload;
-			next();
-		} catch (err) {
-			return res.status(401).json({ message: "Invalid token" });
-		}
-	};
+      req.user = payload;
+      next();
+    } catch (err) {
+      return res.status(401).json({ message: "Invalid token" });
+    }
+  };
 }
 
 export function requireUser(
-	req: AuthRequest,
-	res: Response,
-	next: NextFunction,
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction,
 ) {
-	const token = req.cookies.token;
-	if (!token) return res.status(401).json({ message: "Missing token" });
+  const token = req.cookies.token;
+  if (!token) return res.status(401).json({ message: "Missing token" });
 
-	try {
-		const payload = jwt.verify(token, process.env.JWT_SECRET!) as JwtPayload;
-		req.user = payload;
-		next();
-	} catch (err) {
-		return res.status(401).json({ message: "Invalid token" });
-	}
+  try {
+    const payload = jwt.verify(token, process.env.JWT_SECRET!) as JwtPayload;
+    req.user = payload;
+    next();
+  } catch (err) {
+    return res.status(401).json({ message: "Invalid token" });
+  }
 }
 
 export function optionalUser(
-	req: AuthRequest,
-	res: Response,
-	next: NextFunction,
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction,
 ) {
-	const token = req.cookies?.token || req.headers.authorization?.split(" ")[1];
+  const token = req.cookies?.token || req.headers.authorization?.split(" ")[1];
 
-	if (!token) return next();
+  if (!token) return next();
 
-	try {
-		const payload = jwt.verify(token, process.env.JWT_SECRET!) as JwtPayload;
-		req.user = payload;
-	} catch (err) {}
+  try {
+    const payload = jwt.verify(token, process.env.JWT_SECRET!) as JwtPayload;
+    req.user = payload;
+  } catch (err) {}
 
-	next();
+  next();
 }

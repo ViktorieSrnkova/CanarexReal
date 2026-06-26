@@ -7,11 +7,11 @@ import Mail from "../../assets/Mail.svg";
 import Facebook from "../../assets/Facebook.svg";
 import Instagram from "../../assets/Instagram.svg";
 import TikTok from "../../assets/Tiktok.svg";
-import CanarexReal from "../../assets/CanarexReal.svg";
 import { useT } from "../../i18n";
 import { useState } from "react";
 import { useLang } from "../../hooks/i18n/useLang";
 import Nav from "./Nav";
+import CanarexReal from "../../assets/CanarexReal.svg";
 
 function Header() {
   const t = useT();

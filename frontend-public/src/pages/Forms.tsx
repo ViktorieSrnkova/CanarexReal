@@ -9,6 +9,7 @@ import type { ListingThumbnail } from "../types/rawApi";
 import { useLang } from "../hooks/i18n/useLang";
 import { LANGUAGE_TO_ID } from "../types/general";
 import { getListingByThumb } from "../api/listings";
+import React from "react";
 
 export default function UserFormsTable() {
   const [forms, setForms] = useState<FormDetail[]>([]);
@@ -76,20 +77,22 @@ export default function UserFormsTable() {
             const isOpen = expandedId === form.id;
             const listing = listings[form.id];
             return (
-              <>
+              <React.Fragment key={form.id}>
                 <tr
                   key={form.id}
                   onClick={() => toggleRow(form)}
                   style={{ cursor: "pointer" }}
                   className="form-row"
                 >
-                  <td style={{ color: "#87ceeb" }}>{isOpen ? "▼" : "▲"}</td>
+                  <td style={{ color: "#87ceeb", paddingRight: "0" }}>
+                    {isOpen ? "▼" : "▲"}
+                  </td>
                   <td>{form.typy_formulare?.nazev.toLocaleUpperCase()}</td>
-                  <td className="number">
+                  <td className="number" style={{ minWidth: "97px" }}>
                     {new Date(form.datum_vytvoreni).toLocaleDateString()}
                   </td>
 
-                  <td>{form.email}</td>
+                  <td className="email-cell">{form.email}</td>
                 </tr>
 
                 {isOpen && (
@@ -97,44 +100,53 @@ export default function UserFormsTable() {
                     <td colSpan={5}>
                       <div className="expanded-content">
                         <h3>Detail formuláře:</h3>
-                        <p>
-                          <strong>Jméno a příjmení:</strong> {form.jmeno}{" "}
-                          {form.prijmeni}
-                        </p>
-                        <p>
-                          <strong>Email:</strong> {form.email}{" "}
-                        </p>
-                        <p className="number">
-                          <strong>Telefon:</strong> {form.telefon}{" "}
-                        </p>
+                        <div className="form-basic-info">
+                          <p>
+                            <strong>Jméno a příjmení:</strong>
+                            <span>
+                              {form.jmeno} {form.prijmeni}
+                            </span>
+                          </p>
+
+                          <p>
+                            <strong>Email:</strong>
+                            <span>{form.email}</span>
+                          </p>
+
+                          <p>
+                            <strong>Telefon:</strong>
+                            <span className="number">{form.telefon}</span>
+                          </p>
+                        </div>
                         {form.typy_formulare?.id === 3 && (
-                          <>
-                            <p className="number">
+                          <div className="wrap-table">
+                            <div className="cell number">
                               <strong>Rozpočet:</strong> {form.rozpocet_od} -{" "}
                               {form.rozpocet_do} €
-                            </p>
+                            </div>
 
-                            <p className="number">
+                            <div className="cell number">
                               <strong>Velikost:</strong> {form.velikost_od} -{" "}
                               {form.velikost_do} m²
-                            </p>
+                            </div>
 
-                            <p className="number">
-                              <strong>Počet ložnic:</strong>{" "}
+                            <div className="cell number">
+                              <strong>Ložnice:</strong>{" "}
                               {form.pocet_loznic?.join(", ") ?? "-"}
-                            </p>
+                            </div>
 
-                            <p className="number">
-                              <strong>Počet koupelen:</strong>{" "}
+                            <div className="cell number">
+                              <strong>Koupelny:</strong>{" "}
                               {form.pocet_koupelen?.join(", ") ?? "-"}
-                            </p>
-                            <p className="number">
-                              <strong>Datum příletu:</strong>{" "}
-                              {form.vi_prilet ? form.prilet : "Nevím"}
-                            </p>
+                            </div>
 
-                            <p>
-                              <strong>Typ nemovitosti:</strong>{" "}
+                            <div className="cell number">
+                              <strong>Přílet:</strong>{" "}
+                              {form.vi_prilet ? form.prilet : "Nevím"}
+                            </div>
+
+                            <div className="cell">
+                              <strong>Typ:</strong>
                               {form.formulare_typy_nemovitosti?.length
                                 ? form.formulare_typy_nemovitosti
                                     .map(
@@ -145,50 +157,59 @@ export default function UserFormsTable() {
                                     )
                                     .join(", ")
                                 : "-"}
-                            </p>
-                          </>
+                            </div>
+                          </div>
                         )}
-
-                        {form.typy_formulare?.id === 2 && listing && (
+                        {form.typy_formulare?.id === 2 && listing ? (
+                          <div className="form-listing-row">
+                            <div className="form-card">
+                              <Card
+                                id={listing.id}
+                                titulek={
+                                  listing.inzeraty_preklady[0]?.titulek ?? ""
+                                }
+                                lokace={listing.adresy?.lokace ?? ""}
+                                typ={
+                                  listing.typy_nemovitosti
+                                    ?.typy_nemovitosti_preklady[0]?.nazev ?? ""
+                                }
+                                status={
+                                  listing.statusy?.statusy_preklady[0]?.nazev ??
+                                  ""
+                                }
+                                cena_v_eur={listing.cena_v_eur}
+                                loznice={listing.loznice}
+                                koupelny={listing.koupelny}
+                                velikost={listing.velikost}
+                                obrazekId={listing.obrazky[0]?.id ?? 0}
+                                alt={
+                                  listing.obrazky[0]?.obrazky_preklady[0]
+                                    ?.alt_text ?? ""
+                                }
+                                status_id={listing.statusy_id}
+                                inForms
+                              />
+                            </div>
+                            <div className="form-text">
+                              <p className="mb0 mt0">
+                                <strong>Text zprávy:</strong>{" "}
+                              </p>
+                              <p className="mt0"> {form.text_zpravy || "-"}</p>
+                            </div>
+                          </div>
+                        ) : (
                           <>
-                            <Card
-                              id={listing.id}
-                              titulek={
-                                listing.inzeraty_preklady[0]?.titulek ?? ""
-                              }
-                              lokace={listing.adresy?.lokace ?? ""}
-                              typ={
-                                listing.typy_nemovitosti
-                                  ?.typy_nemovitosti_preklady[0]?.nazev ?? ""
-                              }
-                              status={
-                                listing.statusy?.statusy_preklady[0]?.nazev ??
-                                ""
-                              }
-                              cena_v_eur={listing.cena_v_eur}
-                              loznice={listing.loznice}
-                              koupelny={listing.koupelny}
-                              velikost={listing.velikost}
-                              obrazekId={listing.obrazky[0]?.id ?? 0}
-                              alt={
-                                listing.obrazky[0]?.obrazky_preklady[0]
-                                  ?.alt_text ?? ""
-                              }
-                              status_id={listing.statusy_id}
-                              inForms
-                            />
+                            <p className="mb0 mt0">
+                              <strong>Text zprávy:</strong>{" "}
+                            </p>
+                            <p className="mt0"> {form.text_zpravy || "-"}</p>
                           </>
                         )}
-
-                        <p>
-                          <strong>Text zprávy:</strong>{" "}
-                          {form.text_zpravy || "-"}
-                        </p>
                       </div>
                     </td>
                   </tr>
                 )}
-              </>
+              </React.Fragment>
             );
           })}
         </tbody>

@@ -6,9 +6,10 @@ import SEO from "../components/SEO/Meta";
 import CardSkeleton from "../components/Listing/SkeletonCard";
 import { useListings } from "../hooks/useListings";
 import Filters from "../components/General/Filters";
-import { useEffect } from "react";
+import { useMemo } from "react";
 import { useAuth } from "../Auth/authStore";
 import toast from "react-hot-toast";
+import useImagePreloader from "../hooks/useImagePreloader";
 
 function Listings() {
   const t = useT();
@@ -37,34 +38,19 @@ function Listings() {
   });
   const VITE_API_URL = import.meta.env.VITE_API_URL;
   const { user } = useAuth();
-  useEffect(() => {
-    if (!listings.length) return;
+  const imageUrls = useMemo(() => {
+    if (!listings.length) return null;
+    const listingImages = listings
+      .slice(0, 2)
+      .map((l) => l.obrazky?.[0]?.id)
+      .filter(Boolean)
+      .map((id) => `${VITE_API_URL}/api/files/images/${id}`);
 
-    const preloads: HTMLLinkElement[] = [];
-
-    listings.slice(0, 2).forEach((listing) => {
-      const imageId = listing.obrazky[0]?.id;
-
-      if (!imageId) return;
-
-      const preload = document.createElement("link");
-
-      preload.rel = "preload";
-      preload.as = "image";
-      preload.href = `${VITE_API_URL}/api/files/images/${imageId}`;
-
-      document.head.appendChild(preload);
-
-      preloads.push(preload);
-    });
-
-    return () => {
-      preloads.forEach((preload) => {
-        document.head.removeChild(preload);
-      });
-    };
+    return [...listingImages];
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [listings]);
+  const { imagesPreloaded } = useImagePreloader(imageUrls ?? []);
+
   const handleToggleFavorite = async (id: number, isFavorite: boolean) => {
     if (!user) {
       toast.error(t("favorites.loginNeeded"));
@@ -90,7 +76,9 @@ function Listings() {
   if (!filtersReady) {
     return <p>{t("general.loading")}</p>;
   }
-
+  if (!imagesPreloaded) {
+    return <p>Preloading Assets</p>;
+  }
   return (
     <>
       <SEO

@@ -1,8 +1,15 @@
 import BaseForm from "../components/Forms/BaseForm";
 import Card from "../components/Listing/Card";
 import { useT, type Lang } from "../i18n";
-import { useParams } from "react-router-dom";
-import { useEffect, useMemo, useState, lazy, Suspense } from "react";
+import { useParams, useLocation } from "react-router-dom";
+import {
+  useEffect,
+  useMemo,
+  useState,
+  lazy,
+  Suspense,
+  useLayoutEffect,
+} from "react";
 import type { ListingDetailResponse, ListingThumbnail } from "../types/rawApi";
 import {
   getListingByThumb,
@@ -35,9 +42,11 @@ import { useListings } from "../hooks/useListings";
 import { useAuth } from "../Auth/authStore";
 import toast from "react-hot-toast";
 import Reviews from "../components/Reviews/Reviews";
+import useImagePreloader from "../hooks/useImagePreloader";
 
 function SingleListing() {
   const t = useT();
+  const location = useLocation();
   const rates = useFx();
   const { id } = useParams();
   const { lang } = useLang();
@@ -52,6 +61,7 @@ function SingleListing() {
   const [isFavorite, setIsFavorite] = useState(false);
   const { toggleFavoriteApi } = useListings({ paginated: false });
   const { user } = useAuth();
+
   useEffect(() => {
     if (!id) return;
 
@@ -77,6 +87,30 @@ function SingleListing() {
 
     load();
   }, [id, langId, user]);
+  useLayoutEffect(() => {
+    if (!location.state?.scrollToMap) return;
+
+    const tryScroll = () => {
+      const el = document.getElementById("listing-map");
+
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+        return true;
+      }
+
+      return false;
+    };
+
+    if (tryScroll()) return;
+
+    const interval = setInterval(() => {
+      if (tryScroll()) {
+        clearInterval(interval);
+      }
+    }, 50);
+
+    return () => clearInterval(interval);
+  }, [location.state]);
   useEffect(() => {
     if (!detail) return;
 
@@ -127,31 +161,24 @@ function SingleListing() {
 
     loadSimilar();
   }, [id, langId, user]);
-  useEffect(() => {
-    if (!detail) return;
+  const VITE_API_URL = import.meta.env.VITE_API_URL;
+  const imageUrls = useMemo(() => {
+    if (!detail?.obrazky?.length) return null;
 
-    const imageId = detail.obrazky?.[0]?.id;
-    if (!imageId) return;
-
-    const preload = document.createElement("link");
-
-    preload.rel = "preload";
-    preload.as = "image";
-    preload.href = `${VITE_API_URL}/api/files/images/${imageId}`;
-
-    document.head.appendChild(preload);
-
-    return () => {
-      document.head.removeChild(preload);
-    };
+    return detail.obrazky
+      .slice(0, 2)
+      .map((img) => img.id)
+      .filter(Boolean)
+      .map((id) => `${VITE_API_URL}/api/files/images/${id}`);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [detail]);
+  const { imagesPreloaded } = useImagePreloader(imageUrls ?? []);
 
   if (notAvailable) {
     return <ListingUnavailable />;
   }
 
-  if (!listing || !detail) {
+  if (!listing || !detail || !imagesPreloaded) {
     return (
       <>
         <div className="listing-hero skeleton-wrapper">
@@ -247,7 +274,6 @@ function SingleListing() {
   const detContent = detail?.inzeraty_preklady?.[0]?.detaily;
   const content = detail?.inzeraty_preklady?.[0]?.popis;
   if (!content) return;
-  const VITE_API_URL = import.meta.env.VITE_API_URL;
 
   return (
     <>
@@ -381,7 +407,7 @@ function SingleListing() {
           <h3>{t("listing.detail")}</h3>
           <EditorRendererWrapper data={detContent} />
         </div>
-        <div className="map-wrapper">
+        <div className="map-wrapper" id="listing-map">
           <h3>{t("listing.location")}</h3>
           <div className="city">
             <h4>{t("listing.city")}</h4> <p>{detail?.adresy.lokace}</p>

@@ -13,6 +13,7 @@ import {
   sendRegistrationThanksEmail,
 } from "../services/email.js";
 import {
+  optionalUser,
   requireRole,
   requireUser,
   type AuthRequest,
@@ -212,8 +213,8 @@ router.post("/reset-password", async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 });
-router.get("/me", requireUser, async (req: AuthRequest, res) => {
-  res.json(req.user);
+router.get("/me", optionalUser, async (req: AuthRequest, res) => {
+  return res.json(req.user ?? null);
 });
 
 export default router;

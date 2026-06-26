@@ -25,12 +25,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [t]);
 
   const fetchMe = useCallback(async () => {
-    const [authRes, profileRes] = await Promise.all([
-      api.get("/auth/me"),
-      getMe(),
-    ]);
-    setUser(authRes.data);
-    setRich(mapMeToForm(profileRes));
+    const { data: me } = await api.get("/auth/me");
+
+    if (!me) {
+      setUser(null);
+      setRich(null);
+      return;
+    }
+
+    setUser(me);
+
+    const profile = await getMe();
+    setRich(mapMeToForm(profile));
   }, []);
   const refreshUser = useCallback(async () => {
     await fetchMe();

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { getListingsThumbsHome } from "../api/listings";
 import type { ListingThumbnail } from "../types/rawApi";
 import Card from "../components/Listing/Card";
@@ -16,6 +16,13 @@ import { useAuth } from "../Auth/authStore";
 import { addFavorite, removeFavorite } from "../api/favorites";
 import toast from "react-hot-toast";
 import Reviews from "../components/Reviews/Reviews";
+import useImagePreloader from "../hooks/useImagePreloader";
+
+import Hero from "/pages/hero.webp";
+import Vlnka from "/general/vlnka-gray-white-nm.svg";
+import MobileVlnka from "/general/small-vlnka-gray-white.svg";
+
+const preloadSrcList: string[] = [Hero, Vlnka, MobileVlnka];
 
 function HomePage() {
   const navigate = useNavigate();
@@ -39,34 +46,19 @@ function HomePage() {
   }, [langId, user]);
   const VITE_API_URL = import.meta.env.VITE_API_URL;
 
-  useEffect(() => {
-    if (!listings.length) return;
+  const imageUrls = useMemo(() => {
+    if (!listings.length) return null;
+    const listingImages = listings
+      .slice(0, 2)
+      .map((l) => l.obrazky?.[0]?.id)
+      .filter(Boolean)
+      .map((id) => `${VITE_API_URL}/api/files/images/${id}`);
 
-    const preloads: HTMLLinkElement[] = [];
-
-    listings.slice(0, 2).forEach((listing) => {
-      const imageId = listing.obrazky[0]?.id;
-
-      if (!imageId) return;
-
-      const preload = document.createElement("link");
-
-      preload.rel = "preload";
-      preload.as = "image";
-      preload.href = `${VITE_API_URL}/api/files/images/${imageId}`;
-
-      document.head.appendChild(preload);
-
-      preloads.push(preload);
-    });
-
-    return () => {
-      preloads.forEach((preload) => {
-        document.head.removeChild(preload);
-      });
-    };
+    return [...preloadSrcList, ...listingImages];
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [listings]);
+  const { imagesPreloaded } = useImagePreloader(imageUrls ?? []);
+
   async function toggleFavoriteApi(id: number, isFavorite: boolean) {
     if (isFavorite) {
       await removeFavorite(id);
@@ -96,6 +88,7 @@ function HomePage() {
       );
     }
   };
+
   return (
     <>
       <SEO
@@ -113,12 +106,7 @@ function HomePage() {
         }}
       />
       <div className="hero">
-        <img
-          fetchPriority="high"
-          src="/pages/hero.webp"
-          alt=""
-          className="heroImage"
-        />
+        <img fetchPriority="high" src={Hero} alt="" className="heroImage" />
 
         <div className="heroOverlay" />
         <div className="heroContent">
@@ -140,17 +128,19 @@ function HomePage() {
         </div>
       </div>
       <img
+        fetchPriority="high"
         className="wawe"
-        src="/general/vlnka-gray-white-nm.svg"
+        src={Vlnka}
         alt="vlnka-gray-to-white"
       />
       <img
+        fetchPriority="high"
         className="wawe mobile"
-        src="/general/small-vlnka-gray-white.svg"
+        src={MobileVlnka}
         alt="vlnka-gray-to-white"
       />
 
-      {!listings.length ? (
+      {!listings.length || !imagesPreloaded ? (
         <div className="content home-page">
           <div className="hp-cards-wrapper">
             {Array.from({ length: 6 }).map((_, i) => (
