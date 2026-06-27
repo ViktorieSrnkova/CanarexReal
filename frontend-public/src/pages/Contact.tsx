@@ -13,12 +13,10 @@ import useImagePreloader from "../hooks/useImagePreloader";
 const preloadSrcList: string[] = [Stan, Chloe];
 
 function Contact() {
-  const { imagesPreloaded } = useImagePreloader(preloadSrcList);
+  useImagePreloader(preloadSrcList);
 
   const t = useT();
-  if (!imagesPreloaded) {
-    return <p>Preloading Assets</p>;
-  }
+
   return (
     <>
       <SEO

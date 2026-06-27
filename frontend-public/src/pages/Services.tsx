@@ -23,7 +23,7 @@ import MobileVlnka from "/general/small-vlnka-white-gray.svg";
 const preloadSrcList: string[] = [stan, Vlnka, MobileVlnka];
 
 function Services() {
-  const { imagesPreloaded } = useImagePreloader(preloadSrcList);
+  useImagePreloader(preloadSrcList);
 
   const t = useT();
   const { user } = useAuth();
@@ -57,9 +57,6 @@ function Services() {
   const list6 = t<string[]>("services.list6");
   const list7 = t<string[]>("services.list7");
 
-  if (!imagesPreloaded) {
-    return <p>Preloading Assets</p>;
-  }
   return (
     <>
       <SEO

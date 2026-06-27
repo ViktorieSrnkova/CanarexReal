@@ -57,7 +57,7 @@ function HomePage() {
     return [...preloadSrcList, ...listingImages];
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [listings]);
-  const { imagesPreloaded } = useImagePreloader(imageUrls ?? []);
+  useImagePreloader(imageUrls ?? []);
 
   async function toggleFavoriteApi(id: number, isFavorite: boolean) {
     if (isFavorite) {
@@ -88,7 +88,7 @@ function HomePage() {
       );
     }
   };
-
+  const isLoading = !listings.length;
   return (
     <>
       <SEO
@@ -146,19 +146,20 @@ function HomePage() {
         alt="vlnka-gray-to-white"
       />
 
-      {!listings.length || !imagesPreloaded ? (
-        <div className="content home-page">
-          <div className="hp-cards-wrapper">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <CardSkeleton key={i} />
-            ))}
-          </div>
-        </div>
-      ) : (
-        <div className="content home-page">
-          <div className="hp-cards-wrapper">
-            {listings.slice(0, 6).map((listing, i) => {
-              const cardData = {
+      <div className="content home-page">
+        <div className={`hp-cards-wrapper ${isLoading ? "loading" : ""}`}>
+          {isLoading &&
+            Array.from({ length: 6 }).map((_, i) => <CardSkeleton key={i} />)}
+
+          {listings.slice(0, 6).map((listing, i) => (
+            <Card
+              key={listing.id}
+              fetchpriority={i < 2}
+              favorited={listing.is_favorite}
+              onToggleFavorite={() =>
+                handleToggleFavorite(listing.id, listing.is_favorite)
+              }
+              {...{
                 id: listing.id,
                 titulek: listing.inzeraty_preklady[0]?.titulek ?? "",
                 lokace: listing.adresy?.lokace ?? "",
@@ -173,23 +174,11 @@ function HomePage() {
                 obrazekId: listing.obrazky[0]?.id ?? 0,
                 alt: listing.obrazky[0]?.obrazky_preklady[0]?.alt_text ?? "",
                 status_id: 4,
-              };
-
-              return (
-                <Card
-                  fetchpriority={i < 2}
-                  key={listing.id}
-                  favorited={listing.is_favorite}
-                  onToggleFavorite={() =>
-                    handleToggleFavorite(listing.id, listing.is_favorite)
-                  }
-                  {...cardData}
-                />
-              );
-            })}
-          </div>
+              }}
+            />
+          ))}
         </div>
-      )}
+      </div>
 
       <img
         className="wawe"

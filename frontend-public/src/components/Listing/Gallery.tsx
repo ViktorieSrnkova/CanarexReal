@@ -21,16 +21,11 @@ export default function ListingGallery({ imagesProp }: Props) {
 
   const activeImage = useMemo(() => images[activeIndex], [images, activeIndex]);
 
-  /* useEffect(() => {
-    images.forEach((src) => {
-      const img = new Image();
-      img.src = src;
-    });
-  }, [images]); */
   useEffect(() => {
+    if (!activeThumbRef.current) return;
+
     const id = requestAnimationFrame(() => {
       activeThumbRef.current?.scrollIntoView({
-        behavior: "smooth",
         block: "nearest",
         inline: "nearest",
       });

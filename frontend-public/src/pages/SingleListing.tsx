@@ -172,13 +172,13 @@ function SingleListing() {
       .map((id) => `${VITE_API_URL}/api/files/images/${id}`);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [detail]);
-  const { imagesPreloaded } = useImagePreloader(imageUrls ?? []);
+  useImagePreloader(imageUrls ?? []);
 
   if (notAvailable) {
     return <ListingUnavailable />;
   }
 
-  if (!listing || !detail || !imagesPreloaded) {
+  if (!listing || !detail) {
     return (
       <>
         <div className="listing-hero skeleton-wrapper">

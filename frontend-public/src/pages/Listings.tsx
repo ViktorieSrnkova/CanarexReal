@@ -49,7 +49,7 @@ function Listings() {
     return [...listingImages];
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [listings]);
-  const { imagesPreloaded } = useImagePreloader(imageUrls ?? []);
+  useImagePreloader(imageUrls ?? []);
 
   const handleToggleFavorite = async (id: number, isFavorite: boolean) => {
     if (!user) {
@@ -76,9 +76,8 @@ function Listings() {
   if (!filtersReady) {
     return <p>{t("general.loading")}</p>;
   }
-  if (!imagesPreloaded) {
-    return <p>Preloading Assets</p>;
-  }
+
+  const isLoading = !listings.length;
   return (
     <>
       <SEO
@@ -107,23 +106,29 @@ function Listings() {
               onChange={setPage}
               loading={listings.length === 0}
             />
-            {listings.length === 0 ? (
-              <div className="hp-cards-wrapper">
-                {Array.from({ length: 9 }).map((_, i) => (
+
+            <div className={`hp-cards-wrapper ${isLoading ? "loading" : ""}`}>
+              {isLoading &&
+                Array.from({ length: 6 }).map((_, i) => (
                   <CardSkeleton key={i} />
                 ))}
-              </div>
-            ) : (
-              <div className="hp-cards-wrapper">
-                {listings.map((listing, i) => {
-                  const cardData = {
+
+              {listings.map((listing, i) => (
+                <Card
+                  key={listing.id}
+                  fetchpriority={i < 2}
+                  favorited={listing.is_favorite}
+                  onToggleFavorite={() =>
+                    handleToggleFavorite(listing.id, listing.is_favorite)
+                  }
+                  {...{
                     id: listing.id,
                     titulek: listing.inzeraty_preklady[0]?.titulek ?? "",
                     lokace: listing.adresy?.lokace ?? "",
                     typ:
                       listing.typy_nemovitosti?.typy_nemovitosti_preklady[0]
                         ?.nazev ?? "",
-                    status: listing.statusy.statusy_preklady[0].nazev ?? "",
+                    status: t("home.status"),
                     cena_v_eur: listing.cena_v_eur,
                     loznice: listing.loznice,
                     koupelny: listing.koupelny,
@@ -131,23 +136,12 @@ function Listings() {
                     obrazekId: listing.obrazky[0]?.id ?? 0,
                     alt:
                       listing.obrazky[0]?.obrazky_preklady[0]?.alt_text ?? "",
-                    status_id: listing.statusy_id,
-                  };
+                    status_id: 4,
+                  }}
+                />
+              ))}
+            </div>
 
-                  return (
-                    <Card
-                      fetchpriority={i < 2}
-                      key={listing.id}
-                      favorited={listing.is_favorite}
-                      onToggleFavorite={() =>
-                        handleToggleFavorite(listing.id, listing.is_favorite)
-                      }
-                      {...cardData}
-                    />
-                  );
-                })}
-              </div>
-            )}
             <Pagination
               page={page}
               totalPages={totalPages}

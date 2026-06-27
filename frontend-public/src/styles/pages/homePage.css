@@ -5,11 +5,14 @@
   gap: 1rem;
   justify-content: center;
   align-items: flex-start;
+  transition: opacity 200ms ease;
 }
 .home-page .hp-cards-wrapper {
   padding: 0.75em 2em 3em 2em;
 }
-
+.hp-cards-wrapper.loading {
+  opacity: 0.5;
+}
 .wawe {
   width: 100%;
   min-width: 100%;
