@@ -1,9 +1,10 @@
-import { useLayoutEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import "../../styles/reviews.css";
 import { useLang } from "../../hooks/i18n/useLang";
 import RatingStars from "./RatingStars";
 import { useT } from "../../i18n";
 type Props = {
+  isOverflowing: boolean;
   initials: string;
   name: string;
   reviewLink: string;
@@ -20,7 +21,6 @@ type Props = {
 };
 
 function SingleReview(props: Props) {
-  const [isOverflowing, setIsOverflowing] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const [showOriginal, setShowOriginal] = useState(false);
   const textRef = useRef<HTMLParagraphElement>(null);
@@ -34,13 +34,6 @@ function SingleReview(props: Props) {
   const shownText =
     showOriginal || !hasTranslation ? props.text.OG : translation;
 
-  useLayoutEffect(() => {
-    const el = textRef.current;
-    if (!el) return;
-
-    const overflowing = el.scrollHeight > el.clientHeight;
-    setIsOverflowing(overflowing);
-  }, [shownText]);
   function getPastelColor(name: string) {
     let hash = 0;
 
@@ -90,7 +83,7 @@ function SingleReview(props: Props) {
           {shownText}
         </p>
 
-        {isOverflowing && (
+        {props.isOverflowing && (
           <button
             type="button"
             className="review-read-more"

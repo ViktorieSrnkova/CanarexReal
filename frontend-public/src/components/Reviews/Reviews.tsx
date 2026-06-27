@@ -115,6 +115,7 @@ function Reviews() {
               {reviewsArray.map((review) => (
                 <SingleReview
                   key={review.reviewLink}
+                  isOverflowing={review.isOverflowing}
                   reviewLink={review.reviewLink}
                   name={review.name}
                   initials={review.initials}

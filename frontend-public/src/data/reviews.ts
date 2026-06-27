@@ -1,5 +1,6 @@
 export const reviews = [
   {
+    isOverflowing: true,
     initials: "MS",
     reviewLink:
       "https://www.google.com/maps/reviews/@28.239432,-16.8405588,777m/data=!3m2!1e3!4b1!4m6!14m5!1m4!2m3!1sCi9DQUlRQUNvZENodHljRjlvT25walJYZE9iRXB0VjJwSFptMU5YemMwYXpJdGFGRRAB!2m1!1s0x0:0x35d746bca36b3f79?entry=ttu&g_ep=EgoyMDI2MDYxNi4wIKXMDSoASAFQAw%3D%3D",
@@ -44,6 +45,7 @@ export const reviews = [
     },
   },
   {
+    isOverflowing: true,
     initials: "MH",
     reviewLink:
       "https://www.google.com/maps/reviews/data=!4m8!14m7!1m6!2m5!1sCi9DQUlRQUNvZENodHljRjlvT25ObFFUZHZRVXc1YlhKNlNTMXlXa0Y0TFVsalRVRRAB!2m1!1s0x0:0x35d746bca36b3f79!3m1!1s2@1:CAIQACodChtycF9oOnNlQTdvQUw5bXJ6SS1yWkF4LUljTUE%7C%7C",
@@ -64,6 +66,7 @@ export const reviews = [
     },
   },
   {
+    isOverflowing: false,
     initials: "MŠ",
     reviewLink:
       "https://www.google.com/maps/reviews/data=!4m8!14m7!1m6!2m5!1sCi9DQUlRQUNvZENodHljRjlvT2tvMWIzVkNOMDF5U0djMGVWSjJiVlI0Vkd4bE4xRRAB!2m1!1s0x0:0x35d746bca36b3f79!3m1!1s2@1:CAIQACodChtycF9oOko1b3VCN01ySGc0eVJ2bVR4VGxlN1E%7C%7C",
@@ -81,6 +84,7 @@ export const reviews = [
     },
   },
   {
+    isOverflowing: true,
     initials: "AR",
     reviewLink:
       "https://www.google.com/maps/reviews/data=!4m8!14m7!1m6!2m5!1sCi9DQUlRQUNvZENodHljRjlvT2psc1VpMXhXR3hrYkRWb1pWZEdTRE41TkdGWFRIYxAB!2m1!1s0x0:0x35d746bca36b3f79!3m1!1s2@1:CAIQACodChtycF9oOjlsUi1xWGxkbDVoZVdGSDN5NGFXTHc%7C%7C",
@@ -104,6 +108,7 @@ export const reviews = [
     },
   },
   {
+    isOverflowing: false,
     initials: "PJ",
     reviewLink:
       "https://www.google.com/maps/reviews/data=!4m8!14m7!1m6!2m5!1sCi9DQUlRQUNvZENodHljRjlvT25Ca1l6SktiM2wyYUdkU1ptVTRNM2RTYnpONFVFRRAB!2m1!1s0x0:0x35d746bca36b3f79!3m1!1s2@1:CAIQACodChtycF9oOnBkYzJKb3l2aGdSZmU4M3dSbzN4UEE%7C%7C",
@@ -121,6 +126,7 @@ export const reviews = [
     },
   },
   {
+    isOverflowing: true,
     initials: "PB",
     reviewLink:
       "https://www.google.com/maps/reviews/data=!4m8!14m7!1m6!2m5!1sChZDSUhNMG9nS0VJQ0FnSUN4cHZfOFJBEAE!2m1!1s0x0:0x35d746bca36b3f79!3m1!1s2@1:CIHM0ogKEICAgICxpv_8RA%7C%7C",
@@ -138,6 +144,7 @@ export const reviews = [
     },
   },
   {
+    isOverflowing: false,
     initials: "ZŽ",
     reviewLink:
       "https://www.google.com/maps/contrib/108489497450795996541/reviews/@39.1438754,-1.2028004,2800657m/data=!3m2!1e3!4b1!4m3!8m2!3m1!1e1?hl=en&entry=ttu&g_ep=EgoyMDI2MDYxNi4wIKXMDSoASAFQAw%3D%3D",
