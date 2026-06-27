@@ -26,6 +26,7 @@ export default function ListingGallery({ imagesProp }: Props) {
 
     const id = requestAnimationFrame(() => {
       activeThumbRef.current?.scrollIntoView({
+        behavior: "smooth",
         block: "nearest",
         inline: "nearest",
       });

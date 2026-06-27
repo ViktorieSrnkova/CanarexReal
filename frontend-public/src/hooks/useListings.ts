@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useLang } from "./i18n/useLang";
 import { LANGUAGE_TO_ID } from "../types/general";
@@ -49,10 +49,9 @@ export function useListings({ paginated = true }: Props) {
       document.body.classList.remove("no-scroll");
     }
   }, [filtersOpen]);
-  useEffect(() => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
+  useLayoutEffect(() => {
+    requestAnimationFrame(() => {
+      window.scrollTo(0, 0);
     });
   }, [page]);
   const defaultFilters = useMemo<FormValues>(
