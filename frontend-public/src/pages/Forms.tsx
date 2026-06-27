@@ -3,7 +3,7 @@ import type { FormDetail } from "../types/forms";
 import { getUserForms } from "../api/forms";
 import "../styles/pages/forms.css";
 import { useT } from "../i18n";
-import { PROPERTY_TYPE_LABELS } from "../types/general";
+import { FORM_TYPE_LABELS, PROPERTY_TYPE_LABELS } from "../types/general";
 import Card from "../components/Listing/Card";
 import type { ListingThumbnail } from "../types/rawApi";
 import { useLang } from "../hooks/i18n/useLang";
@@ -15,7 +15,7 @@ export default function UserFormsTable() {
   const [forms, setForms] = useState<FormDetail[]>([]);
   const [expandedId, setExpandedId] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
-  const [listings, setListings] = useState<Record<number, ListingThumbnail>>(
+  const [listings, setListings] = useState<Record<string, ListingThumbnail>>(
     {},
   );
   const t = useT();
@@ -35,47 +35,54 @@ export default function UserFormsTable() {
 
     load();
   }, []);
+  useEffect(() => {
+    if (expandedId == null) return;
 
+    const form = forms.find((f) => f.id === expandedId);
+    if (!form?.index_inzeratu) return;
+
+    const key = `${expandedId}-${langId}`;
+
+    if (listings[key]) return;
+
+    const loadListing = async () => {
+      try {
+        const data = await getListingByThumb(
+          { index: Number(form.index_inzeratu) },
+          langId,
+        );
+
+        setListings((prev) => ({
+          ...prev,
+          [key]: data,
+        }));
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    loadListing();
+  }, [expandedId, forms, langId, listings]);
   if (loading)
     return (
       <div className="user-forms">
-        <h1>Vyplněné formuláře</h1>
+        <h1>{t("userForms.title")}</h1>
         <h4>{t("general.loading")}</h4>
       </div>
     );
 
-  const toggleRow = async (form: FormDetail) => {
-    const id = form.id;
-
-    setExpandedId((prev) => (prev === id ? null : id));
-
-    if (listings[id]) return;
-
-    if (!form.index_inzeratu) return;
-
-    try {
-      const data = await getListingByThumb(
-        { index: Number(form.index_inzeratu) },
-        langId,
-      );
-
-      setListings((prev) => ({
-        ...prev,
-        [id]: data,
-      }));
-    } catch (err) {
-      console.error(err);
-    }
+  const toggleRow = (form: FormDetail) => {
+    setExpandedId((prev) => (prev === form.id ? null : form.id));
   };
 
   return (
     <div className="user-forms">
-      <h1>Vyplněné formuláře</h1>
+      <h1>{t("userForms.title")}</h1>
       <table className="forms-table">
         <tbody>
           {forms.map((form) => {
             const isOpen = expandedId === form.id;
-            const listing = listings[form.id];
+            const listing = listings[`${form.id}-${langId}`];
             return (
               <React.Fragment key={form.id}>
                 <tr
@@ -87,11 +94,13 @@ export default function UserFormsTable() {
                   <td style={{ color: "#87ceeb", paddingRight: "0" }}>
                     {isOpen ? "▼" : "▲"}
                   </td>
-                  <td>{form.typy_formulare?.nazev.toLocaleUpperCase()}</td>
+                  <td>
+                    {FORM_TYPE_LABELS[form.typy_formulare?.id ?? 0]?.[langId] ??
+                      ""}
+                  </td>
                   <td className="number" style={{ minWidth: "97px" }}>
                     {new Date(form.datum_vytvoreni).toLocaleDateString()}
                   </td>
-
                   <td className="email-cell">{form.email}</td>
                 </tr>
 
@@ -99,61 +108,63 @@ export default function UserFormsTable() {
                   <tr className="form-expanded">
                     <td colSpan={5}>
                       <div className="expanded-content">
-                        <h3>Detail formuláře:</h3>
+                        <h3>{t("userForms.subtitle")}</h3>
                         <div className="form-basic-info">
                           <p>
-                            <strong>Jméno a příjmení:</strong>
+                            <strong>{t("userForms.fullName")} </strong>
                             <span>
                               {form.jmeno} {form.prijmeni}
                             </span>
                           </p>
 
                           <p>
-                            <strong>Email:</strong>
+                            <strong>{t("userForms.email")} </strong>
                             <span>{form.email}</span>
                           </p>
 
                           <p>
-                            <strong>Telefon:</strong>
+                            <strong>{t("userForms.phone")} </strong>
                             <span className="number">{form.telefon}</span>
                           </p>
                         </div>
                         {form.typy_formulare?.id === 3 && (
                           <div className="wrap-table">
                             <div className="cell number">
-                              <strong>Rozpočet:</strong> {form.rozpocet_od} -{" "}
-                              {form.rozpocet_do} €
+                              <strong>{t("userForms.price")}</strong>{" "}
+                              {form.rozpocet_od} - {form.rozpocet_do} €
                             </div>
 
                             <div className="cell number">
-                              <strong>Velikost:</strong> {form.velikost_od} -{" "}
-                              {form.velikost_do} m²
+                              <strong>{t("userForms.size")}</strong>{" "}
+                              {form.velikost_od} - {form.velikost_do} m²
                             </div>
 
                             <div className="cell number">
-                              <strong>Ložnice:</strong>{" "}
+                              <strong>{t("userForms.bedrooms")}</strong>{" "}
                               {form.pocet_loznic?.join(", ") ?? "-"}
                             </div>
 
                             <div className="cell number">
-                              <strong>Koupelny:</strong>{" "}
+                              <strong>{t("userForms.bathrooms")}</strong>{" "}
                               {form.pocet_koupelen?.join(", ") ?? "-"}
                             </div>
 
                             <div className="cell number">
-                              <strong>Přílet:</strong>{" "}
-                              {form.vi_prilet ? form.prilet : "Nevím"}
+                              <strong>{t("userForms.arrival")}</strong>{" "}
+                              {form.vi_prilet
+                                ? form.prilet
+                                : t("userForms.unsure")}
                             </div>
 
                             <div className="cell">
-                              <strong>Typ:</strong>
+                              <strong>{t("userForms.type")}</strong>
                               {form.formulare_typy_nemovitosti?.length
                                 ? form.formulare_typy_nemovitosti
                                     .map(
                                       (x) =>
                                         PROPERTY_TYPE_LABELS[
                                           x.typy_nemovitosti.id
-                                        ],
+                                        ]?.[langId] ?? "-",
                                     )
                                     .join(", ")
                                 : "-"}
@@ -192,7 +203,7 @@ export default function UserFormsTable() {
                             </div>
                             <div className="form-text">
                               <p className="mb0 mt0">
-                                <strong>Text zprávy:</strong>{" "}
+                                <strong>{t("userForms.text")}</strong>{" "}
                               </p>
                               <p className="mt0"> {form.text_zpravy || "-"}</p>
                             </div>
@@ -200,7 +211,7 @@ export default function UserFormsTable() {
                         ) : (
                           <>
                             <p className="mb0 mt0">
-                              <strong>Text zprávy:</strong>{" "}
+                              <strong>{t("userForms.text")}</strong>{" "}
                             </p>
                             <p className="mt0"> {form.text_zpravy || "-"}</p>
                           </>

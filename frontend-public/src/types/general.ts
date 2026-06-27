@@ -14,10 +14,48 @@ export type FxRates = {
   GBP: number;
 };
 
-export const PROPERTY_TYPE_LABELS: Record<number, string> = {
-  1: "Apartmán",
-  2: "Vila",
-  3: "Dům",
-  4: "Garsonka",
-  5: "Pozemek",
+export const PROPERTY_TYPE_LABELS: Record<number, Record<number, string>> = {
+  1: {
+    1: "Apartment",
+    2: "Apartmán",
+    3: "Apartmán",
+  },
+  2: {
+    1: "Villa",
+    2: "Vila",
+    3: "Vila",
+  },
+  3: {
+    1: "House",
+    2: "Dům",
+    3: "Dom",
+  },
+  4: {
+    1: "Studio",
+    2: "Garsonka",
+    3: "Garsónka",
+  },
+  5: {
+    1: "Land",
+    2: "Pozemek",
+    3: "Pozemok",
+  },
+};
+
+export const FORM_TYPE_LABELS: Record<number, Record<number, string>> = {
+  1: {
+    1: "Contact",
+    2: "Kontakt",
+    3: "Kontakt",
+  },
+  2: {
+    1: "Listing inquiry",
+    2: "Dotaz k inzerátu",
+    3: "Otázka k inzerátu",
+  },
+  3: {
+    1: "General inquiry",
+    2: "Poptávka",
+    3: "Dopyt",
+  },
 };
