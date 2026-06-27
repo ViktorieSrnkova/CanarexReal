@@ -106,7 +106,13 @@ function HomePage() {
         }}
       />
       <div className="hero">
-        <img fetchPriority="high" src={Hero} alt="" className="heroImage" />
+        <img
+          fetchPriority="high"
+          src={Hero}
+          alt=""
+          className="heroImage"
+          loading="eager"
+        />
 
         <div className="heroOverlay" />
         <div className="heroContent">
