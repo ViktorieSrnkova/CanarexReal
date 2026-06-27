@@ -30,8 +30,10 @@ function Carrousel(props: Props) {
   }, [props.similar]);
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth <= 1112) {
+      if (window.innerWidth <= 800) {
         setVisibleCount(1);
+      } else if (window.innerWidth <= 1162) {
+        setVisibleCount(2);
       } else {
         setVisibleCount(3);
       }

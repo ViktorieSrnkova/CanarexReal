@@ -59,6 +59,70 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>CanarexReal</title>
+    <style>
+      .hero {
+        position: relative;
+        width: 100%;
+        max-width: 90rem;
+        height: 19.438rem;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        color: #1e1e1e;
+        padding-left: 8.875em;
+        padding-right: 1em;
+      }
+      .heroImage {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        z-index: 0;
+      }
+      .heroOverlay {
+        position: absolute;
+        inset: 0;
+        background: rgba(255, 255, 255, 0.5); /* odpovídá opacity 0.5 */
+        z-index: 1;
+      }
+      .heroContent {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        color: #1e1e1e;
+      }
+
+      .heroContent h1 {
+        font-size: 4.5em;
+        font-weight: 700;
+        line-height: 120%;
+        letter-spacing: -0.131rem;
+        margin-bottom: 0.625rem;
+        margin-top: 4rem;
+      }
+      .heroContent h2 {
+        font-size: 2em;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 120%;
+        margin-top: 0;
+        margin-bottom: 1.375rem;
+      }
+      .heroContent .buttons {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        align-items: center;
+        justify-content: flex-end;
+        width: 100%;
+        gap: 1rem;
+      }
+    </style>
   </head>
   <body>
     <div id="root"></div>
