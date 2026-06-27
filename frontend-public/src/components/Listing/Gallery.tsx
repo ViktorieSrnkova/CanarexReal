@@ -1,4 +1,11 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import "../../styles/listing/gallery.css";
 import GallerySkeleton from "./GallerySkeleton";
 
@@ -21,7 +28,7 @@ export default function ListingGallery({ imagesProp }: Props) {
 
   const activeImage = useMemo(() => images[activeIndex], [images, activeIndex]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!activeThumbRef.current) return;
 
     const id = requestAnimationFrame(() => {

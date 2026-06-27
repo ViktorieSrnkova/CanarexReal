@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import "../../styles/reviews.css";
 import { useLang } from "../../hooks/i18n/useLang";
 import RatingStars from "./RatingStars";
@@ -25,7 +25,7 @@ function SingleReview(props: Props) {
   const [showOriginal, setShowOriginal] = useState(false);
   const textRef = useRef<HTMLParagraphElement>(null);
   const t = useT();
-  useEffect(() => {
+  useLayoutEffect(() => {
     const el = textRef.current;
     if (!el) return;
 
