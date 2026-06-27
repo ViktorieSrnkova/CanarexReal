@@ -16,7 +16,7 @@
   -webkit-line-clamp: 4;
   line-clamp: 4;
   white-space: pre-line;
-
+  max-height: 90px;
   overflow: hidden;
 }
 .review-txt {
@@ -31,6 +31,7 @@
   -webkit-line-clamp: unset;
   line-clamp: unset;
   overflow: visible;
+  max-height: none;
 }
 
 .review-read-more {

@@ -20,17 +20,11 @@ type Props = {
 };
 
 function SingleReview(props: Props) {
-  const [expanded, setExpanded] = useState(false);
   const [isOverflowing, setIsOverflowing] = useState(false);
+  const [expanded, setExpanded] = useState(false);
   const [showOriginal, setShowOriginal] = useState(false);
   const textRef = useRef<HTMLParagraphElement>(null);
   const t = useT();
-  useLayoutEffect(() => {
-    const el = textRef.current;
-    if (!el) return;
-
-    setIsOverflowing(el.scrollHeight > el.clientHeight);
-  }, []);
 
   const { lang } = useLang();
   const translation = props.text.translations[lang as "en" | "sk"];
@@ -40,6 +34,13 @@ function SingleReview(props: Props) {
   const shownText =
     showOriginal || !hasTranslation ? props.text.OG : translation;
 
+  useLayoutEffect(() => {
+    const el = textRef.current;
+    if (!el) return;
+
+    const overflowing = el.scrollHeight > el.clientHeight;
+    setIsOverflowing(overflowing);
+  }, [shownText]);
   function getPastelColor(name: string) {
     let hash = 0;
 
