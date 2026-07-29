@@ -121,6 +121,8 @@ function Listings() {
                   onToggleFavorite={() =>
                     handleToggleFavorite(listing.id, listing.is_favorite)
                   }
+                  status={listing.statusy?.statusy_preklady[0]?.nazev ?? ""}
+                  status_id={listing.statusy_id}
                   {...{
                     id: listing.id,
                     titulek: listing.inzeraty_preklady[0]?.titulek ?? "",
@@ -128,7 +130,6 @@ function Listings() {
                     typ:
                       listing.typy_nemovitosti?.typy_nemovitosti_preklady[0]
                         ?.nazev ?? "",
-                    status: t("home.status"),
                     cena_v_eur: listing.cena_v_eur,
                     loznice: listing.loznice,
                     koupelny: listing.koupelny,
@@ -136,7 +137,6 @@ function Listings() {
                     obrazekId: listing.obrazky[0]?.id ?? 0,
                     alt:
                       listing.obrazky[0]?.obrazky_preklady[0]?.alt_text ?? "",
-                    status_id: 4,
                   }}
                 />
               ))}
