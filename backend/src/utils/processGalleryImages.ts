@@ -66,7 +66,7 @@ export async function processGalleryImages(params: {
         inzeraty_id: listingId,
         poradi: image.order,
         url: "",
-        is_temp: false,
+        docasne: false,
       },
     });
 

@@ -309,7 +309,7 @@ router.get("/:id", optionalUser, async (req: AuthRequest, res) => {
     const pictograms = await prisma.piktogramy.findMany({
       where: { id: { in: allIds } },
       include: {
-        obrazky: { select: { icon_svg: true } },
+        obrazky: { select: { ikona_svg: true } },
         piktogramy_preklady: {
           where: { jazyky_id: langId },
           select: { nazev: true },
@@ -319,7 +319,7 @@ router.get("/:id", optionalUser, async (req: AuthRequest, res) => {
     const result = pictograms.map((p) => ({
       id: p.id,
       name: p.piktogramy_preklady[0]?.nazev ?? null,
-      iconSvg: p.obrazky?.icon_svg ?? null,
+      iconSvg: p.obrazky?.ikona_svg ?? null,
     }));
     const FIXED = [1, 2, 3];
     const SPECIAL = 14;

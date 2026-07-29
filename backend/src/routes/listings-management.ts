@@ -937,7 +937,7 @@ router.put("/gallery/save", upload.any(), async (req, res) => {
             inzeraty_id: listingId,
             poradi: 0,
             data: new Uint8Array(thumbBuffer),
-            is_temp: false,
+            docasne: false,
             url: "",
           },
         });

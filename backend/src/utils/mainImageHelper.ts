@@ -23,7 +23,7 @@ export async function processMainImage(params: {
   const fullImage = await prisma.obrazky.create({
     data: {
       data: mainBuffer,
-      is_temp: false,
+      docasne: false,
       aktuality_id: aktualitaId,
       url: "",
       poradi: 1,
@@ -33,7 +33,7 @@ export async function processMainImage(params: {
   const thumbImage = await prisma.obrazky.create({
     data: {
       data: thumbBuffer,
-      is_temp: false,
+      docasne: false,
       aktuality_id: aktualitaId,
       url: "",
       poradi: 0,

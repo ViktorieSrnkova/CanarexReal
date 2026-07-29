@@ -25,7 +25,7 @@ export async function processAdImages(params: {
     const image = await tx.obrazky.create({
       data: {
         data: buffer,
-        is_temp: false,
+        docasne: false,
         inzeraty_id: inzeratId,
         url: "",
         poradi: i + 1,
@@ -48,7 +48,7 @@ export async function processAdImages(params: {
     const thumb = await tx.obrazky.create({
       data: {
         data: thumbBuffer,
-        is_temp: false,
+        docasne: false,
         inzeraty_id: inzeratId,
         url: "",
         poradi: 0,

@@ -33,12 +33,12 @@ export async function processEditorImages(params: {
 
       if (!imageId) continue;
 
-      const caption = block.data?.caption || null;
+      const titulek = block.data?.titulek || null;
 
       await prisma.obrazky.update({
         where: { id: imageId },
         data: {
-          is_temp: false,
+          docasne: false,
           aktuality_id: aktualitaId,
         },
       });
@@ -51,11 +51,11 @@ export async function processEditorImages(params: {
           },
         },
         update: {
-          caption,
+          titulek,
           alt_text: t.alt ?? null,
         },
         create: {
-          caption,
+          titulek,
           alt_text: t.alt ?? null,
           jazyky_id,
           obrazky_id: imageId,

@@ -130,7 +130,7 @@ router.put("/:id", upload.single("image"), async (req, res) => {
     });
     await prisma.obrazky.updateMany({
       where: { aktuality_id: id },
-      data: { is_temp: true, aktuality_id: null },
+      data: { docasne: true, aktuality_id: null },
     });
 
     await prisma.aktuality_preklady.deleteMany({
@@ -160,7 +160,7 @@ router.put("/:id", upload.single("image"), async (req, res) => {
           },
         },
         data: {
-          is_temp: false,
+          docasne: false,
           aktuality_id: id,
         },
       });
@@ -220,7 +220,7 @@ router.delete("/:id", async (req, res) => {
       await prisma.obrazky.updateMany({
         where: { aktuality_id: id },
         data: {
-          is_temp: true,
+          docasne: true,
           aktuality_id: null,
         },
       });

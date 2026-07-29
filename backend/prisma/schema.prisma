@@ -151,10 +151,10 @@ model obrazky {
   poradi           Int?
   aktuality_id     Int?
   inzeraty_id      Int?
-  uploaded_at      DateTime?          @default(now()) @db.Timestamp(6)
-  is_temp          Boolean?           @default(true)
+  zverejneno       DateTime?          @default(now()) @db.Timestamp(6)
+  docasne          Boolean?           @default(true)
   data             Bytes?
-  icon_svg         String?
+  ikona_svg        String?
   aktuality        aktuality?         @relation(fields: [aktuality_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "obrazky_aktuality")
   inzeraty         inzeraty?          @relation(fields: [inzeraty_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "obrazky_inzeraty")
   obrazky_preklady obrazky_preklady[]
@@ -162,7 +162,7 @@ model obrazky {
 
   @@index([aktuality_id], map: "idx_obr_akt")
   @@index([inzeraty_id], map: "idx_obr_inz")
-  @@index([is_temp], map: "idx_obrazky_temp")
+  @@index([docasne], map: "idx_obrazky_temp")
 }
 
 model obrazky_preklady {
@@ -170,7 +170,7 @@ model obrazky_preklady {
   alt_text   String?
   jazyky_id  Int
   obrazky_id Int
-  caption    String?
+  titulek    String?
   jazyky     jazyky  @relation(fields: [jazyky_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "obrazky_preklady_jazyky")
   obrazky    obrazky @relation(fields: [obrazky_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "obrazky_preklady_obrazky")
 

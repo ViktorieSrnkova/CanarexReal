@@ -4,8 +4,8 @@ export const cleanupTempImages = async () => {
   try {
     const result = await prisma.obrazky.deleteMany({
       where: {
-        is_temp: true,
-        uploaded_at: {
+        docasne: true,
+        zverejneno: {
           lt: new Date(Date.now() - 5 * 60 * 60 * 1000), // 5 hodin
         },
       },

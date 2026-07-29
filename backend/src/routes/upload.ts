@@ -15,7 +15,7 @@ router.post("/upload-image", upload.single("file"), async (req, res) => {
     const image = await prisma.obrazky.create({
       data: {
         data: Buffer.from(file.buffer),
-        is_temp: true,
+        docasne: true,
         url: "temp",
       },
     });
