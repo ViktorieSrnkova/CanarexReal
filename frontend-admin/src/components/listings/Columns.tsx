@@ -17,6 +17,7 @@ import { formatMoneyEUR } from "../../utils/formatting";
 import { Bed, Bath } from "lucide-react";
 import { HomeOutlined, SearchOutlined } from "@ant-design/icons";
 import { Button, Input, Space, Tooltip } from "antd";
+import { DragHandle } from "./TableRow/DragHandle";
 
 type Args = {
   filters: ListingFilters;
@@ -26,6 +27,7 @@ type Args = {
   onDelete: (id: number) => void;
   onToggleVisibility: (id: number, value: boolean) => void;
   onChangeStatus: (id: number, statusId: number) => void;
+  canReorder: boolean;
 };
 
 const filteredValue = (value?: string) => (value ? [value] : null);
@@ -181,8 +183,20 @@ export function getColumns({
   onDelete,
   onToggleVisibility,
   onChangeStatus,
+  canReorder,
 }: Args): ColumnsType<ListingRow> {
   return [
+    {
+      title: "",
+      key: "drag",
+      width: 25,
+      render: (_, record) => canReorder && <DragHandle id={record.id} />,
+      onCell: () => ({
+        style: {
+          paddingRight: 0,
+        },
+      }),
+    },
     {
       title: "",
       width: 25,
@@ -212,7 +226,7 @@ export function getColumns({
       key: "index",
       title: "Index",
       dataIndex: "index",
-      width: 100,
+      width: 73,
       filteredValue: filteredValue(filters.index),
       ...getSearchFilter("Filtrovat index", { numeric: true }),
       onCell: () => ({
@@ -246,7 +260,7 @@ export function getColumns({
     {
       key: "statusIds",
       title: "Status",
-      width: 140,
+      width: 156,
       filters: statusOptions.map((status) => ({
         text: status.label,
         value: status.value,
@@ -269,7 +283,7 @@ export function getColumns({
     {
       key: "typeCodes",
       title: "Typ",
-      width: 100,
+      width: 77,
       filters: PROPERTY_TYPE_OPTIONS.map((type) => ({
         text: type.label,
         value: type.value,
@@ -282,7 +296,13 @@ export function getColumns({
     {
       key: "price",
       title: "Cena",
-      width: 115,
+      width: 88,
+      onCell: () => ({
+        style: {
+          paddingLeft: 8,
+          paddingRight: 8,
+        },
+      }),
       dataIndex: "cena_v_eur",
       filteredValue: rangeFilteredValue(filters.priceFrom, filters.priceTo),
       ...getRangeSearchFilter("Cena od", "Cena do"),
@@ -292,7 +312,13 @@ export function getColumns({
     {
       key: "location",
       title: "Lokace",
-      width: 150,
+      width: 151,
+      onCell: () => ({
+        style: {
+          paddingLeft: 8,
+          paddingRight: 8,
+        },
+      }),
       filteredValue: filteredValue(filters.location),
       ...getSearchFilter("Filtrovat lokaci"),
       render: (_, r) => (

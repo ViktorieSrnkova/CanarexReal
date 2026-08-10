@@ -27,6 +27,7 @@
   margin: 0 80px;
   text-wrap: wrap;
 }
+
 @media (max-width: 650px) {
   .ce-block__content {
     margin: 0 8px;

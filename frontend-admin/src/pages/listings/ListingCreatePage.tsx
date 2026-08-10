@@ -33,7 +33,11 @@ import { useImages } from "../../hooks/useImages";
 import EditorMinimal from "../../components/editor/RichMediaEditor";
 import { useListingSubmit } from "../../hooks/useListingForm";
 import { useEffect, useRef, useState } from "react";
-import { editListingTexts, postListing } from "../../api/listings";
+import {
+  checkListingIndex,
+  editListingTexts,
+  postListing,
+} from "../../api/listings";
 import { useEditedListing } from "../../hooks/useEditListing";
 
 type Props = {
@@ -92,12 +96,31 @@ const ListingCreatePage: React.FC<Props> = ({
 
     try {
       if (hasInitialData && id) {
-        const payload = await buildEditPayload(values);
+        const mergedValues = {
+          ...values,
+          translations: languages.reduce(
+            (acc, lang) => {
+              const original = initialData.translations[lang];
+              const edited = values.translations?.[lang];
+
+              acc[lang] = {
+                ...original,
+                ...(edited?.title != null && { title: edited.title }),
+                ...(edited?.alt != null && { alt: edited.alt }),
+              };
+
+              return acc;
+            },
+            {} as CreateAdFormValues["translations"],
+          ),
+        };
+        const payload = await buildEditPayload(mergedValues);
 
         console.log("EDIT PAYLOAD:", payload);
         await editListingTexts(id, payload);
 
         message.success("Inzerát upraven");
+        onSuccess?.();
         onClose?.();
       } else {
         const payload = await buildPayload(values);
@@ -219,10 +242,36 @@ const ListingCreatePage: React.FC<Props> = ({
         >
           <Form.Item
             required
-            rules={[{ required: true, message: "Vyplň index" }]}
             name="listingIndex"
             label="Index Inzerátu"
+            validateTrigger="onBlur"
             getValueFromEvent={(e) => e.target.value.replace(/\D/g, "")}
+            rules={[
+              {
+                required: true,
+                message: "Zadej index",
+              },
+              {
+                validator: async (_, value) => {
+                  if (!value) return;
+                  if (
+                    isEditMode &&
+                    Number(value) === initialData?.listingIndex
+                  ) {
+                    return;
+                  }
+
+                  const exists = await checkListingIndex(
+                    Number(value),
+                    isEditMode ? initialData?.id : undefined,
+                  );
+
+                  if (exists) {
+                    throw new Error("Index už existuje");
+                  }
+                },
+              },
+            ]}
           >
             <Input
               maxLength={9}

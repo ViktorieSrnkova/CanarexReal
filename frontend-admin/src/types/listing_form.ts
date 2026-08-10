@@ -99,8 +99,8 @@ export type CreateAdPayload = {
 };
 export const PROPERTY_TYPE_MAP: Record<number, PropertyType> = {
   1: "apartman",
-  2: "vila",
-  3: "dum",
+  2: "dum",
+  3: "vila",
   4: "garsonka",
   5: "pozemek",
 };

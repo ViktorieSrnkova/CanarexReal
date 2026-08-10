@@ -204,7 +204,7 @@ router.get("/home", optionalUser, async (req: AuthRequest, res) => {
           },
         },
       },
-      orderBy: { datum_vytvoreni: "desc" },
+      orderBy: { poradi: "desc" },
       take: 6,
       select: listingThumbnailSelect(langId, userId),
     });

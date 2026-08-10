@@ -86,7 +86,7 @@ model formulare_typy_nemovitosti {
 
 model inzeraty {
   id                   Int                    @id(map: "inzeraty_pk") @default(autoincrement())
-  index                Int
+  index                Int                    @unique
   cena_v_eur           Int
   loznice              Int
   koupelny             Int
@@ -96,6 +96,7 @@ model inzeraty {
   statusy_id           Int
   typy_nemovitosti_id  Int
   datum_zmeny          DateTime               @updatedAt @db.Timestamp(6)
+  poradi               Int                    @default(0)
   adresy               adresy?
   statusy              statusy                @relation(fields: [statusy_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "inzeraty_statusy")
   typy_nemovitosti     typy_nemovitosti       @relation(fields: [typy_nemovitosti_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "inzeraty_typy_nemovitosti")
@@ -104,6 +105,7 @@ model inzeraty {
   obrazky              obrazky[]
   uzivatelske_oblibene uzivatelske_oblibene[]
 
+  @@index([poradi], map: "idx_inzeraty_poradi")
   @@index([statusy_id], map: "idx_inz_sts")
   @@index([typy_nemovitosti_id], map: "idx_inz_typ")
 }

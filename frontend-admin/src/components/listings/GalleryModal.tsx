@@ -172,7 +172,12 @@ export default function ListingGalleryModal({
         setRemovedImageIds((r) => (r.includes(img.id) ? r : [...r, img.id]));
       }
 
-      return prev.filter((i) => getKey(i) !== key);
+      return prev
+        .filter((i) => getKey(i) !== key)
+        .map((img, index) => ({
+          ...img,
+          order: index,
+        }));
     });
   };
 

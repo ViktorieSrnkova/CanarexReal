@@ -27,8 +27,8 @@ const langIdMap: Record<string, number> = {
 
 const PROPERTY_TYPE_CODES = new Set([
   "apartman",
-  "vila",
   "dum",
+  "vila",
   "garsonka",
   "pozemek",
 ]);
@@ -306,6 +306,18 @@ router.post("/", upload.array("images"), async (req, res) => {
     if (!values) {
       return res.status(400).json({ error: "Missing body" });
     }
+    const existing = await prisma.inzeraty.findUnique({
+      where: {
+        index: Number(values.index),
+      },
+    });
+
+    if (existing) {
+      return res.status(409).json({
+        error: "INDEX_EXISTS",
+        message: "Tento index už existuje",
+      });
+    }
     const selectedPictogramIds = getSelectedPictogramIds(values.attributes);
     if (!values.address) {
       throw new Error("Missing address");
@@ -328,9 +340,23 @@ router.post("/", upload.array("images"), async (req, res) => {
         if (!propertyType) {
           throw new Error("Invalid property type");
         }
+        const maxOrder = await tx.inzeraty.aggregate({
+          _max: {
+            poradi: true,
+          },
+        });
+
+        const nextOrder = (maxOrder._max.poradi ?? -1) + 1;
+        console.log({
+          max: maxOrder._max.poradi,
+          next: nextOrder,
+          type: typeof nextOrder,
+        });
+
         const ad = await tx.inzeraty.create({
           data: {
             index: Number(values.index),
+            poradi: nextOrder,
             cena_v_eur: Number(values.price),
             loznice: Number(values.bedrooms),
             koupelny: Number(values.bathrooms),
@@ -410,7 +436,7 @@ router.post("/", upload.array("images"), async (req, res) => {
 router.get("/", async (req, res) => {
   try {
     const page = Number(req.query.page ?? 1);
-    const limit = Number(req.query.limit ?? 20);
+    const limit = Number(req.query.limit ?? 200);
     const skip = (page - 1) * limit;
     const where = buildListingsWhere(req.query);
     const listings = await prisma.inzeraty.findMany({
@@ -418,7 +444,7 @@ router.get("/", async (req, res) => {
       skip,
       take: limit,
       orderBy: {
-        datum_vytvoreni: "desc",
+        poradi: "desc",
       },
 
       select: {
@@ -697,8 +723,36 @@ router.delete("/:id", async (req, res) => {
       return res.status(400).json({ error: "Invalid id" });
     }
 
-    await prisma.inzeraty.delete({
-      where: { id },
+    await prisma.$transaction(async (tx) => {
+      const listing = await tx.inzeraty.findUnique({
+        where: { id },
+        select: {
+          poradi: true,
+        },
+      });
+
+      if (!listing) {
+        throw new Error("LISTING_NOT_FOUND");
+      }
+      console.log("DELETING PORADI:", listing.poradi);
+      await tx.inzeraty.delete({
+        where: { id },
+      });
+
+      const result = await tx.inzeraty.updateMany({
+        where: {
+          poradi: {
+            gt: listing.poradi,
+          },
+        },
+        data: {
+          poradi: {
+            decrement: 1,
+          },
+        },
+      });
+
+      console.log("UPDATED:", result.count);
     });
 
     return res.json({ success: true });
@@ -716,6 +770,21 @@ router.put("/:id", async (req, res) => {
     }
 
     const body = req.body;
+    const existing = await prisma.inzeraty.findFirst({
+      where: {
+        index: Number(body.index),
+        NOT: {
+          id,
+        },
+      },
+    });
+
+    if (existing) {
+      return res.status(409).json({
+        error: "INDEX_EXISTS",
+        message: "Tento index už existuje",
+      });
+    }
 
     const propertyType = await prisma.typy_nemovitosti.findFirst({
       where: { kod: body.propertyType },
@@ -755,7 +824,7 @@ router.put("/:id", async (req, res) => {
         where: { inzeraty_id: id },
         update: {
           nominatim_id: body.address.value,
-          lokace: body.lokace,
+          lokace: body.location,
           lat: body.address.lat,
           lng: body.address.lon,
           cela_adresa: body.address.label,
@@ -763,7 +832,7 @@ router.put("/:id", async (req, res) => {
         create: {
           inzeraty_id: id,
           nominatim_id: body.address.value,
-          lokace: body.lokace,
+          lokace: body.location,
           lat: body.address.lat,
           lng: body.address.lon,
           cela_adresa: body.address.label,
@@ -961,6 +1030,131 @@ router.put("/gallery/save", upload.any(), async (req, res) => {
   } catch (err: any) {
     console.error("edit gallery error:", err);
     res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+router.get("/check-index/:index", async (req, res) => {
+  try {
+    const index = Number(req.params.index);
+
+    if (!Number.isInteger(index)) {
+      return res.status(400).json({
+        error: "Invalid index",
+      });
+    }
+
+    const excludeId = req.query.excludeId
+      ? Number(req.query.excludeId)
+      : undefined;
+
+    const existing = await prisma.inzeraty.findFirst({
+      where: {
+        index,
+        ...(excludeId !== undefined && {
+          NOT: {
+            id: excludeId,
+          },
+        }),
+      },
+    });
+
+    return res.json({
+      exists: !!existing,
+    });
+  } catch (err) {
+    console.error("check index error:", err);
+    return res.status(500).json({
+      error: "Internal server error",
+    });
+  }
+});
+
+router.patch("/order", async (req, res) => {
+  try {
+    const { listingId, to } = req.body;
+
+    if (typeof listingId !== "number" || typeof to !== "number" || to < 0) {
+      return res.status(400).json({
+        message: "Invalid request body",
+      });
+    }
+
+    await prisma.$transaction(async (tx) => {
+      const listing = await tx.inzeraty.findUnique({
+        where: {
+          id: listingId,
+        },
+        select: {
+          poradi: true,
+        },
+      });
+
+      if (!listing) {
+        throw new Error("LISTING_NOT_FOUND");
+      }
+
+      const from = listing.poradi;
+
+      if (from === to) {
+        return;
+      }
+
+      if (from < to) {
+        await tx.inzeraty.updateMany({
+          where: {
+            poradi: {
+              gt: from,
+              lte: to,
+            },
+          },
+          data: {
+            poradi: {
+              decrement: 1,
+            },
+          },
+        });
+      } else {
+        await tx.inzeraty.updateMany({
+          where: {
+            poradi: {
+              gte: to,
+              lt: from,
+            },
+          },
+          data: {
+            poradi: {
+              increment: 1,
+            },
+          },
+        });
+      }
+
+      await tx.inzeraty.update({
+        where: {
+          id: listingId,
+        },
+        data: {
+          poradi: to,
+        },
+      });
+    });
+
+    return res.json({
+      success: true,
+    });
+  } catch (err) {
+    if (err instanceof Error && err.message === "LISTING_NOT_FOUND") {
+      return res.status(404).json({
+        message: "Listing not found",
+      });
+    }
+
+    console.error("listing order patch error:", err);
+
+    return res.status(500).json({
+      message: "Internal server error",
+      error: String(err),
+    });
   }
 });
 

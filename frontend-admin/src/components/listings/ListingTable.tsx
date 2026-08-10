@@ -10,6 +10,30 @@ import {
   PROPERTY_TYPE_OPTIONS,
   type PropertyType,
 } from "../../types/listing_form";
+import {
+  DndContext,
+  PointerSensor,
+  closestCorners,
+  type DragEndEvent,
+  type DragStartEvent,
+} from "@dnd-kit/core";
+
+import {
+  SortableContext,
+  verticalListSortingStrategy,
+  arrayMove,
+} from "@dnd-kit/sortable";
+
+import { useSensor, useSensors } from "@dnd-kit/core";
+
+import { reorderListings } from "../../api/listings";
+import { useEffect, useRef, useState } from "react";
+import { SortableRow } from "../dashboard/SortableRow";
+import { DragOverlay } from "@dnd-kit/core";
+
+import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
+import { GhostRow } from "./TableRow/GhostRow";
+import "../../styles/drag.css";
 
 type Props = {
   data: ListingRow[];
@@ -118,31 +142,150 @@ export function ListingTable({
 
     onFiltersChange(normalizeFilters(tableFilters, filters));
   };
+
+  const [tableData, setTableData] = useState(data);
+  const [activeId, setActiveId] = useState<number | null>(null);
+  const overId = useRef<number | null>(null);
+
+  useEffect(() => {
+    setTableData(data);
+  }, [data]);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 3,
+      },
+    }),
+  );
+
+  const handleDragStart = ({ active }: DragStartEvent) => {
+    setActiveId(Number(active.id));
+  };
+
+  const handleDragEnd = async ({ active, over }: DragEndEvent) => {
+    if (!over || active.id === over.id) {
+      return;
+    }
+
+    const oldIndex = tableData.findIndex(
+      (item) => item.id === Number(active.id),
+    );
+
+    const newIndex = tableData.findIndex((item) => item.id === Number(over.id));
+
+    const newData = arrayMove(tableData, oldIndex, newIndex);
+
+    setTableData(newData);
+
+    try {
+      const newPoradi = pagination.total - newIndex;
+
+      await reorderListings(Number(active.id), newPoradi);
+    } catch (err) {
+      console.error(err);
+      setTableData(data);
+    }
+  };
+  const canReorder =
+    !filters.query &&
+    !filters.index &&
+    !filters.location &&
+    !filters.priceFrom &&
+    !filters.priceTo &&
+    !filters.sizeFrom &&
+    !filters.sizeTo &&
+    !filters.bedroomsFrom &&
+    !filters.bedroomsTo &&
+    !filters.bathroomsFrom &&
+    !filters.bathroomsTo &&
+    !filters.statusIds?.length &&
+    !filters.typeCodes?.length &&
+    !filters.pictogramIds?.length;
+  const columns = getColumns({
+    filters,
+    pictogramOptions,
+    onEdit,
+    onGalleryEdit,
+    onDelete,
+    onToggleVisibility,
+    onChangeStatus,
+    canReorder,
+  });
+
+  const setDraggingCursor = (value: string) => {
+    document.documentElement.style.cursor = value;
+    document.body.style.cursor = value;
+  };
   return (
-    <Table
-      rowKey="id"
-      dataSource={data}
-      columns={getColumns({
-        filters,
-        pictogramOptions,
-        onEdit,
-        onGalleryEdit,
-        onDelete,
-        onToggleVisibility,
-        onChangeStatus,
-      })}
-      onChange={handleTableChange}
-      loading={loading}
-      pagination={{
-        current: pagination.page,
-        pageSize: pagination.limit,
-        total: pagination.total,
-        onChange: (page, pageSize) => {
-          window.scrollTo({ top: 0, behavior: "smooth" });
-          onPaginationChange(page, pageSize);
-        },
+    <DndContext
+      sensors={sensors}
+      collisionDetection={closestCorners}
+      onDragStart={(event) => {
+        setDraggingCursor("grabbing");
+        handleDragStart(event);
       }}
-      scroll={{ x: true }}
-    />
+      onDragOver={({ over }) => {
+        document
+          .querySelectorAll(".drag-over-row")
+          .forEach((el) => el.classList.remove("drag-over-row"));
+
+        if (!over) return;
+
+        const row = document.querySelector(`[data-row-key="${over.id}"]`);
+
+        row?.classList.add("drag-over-row");
+      }}
+      onDragCancel={() => {
+        setDraggingCursor("");
+        setActiveId(null);
+      }}
+      onDragEnd={(event) => {
+        setDraggingCursor("");
+        setActiveId(null);
+
+        handleDragEnd(event);
+      }}
+    >
+      <SortableContext
+        items={tableData.map((item) => item.id)}
+        strategy={verticalListSortingStrategy}
+      >
+        <Table
+          rowKey="id"
+          dataSource={tableData}
+          size="small"
+          columns={columns}
+          onChange={handleTableChange}
+          loading={loading}
+          pagination={{
+            current: pagination.page,
+            pageSize: pagination.limit,
+            total: pagination.total,
+            onChange: (page, pageSize) => {
+              window.scrollTo({ top: 0, behavior: "smooth" });
+              onPaginationChange(page, pageSize);
+            },
+          }}
+          components={{
+            body: {
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              row: (props: any) => (
+                <SortableRow {...props} activeId={activeId} overId={overId} />
+              ),
+            },
+          }}
+          scroll={{ x: true }}
+        />
+        <DragOverlay modifiers={[restrictToVerticalAxis]}>
+          {activeId ? (
+            <GhostRow
+              record={data.find((x) => x.id === activeId)!}
+              columns={columns}
+            />
+          ) : null}
+        </DragOverlay>
+      </SortableContext>
+    </DndContext>
   );
 }

@@ -7,6 +7,7 @@ export function listingThumbnailSelect(langId: number = 2, userId?: number) {
     koupelny: true,
     velikost: true,
     statusy_id: true,
+    poradi: true,
 
     uzivatelske_oblibene: userId
       ? {

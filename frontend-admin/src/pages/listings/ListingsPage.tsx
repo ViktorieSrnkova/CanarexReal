@@ -43,7 +43,7 @@ const ListingsPage: React.FC = () => {
   const [galleryOpen, setGalleryOpen] = useState(false);
   const [pagination, setPagination] = useState({
     page: 1,
-    limit: 20,
+    limit: 200,
     total: 0,
   });
   const [images, setImages] = useState<Gallery[]>([]);
@@ -235,12 +235,19 @@ const ListingsPage: React.FC = () => {
               onClose={() => setEditOpen(false)}
               onSuccess={async () => {
                 setEditOpen(false);
+
                 const res = await getListings({
                   page: pagination.page,
                   limit: pagination.limit,
+                  filters,
                 });
-
                 setData(res.data.map(mapListing));
+
+                setPagination((prev) => ({
+                  ...prev,
+                  total: res.pagination.total,
+                }));
+
                 onSuccess?.();
               }}
             />

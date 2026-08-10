@@ -132,3 +132,18 @@ export const saveGallery = async (payload: GallerySavePayload) => {
 
   return api.put("/listings/gallery/save", formData, {});
 };
+
+export const checkListingIndex = async (index: number, excludeId?: number) => {
+  const query = excludeId !== undefined ? `?excludeId=${excludeId}` : "";
+
+  const { data } = await api.get<{ exists: boolean }>(
+    `/listings/check-index/${index}${query}`,
+  );
+
+  return data.exists;
+};
+export const reorderListings = (listingId: number, to: number) =>
+  api.patch("/listings/order", {
+    listingId,
+    to,
+  });
