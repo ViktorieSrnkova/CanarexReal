@@ -18,6 +18,7 @@ export function useListings({ paginated = true }: Props) {
   const { lang } = useLang();
   const { user } = useAuth();
   const langId = LANGUAGE_TO_ID[lang];
+  const [isLoading, setIsLoading] = useState(true);
 
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -107,6 +108,7 @@ export function useListings({ paginated = true }: Props) {
 
   useEffect(() => {
     const load = async () => {
+      setIsLoading(true);
       try {
         const { thumbnails, total } = await getListingsThumbs(langId, {
           page,
@@ -119,6 +121,8 @@ export function useListings({ paginated = true }: Props) {
         setTotal(total);
       } catch (err) {
         console.error(err);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -210,5 +214,6 @@ export function useListings({ paginated = true }: Props) {
     sizeRange,
 
     lang,
+    isLoading,
   };
 }

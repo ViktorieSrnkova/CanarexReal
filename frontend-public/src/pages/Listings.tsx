@@ -33,6 +33,7 @@ function Listings() {
     setFiltersOpen,
     toggleFavoriteApi,
     setListings,
+    isLoading,
   } = useListings({
     paginated: true,
   });
@@ -77,7 +78,6 @@ function Listings() {
     return <p>{t("general.loading")}</p>;
   }
 
-  const isLoading = !listings.length;
   return (
     <>
       <SEO
@@ -112,6 +112,9 @@ function Listings() {
                 Array.from({ length: 6 }).map((_, i) => (
                   <CardSkeleton key={i} />
                 ))}
+              {listings.length === 0 && !isLoading && (
+                <p className="listings-empty">{t("listings.none")}</p>
+              )}
 
               {listings.map((listing, i) => (
                 <Card
@@ -146,6 +149,7 @@ function Listings() {
               page={page}
               totalPages={totalPages}
               onChange={setPage}
+              loading={listings.length === 0}
             />
           </div>
         </div>

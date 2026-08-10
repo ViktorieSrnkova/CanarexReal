@@ -5,7 +5,13 @@
   gap: 1rem;
   width: 100%;
 }
-
+.listings-empty {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
 .listings-wrapper .filters {
   max-width: 20.438rem;
   width: 100%;
