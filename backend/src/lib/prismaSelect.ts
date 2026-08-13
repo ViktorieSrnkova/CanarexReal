@@ -201,3 +201,46 @@ export const fullFormSelect = {
     take: 1,
   },
 };
+
+export function listingPrintSelect() {
+  return {
+    id: true,
+    index: true,
+    cena_v_eur: true,
+    loznice: true,
+    koupelny: true,
+    velikost: true,
+
+    inzeraty_preklady: {
+      select: {
+        titulek: true,
+        popis: true,
+        detaily: true,
+        jazyky_id: true,
+      },
+    },
+
+    adresy: {
+      select: {
+        lat: true,
+        lng: true,
+        cela_adresa: true,
+      },
+    },
+
+    obrazky: {
+      where: {
+        poradi: {
+          not: 0,
+        },
+      },
+      orderBy: {
+        poradi: "asc" as const,
+      },
+      select: {
+        id: true,
+        poradi: true,
+      },
+    },
+  };
+}

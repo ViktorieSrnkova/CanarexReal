@@ -5,6 +5,7 @@ import {
   FolderOpenOutlined,
   HomeOutlined,
   PlusOutlined,
+  PrinterOutlined,
   ReadOutlined,
   SolutionOutlined,
   ToolOutlined,
@@ -38,6 +39,7 @@ export default function AdminLayout() {
     if (path.startsWith("/news/create")) return "3-2";
     if (path.startsWith("/news")) return "3-1";
     if (path.startsWith("/forms")) return "4";
+    if (path.startsWith("/print")) return "5";
     return "1";
   })();
 
@@ -159,6 +161,14 @@ export default function AdminLayout() {
               label: (
                 <Link to="/forms">
                   <SolutionOutlined /> Formuláře
+                </Link>
+              ),
+            },
+            {
+              key: "5",
+              label: (
+                <Link to="/print">
+                  <PrinterOutlined /> Tisk Inzerátu
                 </Link>
               ),
             },

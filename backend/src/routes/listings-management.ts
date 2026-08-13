@@ -1,7 +1,10 @@
 // @ts-ignore
 import { Router } from "express";
 import { requireRole, type AuthRequest } from "../middleware/auth.js";
-import { listingDetailSelect } from "../lib/prismaSelect.js";
+import {
+  listingDetailSelect,
+  listingPrintSelect,
+} from "../lib/prismaSelect.js";
 import prisma from "../lib/db.js";
 import { processAdImages } from "../utils/processImagesHelper.js";
 import { reverseGeocode } from "../utils/reverseGeocode.js";
@@ -557,6 +560,42 @@ router.get("/", async (req, res) => {
       .json({ message: "Internal server error", error: String(err) });
   }
 });
+
+router.get("/index-search", async (req, res) => {
+  try {
+    const search = String(req.query.index ?? "").trim();
+
+    if (!/^\d+$/.test(search)) {
+      return res.json({ listings: [] });
+    }
+
+    const listings = await prisma.$queryRaw<
+      {
+        id: number;
+        index: number;
+        cena_v_eur: number | null;
+        lokace: string | null;
+      }[]
+    >`
+      SELECT
+        i.id,
+        i.index,
+        i.cena_v_eur,
+        a.lokace
+      FROM inzeraty i
+      LEFT JOIN adresy a ON a.inzeraty_id = i.id
+      WHERE CAST(i.index AS TEXT) LIKE ${`${search}%`}
+      ORDER BY i.index ASC
+      LIMIT 20
+    `;
+
+    res.json({ listings });
+  } catch (err) {
+    console.error("Listing index search error:", err);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
 router.get("/:id", async (req, res) => {
   try {
     const id = Number(req.params.id);
@@ -636,6 +675,88 @@ router.get("/:id", async (req, res) => {
     });
   }
 });
+
+router.get("/print/:id", async (req, res) => {
+  try {
+    const id = Number(req.params.id);
+    if (isNaN(id)) {
+      return res.status(400).json({
+        message: "Invalid listing ID",
+      });
+    }
+
+    const listing = await prisma.inzeraty.findFirst({
+      where: {
+        id,
+      },
+      select: listingPrintSelect(),
+    });
+
+    if (!listing) {
+      return res.status(404).json({ message: "Listing not found" });
+    }
+    const listingPictograms = await prisma.inzeraty_piktogramy.findMany({
+      where: { inzeraty_id: id },
+      select: { piktogramy_id: true },
+    });
+
+    const dynamicIds = listingPictograms.map((p) => p.piktogramy_id);
+
+    const allIds = [...new Set([1, 2, 3, ...dynamicIds])];
+
+    const pictograms = await prisma.piktogramy.findMany({
+      where: { id: { in: allIds } },
+      include: {
+        obrazky: { select: { ikona_svg: true } },
+        piktogramy_preklady: {
+          select: { nazev: true, jazyky_id: true },
+        },
+      },
+    });
+    const result = pictograms.map((p) => ({
+      id: p.id,
+      iconSvg: p.obrazky?.ikona_svg ?? null,
+      translations: p.piktogramy_preklady.map((translation) => ({
+        jazyky_id: translation.jazyky_id,
+        name: translation.nazev,
+      })),
+    }));
+    const FIXED = [1, 2, 3];
+    const SPECIAL = 14;
+
+    const ORDER = [4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 16];
+    const orderMap = new Map(ORDER.map((id, i) => [id, i]));
+
+    const fixedItems = result.filter((p) => FIXED.includes(p.id));
+    const specialItem = result.find((p) => p.id === SPECIAL);
+    const rest = result.filter(
+      (p) => !FIXED.includes(p.id) && p.id !== SPECIAL,
+    );
+
+    rest.sort((a, b) => {
+      const aOrder = orderMap.get(a.id) ?? 999;
+      const bOrder = orderMap.get(b.id) ?? 999;
+      return aOrder - bOrder;
+    });
+
+    const sortedPictograms = [
+      ...fixedItems.sort((a, b) => a.id - b.id),
+      ...(specialItem ? [specialItem] : []),
+      ...rest,
+    ];
+
+    const response = {
+      ...listing,
+      inzeraty_piktogramy: sortedPictograms,
+    };
+
+    res.json({ listing: response });
+  } catch (err) {
+    console.error("Listing detail error:", err);
+    res.status(500).json({ message: "Internal server error printing" });
+  }
+});
+
 router.get("/:id/gallery", async (req, res) => {
   try {
     const id = Number(req.params.id);

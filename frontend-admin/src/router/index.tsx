@@ -17,6 +17,7 @@ import NotFoundPage from "../pages/errors/NotFoundPage";
 import UnauthorizedPage from "../pages/errors/UnauthorizedPage";
 import CenteredLayout from "../layouts/CenteredLayout";
 import AuthGuard from "../auth/AuthGueard";
+import PrintListing from "../pages/print/PrintListing";
 
 export default function Router() {
   return (
@@ -42,6 +43,7 @@ export default function Router() {
 
           <Route path="/forms" element={<ContactFormsPage />} />
           <Route path="/forms/:id" element={<FormDetailPage />} />
+          <Route path="/print" element={<PrintListing />} />
         </Route>
         <Route path="/unauthorized" element={<UnauthorizedPage />} />
         <Route path="*" element={<NotFoundPage />} />

@@ -1,0 +1,13 @@
+.print-action {
+  display: flex;
+  justify-content: flex-end;
+  max-width: 1110px;
+  margin: 16px auto;
+  padding: 0 16px;
+}
+
+@media print {
+  .print-action {
+    display: none;
+  }
+}
