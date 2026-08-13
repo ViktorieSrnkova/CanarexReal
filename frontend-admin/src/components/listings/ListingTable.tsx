@@ -13,6 +13,7 @@ import {
 import {
   DndContext,
   PointerSensor,
+  TouchSensor,
   closestCorners,
   type DragEndEvent,
   type DragStartEvent,
@@ -155,6 +156,12 @@ export function ListingTable({
     useSensor(PointerSensor, {
       activationConstraint: {
         distance: 3,
+      },
+    }),
+    useSensor(TouchSensor, {
+      activationConstraint: {
+        delay: 150,
+        tolerance: 5,
       },
     }),
   );
