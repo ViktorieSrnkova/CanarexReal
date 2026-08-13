@@ -32,7 +32,10 @@ import { useEffect, useRef, useState } from "react";
 import { SortableRow } from "../dashboard/SortableRow";
 import { DragOverlay } from "@dnd-kit/core";
 
-import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
+import {
+  restrictToParentElement,
+  restrictToVerticalAxis,
+} from "@dnd-kit/modifiers";
 import { GhostRow } from "./TableRow/GhostRow";
 import "../../styles/drag.css";
 
@@ -252,6 +255,7 @@ export function ListingTable({
 
         handleDragEnd(event);
       }}
+      modifiers={[restrictToParentElement]}
     >
       <SortableContext
         items={tableData.map((item) => item.id)}
@@ -283,7 +287,9 @@ export function ListingTable({
           }}
           scroll={{ x: true }}
         />
-        <DragOverlay modifiers={[restrictToVerticalAxis]}>
+        <DragOverlay
+          modifiers={[restrictToVerticalAxis, restrictToParentElement]}
+        >
           {activeId ? (
             <GhostRow
               record={data.find((x) => x.id === activeId)!}

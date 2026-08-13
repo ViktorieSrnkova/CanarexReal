@@ -20,6 +20,7 @@ import {
 
 import "./ImageSelector.css";
 import { SortableImage } from "./SortableImage";
+import { restrictToParentElement } from "@dnd-kit/modifiers";
 
 const { Text } = Typography;
 
@@ -98,6 +99,7 @@ const ImageSelector = ({
           sensors={sensors}
           collisionDetection={closestCenter}
           onDragEnd={handleDragEnd}
+          modifiers={[restrictToParentElement]}
         >
           <SortableContext
             items={selectedImages.map((image) => image.id)}

@@ -386,6 +386,7 @@ function SortableImage({
           background: "rgba(0,0,0,0.5)",
           borderRadius: 4,
           cursor: "grab",
+          touchAction: "none",
         }}
       />
       <button

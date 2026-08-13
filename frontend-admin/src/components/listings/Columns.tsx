@@ -194,6 +194,7 @@ export function getColumns({
       onCell: () => ({
         style: {
           paddingRight: 0,
+          touchAction: "none",
         },
       }),
     },
