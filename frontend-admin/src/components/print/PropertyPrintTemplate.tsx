@@ -85,6 +85,16 @@ const PropertyPrintTemplate = ({
         }[lang],
       );
   };
+  const translateSlogan = (lang: Language) => {
+    switch (lang) {
+      case "cs":
+        return "Váš realitní agent na Tenerife";
+      case "en":
+        return "Your real estate agent in Tenerife";
+      case "sk":
+        return "Váš realitný agent na Tenerife";
+    }
+  };
   return (
     <>
       <div className="print-page-wrapper">
@@ -98,7 +108,7 @@ const PropertyPrintTemplate = ({
                   className="logo"
                   width={250}
                 />
-                <p className="logo-text">Váš realitní agent na Tenerife</p>
+                <p className="logo-text">{translateSlogan(language)}</p>
               </div>
 
               <ul>
