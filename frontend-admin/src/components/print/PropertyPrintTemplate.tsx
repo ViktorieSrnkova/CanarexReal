@@ -102,9 +102,9 @@ const PropertyPrintTemplate = ({
               </div>
 
               <ul>
-                <li>Av. Quinto Centenario</li>
+                <li>Av. Quinto Centenario 60</li>
                 <li>
-                  <span className="number light">60 38983</span> Puerto de
+                  <span className="number light">386 83</span> Puerto de
                   Santiago
                 </li>
                 <li>Tenerife Espaňa</li>
@@ -112,11 +112,10 @@ const PropertyPrintTemplate = ({
                   W: +<span className="number light">420 603 257 021</span>
                 </li>
                 <li>
-                  M: +<span className="number light">34 604 198 470</span>{" "}
+                  M: +<span className="number light">34 604 198 470</span>
                 </li>
-                <li>stan@canarexreal.es</li>
-                {/* WTF TYHLE ANI JEDEN NEEXISTUJE */}
-                <li>www.canarexreal.cz</li>
+                <li>stan@canarexreal.com</li>
+                <li>www.canarexreal.com</li>
               </ul>
             </div>
 
@@ -130,7 +129,7 @@ const PropertyPrintTemplate = ({
                 Index: <span className="number">{listing.index}</span>
               </p>
             </div>
-            <h3 className="number bold">
+            <h3 className="number bold money-line">
               {formatMoneyEUR(listing.cena_v_eur || 0)}
             </h3>
 
@@ -199,18 +198,18 @@ const PropertyPrintTemplate = ({
                   language={language}
                 />
               </div>
-            </div>
-            <div className="bottom-section">
-              <h3>Lokace</h3>
-              <PrintMap
-                height="220px"
-                lat={listing.adresy.lat}
-                lng={listing.adresy.lng}
-                zoom={12}
-              />
-              <p style={{ marginTop: "4px" }}>
-                {formatLocation(listing.adresy?.cela_adresa || "", language)}
-              </p>
+              <div className="bottom-section">
+                <h3>Lokace</h3>
+                <PrintMap
+                  height="220px"
+                  lat={listing.adresy.lat}
+                  lng={listing.adresy.lng}
+                  zoom={12}
+                />
+                <p style={{ marginTop: "4px" }}>
+                  {formatLocation(listing.adresy?.cela_adresa || "", language)}
+                </p>
+              </div>
             </div>
           </div>
         </section>

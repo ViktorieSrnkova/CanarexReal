@@ -13,7 +13,7 @@
 .print-page-wrapper .print-page .print-header {
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: center;
   height: 100%;
 }
 .first-line {
@@ -34,6 +34,7 @@
   justify-content: space-between;
   align-items: flex-start;
   gap: 5mm;
+  margin-top: 4mm;
 }
 
 .third-line h2 {
@@ -43,7 +44,9 @@
   font-size: 5mm;
   line-height: 1.15;
 }
-
+.print-header h3 {
+  font-size: 16px;
+}
 .third-line p {
   width: 25mm;
   flex-shrink: 0;
@@ -57,20 +60,23 @@
 }
 .print-page-wrapper .print-page .main-image {
   width: 100%;
-  aspect-ratio: 1.5;
+  aspect-ratio: 3/2;
   object-fit: cover;
+  margin-top: 2mm;
 }
 .image-row {
   width: 100%;
-  display: flex;
-  gap: 8px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 2mm;
   margin-top: 8px;
 }
 .image-row img {
+  display: block;
   width: 100%;
   height: auto;
   object-fit: cover;
-  aspect-ratio: 1.5;
+  aspect-ratio: 3/2;
 }
 .logo-text {
   font-size: 1.2rem;
@@ -128,6 +134,9 @@
 .print-page-wrapper:last-child .print-page {
   break-after: auto;
   page-break-after: auto;
+}
+.money-line {
+  margin-top: 2mm;
 }
 
 .print-image-grid {
