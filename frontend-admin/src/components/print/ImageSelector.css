@@ -19,6 +19,7 @@
   border-radius: 6px;
   background: #f5f5f5;
   min-width: 0;
+  touch-action: none;
 }
 .image-selector-preview img {
   width: 100%;
