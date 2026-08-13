@@ -29,6 +29,7 @@ export const SortableImage = ({ image, getImageUrl }: SortableImageProps) => {
         {...attributes}
         {...listeners}
         aria-label="Přesunout fotografii"
+        style={{ touchAction: "none" }}
       >
         <HolderOutlined />
       </button>
