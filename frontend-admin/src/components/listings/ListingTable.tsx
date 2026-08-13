@@ -160,8 +160,7 @@ export function ListingTable({
     }),
     useSensor(TouchSensor, {
       activationConstraint: {
-        delay: 150,
-        tolerance: 5,
+        distance: 3,
       },
     }),
   );
