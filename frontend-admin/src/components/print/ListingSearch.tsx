@@ -41,7 +41,7 @@ const ListingSearch = ({
         notFoundContent={
           searching ? <Spin size="small" /> : "Nebyly nalezeny žádné výsledky"
         }
-        style={{ width: 400 }}
+        style={{ width: "100%", maxWidth: 400 }}
       />
 
       {error && (
