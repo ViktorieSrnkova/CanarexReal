@@ -157,7 +157,6 @@ const ImageSelector = ({
 
                   cursor: disabled ? "not-allowed" : "pointer",
                   opacity: disabled ? 0.45 : 1,
-                  touchAction: "none",
                 }}
               >
                 <img src={getImageUrl(image.id)} alt="" />
