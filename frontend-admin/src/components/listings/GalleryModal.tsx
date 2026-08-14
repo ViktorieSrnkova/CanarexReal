@@ -250,7 +250,13 @@ export default function ListingGalleryModal({
           items={localImages.map(getKey)}
           strategy={rectSortingStrategy}
         >
-          <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))",
+              gap: "12px",
+            }}
+          >
             {localImages
               .filter((img) => img.order !== 0)
               .map((img, index) => (
@@ -319,8 +325,9 @@ function SortableImage({
       style={{
         transform: CSS.Transform.toString(transform),
         transition,
-        width: 120,
-        height: 90,
+        width: "100%",
+        height: "auto",
+        aspectRatio: "3/2",
         position: "relative",
         border: selected ? "3px solid #52c41a" : "1px solid #ddd",
         overflow: "hidden",
