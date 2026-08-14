@@ -193,7 +193,7 @@ export function getColumns({
       render: (_, record) => canReorder && <DragHandle id={record.id} />,
       onCell: () => ({
         style: {
-          paddingRight: 0,
+          paddingRight: 4,
           touchAction: "none",
         },
       }),
@@ -204,13 +204,13 @@ export function getColumns({
       fixed: "left",
       onCell: () => ({
         style: {
-          paddingLeft: 8,
+          paddingLeft: 4,
           paddingRight: 4,
         },
       }),
       onHeaderCell: () => ({
         style: {
-          paddingLeft: 8,
+          paddingLeft: 4,
           paddingRight: 4,
         },
       }),
