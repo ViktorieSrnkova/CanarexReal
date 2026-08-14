@@ -5,7 +5,7 @@ import { getForm, toggleReview } from "../../api/forms";
 import type { FormDetail } from "../../types/forms";
 import { formatDate, formatDateTime, getReviewTag } from "../../utils/forms";
 import { formatMoneyEUR, formatPhoneNumber } from "../../utils/formatting";
-
+import "../../styles/form.css";
 const { Title, Text } = Typography;
 
 const FormDetailPage = () => {
@@ -128,7 +128,7 @@ const FormDetailPage = () => {
         style={{
           display: "flex",
           justifyContent: "start",
-          gap: 24,
+          gap: 16,
           flexWrap: "wrap",
           backgroundColor: "#fafafa",
           padding: 16,
@@ -141,7 +141,7 @@ const FormDetailPage = () => {
         <Text>
           Telefon: <Tag color="green">{formatPhoneNumber(form.telefon)}</Tag>
         </Text>
-        <Text style={{ marginLeft: "auto" }}>
+        <Text className="marginless-mobile">
           Datum vytvoření:
           <Tag color="volcano">{formatDateTime(form.datum_vytvoreni)}</Tag>
         </Text>
@@ -169,18 +169,8 @@ const FormDetailPage = () => {
         </div>
       )}
       {form.typy_formulare?.id === 3 && (
-        <div
-          style={{
-            marginTop: 12,
-            display: "flex",
-            flexWrap: "wrap",
-            justifyContent: "space-between",
-            backgroundColor: "#fafafa",
-            padding: 16,
-            borderRadius: 8,
-          }}
-        >
-          <Text style={{ marginRight: "8px" }}>
+        <div className="details">
+          <Text style={{ margin: "0 8px" }}>
             Typ nemovitosti:{" "}
             {form.typy_nemovitosti?.length ? (
               form.typy_nemovitosti.map((t) => (
@@ -193,7 +183,7 @@ const FormDetailPage = () => {
             )}
           </Text>
 
-          <Text style={{ marginRight: "8px" }}>
+          <Text style={{ margin: "0 8px" }}>
             Počet ložnic:{" "}
             <Tag color="geekblue">
               {form.pocet_loznic ? form.pocet_loznic : "Nespecifikováno"}
