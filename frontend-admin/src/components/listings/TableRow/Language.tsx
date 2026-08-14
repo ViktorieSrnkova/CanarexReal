@@ -15,14 +15,7 @@ const LANG_LABEL: Record<Lang, string> = {
 };
 
 const renderCheck = (has: boolean, tooltip: string) => (
-  <Tooltip
-    title={tooltip}
-    styles={{
-      root: {
-        pointerEvents: "none",
-      },
-    }}
-  >
+  <Tooltip title={tooltip} trigger={["hover"]}>
     <span
       style={{
         display: "flex",
