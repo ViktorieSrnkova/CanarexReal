@@ -11,6 +11,7 @@ export function Pictogram({ items }: Props) {
     <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
       {items.map((p) => (
         <span
+          key={p.id}
           style={{
             fontSize: 12,
             padding: "2px 6px",

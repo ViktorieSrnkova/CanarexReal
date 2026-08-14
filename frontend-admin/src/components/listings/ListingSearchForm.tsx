@@ -90,6 +90,7 @@ export function ListingSearchForm({
       >
         <Form.Item name="query" label="Hledat" style={{ marginBottom: 0 }}>
           <Input
+            style={{ fontSize: "16px" }}
             allowClear
             placeholder="Index, lokace, typ, status, piktogram..."
           />
@@ -101,7 +102,7 @@ export function ListingSearchForm({
           getValueFromEvent={numericValue}
           style={{ marginBottom: 0 }}
         >
-          <Input allowClear inputMode="numeric" />
+          <Input allowClear inputMode="numeric" style={{ fontSize: "16px" }} />
         </Form.Item>
 
         <Form.Item name="statusIds" label="Status" style={{ marginBottom: 0 }}>
@@ -112,6 +113,7 @@ export function ListingSearchForm({
               value: status.value,
               label: status.label,
             }))}
+            style={{ fontSize: "16px" }}
           />
         </Form.Item>
 
@@ -120,6 +122,7 @@ export function ListingSearchForm({
             allowClear
             mode="multiple"
             options={[...PROPERTY_TYPE_OPTIONS]}
+            style={{ fontSize: "16px" }}
           />
         </Form.Item>
 
@@ -129,7 +132,7 @@ export function ListingSearchForm({
           getValueFromEvent={numericValue}
           style={{ marginBottom: 0 }}
         >
-          <Input allowClear inputMode="numeric" />
+          <Input allowClear inputMode="numeric" style={{ fontSize: "16px" }} />
         </Form.Item>
 
         <Form.Item
@@ -138,7 +141,7 @@ export function ListingSearchForm({
           getValueFromEvent={numericValue}
           style={{ marginBottom: 0 }}
         >
-          <Input allowClear inputMode="numeric" />
+          <Input allowClear inputMode="numeric" style={{ fontSize: "16px" }} />
         </Form.Item>
 
         <Form.Item
@@ -147,7 +150,12 @@ export function ListingSearchForm({
           getValueFromEvent={numericValue}
           style={{ marginBottom: 0 }}
         >
-          <Input allowClear inputMode="numeric" suffix="m²" />
+          <Input
+            allowClear
+            inputMode="numeric"
+            suffix="m²"
+            style={{ fontSize: "16px" }}
+          />
         </Form.Item>
 
         <Form.Item
@@ -156,11 +164,16 @@ export function ListingSearchForm({
           getValueFromEvent={numericValue}
           style={{ marginBottom: 0 }}
         >
-          <Input allowClear inputMode="numeric" suffix="m²" />
+          <Input
+            allowClear
+            inputMode="numeric"
+            suffix="m²"
+            style={{ fontSize: "16px" }}
+          />
         </Form.Item>
 
         <Form.Item name="location" label="Lokace" style={{ marginBottom: 0 }}>
-          <Input allowClear />
+          <Input allowClear style={{ fontSize: "16px" }} />
         </Form.Item>
 
         <Form.Item
@@ -169,7 +182,7 @@ export function ListingSearchForm({
           getValueFromEvent={numericValue}
           style={{ marginBottom: 0 }}
         >
-          <Input allowClear inputMode="numeric" />
+          <Input allowClear inputMode="numeric" style={{ fontSize: "16px" }} />
         </Form.Item>
 
         <Form.Item
@@ -178,7 +191,7 @@ export function ListingSearchForm({
           getValueFromEvent={numericValue}
           style={{ marginBottom: 0 }}
         >
-          <Input allowClear inputMode="numeric" />
+          <Input allowClear inputMode="numeric" style={{ fontSize: "16px" }} />
         </Form.Item>
 
         <Form.Item
@@ -187,7 +200,7 @@ export function ListingSearchForm({
           getValueFromEvent={numericValue}
           style={{ marginBottom: 0 }}
         >
-          <Input allowClear inputMode="numeric" />
+          <Input allowClear inputMode="numeric" style={{ fontSize: "16px" }} />
         </Form.Item>
 
         <Form.Item
@@ -196,7 +209,7 @@ export function ListingSearchForm({
           getValueFromEvent={numericValue}
           style={{ marginBottom: 0 }}
         >
-          <Input allowClear inputMode="numeric" />
+          <Input allowClear inputMode="numeric" style={{ fontSize: "16px" }} />
         </Form.Item>
 
         <Form.Item
@@ -209,6 +222,7 @@ export function ListingSearchForm({
             mode="multiple"
             optionFilterProp="label"
             options={pictogramOptions}
+            style={{ fontSize: "16px" }}
           />
         </Form.Item>
 

@@ -83,6 +83,7 @@ const EditorMinimal = forwardRef<EditorMinimalRef, Props>(
           border: "1px solid #26c9ff8e",
           padding: 10,
           borderRadius: 4,
+          fontSize: "16px",
         }}
       />
     );

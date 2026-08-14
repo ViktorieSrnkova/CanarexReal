@@ -68,7 +68,11 @@ const LoginPage: React.FC = () => {
               { required: true, message: "Zadejte svůj přihlašovací e-mail!" },
             ]}
           >
-            <Input prefix={<UserOutlined />} placeholder="E-mail" />
+            <Input
+              prefix={<UserOutlined />}
+              placeholder="E-mail"
+              style={{ fontSize: "16px" }}
+            />
           </Form.Item>
 
           <Form.Item<FieldType>
@@ -81,6 +85,7 @@ const LoginPage: React.FC = () => {
               prefix={<LockOutlined />}
               type="password"
               placeholder="Heslo"
+              style={{ fontSize: "16px" }}
             />
           </Form.Item>
           <Form.Item label={null}>

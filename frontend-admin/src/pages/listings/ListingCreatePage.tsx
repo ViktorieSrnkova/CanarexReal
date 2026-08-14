@@ -275,7 +275,7 @@ const ListingCreatePage: React.FC<Props> = ({
           >
             <Input
               maxLength={9}
-              style={{ maxWidth: 120 }}
+              style={{ maxWidth: 120, fontSize: "16px" }}
               inputMode="numeric"
             />
           </Form.Item>
@@ -294,7 +294,7 @@ const ListingCreatePage: React.FC<Props> = ({
           >
             <Input
               maxLength={9}
-              style={{ maxWidth: 120 }}
+              style={{ maxWidth: 120, fontSize: "16px" }}
               inputMode="numeric"
             />
           </Form.Item>
@@ -307,7 +307,7 @@ const ListingCreatePage: React.FC<Props> = ({
           >
             <Input
               maxLength={2}
-              style={{ maxWidth: 100 }}
+              style={{ maxWidth: 100, fontSize: "16px" }}
               inputMode="numeric"
             />
           </Form.Item>
@@ -320,7 +320,7 @@ const ListingCreatePage: React.FC<Props> = ({
           >
             <Input
               maxLength={2}
-              style={{ maxWidth: 120 }}
+              style={{ maxWidth: 120, fontSize: "16px" }}
               inputMode="numeric"
             />
           </Form.Item>
@@ -333,7 +333,7 @@ const ListingCreatePage: React.FC<Props> = ({
           >
             <Input
               maxLength={9}
-              style={{ maxWidth: 120 }}
+              style={{ maxWidth: 120, fontSize: "16px" }}
               inputMode="numeric"
             />
           </Form.Item>
@@ -343,7 +343,7 @@ const ListingCreatePage: React.FC<Props> = ({
             name={"locationName"}
             label="Lokace"
           >
-            <Input maxLength={21} />
+            <Input maxLength={21} style={{ fontSize: "16px" }} />
           </Form.Item>
           <Form.Item
             required
@@ -351,7 +351,10 @@ const ListingCreatePage: React.FC<Props> = ({
             label="Typ nemovitosti"
             rules={[{ required: true, message: "Vyber typ nemovitosti" }]}
           >
-            <Select options={[...PROPERTY_TYPE_OPTIONS]} />
+            <Select
+              options={[...PROPERTY_TYPE_OPTIONS]}
+              style={{ fontSize: "16px" }}
+            />
           </Form.Item>
           <Form.Item
             required
@@ -375,7 +378,7 @@ const ListingCreatePage: React.FC<Props> = ({
 
                 setSelectedAddress(found ?? null);
               }}
-              style={{ width: "100%", color: "#000" }}
+              style={{ width: "100%", color: "#000", fontSize: "16px" }}
             />
           </Form.Item>
         </div>
@@ -525,14 +528,14 @@ const ListingCreatePage: React.FC<Props> = ({
                     name={["translations", lang, "alt"]}
                     label="Alt text hlavního obrázku"
                   >
-                    <Input />
+                    <Input style={{ fontSize: "16px" }} />
                   </Form.Item>
                 )}
                 <Form.Item
                   name={["translations", lang, "title"]}
                   label="Název inzerátu"
                 >
-                  <Input />
+                  <Input style={{ fontSize: "16px" }} />
                 </Form.Item>
 
                 <Form.Item

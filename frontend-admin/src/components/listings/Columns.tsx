@@ -67,7 +67,7 @@ const getSearchFilter = (
             setSelectedKeys(nextValue ? [nextValue] : []);
           }}
           onPressEnter={() => confirm({ closeDropdown: true })}
-          style={{ marginBottom: 8, display: "block" }}
+          style={{ marginBottom: 8, display: "block", fontSize: "16px" }}
         />
         <Space>
           <Button
@@ -132,7 +132,7 @@ const getRangeSearchFilter = (
             setRange({ from: event.target.value, to: value.to })
           }
           onPressEnter={() => confirm({ closeDropdown: true })}
-          style={{ marginBottom: 8, display: "block" }}
+          style={{ marginBottom: 8, display: "block", fontSize: "16px" }}
         />
         <Input
           inputMode="numeric"
@@ -142,7 +142,7 @@ const getRangeSearchFilter = (
             setRange({ from: value.from, to: event.target.value })
           }
           onPressEnter={() => confirm({ closeDropdown: true })}
-          style={{ marginBottom: 8, display: "block" }}
+          style={{ marginBottom: 8, display: "block", fontSize: "16px" }}
         />
         <Space>
           <Button

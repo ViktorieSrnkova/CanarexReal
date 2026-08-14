@@ -33,6 +33,7 @@ const Modals = (formHook: NewsFormHook) => {
           value={titleInput}
           onChange={(e) => setTitleInput(e.target.value)}
           placeholder="Zadejte titulek"
+          style={{ fontSize: "16px" }}
         />
       </Modal>
 
@@ -46,6 +47,7 @@ const Modals = (formHook: NewsFormHook) => {
           value={altInput}
           onChange={(e) => setAltInput(e.target.value)}
           placeholder="Zadejte ALT text"
+          style={{ fontSize: "16px" }}
         />
       </Modal>
 
