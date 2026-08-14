@@ -1,4 +1,3 @@
-import { Tooltip } from "antd";
 import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
 import type { ListingRow } from "../../../types/listings";
 
@@ -8,32 +7,24 @@ type Props = {
 
 type Lang = "cs" | "en" | "sk";
 
-const LANG_LABEL: Record<Lang, string> = {
-  cs: "CZ",
-  en: "EN",
-  sk: "SK",
-};
-
-const renderCheck = (has: boolean, tooltip: string) => (
-  <Tooltip title={tooltip} trigger={["hover"]}>
-    <span
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        width: 16,
-        height: 16,
-        fontSize: 12,
-        touchAction: "pan-x",
-      }}
-    >
-      {has ? (
-        <CheckOutlined style={{ color: "#52c41a" }} />
-      ) : (
-        <CloseOutlined style={{ color: "#ff4d4f" }} />
-      )}
-    </span>
-  </Tooltip>
+const renderCheck = (has: boolean) => (
+  <span
+    style={{
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      width: 16,
+      height: 16,
+      fontSize: 12,
+      touchAction: "pan-x",
+    }}
+  >
+    {has ? (
+      <CheckOutlined style={{ color: "#52c41a" }} />
+    ) : (
+      <CloseOutlined style={{ color: "#ff4d4f" }} />
+    )}
+  </span>
 );
 
 export function Language({ listing }: Props) {
@@ -42,19 +33,13 @@ export function Language({ listing }: Props) {
   const renderTranslation = (lang: Lang) => {
     const hasContent = langMap[lang];
 
-    return renderCheck(
-      hasContent,
-      `${LANG_LABEL[lang]} překlad ${hasContent ? "existuje" : "chybí"}`,
-    );
+    return renderCheck(hasContent);
   };
 
   const renderAlt = (lang: Lang) => {
     const hasAlt = listing.image?.hasAlt?.[lang] ?? false;
 
-    return renderCheck(
-      hasAlt,
-      `${LANG_LABEL[lang]} ALT ${hasAlt ? "existuje" : "chybí"}`,
-    );
+    return renderCheck(hasAlt);
   };
 
   return (
