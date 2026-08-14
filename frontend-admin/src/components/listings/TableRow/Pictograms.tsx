@@ -1,4 +1,3 @@
-import { Tooltip } from "antd";
 import type { ListingPictogram } from "../../../types/listings";
 
 type Props = {
@@ -11,19 +10,17 @@ export function Pictogram({ items }: Props) {
   return (
     <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
       {items.map((p) => (
-        <Tooltip key={p.id} title={p.label ?? p.code}>
-          <span
-            style={{
-              fontSize: 12,
-              padding: "2px 6px",
-              borderRadius: 4,
-              background: "#f5f5f5",
-              whiteSpace: "nowrap",
-            }}
-          >
-            {p.label ?? p.code}
-          </span>
-        </Tooltip>
+        <span
+          style={{
+            fontSize: 12,
+            padding: "2px 6px",
+            borderRadius: 4,
+            background: "#f5f5f5",
+            whiteSpace: "nowrap",
+          }}
+        >
+          {p.label ?? p.code}
+        </span>
       ))}
     </div>
   );

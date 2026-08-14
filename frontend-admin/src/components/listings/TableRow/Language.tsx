@@ -15,7 +15,14 @@ const LANG_LABEL: Record<Lang, string> = {
 };
 
 const renderCheck = (has: boolean, tooltip: string) => (
-  <Tooltip title={tooltip}>
+  <Tooltip
+    title={tooltip}
+    styles={{
+      root: {
+        pointerEvents: "none",
+      },
+    }}
+  >
     <span
       style={{
         display: "flex",
@@ -24,6 +31,7 @@ const renderCheck = (has: boolean, tooltip: string) => (
         width: 16,
         height: 16,
         fontSize: 12,
+        touchAction: "pan-x",
       }}
     >
       {has ? (
