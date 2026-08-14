@@ -1,5 +1,6 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { useDndContext } from "@dnd-kit/core";
+import { DragOutlined } from "@ant-design/icons";
 
 export function DragHandle({ id }: { id: number }) {
   const { attributes, listeners } = useSortable({
@@ -19,7 +20,7 @@ export function DragHandle({ id }: { id: number }) {
         touchAction: "none",
       }}
     >
-      ☰
+      <DragOutlined />
     </span>
   );
 }
