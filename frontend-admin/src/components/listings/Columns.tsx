@@ -227,6 +227,7 @@ export function getColumns({
       key: "index",
       title: "Index",
       dataIndex: "index",
+      fixed: "left",
       width: 73,
       filteredValue: filteredValue(filters.index),
       ...getSearchFilter("Filtrovat index", { numeric: true }),
