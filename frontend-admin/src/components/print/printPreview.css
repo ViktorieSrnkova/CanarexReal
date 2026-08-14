@@ -129,6 +129,8 @@
   zoom: var(--print-scale);
   break-after: page;
   page-break-after: always;
+  -webkit-text-size-adjust: none !important;
+  text-size-adjust: none !important;
 }
 
 .print-page-wrapper:last-child .print-page {
@@ -236,6 +238,8 @@
 
     break-after: page;
     page-break-after: always;
+    -webkit-text-size-adjust: none !important;
+    text-size-adjust: none !important;
   }
   .print-page-wrapper:last-child .print-page {
     break-after: auto;
