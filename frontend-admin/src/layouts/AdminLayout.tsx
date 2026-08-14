@@ -21,7 +21,7 @@ export default function AdminLayout() {
   const checkingAuth = useRef(false);
   const lastAuthCheck = useRef(Date.now());
 
-  const AUTH_CHECK_INTERVAL = 60 * 1000;
+  const AUTH_CHECK_INTERVAL = 60 * 60 * 1000;
   const navigate = useNavigate();
   const location = useLocation();
 
