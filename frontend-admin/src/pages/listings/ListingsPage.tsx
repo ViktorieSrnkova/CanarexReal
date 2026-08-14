@@ -26,6 +26,7 @@ import { mapRawListingToFormValues } from "../../utils/listingsMapper";
 import LoadingPage from "../system/LoadingPage";
 import ListingGalleryModal from "../../components/listings/GalleryModal";
 import type { Gallery } from "../../types/api";
+import { Collapse } from "antd";
 
 const ListingsPage: React.FC = () => {
   const [data, setData] = useState<ListingRow[]>([]);
@@ -185,15 +186,30 @@ const ListingsPage: React.FC = () => {
       console.error("Failed to load listing detail gallery:", err);
     }
   };
-
+  const [filtersOpen, setFiltersOpen] = useState(false);
   return (
     <div className="listings-page">
       <Title level={2}>Spravovat inzeráty</Title>
       <div>Celkem inzerátů: {data.length}</div>
-      <ListingSearchForm
-        filters={filters}
-        pictogramOptions={pictogramOptions}
-        onChange={handleFiltersChange}
+
+      <Collapse
+        activeKey={filtersOpen ? ["filters"] : []}
+        onChange={(keys) => setFiltersOpen(keys.includes("filters"))}
+        style={{ marginTop: "1rem", marginBottom: "1rem" }}
+        items={[
+          {
+            key: "filters",
+            label: filtersOpen ? "Sbalit filtry" : "Rozbalit filtry",
+            showArrow: true,
+            children: (
+              <ListingSearchForm
+                filters={filters}
+                pictogramOptions={pictogramOptions}
+                onChange={handleFiltersChange}
+              />
+            ),
+          },
+        ]}
       />
       <ListingTable
         data={data}

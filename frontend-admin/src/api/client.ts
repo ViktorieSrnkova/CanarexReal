@@ -31,7 +31,7 @@ api.interceptors.response.use(
 
       try {
         const res = await axios.post(
-          ` ${VITE_API_URL}/api/admin/refresh`,
+          `${VITE_API_URL}/api/admin/refresh`,
           {},
           { withCredentials: true },
         );

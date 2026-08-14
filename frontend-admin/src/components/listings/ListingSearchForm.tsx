@@ -212,20 +212,19 @@ export function ListingSearchForm({
           />
         </Form.Item>
 
-        <div style={{ display: "flex", gap: 8 }}>
-          <Button type="primary" htmlType="submit" icon={<SearchOutlined />}>
-            Hledat
-          </Button>
-          <Button
-            icon={<ClearOutlined />}
-            onClick={() => {
-              form.resetFields();
-              onChange({});
-            }}
-          >
-            Vymazat
-          </Button>
-        </div>
+        <Button type="primary" htmlType="submit" icon={<SearchOutlined />}>
+          Hledat
+        </Button>
+        <Button
+          icon={<ClearOutlined />}
+          onClick={() => {
+            form.resetFields();
+            onChange({});
+          }}
+          style={{ background: "#efefef" }}
+        >
+          Vymazat
+        </Button>
       </div>
     </Form>
   );

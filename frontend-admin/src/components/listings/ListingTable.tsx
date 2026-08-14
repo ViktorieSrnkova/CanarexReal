@@ -14,9 +14,7 @@ import {
   DndContext,
   PointerSensor,
   TouchSensor,
-  closestCorners,
   type DragEndEvent,
-  type DragStartEvent,
 } from "@dnd-kit/core";
 
 import {
@@ -28,16 +26,8 @@ import {
 import { useSensor, useSensors } from "@dnd-kit/core";
 
 import { reorderListings } from "../../api/listings";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { SortableRow } from "../dashboard/SortableRow";
-import { DragOverlay } from "@dnd-kit/core";
-
-import {
-  restrictToParentElement,
-  restrictToVerticalAxis,
-} from "@dnd-kit/modifiers";
-import { GhostRow } from "./TableRow/GhostRow";
-import "../../styles/drag.css";
 
 type Props = {
   data: ListingRow[];
@@ -148,8 +138,6 @@ export function ListingTable({
   };
 
   const [tableData, setTableData] = useState(data);
-  const [activeId, setActiveId] = useState<number | null>(null);
-  const overId = useRef<number | null>(null);
 
   useEffect(() => {
     setTableData(data);
@@ -158,19 +146,15 @@ export function ListingTable({
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
-        distance: 3,
+        distance: 1,
       },
     }),
     useSensor(TouchSensor, {
       activationConstraint: {
-        distance: 3,
+        distance: 1,
       },
     }),
   );
-
-  const handleDragStart = ({ active }: DragStartEvent) => {
-    setActiveId(Number(active.id));
-  };
 
   const handleDragEnd = async ({ active, over }: DragEndEvent) => {
     if (!over || active.id === over.id) {
@@ -229,36 +213,20 @@ export function ListingTable({
   return (
     <DndContext
       sensors={sensors}
-      collisionDetection={closestCorners}
-      onDragStart={(event) => {
+      onDragStart={() => {
         setDraggingCursor("grabbing");
-        handleDragStart(event);
-      }}
-      onDragOver={({ over }) => {
-        document
-          .querySelectorAll(".drag-over-row")
-          .forEach((el) => el.classList.remove("drag-over-row"));
-
-        if (!over) return;
-
-        const row = document.querySelector(`[data-row-key="${over.id}"]`);
-
-        row?.classList.add("drag-over-row");
       }}
       onDragCancel={() => {
         setDraggingCursor("");
-        setActiveId(null);
       }}
       onDragEnd={(event) => {
         setDraggingCursor("");
-        setActiveId(null);
 
         handleDragEnd(event);
       }}
-      modifiers={[restrictToParentElement]}
     >
       <SortableContext
-        items={tableData.map((item) => item.id)}
+        items={tableData.map((item) => String(item.id))}
         strategy={verticalListSortingStrategy}
       >
         <Table
@@ -280,23 +248,11 @@ export function ListingTable({
           components={{
             body: {
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              row: (props: any) => (
-                <SortableRow {...props} activeId={activeId} overId={overId} />
-              ),
+              row: (props: any) => <SortableRow {...props} />,
             },
           }}
           scroll={{ x: true }}
         />
-        <DragOverlay
-          modifiers={[restrictToVerticalAxis, restrictToParentElement]}
-        >
-          {activeId ? (
-            <GhostRow
-              record={data.find((x) => x.id === activeId)!}
-              columns={columns}
-            />
-          ) : null}
-        </DragOverlay>
       </SortableContext>
     </DndContext>
   );

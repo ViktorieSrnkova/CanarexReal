@@ -285,7 +285,7 @@ function SingleListing() {
         name={listing.inzeraty_preklady[0]?.titulek}
         description={content}
         price={listing.cena_v_eur}
-        image={` ${VITE_API_URL}/api/files/images/${listing.obrazky[0]?.id}`}
+        image={`${VITE_API_URL}/api/files/images/${listing.obrazky[0]?.id}`}
       />
       <div className="listing-hero">
         <div className="first-row">

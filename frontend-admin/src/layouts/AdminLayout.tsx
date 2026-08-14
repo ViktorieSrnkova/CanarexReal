@@ -10,14 +10,18 @@ import {
   SolutionOutlined,
   ToolOutlined,
 } from "@ant-design/icons";
-import React, { useState } from "react";
-//import { useSessionWatcher } from "../hooks/useSessionWatcher";
+import React, { useRef, useState } from "react";
+import axios from "axios";
 
 const { Sider, Header, Content } = Layout;
 
 export default function AdminLayout() {
   const [collapsed, setCollapsed] = useState(false);
   const [openKeys, setOpenKeys] = useState<string[]>([]);
+  const checkingAuth = useRef(false);
+  const lastAuthCheck = useRef(Date.now());
+
+  const AUTH_CHECK_INTERVAL = 60 * 1000;
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -43,11 +47,6 @@ export default function AdminLayout() {
     return "1";
   })();
 
-  /* useSessionWatcher(() => {
-    localStorage.removeItem("token");
-    window.dispatchEvent(new Event("session-expired"));
-    navigate("/login");
-  }); */
   React.useEffect(() => {
     if (window.innerWidth < 992) return;
     const keys: string[] = [];
@@ -57,12 +56,46 @@ export default function AdminLayout() {
 
     setOpenKeys(keys);
   }, [path]);
+  const VITE_API_URL = import.meta.env.VITE_API_URL;
+  const checkAuth = async (): Promise<boolean> => {
+    const now = Date.now();
 
+    if (now - lastAuthCheck.current < AUTH_CHECK_INTERVAL) {
+      return true;
+    }
+
+    if (checkingAuth.current) {
+      return false;
+    }
+
+    checkingAuth.current = true;
+
+    try {
+      await axios.get(`${VITE_API_URL}/api/admin/session/check`, {
+        withCredentials: true,
+      });
+
+      lastAuthCheck.current = Date.now();
+      console.log("didnt catch");
+      return true;
+    } catch {
+      localStorage.removeItem("token");
+      delete api.defaults.headers.common["Authorization"];
+      console.log("did catch");
+      navigate("/login", { replace: true });
+      return false;
+    } finally {
+      checkingAuth.current = false;
+    }
+  };
   return (
     <Layout
       style={{
         minHeight: "100vh",
         marginLeft: window.innerWidth < 992 ? 0 : 250,
+      }}
+      onClick={() => {
+        void checkAuth();
       }}
     >
       <Sider

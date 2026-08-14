@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import type { JSX } from "react";
 import { Navigate } from "react-router-dom";
 import { api } from "../api/client";
+import LoadingPage from "../pages/system/LoadingPage";
 
 export default function AuthGuard({ children }: { children: JSX.Element }) {
   const [loading, setLoading] = useState(true);
@@ -33,7 +34,7 @@ export default function AuthGuard({ children }: { children: JSX.Element }) {
     checkAuth();
   }, []);
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <LoadingPage />;
 
   if (!valid) return <Navigate to="/login" replace />;
 

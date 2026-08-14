@@ -92,4 +92,20 @@ router.get("/me", requireRole([1, 3]), (req: AuthRequest, res) => {
   res.json({ user: req.user });
 });
 
+router.get("/session/check", (req, res) => {
+  const token = req.cookies.refresh_token;
+
+  if (!token) {
+    return res.status(401).json({ message: "No refresh token" });
+  }
+
+  try {
+    jwt.verify(token, process.env.JWT_REFRESH_SECRET!);
+
+    return res.status(200).json({ valid: true });
+  } catch {
+    return res.status(401).json({ valid: false });
+  }
+});
+
 export default router;
