@@ -114,8 +114,7 @@ const PropertyPrintTemplate = ({
               <ul>
                 <li>Av. Quinto Centenario 60</li>
                 <li>
-                  <span className="number light">386 83</span> Puerto de
-                  Santiago
+                  <span>386 83</span> Puerto de Santiago
                 </li>
                 <li>Tenerife Espaňa</li>
                 <li>

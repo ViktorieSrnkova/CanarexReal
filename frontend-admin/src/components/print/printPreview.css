@@ -4,12 +4,12 @@
   font-weight: 400;
 }
 
-.print-page-wrapper .print-page .number {
+/* .print-page-wrapper .print-page .number {
   font-family: "Roboto", sans-serif;
 }
 .print-page-wrapper .print-page .light {
   font-weight: 300;
-}
+} */
 .print-page-wrapper .print-page .print-header {
   display: flex;
   flex-direction: column;
