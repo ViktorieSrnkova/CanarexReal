@@ -29,6 +29,7 @@
   margin: 0;
   text-align: right;
   text-decoration: none;
+  pointer-events: none;
 }
 .third-line {
   display: flex;
