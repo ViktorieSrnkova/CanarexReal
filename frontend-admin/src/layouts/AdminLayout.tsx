@@ -18,10 +18,7 @@ const { Sider, Header, Content } = Layout;
 export default function AdminLayout() {
   const [collapsed, setCollapsed] = useState(false);
   const [openKeys, setOpenKeys] = useState<string[]>([]);
-  const checkingAuth = useRef(false);
-  const lastAuthCheck = useRef(Date.now());
 
-  const AUTH_CHECK_INTERVAL = 60 * 1000;
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -56,7 +53,10 @@ export default function AdminLayout() {
 
     setOpenKeys(keys);
   }, [path]);
+  const checkingAuth = useRef(false);
+  const lastAuthCheck = useRef(Date.now());
   const VITE_API_URL = import.meta.env.VITE_API_URL;
+  const AUTH_CHECK_INTERVAL = 60 * 1000;
   const checkAuth = async (): Promise<boolean> => {
     const now = Date.now();
 
@@ -79,12 +79,18 @@ export default function AdminLayout() {
       console.log("didnt catch");
       message.success("Success check");
       return true;
-    } catch {
-      message.error("Failed check");
-      /*  localStorage.removeItem("token");
-      delete api.defaults.headers.common["Authorization"];
-      console.log("did catch");
-      navigate("/login", { replace: true }); */
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        message.error(
+          `CHECK: ${error.response?.status ?? "NETWORK"} - ${
+            error.response?.data?.message ?? error.message
+          }`,
+          5,
+        );
+      } else {
+        message.error(`CHECK: ${String(error)}`, 5);
+      }
+
       return false;
     } finally {
       checkingAuth.current = false;
