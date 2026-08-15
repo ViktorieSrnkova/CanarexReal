@@ -1,4 +1,4 @@
-import { Button, Layout, Menu } from "antd";
+import { Button, Layout, Menu, message } from "antd";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { api } from "../api/client";
 import {
@@ -21,7 +21,7 @@ export default function AdminLayout() {
   const checkingAuth = useRef(false);
   const lastAuthCheck = useRef(Date.now());
 
-  const AUTH_CHECK_INTERVAL = 60 * 60 * 1000;
+  const AUTH_CHECK_INTERVAL = 60 * 1000;
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -77,12 +77,14 @@ export default function AdminLayout() {
 
       lastAuthCheck.current = Date.now();
       console.log("didnt catch");
+      message.success("Success check");
       return true;
     } catch {
-      localStorage.removeItem("token");
+      message.error("Failed check");
+      /*  localStorage.removeItem("token");
       delete api.defaults.headers.common["Authorization"];
       console.log("did catch");
-      navigate("/login", { replace: true });
+      navigate("/login", { replace: true }); */
       return false;
     } finally {
       checkingAuth.current = false;

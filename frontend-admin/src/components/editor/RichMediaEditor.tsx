@@ -65,6 +65,7 @@ const EditorMinimal = forwardRef<EditorMinimalRef, Props>(
           }
         };
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [id, tools]);
     useEffect(() => {
       if (!editorRef.current || !value) return;
