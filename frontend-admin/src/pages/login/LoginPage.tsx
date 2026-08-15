@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import type { FormProps } from "antd";
-import { Button, Form, Input, Typography, message } from "antd";
+import { Button, Form, Input, Spin, Typography, message } from "antd";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { api } from "../../api/client";
@@ -13,7 +13,9 @@ type FieldType = {
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
+    setLoading(true);
     try {
       const res = await api.post("/login", {
         email: values.username,
@@ -25,6 +27,7 @@ const LoginPage: React.FC = () => {
       message.success("Přihlášení úspěšné");
       navigate("/");
     } catch {
+      setLoading(false);
       message.error("Neplatné přihlašovací údaje");
     }
   };
@@ -93,6 +96,7 @@ const LoginPage: React.FC = () => {
               Přihlásit se
             </Button>
           </Form.Item>
+          {loading && <Spin size="large" />}
         </Form>
       </div>
     </div>
