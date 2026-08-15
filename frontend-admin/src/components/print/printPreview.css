@@ -194,7 +194,6 @@
     visibility: hidden;
   }
 
-  /* Zobraz pouze tiskový preview */
   .print-document,
   .print-document * {
     visibility: visible;
@@ -220,11 +219,12 @@
 
   .print-preview {
     display: block;
-    width: auto;
+    width: 210mm;
     margin: 0;
     padding: 0;
   }
   .print-page-wrapper {
+    position: relative;
     width: 210mm;
     height: 297mm;
     margin: 0;
@@ -234,6 +234,9 @@
   }
 
   .print-page {
+    position: relative;
+    top: auto;
+    left: auto;
     width: 210mm;
     height: 297mm;
     box-sizing: border-box;
@@ -241,8 +244,8 @@
     background: white;
     padding: 12mm;
     box-shadow: none;
-    /* zoom: 1; */
-    transform: none;
+    zoom: 1 !important;
+    transform: none !important;
 
     break-after: page;
     page-break-after: always;
