@@ -109,10 +109,7 @@
 }
 
 .print-page-wrapper {
-  width: calc(210mm * var(--print-scale));
   height: calc(297mm * var(--print-scale));
-
-  flex-shrink: 0;
 }
 
 .print-page {
@@ -128,7 +125,8 @@
   overflow: hidden;
 
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.18);
-  zoom: var(--print-scale);
+  /* zoom: var(--print-scale); */
+  transform: scale(var(--print-scale));
   break-after: page;
   page-break-after: always;
   -webkit-text-size-adjust: none !important;
@@ -236,7 +234,8 @@
     background: white;
     padding: 12mm;
     box-shadow: none;
-    zoom: 1;
+    /* zoom: 1; */
+    transform: none;
 
     break-after: page;
     page-break-after: always;
