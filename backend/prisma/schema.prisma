@@ -12,8 +12,8 @@ model adresy {
   cislo_popisne   String?  @db.VarChar(20)
   lokace          String?  @db.VarChar(100)
   mesto           String?  @db.VarChar(50)
-  lat             Decimal  @db.Decimal(10, 8)
-  lng             Decimal  @db.Decimal(10, 8)
+  lat             Decimal  @db.Decimal(11, 8)
+  lng             Decimal  @db.Decimal(11, 8)
   staty_id        Int
   smerovaci_cislo String?  @db.VarChar(20)
   cela_adresa     String?  @db.VarChar(255)

@@ -13,7 +13,7 @@
 .print-page-wrapper .print-page .print-header {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: start;
   height: 100%;
 }
 .first-line {
@@ -126,7 +126,7 @@
 
   background: white;
 
-  padding: 12mm;
+  padding: 20mm 12mm;
 
   overflow: hidden;
 
