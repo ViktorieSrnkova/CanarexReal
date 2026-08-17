@@ -131,13 +131,14 @@ const ListingCreatePage: React.FC<Props> = ({
         images.forEach((img) => {
           formData.append("images", img.file);
         });
-
+        console.log(formData);
         await postListing(formData);
         message.success("Inzerát vytvořen");
 
         onSuccess?.();
         form.resetFields();
         setImages([]);
+        setFileList([]);
       }
     } catch {
       message.error("Chyba při vytváření inzerátu");

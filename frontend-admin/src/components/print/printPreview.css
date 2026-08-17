@@ -177,6 +177,7 @@
 }
 .last-row ul {
   padding-left: 10px;
+  min-width: 85mm;
 }
 
 @media print {

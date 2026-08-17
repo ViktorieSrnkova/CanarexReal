@@ -64,19 +64,27 @@ export async function processAdImages(params: {
   }
 
   const thumb = createdImages.find((i) => i.order === -1);
-  if (!thumb) return;
+  const firstImage = createdImages.find((i) => i.order === 0);
+  if (!thumb || !firstImage) return;
 
   for (const [langCode, t] of Object.entries(translationsObj)) {
     const jazyky_id = langIdMap[langCode];
 
     if (!jazyky_id || !t?.alt) continue;
 
-    await tx.obrazky_preklady.create({
-      data: {
-        alt_text: t.alt,
-        jazyky_id,
-        obrazky_id: thumb.id,
-      },
+    await tx.obrazky_preklady.createMany({
+      data: [
+        {
+          alt_text: t.alt,
+          jazyky_id,
+          obrazky_id: thumb.id,
+        },
+        {
+          alt_text: t.alt,
+          jazyky_id,
+          obrazky_id: firstImage.id,
+        },
+      ],
     });
   }
 }

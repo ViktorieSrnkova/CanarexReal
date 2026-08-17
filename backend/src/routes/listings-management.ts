@@ -350,11 +350,6 @@ router.post("/", upload.array("images"), async (req, res) => {
         });
 
         const nextOrder = (maxOrder._max.poradi ?? -1) + 1;
-        console.log({
-          max: maxOrder._max.poradi,
-          next: nextOrder,
-          type: typeof nextOrder,
-        });
 
         const ad = await tx.inzeraty.create({
           data: {
@@ -1100,6 +1095,34 @@ router.put("/gallery/save", upload.any(), async (req, res) => {
           preparedImages,
           listingId,
         });
+        const galleryImages = await tx.obrazky.findMany({
+          where: {
+            inzeraty_id: listingId,
+            poradi: {
+              gt: 0,
+            },
+          },
+          orderBy: {
+            poradi: "asc",
+          },
+          select: {
+            id: true,
+            poradi: true,
+          },
+        });
+
+        for (let i = 0; i < galleryImages.length; i++) {
+          const image = galleryImages[i];
+
+          await tx.obrazky.update({
+            where: {
+              id: image.id,
+            },
+            data: {
+              poradi: i + 1,
+            },
+          });
+        }
 
         const imagesAfter = await tx.obrazky.findMany({
           where: { inzeraty_id: listingId },
@@ -1131,6 +1154,12 @@ router.put("/gallery/save", upload.any(), async (req, res) => {
             url: "",
           },
         });
+
+        await tx.obrazky.update({
+          where: { id: thumbImg.id },
+          data: { url: `/api/files/images/${thumbImg.id}` },
+        });
+
         for (const alt of mainAlts) {
           await tx.obrazky_preklady.create({
             data: {
