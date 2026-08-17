@@ -172,8 +172,8 @@
 }
 .last-row {
   display: flex;
-  margin-top: 10mm;
-  margin-bottom: 6mm;
+  margin-top: 6mm;
+  margin-bottom: 2mm;
 }
 .last-row ul {
   padding-left: 10px;
@@ -243,7 +243,7 @@
     box-sizing: border-box;
     margin: 0;
     background: white;
-    padding: 12mm;
+    padding: 20mm 12mm;
     box-shadow: none;
     zoom: 1 !important;
     transform: none !important;

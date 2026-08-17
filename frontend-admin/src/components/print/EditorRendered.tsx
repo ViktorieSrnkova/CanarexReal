@@ -20,7 +20,7 @@ const EditorRenderer: React.FC<Props> = ({ data }) => {
                 key={index}
                 style={{
                   textAlign: block.data.alignment ?? "left",
-                  lineHeight: 1.6,
+                  lineHeight: 1.45,
                 }}
                 dangerouslySetInnerHTML={{
                   __html: sanitize(block.data.text),
