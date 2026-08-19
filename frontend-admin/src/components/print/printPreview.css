@@ -266,15 +266,8 @@
     }
   }
   .print-image-grid {
-    width: 186mm;
-    height: 257mm;
-    margin: 20mm 12mm;
-  }
-  @media print {
-    .print-page-wrapper:last-child,
-    .print-page-wrapper:last-child .print-page {
-      break-after: avoid !important;
-      page-break-after: avoid !important;
-    }
+    box-sizing: border-box;
+    width: 100%;
+    height: 98%;
   }
 }
