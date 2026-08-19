@@ -165,23 +165,7 @@ const PropertyPrintTemplate = ({
           </div>
         </section>
       </div>
-      <div className="print-page-wrapper">
-        <section className="print-page">
-          <div className="print-image-grid">
-            {images.slice(3, 11).map((image, index) => (
-              <div
-                key={image.id}
-                className={`print-image ${index >= 0 ? "print-image-gap" : ""}`}
-              >
-                <img
-                  src={`${import.meta.env.VITE_API_URL}/api/files/images/${image.id}`}
-                  alt="Property"
-                />
-              </div>
-            ))}
-          </div>
-        </section>
-      </div>
+
       <div className="print-page-wrapper">
         <section className="print-page">
           <div>
@@ -223,6 +207,23 @@ const PropertyPrintTemplate = ({
                 </p>
               </div>
             </div>
+          </div>
+        </section>
+      </div>
+      <div className="print-page-wrapper">
+        <section className="print-page">
+          <div className="print-image-grid">
+            {images.slice(3, 11).map((image, index) => (
+              <div
+                key={image.id}
+                className={`print-image ${index >= 0 ? "print-image-gap" : ""}`}
+              >
+                <img
+                  src={`${import.meta.env.VITE_API_URL}/api/files/images/${image.id}`}
+                  alt="Property"
+                />
+              </div>
+            ))}
           </div>
         </section>
       </div>
