@@ -258,3 +258,10 @@
     page-break-after: auto;
   }
 }
+@supports (-webkit-touch-callout: none) {
+  @media print {
+    .print-page {
+      padding: 0;
+    }
+  }
+}
