@@ -1,4 +1,4 @@
-import { ClearOutlined, SearchOutlined } from "@ant-design/icons";
+import { SearchOutlined } from "@ant-design/icons";
 import { Button, Form, Input, Select } from "antd";
 import { useEffect, type ChangeEvent } from "react";
 import { PROPERTY_TYPE_OPTIONS } from "../../types/listing_form";
@@ -30,6 +30,7 @@ const cleanFilters = (values: ListingFilters): ListingFilters => ({
   index: cleanString(values.index),
   statusIds: cleanArray(values.statusIds),
   typeCodes: cleanArray(values.typeCodes),
+  komplex: cleanString(values.komplex),
   priceFrom: cleanString(values.priceFrom),
   priceTo: cleanString(values.priceTo),
   sizeFrom: cleanString(values.sizeFrom),
@@ -55,6 +56,7 @@ export function ListingSearchForm({
       index: filters.index,
       statusIds: filters.statusIds ?? [],
       typeCodes: filters.typeCodes ?? [],
+      komplex: filters.komplex,
       priceFrom: filters.priceFrom,
       priceTo: filters.priceTo,
       sizeFrom: filters.sizeFrom,
@@ -124,6 +126,10 @@ export function ListingSearchForm({
             options={[...PROPERTY_TYPE_OPTIONS]}
             style={{ fontSize: "16px" }}
           />
+        </Form.Item>
+
+        <Form.Item name="komplex" label="Komplex" style={{ marginBottom: 0 }}>
+          <Input allowClear style={{ fontSize: "16px" }} />
         </Form.Item>
 
         <Form.Item
@@ -228,16 +234,6 @@ export function ListingSearchForm({
 
         <Button type="primary" htmlType="submit" icon={<SearchOutlined />}>
           Hledat
-        </Button>
-        <Button
-          icon={<ClearOutlined />}
-          onClick={() => {
-            form.resetFields();
-            onChange({});
-          }}
-          style={{ background: "#efefef" }}
-        >
-          Vymazat
         </Button>
       </div>
     </Form>

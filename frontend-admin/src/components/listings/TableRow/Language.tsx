@@ -36,26 +36,12 @@ export function Language({ listing }: Props) {
     return renderCheck(hasContent);
   };
 
-  const renderAlt = (lang: Lang) => {
-    const hasAlt = listing.image?.hasAlt?.[lang] ?? false;
-
-    return renderCheck(hasAlt);
-  };
-
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
       <div style={{ display: "flex", alignItems: "center", gap: 15 }}>
         {renderTranslation("cs")}
         {renderTranslation("en")}
         {renderTranslation("sk")}
-        <span style={{ fontSize: 10, color: "#999", width: 28 }}>TXT</span>
-      </div>
-
-      <div style={{ display: "flex", alignItems: "center", gap: 15 }}>
-        {renderAlt("cs")}
-        {renderAlt("en")}
-        {renderAlt("sk")}
-        <span style={{ fontSize: 10, color: "#999", width: 28 }}>ALT</span>
       </div>
     </div>
   );

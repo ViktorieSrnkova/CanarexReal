@@ -8,6 +8,7 @@ import {
 import { ListingTable } from "../../components/listings/ListingTable";
 import { ListingSearchForm } from "../../components/listings/ListingSearchForm";
 import { mapListing } from "../../utils/mapListing";
+import { ClearOutlined } from "@ant-design/icons";
 import {
   deleteListing,
   getListingFilterOptions,
@@ -26,7 +27,8 @@ import { mapRawListingToFormValues } from "../../utils/listingsMapper";
 import LoadingPage from "../system/LoadingPage";
 import ListingGalleryModal from "../../components/listings/GalleryModal";
 import type { Gallery } from "../../types/api";
-import { Collapse } from "antd";
+import { Button, Collapse, Tabs } from "antd";
+import "../../components/listings/columns.css";
 
 const ListingsPage: React.FC = () => {
   const [data, setData] = useState<ListingRow[]>([]);
@@ -48,6 +50,9 @@ const ListingsPage: React.FC = () => {
     total: 0,
   });
   const [images, setImages] = useState<Gallery[]>([]);
+  const SALES_AREAS = ["Tenerife", "Costa del Sol"] as const;
+  type SalesArea = (typeof SALES_AREAS)[number];
+  const [activeArea, setActiveArea] = useState<SalesArea>("Tenerife");
 
   useEffect(() => {
     const loadFilterOptions = async () => {
@@ -71,10 +76,11 @@ const ListingsPage: React.FC = () => {
           page: pagination.page,
           limit: pagination.limit,
           filters,
+          oblast_prodeje: activeArea,
         });
-
+        console.log("API DATA:", res.data);
         const mapped: ListingRow[] = res.data.map((item) => mapListing(item));
-
+        console.log("MAPPED DATA:", mapped);
         setData(mapped);
 
         setPagination((prev) => ({
@@ -89,7 +95,7 @@ const ListingsPage: React.FC = () => {
     };
 
     loadListings();
-  }, [pagination.page, pagination.limit, filters]);
+  }, [pagination.page, pagination.limit, filters, activeArea]);
 
   const handleChangeStatus = async (id: number, statusId: number) => {
     try {
@@ -186,11 +192,18 @@ const ListingsPage: React.FC = () => {
       console.error("Failed to load listing detail gallery:", err);
     }
   };
+  const countActiveFilters = (filters: ListingFilters) =>
+    Object.values(filters).filter((value) =>
+      Array.isArray(value)
+        ? value.length > 0
+        : value !== undefined && value !== null && value !== "",
+    ).length;
+  const activeFilterCount = countActiveFilters(filters);
   const [filtersOpen, setFiltersOpen] = useState(false);
   return (
     <div className="listings-page">
       <Title level={2}>Spravovat inzeráty</Title>
-      <div>Celkem inzerátů: {data.length}</div>
+      <div>Počet inzerátů: {data.length}</div>
 
       <Collapse
         activeKey={filtersOpen ? ["filters"] : []}
@@ -199,8 +212,60 @@ const ListingsPage: React.FC = () => {
         items={[
           {
             key: "filters",
-            label: filtersOpen ? "Sbalit filtry" : "Rozbalit filtry",
-            showArrow: true,
+            label: (
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  width: "100%",
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 8,
+                  }}
+                >
+                  <span>
+                    {filtersOpen ? "Sbalit filtry" : "Rozbalit filtry"}
+                  </span>
+
+                  {activeFilterCount > 0 && (
+                    <span
+                      style={{
+                        width: 22,
+                        height: 22,
+                        borderRadius: "50%",
+                        backgroundColor: "#0c90c5",
+                        color: "#fff",
+                        display: "inline-flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        fontSize: 12,
+                        fontWeight: 600,
+                      }}
+                    >
+                      {activeFilterCount}
+                    </span>
+                  )}
+                </div>
+
+                <Button
+                  type="text"
+                  danger
+                  icon={<ClearOutlined />}
+                  disabled={activeFilterCount === 0}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleFiltersChange({});
+                  }}
+                >
+                  Vymazat
+                </Button>
+              </div>
+            ),
             children: (
               <ListingSearchForm
                 filters={filters}
@@ -210,6 +275,22 @@ const ListingsPage: React.FC = () => {
             ),
           },
         ]}
+      />
+      <Tabs
+        activeKey={activeArea}
+        onChange={(key) => {
+          setActiveArea(key as SalesArea);
+          setFilters({});
+          setPagination((prev) => ({
+            ...prev,
+            page: 1,
+            total: 0,
+          }));
+        }}
+        items={SALES_AREAS.map((area) => ({
+          key: area,
+          label: area,
+        }))}
       />
       <ListingTable
         data={data}
@@ -256,6 +337,7 @@ const ListingsPage: React.FC = () => {
                   page: pagination.page,
                   limit: pagination.limit,
                   filters,
+                  oblast_prodeje: activeArea,
                 });
                 setData(res.data.map(mapListing));
 

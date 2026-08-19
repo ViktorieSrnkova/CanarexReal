@@ -40,6 +40,7 @@ export type GetListingsParams = {
   page?: number;
   limit?: number;
   filters?: ListingFilters;
+  oblast_prodeje: string;
 };
 
 export const getListings = async (params?: GetListingsParams) => {
@@ -50,6 +51,7 @@ export const getListings = async (params?: GetListingsParams) => {
     index: filters?.index,
     statusIds: filters?.statusIds?.join(","),
     typeCodes: filters?.typeCodes?.join(","),
+    komplex: filters?.komplex,
     priceFrom: filters?.priceFrom,
     priceTo: filters?.priceTo,
     sizeFrom: filters?.sizeFrom,

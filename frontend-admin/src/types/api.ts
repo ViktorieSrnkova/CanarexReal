@@ -10,6 +10,8 @@ export type RawListing = {
 
   adresy?: {
     lokace?: string | null;
+    komplex?: string | null;
+    oblast_prodeje: string;
   };
 
   statusy: {
@@ -89,6 +91,8 @@ export type RawListingDetail = {
     lng: string; //Prisma Decimal → string
     nominatim_id: string | null;
     cela_adresa: string | null;
+    komplex?: string;
+    oblast_prodeje: string;
   } | null;
 
   inzeraty_piktogramy: {

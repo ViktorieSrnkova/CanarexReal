@@ -74,6 +74,8 @@ export const useEditedListing = (
       propertyType: values.propertyType,
       attributes: values.features ?? {},
       translations: cleanedTranslations,
+      komplex: values.komplex,
+      oblast_prodeje: values.oblast_prodeje,
       address: selectedAddress
         ? {
             value: selectedAddress.value,

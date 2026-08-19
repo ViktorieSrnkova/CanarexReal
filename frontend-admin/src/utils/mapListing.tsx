@@ -21,6 +21,8 @@ export function mapListing(raw: RawListing): ListingRow {
 
     adresy: {
       lokace: raw.adresy?.lokace ?? null,
+      komplex: raw.adresy?.komplex ?? null,
+      oblast_prodeje: raw.adresy?.oblast_prodeje ?? "",
     },
 
     status: {

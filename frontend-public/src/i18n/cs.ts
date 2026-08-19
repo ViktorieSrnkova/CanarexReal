@@ -177,7 +177,7 @@ export const cs = {
     copy: "Zkopírovat URL inzerátu",
   },
   news: {
-    title: "Novinky a informace o Tenerife",
+    title: "Zajímavosti a informace o Tenerife",
   },
   SEO: {
     HP_title: "CanarexReal | Reality Tenerife",

@@ -167,10 +167,10 @@ export const useNewsForm = (editId?: number, onSuccess?: () => void) => {
     try {
       if (editId) {
         await putAdminNews(editId, formData);
-        message.success("Aktualita upravena");
+        message.success("Zajímavost upravena");
       } else {
         await postNews(formData);
-        message.success("Aktualita vytvořena");
+        message.success("Zajímavost vytvořena");
       }
       formReset();
       setData({

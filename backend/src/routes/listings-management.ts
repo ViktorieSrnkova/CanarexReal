@@ -100,13 +100,6 @@ const buildSearchWhere = (value: string): Prisma.inzeratyWhereInput[] => {
 
   const conditions: Prisma.inzeratyWhereInput[] = [
     {
-      adresy: {
-        is: {
-          lokace: containsText(query),
-        },
-      },
-    },
-    {
       statusy: {
         is: {
           OR: [
@@ -177,8 +170,14 @@ const buildSearchWhere = (value: string): Prisma.inzeratyWhereInput[] => {
   return conditions;
 };
 
-const buildListingsWhere = (query: AuthRequest["query"]) => {
+const buildListingsWhere = (
+  query: AuthRequest["query"],
+  oblast_prodeje: string,
+) => {
   const where: Prisma.inzeratyWhereInput = {};
+  const addressFilter: Prisma.adresyWhereInput = {
+    oblast_prodeje: oblast_prodeje,
+  };
 
   const searchConditions = buildSearchWhere(toQueryString(query.query));
   if (searchConditions.length > 0) {
@@ -222,12 +221,18 @@ const buildListingsWhere = (query: AuthRequest["query"]) => {
 
   const location = toQueryString(query.location);
   if (location) {
-    where.adresy = {
-      is: {
-        lokace: containsText(location),
-      },
-    };
+    addressFilter.lokace = containsText(location);
   }
+
+  const komplex = toQueryString(query.komplex);
+
+  if (komplex) {
+    addressFilter.komplex = containsText(komplex);
+  }
+
+  where.adresy = {
+    is: addressFilter,
+  };
 
   const bedrooms = toNumberOrRangeFilter(
     query.bedrooms,
@@ -374,6 +379,8 @@ router.post("/", upload.array("images"), async (req, res) => {
                 smerovaci_cislo: geo.postcode ?? null,
                 cela_adresa: address.label,
                 nominatim_id: address.value,
+                oblast_prodeje: values.oblast_prodeje,
+                komplex: values.komplex ?? null,
               },
             },
           },
@@ -436,7 +443,15 @@ router.get("/", async (req, res) => {
     const page = Number(req.query.page ?? 1);
     const limit = Number(req.query.limit ?? 200);
     const skip = (page - 1) * limit;
-    const where = buildListingsWhere(req.query);
+    const oblastProdeje = toQueryString(req.query.oblast_prodeje);
+
+    if (!oblastProdeje) {
+      return res.status(400).json({
+        error: "MISSING_OBLAST_PRODEJE",
+        message: "Oblast prodeje je povinná",
+      });
+    }
+    const where = buildListingsWhere(req.query, oblastProdeje);
     const listings = await prisma.inzeraty.findMany({
       where,
       skip,
@@ -458,6 +473,8 @@ router.get("/", async (req, res) => {
         adresy: {
           select: {
             lokace: true,
+            komplex: true,
+            oblast_prodeje: true,
           },
         },
 
@@ -537,7 +554,7 @@ router.get("/", async (req, res) => {
       },
     });
 
-    const total = await prisma.inzeraty.count();
+    const total = await prisma.inzeraty.count({ where });
 
     return res.json({
       data: listings,
@@ -620,6 +637,8 @@ router.get("/:id", async (req, res) => {
             lng: true,
             nominatim_id: true,
             cela_adresa: true,
+            oblast_prodeje: true,
+            komplex: true,
           },
         },
 
@@ -944,6 +963,8 @@ router.put("/:id", async (req, res) => {
           lat: body.address.lat,
           lng: body.address.lon,
           cela_adresa: body.address.label,
+          komplex: body.komplex,
+          oblast_prodeje: body.oblast_prodeje,
         },
         create: {
           inzeraty_id: id,
@@ -953,6 +974,8 @@ router.put("/:id", async (req, res) => {
           lng: body.address.lon,
           cela_adresa: body.address.label,
           staty_id: 1,
+          komplex: body.komplex,
+          oblast_prodeje: body.oblast_prodeje,
         },
       });
     } else {

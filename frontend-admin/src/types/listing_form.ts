@@ -7,6 +7,11 @@ export const PROPERTY_TYPE_OPTIONS = [
   { value: "garsonka", label: "Garsonka" },
   { value: "pozemek", label: "Pozemek" },
 ] as const;
+
+export const OBLASTI = [
+  { value: "Tenerife", label: "Tenerife" },
+  { value: "Costa del Sol", label: "Costa del Sol" },
+] as const;
 export type PropertyType = (typeof PROPERTY_TYPE_OPTIONS)[number]["value"];
 export interface Translation {
   alt?: string;
@@ -41,6 +46,8 @@ export interface CreateAdFormValues {
   translations: Translations;
   gallery: File[];
   features: Record<string, boolean>;
+  komplex?: string;
+  oblast_prodeje: string;
 }
 export interface CreateListingPayload extends CreateAdFormValues {
   translations: Translations;
@@ -71,6 +78,8 @@ export type CreateAdPayload = {
   location: string;
   propertyType: string;
   showOnHomepage?: boolean;
+  komplex?: string;
+  oblast_prodeje: string;
 
   attributes: Record<string, boolean>;
 

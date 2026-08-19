@@ -17,7 +17,7 @@ const DeleteConfirmModal: React.FC<Props> = ({ open, onConfirm, onCancel }) => {
       okButtonProps={{ danger: true }}
       centered
     >
-      Opravdu chceš smazat tuto aktualitu?
+      Opravdu chceš smazat tuto zajímavost?
     </Modal>
   );
 };

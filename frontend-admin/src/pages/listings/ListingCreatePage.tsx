@@ -12,6 +12,7 @@ import {
 } from "antd";
 import {
   FEATURES,
+  OBLASTI,
   PROPERTY_TYPE_OPTIONS,
   type AddressOption,
   type CreateAdFormValues,
@@ -346,6 +347,20 @@ const ListingCreatePage: React.FC<Props> = ({
           >
             <Input maxLength={21} style={{ fontSize: "16px" }} />
           </Form.Item>
+
+          <Form.Item
+            required
+            name="oblast_prodeje"
+            label="Oblast Prodeje"
+            rules={[
+              {
+                required: true,
+                message: "Vyber oblast prodeje (např. Tenerife)",
+              },
+            ]}
+          >
+            <Select options={[...OBLASTI]} style={{ fontSize: "16px" }} />
+          </Form.Item>
           <Form.Item
             required
             name="propertyType"
@@ -356,6 +371,13 @@ const ListingCreatePage: React.FC<Props> = ({
               options={[...PROPERTY_TYPE_OPTIONS]}
               style={{ fontSize: "16px" }}
             />
+          </Form.Item>
+          <Form.Item
+            rules={[{ required: false }]}
+            name="komplex"
+            label="Komplex (nepovinné)"
+          >
+            <Input maxLength={21} style={{ fontSize: "16px" }} />
           </Form.Item>
           <Form.Item
             required
@@ -523,15 +545,7 @@ const ListingCreatePage: React.FC<Props> = ({
             key: lang,
             label: lang.toUpperCase(),
             children: (
-              <div style={{ display: activeTab === lang ? "block" : "none" }}>
-                {!isEditMode && (
-                  <Form.Item
-                    name={["translations", lang, "alt"]}
-                    label="Alt text hlavního obrázku"
-                  >
-                    <Input style={{ fontSize: "16px" }} />
-                  </Form.Item>
-                )}
+              <>
                 <Form.Item
                   name={["translations", lang, "title"]}
                   label="Název inzerátu"
@@ -592,7 +606,7 @@ const ListingCreatePage: React.FC<Props> = ({
                     }}
                   />
                 </Form.Item>
-              </div>
+              </>
             ),
           }))}
         />

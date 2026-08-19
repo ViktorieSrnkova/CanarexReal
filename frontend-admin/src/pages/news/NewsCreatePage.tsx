@@ -47,7 +47,7 @@ const NewsCreatePage: React.FC<Props> = ({ initialData, onSuccess }) => {
 
   return (
     <div>
-      <Title level={2}>Vytvořit aktualitu</Title>
+      <Title level={2}>Vytvořit zajímavost</Title>
 
       <Form
         form={form}
@@ -118,7 +118,7 @@ const NewsCreatePage: React.FC<Props> = ({ initialData, onSuccess }) => {
           </Col>
 
           <Col xs={24} lg={12}>
-            <Form.Item label="Text aktuality">
+            <Form.Item label="Text zajímavosti">
               <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>
                 <LangButtonGroup
                   languages={languages}
@@ -140,7 +140,7 @@ const NewsCreatePage: React.FC<Props> = ({ initialData, onSuccess }) => {
             loading={formHook.loading}
             block
           >
-            Uložit aktualitu
+            Uložit zajímavost
           </Button>
         </Form.Item>
       </Form>

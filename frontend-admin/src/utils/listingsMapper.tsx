@@ -78,6 +78,8 @@ export const mapRawListingToFormValues = (
     locationName: data.adresy?.lokace ?? "",
 
     listingIndex: Number(data.index ?? 0),
+    komplex: data.adresy?.komplex ?? "",
+    oblast_prodeje: data.adresy?.oblast_prodeje ?? "",
 
     bedrooms: data.loznice ?? 0,
     bathrooms: data.koupelny ?? 0,

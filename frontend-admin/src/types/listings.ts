@@ -43,6 +43,8 @@ export type ListingRow = {
 
   adresy: {
     lokace: string | null;
+    komplex: string | null;
+    oblast_prodeje: string | null;
   };
   status: ListingStatus;
   type: ListingType;
@@ -66,6 +68,7 @@ export type ListingFilters = {
   bathroomsFrom?: string;
   bathroomsTo?: string;
   pictogramIds?: number[];
+  komplex?: string;
 };
 
 export type ListingFilterOption = {
@@ -113,6 +116,8 @@ export type ListingDetail = {
     lat: number;
     lng: number;
     cela_adresa: string;
+    komplex?: string;
+    oblast_prodeje: string;
   };
 
   obrazky: {

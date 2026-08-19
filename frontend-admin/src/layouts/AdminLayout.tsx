@@ -175,7 +175,7 @@ export default function AdminLayout() {
                     cursor: "pointer",
                   }}
                 >
-                  <ReadOutlined /> Aktuality
+                  <ReadOutlined /> Zajímavosti
                 </label>
               ),
               children: [
@@ -183,7 +183,7 @@ export default function AdminLayout() {
                   key: "3-1",
                   label: (
                     <Link to="/news">
-                      <ToolOutlined /> Spravovat aktuality
+                      <ToolOutlined /> Spravovat zajímavosti
                     </Link>
                   ),
                 },
@@ -191,7 +191,7 @@ export default function AdminLayout() {
                   key: "3-2",
                   label: (
                     <Link to="/news/create">
-                      <PlusOutlined /> Vytvořit aktuality
+                      <PlusOutlined /> Vytvořit zajímavost
                     </Link>
                   ),
                 },

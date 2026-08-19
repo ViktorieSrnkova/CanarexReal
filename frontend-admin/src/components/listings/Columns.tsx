@@ -18,7 +18,7 @@ import { Bed, Bath } from "lucide-react";
 import { HomeOutlined, SearchOutlined } from "@ant-design/icons";
 import { Button, Input, Space, Tooltip } from "antd";
 import { DragHandle } from "./TableRow/DragHandle";
-
+import "./columns.css";
 type Args = {
   filters: ListingFilters;
   pictogramOptions: ListingFilterOption[];
@@ -96,7 +96,11 @@ const getSearchFilter = (
     );
   },
   filterIcon: (active: boolean) => (
-    <SearchOutlined style={{ color: active ? "#1677ff" : undefined }} />
+    <SearchOutlined
+      style={{
+        color: active ? "#0c90c5" : undefined,
+      }}
+    />
   ),
 });
 
@@ -330,6 +334,28 @@ export function getColumns({
           }}
         >
           {r.adresy.lokace}
+        </div>
+      ),
+    },
+    {
+      key: "komplex",
+      title: "Komplex",
+      width: 151,
+      onCell: () => ({
+        style: {
+          paddingLeft: 8,
+          paddingRight: 8,
+        },
+      }),
+      filteredValue: filteredValue(filters.komplex),
+      ...getSearchFilter("Filtrovat komplex"),
+      render: (_, r) => (
+        <div
+          style={{
+            whiteSpace: "nowrap",
+          }}
+        >
+          {r.adresy.komplex}
         </div>
       ),
     },

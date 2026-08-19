@@ -38,8 +38,8 @@ const AdminNewsPage = () => {
   }, [deleteOpen]);
   return (
     <>
-      <Title level={2}>Spravovat aktuality</Title>
-      <div>Celkem aktualit: {data.length}</div>
+      <Title level={2}>Spravovat zajímavosti</Title>
+      <div>Celkem zajímavostí: {data.length}</div>
       <NewsTable
         data={data}
         onToggle={async (id) => {

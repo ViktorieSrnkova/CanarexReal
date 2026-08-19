@@ -38,7 +38,7 @@ export const useListingSubmit = (
       const details = await detailsRefs.current[lang]?.save();
 
       const cleaned = {
-        alt: base?.alt,
+        alt: base?.title,
         title: base?.title,
         description: hasContent(desc) ? desc : undefined,
         details: hasContent(details) ? details : undefined,
@@ -61,7 +61,8 @@ export const useListingSubmit = (
       location: values.locationName,
       propertyType: values.propertyType,
       showOnHomepage: values.isOnHomepage,
-
+      komplex: values.komplex,
+      oblast_prodeje: values.oblast_prodeje,
       attributes: values.features ?? {},
 
       translations: cleanedTranslations,

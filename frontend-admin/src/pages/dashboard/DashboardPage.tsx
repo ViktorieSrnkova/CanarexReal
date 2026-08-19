@@ -24,10 +24,10 @@ const createDashboardSections = (stats: DashboardResponse) => [
     },
   },
   {
-    title: "Aktuality",
+    title: "Zajímavosti",
     actions: [
-      { path: "/news", purpose: "Spravovat aktuality" },
-      { path: "/news/create", purpose: "Vytvořit nový článek" },
+      { path: "/news", purpose: "Spravovat zajímavosti" },
+      { path: "/news/create", purpose: "Vytvořit nový článek (zajímavost)" },
     ],
     stats: {
       created: stats.news.latestCreated,
