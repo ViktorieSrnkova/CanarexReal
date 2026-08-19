@@ -200,10 +200,10 @@
     visibility: visible;
   }
   .print-document {
-    position: absolute;
+    position: static;
     left: 0;
     top: 0;
-    width: 100%;
+    width: auto;
   }
   .print-preview-container {
     padding: 0;
