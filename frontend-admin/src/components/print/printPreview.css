@@ -266,8 +266,8 @@
     }
   }
   .print-image-grid {
-    box-sizing: border-box;
-    width: 100%;
-    height: 90%;
+    width: 186mm;
+    height: 257mm;
+    margin: 20mm 12mm;
   }
 }
