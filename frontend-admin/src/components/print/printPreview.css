@@ -232,6 +232,8 @@
     padding: 0;
     overflow: hidden;
     display: block;
+    break-after: page;
+    page-break-after: always;
   }
 
   .print-page {
@@ -248,12 +250,11 @@
     zoom: 1 !important;
     transform: none !important;
 
-    break-after: page;
-    page-break-after: always;
     -webkit-text-size-adjust: none !important;
     text-size-adjust: none !important;
   }
-  .print-page-wrapper:last-child .print-page {
+  .print-page-wrapper:last-child,
+  .print-page {
     break-after: auto;
     page-break-after: auto;
   }
@@ -263,5 +264,11 @@
     .print-page {
       padding: 0;
     }
+  }
+  .print-image-grid {
+    padding: 20mm 12mm;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
   }
 }
