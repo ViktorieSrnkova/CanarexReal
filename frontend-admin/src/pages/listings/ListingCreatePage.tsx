@@ -37,9 +37,10 @@ import { useEffect, useRef, useState } from "react";
 import {
   checkListingIndex,
   editListingTexts,
-  postListing,
+  /*   postListing, */
 } from "../../api/listings";
 import { useEditedListing } from "../../hooks/useEditListing";
+import RichTextEditor from "../../components/editor/RichTextEditor";
 
 type Props = {
   initialData?: CreateAdFormValues;
@@ -133,7 +134,7 @@ const ListingCreatePage: React.FC<Props> = ({
           formData.append("images", img.file);
         });
         console.log(formData);
-        await postListing(formData);
+        //await postListing(formData);
         message.success("Inzerát vytvořen");
 
         onSuccess?.();
@@ -552,7 +553,20 @@ const ListingCreatePage: React.FC<Props> = ({
                 >
                   <Input style={{ fontSize: "16px" }} />
                 </Form.Item>
-
+                <Form.Item
+                  name={["translations", lang, "descriptionNew"]}
+                  label="Popis"
+                  getValueFromEvent={() => undefined}
+                >
+                  <RichTextEditor version="normal" />
+                </Form.Item>
+                <Form.Item
+                  name={["translations", lang, "detailsNew"]}
+                  label="Podrobnosti"
+                  getValueFromEvent={() => undefined}
+                >
+                  <RichTextEditor version="full" />
+                </Form.Item>
                 <Form.Item
                   name={["translations", lang, "description"]}
                   label="Popis"

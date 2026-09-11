@@ -1,0 +1,44 @@
+.table-menu {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  z-index: 100;
+
+  width: 220px;
+  padding: 0.75rem;
+
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.4rem;
+
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgb(0 0 0 / 15%);
+}
+
+.table-menu button {
+  min-height: 40px;
+  padding: 0.4rem 0.5rem;
+
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background: white;
+
+  cursor: pointer;
+}
+.table-menu button svg {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+.table-menu button:hover {
+  background: #f5f5f5;
+}
+
+.table-menu button.is-active {
+  background: #e4f4fa;
+}
+.table-menu-wrapper {
+  position: relative;
+}

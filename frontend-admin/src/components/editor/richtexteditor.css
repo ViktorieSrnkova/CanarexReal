@@ -1,0 +1,345 @@
+@font-face {
+  font-family: "Noto Color Emoji";
+  src: url("/fonts/NotoColorEmoji.ttf") format("truetype");
+}
+
+.editor-container .ProseMirror ul,
+.editor-container .ProseMirror ol {
+  text-align: inherit;
+}
+
+.editor-container .ProseMirror li {
+  text-align: inherit;
+}
+.editor-container .ProseMirror li > p {
+  text-align: inherit;
+  display: inline;
+}
+.editor-container .ProseMirror li {
+  list-style-position: inside;
+}
+
+.editor-container .ProseMirror li[data-checked] {
+  list-style: none;
+  display: flex;
+  align-items: flex-start;
+}
+
+.editor-container .ProseMirror li[data-checked] > label {
+  flex: 0 0 auto;
+  margin-right: 6px;
+}
+
+.editor-container .ProseMirror li[data-checked] > div {
+  flex: 0 0 auto;
+}
+
+.editor-container .ProseMirror li[data-checked] > div > p {
+  margin: 0;
+}
+
+.editor-container
+  .ProseMirror
+  li[data-checked]:has(p[style*="text-align: left"]) {
+  justify-content: flex-start;
+}
+
+.editor-container
+  .ProseMirror
+  li[data-checked]:has(p[style*="text-align: center"]) {
+  justify-content: center;
+}
+
+.editor-container
+  .ProseMirror
+  li[data-checked]:has(p[style*="text-align: right"]) {
+  justify-content: flex-end;
+}
+.editor-container .ProseMirror {
+  min-height: 300px;
+  padding: 1rem;
+  border: 1px solid #f6e6e3;
+  border-radius: 0 0 8px 8px;
+  background: white;
+  font-family: Raleway, sans-serif;
+  line-height: 1.4;
+}
+.editor-container .ProseMirror p {
+  margin: 0;
+}
+.editor_toolbar {
+  width: 100%;
+  background: #f6e6e3;
+  padding-bottom: 0.5rem;
+  padding-top: 0.5rem;
+  border-radius: 8px 8px 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  grid-row-gap: 0.5rem;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.editor-container .ProseMirror:focus {
+  outline: none;
+}
+.editor-container:focus-within {
+  outline: solid 1px #1677ff;
+  border-radius: 0.5rem;
+  box-shadow: 0 0 0 2px rgba(5, 145, 255, 0.1);
+}
+.editor-container .btn,
+.toggleButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  height: 40px;
+  border-radius: 4px;
+  width: 100%;
+  max-width: calc(100% / 10);
+  min-width: 48px;
+  font-size: 1.25rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: Georgia, "Times New Roman", serif;
+}
+.editor-container .btn:hover,
+.toggleButton:hover {
+  background: #e9cdc8;
+}
+.editor-container .btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+.editor-container .ProseMirror p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: #999;
+  pointer-events: none;
+  height: 0;
+}
+
+h1 {
+  font-size: 32px;
+}
+h2 {
+  font-size: 28px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 20px;
+}
+h5 {
+  font-size: 18px;
+}
+h6 {
+  font-size: 16px;
+}
+p {
+  font-size: 14px;
+}
+.editor-container .ProseMirror img {
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+}
+.editor_toolbar select {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  height: 40px;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.editor_toolbar select:hover,
+.editor_toolbar select:open {
+  background-color: #e9cdc8;
+}
+.editor_toolbar select option {
+  font-size: 1rem;
+  background: white;
+}
+.background-color,
+.text-color {
+  display: flex;
+  align-items: center;
+  padding: 0 1rem;
+}
+
+.text-color input[type="color"],
+.background-color input[type="color"] {
+  margin-right: 0.5rem;
+  width: 20px;
+  height: 20px;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+.text-color svg,
+.background-color svg {
+  width: 20px;
+  height: 20px;
+}
+.toggle {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.toggle #btnToggle {
+  display: none;
+}
+.details {
+  justify-content: flex-start !important;
+  gap: 0.5rem;
+}
+.editor-container .details > button {
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  margin: 0;
+  border: none;
+  background: transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  font-size: 18px;
+  line-height: 1;
+  color: inherit;
+}
+
+.editor-container .details > button {
+  font-size: 0;
+}
+
+.editor-container .details > button::before {
+  content: "▼";
+  display: block;
+  font-size: 18px;
+  line-height: 1;
+  transition: transform 0.2s ease;
+}
+
+.editor-container .details > button[aria-label^="Collapse"]::before {
+  transform: rotate(0deg);
+}
+
+.editor-container .details > button[aria-label^="Expand"]::before {
+  transform: rotate(-90deg);
+}
+
+.editor-container .details summary {
+  font-weight: bold;
+}
+.editor-container .ProseMirror blockquote {
+  margin: 1rem 0;
+  padding: 0.75rem 1rem;
+  border-left: 3px solid #87ceeb;
+  background: #f9f9f9;
+  color: #555;
+  font-style: italic;
+}
+/* .active {
+  box-shadow: inset 0 1px 2px rgba(133, 65, 65, 0.39);
+} */
+.vertical-separator {
+  border-left: 1px solid #ccc;
+  height: 24px;
+  margin: 0 8px;
+}
+table {
+  border-collapse: collapse;
+  margin: 0;
+  overflow: hidden;
+  table-layout: fixed;
+  width: 100%;
+
+  td,
+  th {
+    border: 1px solid #d8d8d8;
+    box-sizing: border-box;
+    min-width: 1em;
+    padding: 6px 8px;
+    position: relative;
+    vertical-align: top;
+
+    > * {
+      margin-bottom: 0;
+    }
+  }
+
+  th {
+    background-color: #87cfeb3a;
+    font-weight: bold;
+    text-align: left;
+  }
+
+  .selectedCell:after {
+    background: #cfcfcf67;
+    content: "";
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    pointer-events: none;
+    position: absolute;
+    z-index: 2;
+  }
+
+  .column-resize-handle {
+    background-color: #87ceeb;
+    bottom: -2px;
+    pointer-events: none;
+    position: absolute;
+    right: -2px;
+    top: 0;
+    width: 4px;
+    z-index: 3;
+  }
+}
+
+.tableWrapper {
+  margin: 1.5rem 0;
+  overflow-x: auto;
+}
+
+&.resize-cursor {
+  cursor: ew-resize;
+  cursor: col-resize;
+}
+.editor-container .ProseMirror .my-custom-class img {
+  height: 20px;
+  width: auto;
+}
+
+.emoji-menu {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  z-index: 100;
+
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgb(0 0 0 / 15%);
+}
+
+.emoji-menu-wrapper {
+  position: relative;
+}
+.editor-container .ProseMirror .my-custom-class {
+  font-family: "Noto Color Emoji";
+}
