@@ -88,8 +88,7 @@
   border-radius: 0.5rem;
   box-shadow: 0 0 0 2px rgba(5, 145, 255, 0.1);
 }
-.editor-container .btn,
-.toggleButton {
+.editor-container .btn {
   background: none;
   border: none;
   cursor: pointer;
@@ -97,7 +96,7 @@
   height: 40px;
   border-radius: 4px;
   width: 100%;
-  max-width: calc(100% / 20);
+  max-width: calc(100% / 22);
   min-width: 48px;
   font-size: 1.25rem;
   display: flex;
@@ -106,14 +105,17 @@
   font-family: Georgia, "Times New Roman", serif;
 }
 .editor-container .btn:hover,
-.toggleButton:hover {
+.toggle:hover {
   background: #e9cdc8;
 }
 .editor-container .btn svg {
   width: 20px;
   height: 20px;
 }
-
+.toggle .toggleButton {
+  justify-content: center;
+  display: flex;
+}
 .editor-container .ProseMirror p.is-editor-empty:first-child::before {
   content: attr(data-placeholder);
   float: left;
@@ -394,13 +396,13 @@ table {
 .color-control {
   display: flex;
   align-items: center;
-
+  justify-content: center;
   transition: background-color 0.15s ease;
   padding: 0.5rem;
   height: 40px;
   border-radius: 4px;
   width: 100%;
-  max-width: calc(100% / 20);
+  max-width: calc(100% / 22);
   min-width: 48px;
   font-size: 1.25rem;
 }

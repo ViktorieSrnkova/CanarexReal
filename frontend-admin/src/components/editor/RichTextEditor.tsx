@@ -487,8 +487,9 @@ export default function RichTextEditor({
                 </button>
               )}
             </div>
-            <label className="toggle">
+            <label className="toggle btn">
               <input
+                hidden
                 type="checkbox"
                 id="btnToggle"
                 name="btnToggle"
@@ -541,7 +542,7 @@ export default function RichTextEditor({
               }}
             />
 
-            <div className="emoji-menu-wrapper">
+            <div className="emoji-menu-wrapper btn">
               <button
                 type="button"
                 onClick={() => setIsEmojiMenuOpen(!isEmojiMenuOpen)}

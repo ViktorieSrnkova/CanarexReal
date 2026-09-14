@@ -25,7 +25,7 @@ type Props = {
 const TableToolbar = ({ editor, isInTable, tableState }: Props) => {
   const [isTableMenuOpen, setIsTableMenuOpen] = useState(false);
   return (
-    <div className="table-menu-wrapper">
+    <div className="table-menu-wrapper btn">
       <button
         type="button"
         className="btn"
