@@ -3,6 +3,7 @@ import {
   EditorContent,
   type JSONContent,
   useEditorState,
+  Editor,
 } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import TextAlign from "@tiptap/extension-text-align";
@@ -48,7 +49,9 @@ import {
 import TableToolbar from "./TableToolbar";
 import Emoji, { gitHubEmojis } from "@tiptap/extension-emoji";
 import EmojiPicker from "emoji-picker-react";
-import { useState } from "react";
+import FileHandler from "@tiptap/extension-file-handler";
+import { useState, useRef } from "react";
+import { getContrastColor } from "../../utils/getContrastColor";
 
 Emoji.configure({
   emojis: gitHubEmojis,
@@ -65,6 +68,8 @@ export default function RichTextEditor({
   /*  onChange, */
 }: RichTextEditorProps) {
   const isFull = version === "full";
+  const pendingImages = useRef<Map<string, File>>(new Map());
+
   const editor = useEditor({
     extensions: [
       Superscript,
@@ -111,10 +116,20 @@ export default function RichTextEditor({
                 resizable: true,
               },
             }),
+
             Gapcursor,
             DetailsContent,
             Blockquote,
-            Image,
+            Image.configure({
+              resize: {
+                enabled: true,
+                directions: ["top", "bottom", "left", "right"],
+                minWidth: 50,
+                minHeight: 50,
+                alwaysPreserveAspectRatio: true,
+              },
+              inline: true,
+            }),
             TaskList,
             TaskItem.configure({
               nested: true,
@@ -126,21 +141,67 @@ export default function RichTextEditor({
                 class: "my-custom-class",
               },
             }),
+            // eslint-disable-next-line react-hooks/refs
+            FileHandler.configure({
+              allowedMimeTypes: [
+                "image/png",
+                "image/jpeg",
+                "image/gif",
+                "image/webp",
+                /*    "video/webm",
+                "video/mp4", */
+              ],
+
+              onDrop: (currentEditor, files, pos) => {
+                files.forEach((file) => {
+                  insertImageFile(currentEditor, file, pos);
+                });
+              },
+
+              onPaste: (currentEditor, files, htmlContent) => {
+                if (htmlContent) {
+                  return false;
+                }
+
+                files.forEach((file) => {
+                  insertImageFile(currentEditor, file);
+                });
+              },
+            }),
           ]
         : []),
     ],
 
     content: content || "",
   });
+  const insertImageFile = (
+    currentEditor: Editor,
+    file: File,
+    position?: number,
+  ) => {
+    const blobUrl = URL.createObjectURL(file);
 
+    pendingImages.current.set(blobUrl, file);
+
+    currentEditor
+      .chain()
+      .focus()
+      .insertContentAt(position ?? currentEditor.state.selection.anchor, {
+        type: "image",
+        attrs: {
+          src: blobUrl,
+        },
+      })
+      .run();
+  };
   const editorState = useEditorState({
     editor,
     selector: (ctx) => {
       const attrs = ctx.editor.getAttributes("textStyle");
 
       return {
-        backgroundColor: attrs.backgroundColor ?? "#ffffff",
-        textColor: attrs.color ?? "#000000",
+        backgroundColor: attrs.backgroundColor ?? null,
+        textColor: attrs.color ?? null,
         isTaskList: ctx.editor.isActive("taskList") ?? false,
         isDetails: ctx.editor.isActive("details"),
         blockType: getCurrentBlockType(ctx.editor),
@@ -154,6 +215,15 @@ export default function RichTextEditor({
     },
   });
   const [isEmojiMenuOpen, setIsEmojiMenuOpen] = useState(false);
+  const imageInputRef = useRef<HTMLInputElement>(null);
+  const textColor = editorState.textColor;
+  const backgroundColor = editorState.backgroundColor;
+
+  const textContrastColor = textColor ? getContrastColor(textColor) : undefined;
+
+  const backgroundContrastColor = backgroundColor
+    ? getContrastColor(backgroundColor)
+    : undefined;
   if (!editor) {
     return null;
   }
@@ -301,17 +371,28 @@ export default function RichTextEditor({
             </button>
             <button
               type="button"
-              onClick={() => {
-                const url = window.prompt("URL obrázku:");
-
-                if (!url) return;
-
-                editor.chain().focus().setImage({ src: url }).run();
-              }}
+              onClick={() => imageInputRef.current?.click()}
               className="btn"
             >
               <PictureOutlined />
             </button>
+            <input
+              ref={imageInputRef}
+              type="file"
+              accept="image/png,image/jpeg,image/gif,image/webp"
+              hidden
+              onChange={(event) => {
+                const file = event.target.files?.[0];
+
+                if (!file) {
+                  return;
+                }
+
+                insertImageFile(editor, file);
+
+                event.target.value = "";
+              }}
+            />
             <button
               type="button"
               onClick={() => editor.chain().focus().setHorizontalRule().run()}
@@ -319,49 +400,92 @@ export default function RichTextEditor({
             >
               <LineOutlined />
             </button>
-            <div className="background-color">
-              <BgColorsOutlined />
-              <input
-                type="color"
-                onInput={(event) =>
-                  editor
-                    .chain()
-                    .focus()
-                    .setBackgroundColor(event.currentTarget.value)
-                    .run()
-                }
-                value={editorState.backgroundColor}
-                data-testid="setBackgroundColor"
-              ></input>
-              <span
-                onClick={() =>
-                  editor.chain().focus().unsetBackgroundColor().run()
-                }
-                data-testid="unsetBackgroundColor"
-              >
-                x
-              </span>
+            <div
+              className={`color-control background-color ${
+                backgroundColor ? "has-color" : ""
+              }`}
+              style={
+                backgroundColor
+                  ? {
+                      backgroundColor,
+                      color: backgroundContrastColor,
+                    }
+                  : undefined
+              }
+            >
+              <div className="color-picker">
+                <BgColorsOutlined />
+
+                <input
+                  type="color"
+                  onInput={(event) =>
+                    editor
+                      .chain()
+                      .focus()
+                      .setBackgroundColor(event.currentTarget.value)
+                      .run()
+                  }
+                  value={backgroundColor}
+                  data-testid="setBackgroundColor"
+                />
+              </div>
+
+              {backgroundColor && (
+                <button
+                  type="button"
+                  className="color-clear"
+                  onClick={() =>
+                    editor.chain().focus().unsetBackgroundColor().run()
+                  }
+                  data-testid="unsetBackgroundColor"
+                  title="Odstranit barvu pozadí"
+                >
+                  ×
+                </button>
+              )}
             </div>
-            <div className="text-color">
-              <FontColorsOutlined />
-              <input
-                type="color"
-                onInput={(event) =>
-                  editor
-                    .chain()
-                    .focus()
-                    .setColor(event.currentTarget.value)
-                    .run()
-                }
-                value={editorState.textColor}
-                data-testid="setColor"
-              />
-              <span
-                onClick={() => editor.chain().focus().unsetColor().run()}
-                data-testid="unsetColor"
-              >
-                x
-              </span>
+
+            <div
+              className={`color-control text-color ${
+                textColor ? "has-color" : ""
+              }`}
+              style={
+                textColor
+                  ? {
+                      backgroundColor: textColor,
+                      color: textContrastColor,
+                    }
+                  : undefined
+              }
+            >
+              <div className="color-picker">
+                <FontColorsOutlined />
+
+                <input
+                  type="color"
+                  value={textColor}
+                  onInput={(event) =>
+                    editor
+                      .chain()
+                      .focus()
+                      .setColor(event.currentTarget.value)
+                      .run()
+                  }
+                  data-testid="setColor"
+                />
+              </div>
+
+              {textColor && (
+                <button
+                  type="button"
+                  className="color-clear"
+                  onClick={() => editor.chain().focus().unsetColor().run()}
+                  data-testid="unsetColor"
+                  title="Odstranit barvu textu"
+                >
+                  ×
+                </button>
+              )}
             </div>
             <label className="toggle">
               <input

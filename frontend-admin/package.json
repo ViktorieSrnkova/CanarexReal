@@ -27,6 +27,7 @@
     "@plebjs/editorjs-emoji-picker-tool": "^1.1.0",
     "@tiptap/extension-details": "^3.31.3",
     "@tiptap/extension-emoji": "^3.31.3",
+    "@tiptap/extension-file-handler": "^3.31.3",
     "@tiptap/extension-image": "^3.31.3",
     "@tiptap/extension-link": "^3.31.3",
     "@tiptap/extension-list": "^3.31.3",

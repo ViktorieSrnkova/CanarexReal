@@ -230,7 +230,7 @@ export default function AdminLayout() {
             alignItems: "center",
           }}
         >
-          <div>Admin panel</div>
+          <div>CanarexReal administrace</div>
           <Button danger onClick={handleLogout}>
             Odhlásit se
           </Button>
