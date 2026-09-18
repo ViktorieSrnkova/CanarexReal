@@ -16,9 +16,9 @@ import {
   PROPERTY_TYPE_OPTIONS,
   type AddressOption,
   type CreateAdFormValues,
+  type EditorContentState,
 } from "../../types/listing_form";
 import type { Language } from "../../types/general";
-import { liteEditorTools } from "../../config/lite-editor-tools";
 import { Row, Col } from "antd";
 import ToggleButton from "../../components/listings/ToggleButton";
 import { DndContext, closestCenter } from "@dnd-kit/core";
@@ -31,13 +31,12 @@ import {
 import SortableImage from "../../components/listings/SortableImage";
 import { useAddressSearch } from "../../hooks/useAddressSearch";
 import { useImages } from "../../hooks/useImages";
-import EditorMinimal from "../../components/editor/RichMediaEditor";
 import { useListingSubmit } from "../../hooks/useListingForm";
 import { useEffect, useRef, useState } from "react";
 import {
   checkListingIndex,
   editListingTexts,
-  /*   postListing, */
+  postListing,
 } from "../../api/listings";
 import { useEditedListing } from "../../hooks/useEditListing";
 import RichTextEditor from "../../components/editor/RichTextEditor";
@@ -54,12 +53,10 @@ const ListingCreatePage: React.FC<Props> = ({
   onClose,
 }) => {
   const [fileList, setFileList] = useState<UploadFile[]>([]);
-  const readyMap = useRef<
-    Record<Language, { desc: boolean; details: boolean }>
-  >({
-    cs: { desc: false, details: false },
-    en: { desc: false, details: false },
-    sk: { desc: false, details: false },
+  const [editorContent, setEditorContent] = useState<EditorContentState>({
+    cs: {},
+    en: {},
+    sk: {},
   });
   const languages: Language[] = ["cs", "en", "sk"];
   const isEditMode = !!initialData;
@@ -79,13 +76,17 @@ const ListingCreatePage: React.FC<Props> = ({
     handlePickImages,
   } = useImages(form);
   const { options, searchAddress } = useAddressSearch();
-  const { descRefs, detailsRefs, buildPayload } = useListingSubmit(
+
+  const { buildPayload } = useListingSubmit(
     images,
     selectedAddress,
+    editorContent,
   );
-  const { buildEditPayload, setEditorContent } = useEditedListing(
+  const { buildEditPayload } = useEditedListing(
     selectedAddress,
     initialData,
+    editorContent,
+    setEditorContent,
   );
 
   const onFinish = async (values: CreateAdFormValues) => {
@@ -108,7 +109,6 @@ const ListingCreatePage: React.FC<Props> = ({
               acc[lang] = {
                 ...original,
                 ...(edited?.title != null && { title: edited.title }),
-                ...(edited?.alt != null && { alt: edited.alt }),
               };
 
               return acc;
@@ -134,13 +134,27 @@ const ListingCreatePage: React.FC<Props> = ({
           formData.append("images", img.file);
         });
         console.log(formData);
-        //await postListing(formData);
+        await postListing(formData);
         message.success("Inzerát vytvořen");
 
         onSuccess?.();
         form.resetFields();
         setImages([]);
         setFileList([]);
+        setEditorContent({
+          cs: {
+            description: { type: "doc", content: [] },
+            details: { type: "doc", content: [] },
+          },
+          en: {
+            description: { type: "doc", content: [] },
+            details: { type: "doc", content: [] },
+          },
+          sk: {
+            description: { type: "doc", content: [] },
+            details: { type: "doc", content: [] },
+          },
+        });
       }
     } catch {
       message.error("Chyba při vytváření inzerátu");
@@ -164,15 +178,12 @@ const ListingCreatePage: React.FC<Props> = ({
       translations: {
         cs: {
           title: translations?.cs?.title,
-          alt: translations?.cs?.alt,
         },
         en: {
           title: translations?.en?.title,
-          alt: translations?.en?.alt,
         },
         sk: {
           title: translations?.sk?.title,
-          alt: translations?.sk?.alt,
         },
       },
     });
@@ -547,6 +558,8 @@ const ListingCreatePage: React.FC<Props> = ({
             label: lang.toUpperCase(),
             children: (
               <>
+                {/*             {console.log("DESCRIPTION:", editorContent[lang].description)}
+                {console.log("DETAILS:", editorContent[lang].details)} */}
                 <Form.Item
                   name={["translations", lang, "title"]}
                   label="Název inzerátu"
@@ -554,67 +567,38 @@ const ListingCreatePage: React.FC<Props> = ({
                   <Input style={{ fontSize: "16px" }} />
                 </Form.Item>
                 <Form.Item
-                  name={["translations", lang, "descriptionNew"]}
-                  label="Popis"
-                  getValueFromEvent={() => undefined}
-                >
-                  <RichTextEditor version="normal" />
-                </Form.Item>
-                <Form.Item
-                  name={["translations", lang, "detailsNew"]}
-                  label="Podrobnosti"
-                  getValueFromEvent={() => undefined}
-                >
-                  <RichTextEditor version="full" />
-                </Form.Item>
-                <Form.Item
                   name={["translations", lang, "description"]}
                   label="Popis"
                   getValueFromEvent={() => undefined}
                 >
-                  <EditorMinimal
-                    ref={(el) => {
-                      descRefs.current[lang] = el;
-                    }}
-                    id={`desc-${lang}`}
-                    tools={liteEditorTools}
-                    data={initialData?.translations?.[lang]?.description}
-                    onReady={() => {
-                      readyMap.current[lang].desc = true;
-                    }}
-                    onChange={(data) => {
+                  <RichTextEditor
+                    version="normal"
+                    content={editorContent[lang].description}
+                    onChange={(content) => {
                       setEditorContent((prev) => ({
                         ...prev,
                         [lang]: {
                           ...prev[lang],
-                          description: data,
+                          description: content,
                         },
                       }));
                     }}
                   />
                 </Form.Item>
-
                 <Form.Item
                   name={["translations", lang, "details"]}
                   label="Podrobnosti"
                   getValueFromEvent={() => undefined}
                 >
-                  <EditorMinimal
-                    ref={(el) => {
-                      detailsRefs.current[lang] = el;
-                    }}
-                    id={`details-${lang}`}
-                    tools={liteEditorTools}
-                    data={initialData?.translations?.[lang]?.details}
-                    onReady={() => {
-                      readyMap.current[lang].details = true;
-                    }}
-                    onChange={(data) => {
+                  <RichTextEditor
+                    version="normal"
+                    content={editorContent[lang].details}
+                    onChange={(content) => {
                       setEditorContent((prev) => ({
                         ...prev,
                         [lang]: {
                           ...prev[lang],
-                          details: data,
+                          details: content,
                         },
                       }));
                     }}

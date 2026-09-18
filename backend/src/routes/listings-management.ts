@@ -405,8 +405,8 @@ router.post("/", upload.array("images"), async (req, res) => {
           await tx.inzeraty_preklady.create({
             data: {
               titulek: t.title,
-              popis: JSON.stringify(t.description),
-              detaily: JSON.stringify(t.details),
+              popis: t.description,
+              detaily: t.details,
               jazyky_id: langId,
               inzeraty_id: ad.id,
             },
@@ -900,127 +900,131 @@ router.delete("/:id", async (req, res) => {
 router.put("/:id", async (req, res) => {
   try {
     const id = Number(req.params.id);
+
     if (!Number.isInteger(id)) {
       return res.status(400).json({ error: "Invalid id" });
     }
 
     const body = req.body;
-    const existing = await prisma.inzeraty.findFirst({
-      where: {
-        index: Number(body.index),
-        NOT: {
-          id,
-        },
-      },
-    });
-
-    if (existing) {
-      return res.status(409).json({
-        error: "INDEX_EXISTS",
-        message: "Tento index už existuje",
-      });
-    }
-
-    const propertyType = await prisma.typy_nemovitosti.findFirst({
-      where: { kod: body.propertyType },
-    });
-
-    if (!propertyType) {
-      return res.status(400).json({ error: "Invalid property type" });
-    }
-
-    await prisma.inzeraty.update({
-      where: { id },
-      data: {
-        index: body.index,
-        cena_v_eur: body.price,
-        loznice: body.bedrooms,
-        koupelny: body.bathrooms,
-        velikost: body.size,
-        typy_nemovitosti_id: propertyType.id,
-      },
-    });
-
-    await prisma.inzeraty_piktogramy.deleteMany({
-      where: { inzeraty_id: id },
-    });
-
-    await prisma.inzeraty_piktogramy.createMany({
-      data: Object.entries(body.attributes ?? {})
-        .filter(([, v]) => v)
-        .map(([pid]) => ({
-          inzeraty_id: id,
-          piktogramy_id: Number(pid),
-        })),
-    });
-
-    if (body.address) {
-      await prisma.adresy.upsert({
-        where: { inzeraty_id: id },
-        update: {
-          nominatim_id: body.address.value,
-          lokace: body.location,
-          lat: body.address.lat,
-          lng: body.address.lon,
-          cela_adresa: body.address.label,
-          komplex: body.komplex,
-          oblast_prodeje: body.oblast_prodeje,
-        },
-        create: {
-          inzeraty_id: id,
-          nominatim_id: body.address.value,
-          lokace: body.location,
-          lat: body.address.lat,
-          lng: body.address.lon,
-          cela_adresa: body.address.label,
-          staty_id: 1,
-          komplex: body.komplex,
-          oblast_prodeje: body.oblast_prodeje,
+    await prisma.$transaction(async (tx) => {
+      const existing = await tx.inzeraty.findFirst({
+        where: {
+          index: Number(body.index),
+          NOT: {
+            id,
+          },
         },
       });
-    } else {
-      await prisma.adresy.deleteMany({
-        where: { inzeraty_id: id },
-      });
-    }
-    const mainImage = await prisma.obrazky.findFirst({
-      where: {
-        inzeraty_id: id,
-        poradi: 0,
-      },
-    });
-    if (mainImage) {
-      for (const [langCode, t] of Object.entries(
-        body.translations ?? {},
-      ) as any) {
-        const jazyky_id = langIdMap[langCode];
-        if (!jazyky_id) continue;
 
-        await prisma.obrazky_preklady.upsert({
-          where: {
-            jazyky_id_obrazky_id: {
-              jazyky_id,
-              obrazky_id: mainImage.id,
-            },
-          },
-          update: {
-            alt_text: t.alt ?? null,
-          },
-          create: {
-            jazyky_id,
-            obrazky_id: mainImage.id,
-            alt_text: t.alt ?? null,
-          },
+      if (existing) {
+        return res.status(409).json({
+          error: "INDEX_EXISTS",
+          message: "Tento index už existuje",
         });
       }
-    }
-    await replaceTranslations({
-      listingId: id,
-      translationsObj: body.translations ?? {},
-      langIdMap,
+
+      const propertyType = await tx.typy_nemovitosti.findFirst({
+        where: { kod: body.propertyType },
+      });
+
+      if (!propertyType) {
+        return res.status(400).json({ error: "Invalid property type" });
+      }
+
+      await tx.inzeraty.update({
+        where: { id },
+        data: {
+          index: body.index,
+          cena_v_eur: body.price,
+          loznice: body.bedrooms,
+          koupelny: body.bathrooms,
+          velikost: body.size,
+          typy_nemovitosti_id: propertyType.id,
+        },
+      });
+
+      await tx.inzeraty_piktogramy.deleteMany({
+        where: { inzeraty_id: id },
+      });
+
+      await tx.inzeraty_piktogramy.createMany({
+        data: Object.entries(body.attributes ?? {})
+          .filter(([, v]) => v)
+          .map(([pid]) => ({
+            inzeraty_id: id,
+            piktogramy_id: Number(pid),
+          })),
+      });
+
+      if (body.address) {
+        await tx.adresy.upsert({
+          where: { inzeraty_id: id },
+          update: {
+            nominatim_id: body.address.value,
+            lokace: body.location,
+            lat: body.address.lat,
+            lng: body.address.lon,
+            cela_adresa: body.address.label,
+            komplex: body.komplex,
+            oblast_prodeje: body.oblast_prodeje,
+          },
+          create: {
+            inzeraty_id: id,
+            nominatim_id: body.address.value,
+            lokace: body.location,
+            lat: body.address.lat,
+            lng: body.address.lon,
+            cela_adresa: body.address.label,
+            staty_id: 1,
+            komplex: body.komplex,
+            oblast_prodeje: body.oblast_prodeje,
+          },
+        });
+      } else {
+        await tx.adresy.deleteMany({
+          where: { inzeraty_id: id },
+        });
+      }
+      const mainImage = await tx.obrazky.findFirst({
+        where: {
+          inzeraty_id: id,
+          poradi: 0,
+        },
+      });
+      if (mainImage) {
+        for (const [langCode, t] of Object.entries(
+          body.translations ?? {},
+        ) as any) {
+          const jazyky_id = langIdMap[langCode];
+          if (!jazyky_id) continue;
+
+          await tx.obrazky_preklady.upsert({
+            where: {
+              jazyky_id_obrazky_id: {
+                jazyky_id,
+                obrazky_id: mainImage.id,
+              },
+            },
+            update: {
+              alt_text: t.alt ?? null,
+            },
+            create: {
+              jazyky_id,
+              obrazky_id: mainImage.id,
+              alt_text: t.alt ?? null,
+            },
+          });
+        }
+      }
+      await replaceTranslations({
+        tx,
+        listingId: id,
+        translationsObj: body.translations ?? {},
+        langIdMap,
+      });
     });
 
-    await res.json({ success: true });
+    res.json({ success: true });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Failed to update listing" });

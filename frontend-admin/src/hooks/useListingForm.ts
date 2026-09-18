@@ -1,30 +1,31 @@
-import { useRef } from "react";
-import type { EditorMinimalRef } from "../components/editor/RichMediaEditor";
 import type {
   AddressOption,
   CreateAdFormValues,
   CreateAdPayload,
+  EditorContentState,
   ImageItem,
 } from "../types/listing_form";
 
-import type { Language } from "../types/general";
+import type { JSONContent } from "@tiptap/react";
+
 export const useListingSubmit = (
   images: ImageItem[],
   selectedAddress: AddressOption | null,
+  editorContent: EditorContentState,
 ) => {
-  const descRefs = useRef<Record<Language, EditorMinimalRef | null>>({
-    cs: null,
-    en: null,
-    sk: null,
-  });
+  const hasContent = (data?: JSONContent) => {
+    if (!data?.content?.length) {
+      return false;
+    }
 
-  const detailsRefs = useRef<Record<Language, EditorMinimalRef | null>>({
-    cs: null,
-    en: null,
-    sk: null,
-  });
+    return data.content.some((node) => {
+      if (node.type === "paragraph" && !node.content?.length) {
+        return false;
+      }
 
-  const hasContent = (data?: EditorJS.OutputData) => !!data?.blocks?.length;
+      return true;
+    });
+  };
 
   const buildPayload = async (
     values: CreateAdFormValues,
@@ -34,18 +35,17 @@ export const useListingSubmit = (
     for (const lang of ["cs", "en", "sk"] as const) {
       const base = values.translations?.[lang];
 
-      const desc = await descRefs.current[lang]?.save();
-      const details = await detailsRefs.current[lang]?.save();
+      const descEditor = editorContent[lang]?.description;
+      const detailsEditor = editorContent[lang]?.details;
 
       const cleaned = {
-        alt: base?.title,
         title: base?.title,
-        description: hasContent(desc) ? desc : undefined,
-        details: hasContent(details) ? details : undefined,
+        description: hasContent(descEditor) ? descEditor : undefined,
+        details: hasContent(detailsEditor) ? detailsEditor : undefined,
       };
 
       const hasAnyValue =
-        cleaned.alt || cleaned.title || cleaned.description || cleaned.details;
+        cleaned.title || cleaned.description || cleaned.details;
 
       if (hasAnyValue) {
         cleanedTranslations[lang] = cleaned;
@@ -83,8 +83,6 @@ export const useListingSubmit = (
   };
 
   return {
-    descRefs,
-    detailsRefs,
     buildPayload,
   };
 };

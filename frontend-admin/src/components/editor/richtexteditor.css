@@ -92,7 +92,7 @@
   background: none;
   border: none;
   cursor: pointer;
-  padding: 0.5rem;
+  padding: 0 0.5rem;
   height: 40px;
   border-radius: 4px;
   width: 100%;
@@ -250,15 +250,13 @@ p {
   color: #555;
   font-style: italic;
 }
-/* .active {
-  box-shadow: inset 0 1px 2px rgba(133, 65, 65, 0.39);
-} */
+
 .vertical-separator {
   border-left: 1px solid #ccc;
   height: 24px;
   margin: 0 8px;
 }
-table {
+.editor-container .ProseMirror table {
   border-collapse: collapse;
   margin: 0;
   overflow: hidden;

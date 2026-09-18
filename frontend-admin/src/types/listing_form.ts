@@ -1,3 +1,4 @@
+import type { JSONContent } from "@tiptap/react";
 import type { Language } from "./general";
 
 export const PROPERTY_TYPE_OPTIONS = [
@@ -16,8 +17,8 @@ export type PropertyType = (typeof PROPERTY_TYPE_OPTIONS)[number]["value"];
 export interface Translation {
   alt?: string;
   title?: string;
-  description?: EditorJS.OutputData;
-  details?: EditorJS.OutputData;
+  description?: JSONContent;
+  details?: JSONContent;
 }
 export type Translations = Record<Language, Translation>;
 
@@ -89,8 +90,8 @@ export type CreateAdPayload = {
       {
         alt?: string;
         title?: string;
-        description?: EditorJS.OutputData;
-        details?: EditorJS.OutputData;
+        description?: JSONContent;
+        details?: JSONContent;
       }
     >
   >;
@@ -115,3 +116,11 @@ export const PROPERTY_TYPE_MAP: Record<number, PropertyType> = {
 };
 export type FeatureId = (typeof FEATURES)[number]["value"];
 export const FEATURES_SET = new Set<FeatureId>(FEATURES.map((f) => f.value));
+
+export type EditorContentState = Record<
+  Language,
+  {
+    description?: JSONContent;
+    details?: JSONContent;
+  }
+>;

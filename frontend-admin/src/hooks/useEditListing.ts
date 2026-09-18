@@ -1,55 +1,71 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect } from "react";
 import type {
   AddressOption,
   CreateAdFormValues,
   CreateAdPayload,
+  EditorContentState,
 } from "../types/listing_form";
-import type { Language } from "../types/general";
-import type { EditorMinimalRef } from "../components/editor/RichMediaEditor";
+import type { JSONContent } from "@tiptap/react";
+
 export const useEditedListing = (
   selectedAddress: AddressOption | null,
-  initialData?: CreateAdFormValues,
+  initialData: CreateAdFormValues | undefined,
+  editorContent: EditorContentState,
+  setEditorContent: React.Dispatch<React.SetStateAction<EditorContentState>>,
 ) => {
-  const initialRef = useRef<CreateAdFormValues | null>(null);
   useEffect(() => {
-    if (!initialData) return;
-    initialRef.current = initialData;
-  }, [initialData]);
-  const [editorContent, setEditorContent] = useState<
-    Record<
-      Language,
-      { description?: EditorJS.OutputData; details?: EditorJS.OutputData }
-    >
-  >({
-    cs: {},
-    en: {},
-    sk: {},
-  });
-  const descRefs = useRef<Record<Language, EditorMinimalRef | null>>({
-    cs: null,
-    en: null,
-    sk: null,
-  });
+    if (!initialData) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setEditorContent({
+        cs: {},
+        en: {},
+        sk: {},
+      });
+      return;
+    }
 
-  const detailsRefs = useRef<Record<Language, EditorMinimalRef | null>>({
-    cs: null,
-    en: null,
-    sk: null,
-  });
-  const hasContent = (data?: EditorJS.OutputData) => !!data?.blocks?.length;
+    setEditorContent({
+      cs: {
+        description: initialData.translations.cs?.description,
+        details: initialData.translations.cs?.details,
+      },
+      en: {
+        description: initialData.translations.en?.description,
+        details: initialData.translations.en?.details,
+      },
+      sk: {
+        description: initialData.translations.sk?.description,
+        details: initialData.translations.sk?.details,
+      },
+    });
+  }, [initialData, setEditorContent]);
+
+  const hasContent = (data?: JSONContent) => {
+    if (!data?.content?.length) return false;
+
+    return data.content.some((node) => {
+      if (node.type === "paragraph" && !node.content?.length) {
+        return false;
+      }
+
+      return true;
+    });
+  };
 
   const buildEditPayload = async (values: CreateAdFormValues) => {
     const cleanedTranslations: CreateAdPayload["translations"] = {};
+
     for (const lang of ["cs", "en", "sk"] as const) {
       const base = values.translations?.[lang];
-      console.log(descRefs.current[lang]);
-      const description = hasContent(editorContent[lang]?.description)
-        ? editorContent[lang].description
-        : initialRef.current?.translations?.[lang]?.description;
 
-      const details = hasContent(editorContent[lang]?.details)
+      const description = hasContent(editorContent[lang].description)
+        ? editorContent[lang].description
+        : undefined;
+
+      const details = hasContent(editorContent[lang].details)
         ? editorContent[lang].details
-        : initialRef.current?.translations?.[lang]?.details;
+        : undefined;
+
       const cleaned = {
         title: base?.title,
         description,
@@ -87,9 +103,6 @@ export const useEditedListing = (
     };
   };
   return {
-    descRefs,
-    detailsRefs,
     buildEditPayload,
-    setEditorContent,
   };
 };

@@ -78,9 +78,9 @@ const ListingsPage: React.FC = () => {
           filters,
           oblast_prodeje: activeArea,
         });
-        console.log("API DATA:", res.data);
+        //console.log("API DATA:", res.data);
         const mapped: ListingRow[] = res.data.map((item) => mapListing(item));
-        console.log("MAPPED DATA:", mapped);
+        //console.log("MAPPED DATA:", mapped);
         setData(mapped);
 
         setPagination((prev) => ({

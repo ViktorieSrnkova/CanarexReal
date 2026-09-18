@@ -54,8 +54,8 @@ const mapTranslations = (
       acc[lang] = {
         title: t.titulek ?? "",
         alt: alts[lang] ?? "",
-        description: t.popis ? JSON.parse(t.popis) : undefined,
-        details: t.detaily ? JSON.parse(t.detaily) : undefined,
+        description: t.popis ?? undefined,
+        details: t.detaily ?? undefined,
       };
 
       return acc;

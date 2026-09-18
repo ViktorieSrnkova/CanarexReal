@@ -112,8 +112,8 @@ export type RawListingDetail = {
   inzeraty_preklady: {
     jazyky_id: number;
     titulek: string | null;
-    popis: string | null;
-    detaily: string | null;
+    popis: JSON | null;
+    detaily: JSON | null;
   }[];
 };
 

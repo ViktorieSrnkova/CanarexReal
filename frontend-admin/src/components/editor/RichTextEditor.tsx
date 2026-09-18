@@ -50,7 +50,7 @@ import TableToolbar from "./TableToolbar";
 import Emoji, { gitHubEmojis } from "@tiptap/extension-emoji";
 import EmojiPicker from "emoji-picker-react";
 import FileHandler from "@tiptap/extension-file-handler";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { getContrastColor } from "../../utils/getContrastColor";
 
 Emoji.configure({
@@ -60,12 +60,13 @@ Emoji.configure({
 type RichTextEditorProps = {
   version: "normal" | "full";
   content?: JSONContent;
-  /*   onChange?: (content: JSONContent) => void; */
+  /*  onEditorReady?: (editor: Editor) => void; */
+  onChange?: (content: JSONContent) => void;
 };
 export default function RichTextEditor({
   version,
   content,
-  /*  onChange, */
+  onChange,
 }: RichTextEditorProps) {
   const isFull = version === "full";
   const pendingImages = useRef<Map<string, File>>(new Map());
@@ -173,7 +174,17 @@ export default function RichTextEditor({
     ],
 
     content: content || "",
+    onUpdate: ({ editor }) => {
+      onChange?.(editor.getJSON());
+    },
   });
+
+  useEffect(() => {
+    if (!editor || !content) return;
+
+    editor.commands.setContent(content);
+  }, [editor, content]);
+
   const insertImageFile = (
     currentEditor: Editor,
     file: File,
