@@ -9,8 +9,14 @@ import {
 import "../../styles/listing/gallery.css";
 import GallerySkeleton from "./GallerySkeleton";
 
+type GalleryProp = {
+  id: number;
+  mimeType?: string;
+  alt: string;
+};
+
 type Props = {
-  imagesProp: { id: number }[];
+  imagesProp: GalleryProp[];
 };
 const VITE_API_URL = import.meta.env.VITE_API_URL;
 export default function ListingGallery({ imagesProp }: Props) {
@@ -21,13 +27,15 @@ export default function ListingGallery({ imagesProp }: Props) {
   const activeThumbRef = useRef<HTMLImageElement | null>(null);
   const touchStartX = useRef(0);
   const images = useMemo(() => {
-    return imagesProp.map(
-      (img) => `${VITE_API_URL}/api/files/images/${img.id}`,
-    );
+    return imagesProp.map((img) => ({
+      id: img.id,
+      url: `${VITE_API_URL}/api/files/images/${img.id}`,
+      mimeType: img.mimeType,
+      alt: img.alt,
+    }));
   }, [imagesProp]);
 
   const activeImage = useMemo(() => images[activeIndex], [images, activeIndex]);
-
   useLayoutEffect(() => {
     if (!activeThumbRef.current) return;
 
@@ -55,9 +63,17 @@ export default function ListingGallery({ imagesProp }: Props) {
   useEffect(() => {
     if (!images.length) return;
 
+    const first = images[0];
+
+    if (first.mimeType?.startsWith("video/")) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setLoaded(true);
+      return;
+    }
+
     const img = new Image();
 
-    img.src = images[0];
+    img.src = first.url;
 
     img.onload = () => {
       setLoaded(true);
@@ -111,11 +127,21 @@ export default function ListingGallery({ imagesProp }: Props) {
             onTouchStart={onTouchStart}
             onTouchEnd={onTouchEnd}
           >
-            <img
-              fetchPriority="high"
-              src={activeImage}
-              className="lightbox-image"
-            />
+            {activeImage.mimeType?.startsWith("video/") ? (
+              <video
+                src={activeImage.url}
+                controls
+                playsInline
+                preload="metadata"
+                className="lightbox-image"
+              />
+            ) : (
+              <img
+                fetchPriority="high"
+                src={activeImage.url}
+                className="lightbox-image"
+              />
+            )}
           </div>
 
           <div
@@ -141,22 +167,55 @@ export default function ListingGallery({ imagesProp }: Props) {
       <div style={{ opacity: loaded ? 1 : 0 }} className="gallery-main">
         <div onClick={prev} className="arrow arrow-left"></div>
         <div className="gallery-image" onClick={() => setIsOpen(true)}>
-          <img src={activeImage} alt="" decoding="async" fetchPriority="high" />
+          {activeImage.mimeType?.startsWith("video/") ? (
+            <video
+              src={activeImage.url}
+              controls
+              playsInline
+              autoPlay
+              className="lightbox-image"
+            />
+          ) : (
+            <img
+              fetchPriority="high"
+              src={activeImage.url}
+              className="lightbox-image"
+              alt=""
+            />
+          )}
         </div>
         <div onClick={next} className="arrow arrow-right"></div>
       </div>
 
       <div className="gallery-thumbs " ref={thumbsRef}>
         {images.map((img, i) => (
-          <img
-            loading="lazy"
-            key={img + i}
-            src={img}
-            alt=""
+          <div
+            key={img.id}
+            className={`thumb-wrapper ${i === activeIndex ? "active" : ""}`}
             onClick={() => setActiveIndex(i)}
             ref={i === activeIndex ? activeThumbRef : null}
-            className={`thumb ${i === activeIndex ? "active" : ""}`}
-          />
+          >
+            {img.mimeType?.startsWith("video/") ? (
+              <>
+                <video
+                  src={img.url}
+                  muted
+                  playsInline
+                  preload="metadata"
+                  className="thumb"
+                />
+
+                <div className="video-play-icon">▶</div>
+              </>
+            ) : (
+              <img
+                loading="lazy"
+                src={img.url}
+                alt=""
+                className={`thumb ${i === activeIndex ? "active" : ""}`}
+              />
+            )}
+          </div>
         ))}
       </div>
     </div>

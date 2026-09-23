@@ -7,6 +7,7 @@ import type {
 } from "../types/listing_form";
 
 import type { JSONContent } from "@tiptap/react";
+import type { MediaUploadResult } from "../types/media";
 
 export const useListingSubmit = (
   images: ImageItem[],
@@ -29,6 +30,7 @@ export const useListingSubmit = (
 
   const buildPayload = async (
     values: CreateAdFormValues,
+    uploadedMedia: MediaUploadResult[],
   ): Promise<CreateAdPayload> => {
     const cleanedTranslations: CreateAdPayload["translations"] = {};
 
@@ -67,7 +69,8 @@ export const useListingSubmit = (
 
       translations: cleanedTranslations,
 
-      images: images.map((_, index) => ({
+      media: uploadedMedia.map((media, index) => ({
+        id: media.id,
         order: index,
       })),
 

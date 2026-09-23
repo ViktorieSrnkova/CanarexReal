@@ -15,6 +15,7 @@ import filesRouter from "./routes/images.js";
 import uploadRouter from "./routes/upload.js";
 import formsRouter from "./routes/forms.js";
 import sitemapRoute from "./routes/sitemap.js";
+import mediaRoutes from "./routes/admin-media.js";
 import cors from "cors";
 import cron from "node-cron";
 import { cleanupTempImages } from "./jobs/cleanupImage.js";
@@ -42,6 +43,7 @@ app.use("/api/admin/aktuality", adminNewsRouter);
 app.use("/api/admin/forms-management", formsManagementRouter);
 app.use("/api/admin/dashboard", dashboardRoutes);
 app.use("/api/admin/files", uploadRouter);
+app.use("/api/admin/media", mediaRoutes);
 
 app.use("/api/listings", listingsRouter);
 app.use("/api/news", newsRouter);

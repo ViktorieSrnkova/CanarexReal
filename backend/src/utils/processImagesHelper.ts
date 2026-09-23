@@ -19,12 +19,9 @@ export async function processAdImages(params: {
   for (let i = 0; i < files.length; i++) {
     const file = files[i];
     if (!file) continue;
-    const bufferNode = await convertBufferToWebP(file.buffer);
-    const buffer = new Uint8Array(bufferNode);
 
     const image = await tx.obrazky.create({
       data: {
-        data: buffer,
         docasne: false,
         inzeraty_id: inzeratId,
         url: "",
@@ -42,12 +39,8 @@ export async function processAdImages(params: {
   const first = files[0];
 
   if (first) {
-    const thumbBufferNode = await convertBufferToThumbnail(first.buffer);
-    const thumbBuffer = new Uint8Array(thumbBufferNode);
-
     const thumb = await tx.obrazky.create({
       data: {
-        data: thumbBuffer,
         docasne: false,
         inzeraty_id: inzeratId,
         url: "",

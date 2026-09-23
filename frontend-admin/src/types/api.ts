@@ -127,4 +127,5 @@ export type Gallery = {
   order: number;
   url: string;
   alts: GalleryAlt[];
+  mimeType: string;
 };

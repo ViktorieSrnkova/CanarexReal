@@ -2,15 +2,10 @@ import type { FormInstance } from "antd";
 import React, { useEffect } from "react";
 import type { CreateAdFormValues } from "../types/listing_form";
 import type { RcFile } from "antd/es/upload/interface";
+import type { MediaItem } from "../types/media";
 
-export type ImageItem = {
-  uid: string;
-  file: File;
-  url: string;
-};
-
-export function useImages(form: FormInstance<CreateAdFormValues>) {
-  const [images, setImages] = React.useState<ImageItem[]>([]);
+export function useMedia(form: FormInstance<CreateAdFormValues>) {
+  const [images, setImages] = React.useState<MediaItem[]>([]);
   const [uploading, setUploading] = React.useState(false);
 
   const handlePickImages = () => {
@@ -25,6 +20,7 @@ export function useImages(form: FormInstance<CreateAdFormValues>) {
         uid: file.uid,
         file,
         url: URL.createObjectURL(file),
+        mimeType: file.type,
       }));
 
       setImages(mapped);

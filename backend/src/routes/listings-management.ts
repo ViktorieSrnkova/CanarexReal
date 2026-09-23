@@ -18,6 +18,7 @@ import {
 } from "../utils/processGalleryImages.js";
 import { convertBufferToThumbnail } from "../utils/thumbnailMaker.js";
 import { Prisma } from "@prisma/client";
+import { deleteMediaFromR2 } from "../utils/deleteMediaFromR2Helper.js";
 
 const router = Router();
 router.use(requireRole([1, 3]));
@@ -307,10 +308,10 @@ router.get("/filter-options", async (_req, res) => {
   }
 });
 
-router.post("/", upload.array("images"), async (req, res) => {
+router.post("/", async (req, res) => {
   try {
-    const values = JSON.parse(req.body.payload);
-    const files = (req.files ?? []) as Express.Multer.File[];
+    const values = req.body;
+
     if (!values) {
       return res.status(400).json({ error: "Missing body" });
     }
@@ -413,17 +414,25 @@ router.post("/", upload.array("images"), async (req, res) => {
           });
         }
 
-        await processAdImages({
-          tx,
-          files: files,
-          translationsObj: values.translations ?? {},
-          inzeratId: ad.id,
-          langIdMap: {
-            en: 1,
-            cs: 2,
-            sk: 3,
-          },
-        });
+        const media = values.media;
+
+        if (!Array.isArray(media) || media.length === 0) {
+          throw new Error("At least one media item is required");
+        }
+
+        for (const item of media) {
+          await tx.obrazky.update({
+            where: {
+              id: item.id,
+            },
+            data: {
+              inzeraty_id: ad.id,
+              poradi: item.order,
+              docasne: false,
+            },
+          });
+        }
+
         return ad;
       },
       {
@@ -535,11 +544,8 @@ router.get("/", async (req, res) => {
             id: true,
             url: true,
             poradi: true,
-            obrazky_preklady: {
-              select: {
-                jazyky_id: true,
-              },
-            },
+            mime_typ: true,
+            klic_uloziste: true,
           },
           orderBy: {
             poradi: "asc",
@@ -653,6 +659,8 @@ router.get("/:id", async (req, res) => {
             id: true,
             url: true,
             poradi: true,
+            mime_typ: true,
+            klic_uloziste: true,
             obrazky_preklady: {
               select: {
                 jazyky_id: true,
@@ -774,15 +782,18 @@ router.get("/print/:id", async (req, res) => {
 router.get("/:id/gallery", async (req, res) => {
   try {
     const id = Number(req.params.id);
+
     if (!id) {
       return res.status(400).json({ message: "Invalid ID" });
     }
+
     const images = await prisma.obrazky.findMany({
       where: { inzeraty_id: id },
       orderBy: { poradi: "asc" },
       select: {
         id: true,
         poradi: true,
+        mime_typ: true,
         obrazky_preklady: {
           select: {
             alt_text: true,
@@ -792,24 +803,28 @@ router.get("/:id/gallery", async (req, res) => {
       },
     });
 
-    const result = images.map((img: any) => ({
+    const result = images.map((img) => ({
       id: img.id,
-      order: img.poradi,
+      order: img.poradi ?? 0,
       url: `/api/files/images/${img.id}`,
-      alts: img.obrazky_preklady.map((p: any) => ({
+      mimeType: img.mime_typ ?? "image/webp",
+      alts: img.obrazky_preklady.map((p) => ({
         lang: Number(p.jazyky_id),
         text: p.alt_text ?? "",
       })),
     }));
+
     return res.json(result);
   } catch (err) {
     console.error("galery fetch error:", err);
-    res.status(500).json({
+
+    return res.status(500).json({
       message: "Internal server error",
       error: String(err),
     });
   }
 });
+
 router.patch("/:id/status", async (req, res) => {
   try {
     const id = Number(req.params.id);
@@ -858,6 +873,24 @@ router.delete("/:id", async (req, res) => {
       return res.status(400).json({ error: "Invalid id" });
     }
 
+    const images = await prisma.obrazky.findMany({
+      where: {
+        inzeraty_id: id,
+      },
+      select: {
+        id: true,
+        klic_uloziste: true,
+      },
+    });
+
+    const storageKeys = images
+      .map((image) => image.klic_uloziste)
+      .filter((key): key is string => Boolean(key));
+
+    if (storageKeys.length > 0) {
+      await deleteMediaFromR2(storageKeys);
+    }
+
     await prisma.$transaction(async (tx) => {
       const listing = await tx.inzeraty.findUnique({
         where: { id },
@@ -869,7 +902,9 @@ router.delete("/:id", async (req, res) => {
       if (!listing) {
         throw new Error("LISTING_NOT_FOUND");
       }
+
       console.log("DELETING PORADI:", listing.poradi);
+
       await tx.inzeraty.delete({
         where: { id },
       });
@@ -890,10 +925,21 @@ router.delete("/:id", async (req, res) => {
       console.log("UPDATED:", result.count);
     });
 
+    console.log(
+      `🗑️ Deleted listing ${id} and ${storageKeys.length} R2 objects`,
+    );
+
     return res.json({ success: true });
-  } catch (err: any) {
+  } catch (err) {
+    if (err instanceof Error && err.message === "LISTING_NOT_FOUND") {
+      return res.status(404).json({ message: "Listing not found" });
+    }
+
     console.error("listing delete error:", err);
-    res.status(500).json({ message: "Internal server error" });
+
+    return res.status(500).json({
+      message: "Internal server error",
+    });
   }
 });
 
@@ -985,37 +1031,7 @@ router.put("/:id", async (req, res) => {
           where: { inzeraty_id: id },
         });
       }
-      const mainImage = await tx.obrazky.findFirst({
-        where: {
-          inzeraty_id: id,
-          poradi: 0,
-        },
-      });
-      if (mainImage) {
-        for (const [langCode, t] of Object.entries(
-          body.translations ?? {},
-        ) as any) {
-          const jazyky_id = langIdMap[langCode];
-          if (!jazyky_id) continue;
 
-          await tx.obrazky_preklady.upsert({
-            where: {
-              jazyky_id_obrazky_id: {
-                jazyky_id,
-                obrazky_id: mainImage.id,
-              },
-            },
-            update: {
-              alt_text: t.alt ?? null,
-            },
-            create: {
-              jazyky_id,
-              obrazky_id: mainImage.id,
-              alt_text: t.alt ?? null,
-            },
-          });
-        }
-      }
       await replaceTranslations({
         tx,
         listingId: id,
@@ -1031,182 +1047,153 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-router.put("/gallery/save", upload.any(), async (req, res) => {
+router.put("/gallery/save", async (req, res) => {
   try {
-    const form = req.body;
+    const { listingId, existingImages, newImages, removedImageIds } = req.body;
 
-    const listingId = Number(form.listingId);
     if (!Number.isInteger(listingId)) {
-      return res.status(400).json({ message: "Invalid listing id" });
+      return res.status(400).json({
+        message: "Invalid listing id",
+      });
     }
 
-    const existingImages = JSON.parse(form.existingImages ?? "[]");
-    const removedImageIds = JSON.parse(form.removedImageIds ?? "[]");
-    const newImagesMeta = JSON.parse(form.newImagesMeta ?? "[]");
+    if (!Array.isArray(existingImages)) {
+      return res.status(400).json({
+        message: "Invalid existing images",
+      });
+    }
 
-    const files = req.files as
-      | Express.Multer.File[]
-      | { [fieldname: string]: Express.Multer.File[] };
+    if (!Array.isArray(newImages)) {
+      return res.status(400).json({
+        message: "Invalid new images",
+      });
+    }
 
-    const preparedImages = await prepareGalleryImages({
-      files,
-      newImagesMeta,
+    if (!Array.isArray(removedImageIds)) {
+      return res.status(400).json({
+        message: "Invalid removed image ids",
+      });
+    }
+
+    const removedImages = await prisma.obrazky.findMany({
+      where: {
+        id: {
+          in: removedImageIds,
+        },
+        inzeraty_id: listingId,
+      },
+      select: {
+        id: true,
+        klic_uloziste: true,
+      },
     });
 
-    const preparedMainImage = preparedImages.find((image) => image.order === 1);
-    let mainImageBuffer: Buffer;
+    const removedStorageKeys = removedImages
+      .map((image) => image.klic_uloziste)
+      .filter((key): key is string => Boolean(key));
 
-    if (preparedMainImage) {
-      mainImageBuffer = Buffer.from(preparedMainImage.data);
-    } else {
-      const reorderedMain = existingImages.find((img: any) => img.order === 1);
-      if (!reorderedMain) {
-        throw new Error("Missing main image");
-      }
-
-      const mainImage = await prisma.obrazky.findFirst({
-        where: {
-          id: Number(reorderedMain.id),
-          inzeraty_id: listingId,
-        },
-        select: {
-          data: true,
-        },
-      });
-
-      if (!mainImage?.data) {
-        throw new Error("Missing main image");
-      }
-
-      mainImageBuffer = Buffer.from(mainImage.data as Uint8Array);
-    }
-
-    const thumbBuffer = await convertBufferToThumbnail(mainImageBuffer);
-
-    await prisma.$transaction(
-      async (tx: any) => {
-        if (removedImageIds.length) {
-          await tx.obrazky.deleteMany({
-            where: {
-              id: { in: removedImageIds },
-              inzeraty_id: listingId,
-            },
-          });
-        }
-
-        for (const img of existingImages) {
-          await tx.obrazky.update({
-            where: { id: img.id },
-            data: { poradi: img.order },
-          });
-
-          for (const alt of img.alts) {
-            await tx.obrazky_preklady.upsert({
-              where: {
-                jazyky_id_obrazky_id: {
-                  jazyky_id: alt.lang,
-                  obrazky_id: img.id,
-                },
-              },
-              update: { alt_text: alt.text },
-              create: {
-                jazyky_id: alt.lang,
-                obrazky_id: img.id,
-                alt_text: alt.text,
-              },
-            });
-          }
-        }
-        await processGalleryImages({
-          tx,
-          preparedImages,
-          listingId,
-        });
-        const galleryImages = await tx.obrazky.findMany({
+    await prisma.$transaction(async (tx) => {
+      if (removedImageIds.length > 0) {
+        await tx.obrazky.deleteMany({
           where: {
+            id: {
+              in: removedImageIds,
+            },
             inzeraty_id: listingId,
-            poradi: {
-              gt: 0,
-            },
-          },
-          orderBy: {
-            poradi: "asc",
-          },
-          select: {
-            id: true,
-            poradi: true,
           },
         });
+      }
 
-        for (let i = 0; i < galleryImages.length; i++) {
-          const image = galleryImages[i];
-
-          await tx.obrazky.update({
-            where: {
-              id: image.id,
-            },
-            data: {
-              poradi: i + 1,
-            },
-          });
-        }
-
-        const imagesAfter = await tx.obrazky.findMany({
-          where: { inzeraty_id: listingId },
-          orderBy: { poradi: "asc" },
-        });
-
-        const currentMain = imagesAfter.find((i: any) => i.poradi === 1);
-        if (!currentMain?.data) {
-          throw new Error("Missing main image");
-        }
-
-        const currentThumb = imagesAfter.find((i: any) => i.poradi === 0);
-
-        if (currentThumb) {
-          await tx.obrazky.delete({
-            where: { id: currentThumb.id },
-          });
-        }
-
-        const mainAlts = await tx.obrazky_preklady.findMany({
-          where: { obrazky_id: currentMain.id },
-        });
-        const thumbImg = await tx.obrazky.create({
-          data: {
+      for (const image of existingImages) {
+        const existingImage = await tx.obrazky.findFirst({
+          where: {
+            id: image.id,
             inzeraty_id: listingId,
-            poradi: 0,
-            data: new Uint8Array(thumbBuffer),
-            docasne: false,
-            url: "",
           },
         });
+
+        if (!existingImage) {
+          throw new Error(`Invalid existing image id: ${image.id}`);
+        }
 
         await tx.obrazky.update({
-          where: { id: thumbImg.id },
-          data: { url: `/api/files/images/${thumbImg.id}` },
+          where: {
+            id: image.id,
+          },
+          data: {
+            poradi: image.order,
+          },
         });
 
-        for (const alt of mainAlts) {
-          await tx.obrazky_preklady.create({
-            data: {
-              jazyky_id: alt.jazyky_id,
-              obrazky_id: thumbImg.id,
-              alt_text: alt.alt_text,
+        for (const alt of image.alts) {
+          await tx.obrazky_preklady.upsert({
+            where: {
+              jazyky_id_obrazky_id: {
+                jazyky_id: alt.lang,
+                obrazky_id: image.id,
+              },
+            },
+            update: {
+              alt_text: alt.text,
+            },
+            create: {
+              jazyky_id: alt.lang,
+              obrazky_id: image.id,
+              alt_text: alt.text,
             },
           });
         }
-      },
-      {
-        maxWait: 10000,
-        timeout: 60000,
-      },
-    );
+      }
 
-    return res.json({ success: true });
-  } catch (err: any) {
+      for (const image of newImages) {
+        const uploadedImage = await tx.obrazky.findFirst({
+          where: {
+            id: image.id,
+            inzeraty_id: null,
+            docasne: true,
+          },
+        });
+
+        if (!uploadedImage) {
+          throw new Error(`Invalid new image id: ${image.id}`);
+        }
+
+        await tx.obrazky.update({
+          where: {
+            id: image.id,
+          },
+          data: {
+            inzeraty_id: listingId,
+            poradi: image.order,
+            docasne: false,
+          },
+        });
+
+        for (const alt of image.alts) {
+          await tx.obrazky_preklady.create({
+            data: {
+              jazyky_id: alt.lang,
+              obrazky_id: image.id,
+              alt_text: alt.text,
+            },
+          });
+        }
+      }
+    });
+
+    if (removedStorageKeys.length > 0) {
+      await deleteMediaFromR2(removedStorageKeys);
+    }
+
+    return res.json({
+      success: true,
+    });
+  } catch (err) {
     console.error("edit gallery error:", err);
-    res.status(500).json({ message: "Internal server error" });
+
+    return res.status(500).json({
+      message: "Internal server error",
+    });
   }
 });
 

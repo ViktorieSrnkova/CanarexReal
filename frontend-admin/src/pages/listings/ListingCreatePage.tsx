@@ -30,16 +30,17 @@ import {
 } from "@dnd-kit/sortable";
 import SortableImage from "../../components/listings/SortableImage";
 import { useAddressSearch } from "../../hooks/useAddressSearch";
-import { useImages } from "../../hooks/useImages";
+import { useMedia } from "../../hooks/useMedia";
 import { useListingSubmit } from "../../hooks/useListingForm";
 import { useEffect, useRef, useState } from "react";
 import {
   checkListingIndex,
-  editListingTexts,
+  /* editListingTexts, */
   postListing,
 } from "../../api/listings";
 import { useEditedListing } from "../../hooks/useEditListing";
 import RichTextEditor from "../../components/editor/RichTextEditor";
+import { uploadMedia } from "../../services/mediaService";
 
 type Props = {
   initialData?: CreateAdFormValues;
@@ -74,7 +75,7 @@ const ListingCreatePage: React.FC<Props> = ({
     setImages,
     setUploading,
     handlePickImages,
-  } = useImages(form);
+  } = useMedia(form);
   const { options, searchAddress } = useAddressSearch();
 
   const { buildPayload } = useListingSubmit(
@@ -119,22 +120,24 @@ const ListingCreatePage: React.FC<Props> = ({
         const payload = await buildEditPayload(mergedValues);
 
         console.log("EDIT PAYLOAD:", payload);
-        await editListingTexts(id, payload);
+        //await editListingTexts(id, payload);
 
         message.success("Inzerát upraven");
         onSuccess?.();
         onClose?.();
       } else {
-        const payload = await buildPayload(values);
-        const formData = new FormData();
+        setUploading(true);
+        const uploadedMedia = await Promise.all(
+          images.map((image) =>
+            uploadMedia(image.file, "properties", Number(values.listingIndex)),
+          ),
+        );
+        setUploading(false);
 
-        formData.append("payload", JSON.stringify(payload));
+        const payload = await buildPayload(values, uploadedMedia);
+        console.log("CREATE PAYLOAD:", payload);
 
-        images.forEach((img) => {
-          formData.append("images", img.file);
-        });
-        console.log(formData);
-        await postListing(formData);
+        await postListing(payload);
         message.success("Inzerát vytvořen");
 
         onSuccess?.();
@@ -443,6 +446,7 @@ const ListingCreatePage: React.FC<Props> = ({
             >
               <Upload
                 multiple
+                accept="image/*,video/mp4,video/webm,video/quicktime"
                 beforeUpload={() => false}
                 fileList={fileList}
                 showUploadList={false}
@@ -465,7 +469,7 @@ const ListingCreatePage: React.FC<Props> = ({
                   loading={uploading}
                   onClick={handlePickImages}
                 >
-                  {uploading ? "Načítám..." : "Nahrát obrázky"}
+                  {uploading ? "Nahrávám..." : "Nahrát obrázky a videa"}
                 </Button>
               </Upload>
             </div>
@@ -479,7 +483,7 @@ const ListingCreatePage: React.FC<Props> = ({
                   }}
                 >
                   Pořadí obrázků lze upravit jejich uchopením jejich tmavého
-                  čtverečku v levém horním rohua přetažením
+                  čtverečku v levém horním rohu a přetažením myši
                 </Typography.Text>
               </Tooltip>
             )}
@@ -558,8 +562,6 @@ const ListingCreatePage: React.FC<Props> = ({
             label: lang.toUpperCase(),
             children: (
               <>
-                {/*             {console.log("DESCRIPTION:", editorContent[lang].description)}
-                {console.log("DETAILS:", editorContent[lang].details)} */}
                 <Form.Item
                   name={["translations", lang, "title"]}
                   label="Název inzerátu"

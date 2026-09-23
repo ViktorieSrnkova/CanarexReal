@@ -97,6 +97,7 @@ export type listingDetailSelect = {
 export type ListingImageRaw = {
   id: number;
   poradi: number;
+  mime_typ: string;
   obrazky_preklady: {
     alt_text: string;
   }[];

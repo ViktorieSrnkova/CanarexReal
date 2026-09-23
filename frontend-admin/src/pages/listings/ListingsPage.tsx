@@ -34,6 +34,7 @@ const ListingsPage: React.FC = () => {
   const [data, setData] = useState<ListingRow[]>([]);
   const [filters, setFilters] = useState<ListingFilters>({});
   const [listingId, setListingId] = useState<number | undefined>();
+  const [listingIndex, setListingIndex] = useState<number | undefined>();
   const [pictogramOptions, setPictogramOptions] = useState<
     ListingFilterOption[]
   >([]);
@@ -183,9 +184,13 @@ const ListingsPage: React.FC = () => {
   };
   const handleGalleryEdit = async (id: number) => {
     try {
+      const listing = data.find((item) => item.id === id);
+      if (!listing) {
+        throw new Error("Listing not found");
+      }
       const res = await getGalery(id);
-      console.log(res);
       setImages(res);
+      setListingIndex(listing.index);
       setGalleryOpen(true);
       setListingId(id);
     } catch (err) {
@@ -352,12 +357,14 @@ const ListingsPage: React.FC = () => {
           )}
         </EditModal>
       )}
-      {galleryOpen && listingId && (
+      {galleryOpen && listingId !== undefined && listingIndex !== undefined && (
         <ListingGalleryModal
           listingId={listingId}
+          listingIndex={listingIndex}
           open={galleryOpen}
           onClose={() => {
             setGalleryOpen(false);
+            setListingIndex(undefined);
             setSelected(null);
           }}
           images={images}

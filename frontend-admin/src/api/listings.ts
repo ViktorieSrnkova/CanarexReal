@@ -18,12 +18,8 @@ export type GetListingFilterOptionsResponse = {
   pictograms: ListingFilterOption[];
 };
 
-export const postListing = async (formData: FormData) => {
-  const { data } = await api.post("/listings/", formData, {
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-  });
+export const postListing = async (payload: CreateAdPayload) => {
+  const { data } = await api.post("/listings/", payload);
   return data;
 };
 
@@ -108,7 +104,7 @@ export const getGalery = async (id: number): Promise<Gallery[]> => {
   return data;
 };
 
-export const saveGallery = async (payload: GallerySavePayload) => {
+/* export const saveGallery = async (payload: GallerySavePayload) => {
   const formData = new FormData();
 
   formData.append("listingId", String(payload.listingId));
@@ -133,6 +129,11 @@ export const saveGallery = async (payload: GallerySavePayload) => {
   });
 
   return api.put("/listings/gallery/save", formData, {});
+}; */
+export const saveGallery = async (payload: GallerySavePayload) => {
+  const { data } = await api.put("/listings/gallery/save", payload);
+
+  return data;
 };
 
 export const checkListingIndex = async (index: number, excludeId?: number) => {

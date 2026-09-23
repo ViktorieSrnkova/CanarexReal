@@ -22,6 +22,7 @@ export function listingThumbnailSelect(langId: number = 2, userId?: number) {
       select: {
         id: true,
         poradi: true,
+        mime_typ: true,
         obrazky_preklady: {
           where: { jazyky_id: langId },
           take: 1,
@@ -127,15 +128,11 @@ export function listingDetailSelect(langId: number = 2, userId?: number) {
     },
 
     obrazky: {
-      where: {
-        poradi: {
-          not: 0,
-        },
-      },
       orderBy: { poradi: "asc" as const },
       select: {
         id: true,
         poradi: true,
+        mime_typ: true,
         obrazky_preklady: {
           where: { jazyky_id: langId },
           select: { alt_text: true },
@@ -229,17 +226,13 @@ export function listingPrintSelect() {
     },
 
     obrazky: {
-      where: {
-        poradi: {
-          not: 0,
-        },
-      },
       orderBy: {
         poradi: "asc" as const,
       },
       select: {
         id: true,
         poradi: true,
+        mime_typ: true,
       },
     },
   };

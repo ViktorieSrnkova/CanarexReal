@@ -96,7 +96,8 @@ export type CreateAdPayload = {
     >
   >;
 
-  images?: {
+  media: {
+    id: number;
     order: number;
   }[];
 

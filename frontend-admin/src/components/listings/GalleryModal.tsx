@@ -11,51 +11,21 @@ import type { DragEndEvent } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
 import type { Gallery } from "../../types/api";
 import { saveGallery } from "../../api/listings";
-const LANGS = [
-  { id: 2, label: "CZ" },
-  { id: 1, label: "EN" },
-  { id: 3, label: "SK" },
-];
-type newImage = {
-  tempId: string;
-  file: File;
-  order: number;
-  alts: { lang: number; text: string }[];
-};
-type existingImage = {
-  id: number;
-  order: number;
-  alts: { lang: number; text: string }[];
-};
-
-export type GallerySavePayload = {
-  listingId: number;
-  existingImages: existingImage[];
-  newImages: newImage[];
-  removedImageIds: number[];
-};
-type LocalImage =
-  | {
-      kind: "existing";
-      id: number;
-      url: string;
-      order: number;
-      alts: { lang: number; text: string }[];
-    }
-  | {
-      kind: "new";
-      tempId: string;
-      file: File;
-      url: string;
-      order: number;
-      alts: { lang: number; text: string }[];
-    };
+import { uploadMedia } from "../../services/mediaService";
+import { PlayCircleFilled } from "@ant-design/icons";
+import "../../styles/gallery.css";
+import {
+  LANGS,
+  type GallerySavePayload,
+  type LocalImage,
+} from "../../types/gallery";
 
 type Props = {
   listingId: number;
   open: boolean;
   onClose: () => void;
   images: Gallery[];
+  listingIndex: number;
 };
 
 export default function ListingGalleryModal({
@@ -63,6 +33,7 @@ export default function ListingGalleryModal({
   onClose,
   images,
   listingId,
+  listingIndex,
 }: Props) {
   const [localImages, setLocalImages] = useState<LocalImage[]>([]);
   const [selectedUid, setSelectedUid] = useState<string | null>(null);
@@ -70,6 +41,7 @@ export default function ListingGalleryModal({
   const [removedImageIds, setRemovedImageIds] = useState<number[]>([]);
   const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
+
   const getAlt = (img: LocalImage, langId: number) =>
     img.alts.find((a) => Number(a.lang) === Number(langId))?.text ?? "";
   useEffect(() => {
@@ -81,6 +53,7 @@ export default function ListingGalleryModal({
         id: img.id,
         url: img.url,
         order: img.order ?? index,
+        mimeType: img.mimeType,
         alts: img.alts.map((a) => ({
           lang: Number(a.lang),
           text: a.text ?? "",
@@ -129,7 +102,9 @@ export default function ListingGalleryModal({
 
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
-    if (!files) return;
+    if (!files || files.length === 0) {
+      return;
+    }
 
     setUploading(true);
 
@@ -138,25 +113,34 @@ export default function ListingGalleryModal({
     }, 10000);
 
     try {
-      const newImages: LocalImage[] = Array.from(files).map((file) => ({
-        kind: "new",
-        tempId: crypto.randomUUID(),
-        file,
-        url: URL.createObjectURL(file),
-        order: 0,
-        alts: [],
-      }));
+      const uploadedImages: LocalImage[] = [];
 
-      await new Promise((res) => setTimeout(res, 600));
+      for (const file of Array.from(files)) {
+        const uploaded = await uploadMedia(file, "properties", listingIndex);
+
+        uploadedImages.push({
+          kind: "new",
+          tempId: crypto.randomUUID(),
+          id: uploaded.id,
+          file,
+          url: URL.createObjectURL(file),
+          order: 0,
+          mimeType: uploaded.mimeType,
+          alts: [],
+        });
+      }
 
       setLocalImages((prev) => {
-        const merged = [...prev, ...newImages];
+        const merged = [...prev, ...uploadedImages];
 
-        return merged.map((img, i) => ({
+        return merged.map((img, index) => ({
           ...img,
-          order: i,
+          order: index,
         }));
       });
+    } catch (error) {
+      console.error("R2 upload failed:", error);
+      message.error("Nepodařilo se nahrát obrázek");
     } finally {
       clearTimeout(timeout);
       setUploading(false);
@@ -186,6 +170,7 @@ export default function ListingGalleryModal({
     try {
       const payload: GallerySavePayload = {
         listingId,
+
         existingImages: localImages
           .filter(
             (i): i is Extract<LocalImage, { kind: "existing" }> =>
@@ -196,16 +181,23 @@ export default function ListingGalleryModal({
             order: i.order,
             alts: i.alts,
           })),
+
         newImages: localImages
           .filter(
             (i): i is Extract<LocalImage, { kind: "new" }> => i.kind === "new",
           )
-          .map((i) => ({
-            tempId: i.tempId,
-            file: i.file,
-            order: i.order,
-            alts: i.alts,
-          })),
+          .map((i) => {
+            if (i.id === undefined) {
+              throw new Error("New image has no media id");
+            }
+
+            return {
+              id: i.id,
+              order: i.order,
+              alts: i.alts,
+            };
+          }),
+
         removedImageIds,
       };
 
@@ -235,13 +227,13 @@ export default function ListingGalleryModal({
         loading={uploading}
         disabled={uploading}
       >
-        Přidat obrázek
+        Přidat obrázek / video
       </Button>
       <input
         ref={fileInputRef}
         type="file"
         multiple
-        accept="image/*"
+        accept="image/*,video/*"
         style={{ display: "none" }}
         onChange={handleUpload}
       />
@@ -257,18 +249,16 @@ export default function ListingGalleryModal({
               gap: "12px",
             }}
           >
-            {localImages
-              .filter((img) => img.order !== 0)
-              .map((img, index) => (
-                <SortableImage
-                  key={getKey(img)}
-                  image={img}
-                  isMain={index === 0}
-                  selected={selectedUid === getKey(img)}
-                  onDelete={() => removeImage(getKey(img))}
-                  onClick={() => setSelectedUid(getKey(img))}
-                />
-              ))}
+            {localImages.map((img, index) => (
+              <SortableImage
+                key={getKey(img)}
+                image={img}
+                isMain={index === 0}
+                selected={selectedUid === getKey(img)}
+                onDelete={() => removeImage(getKey(img))}
+                onClick={() => setSelectedUid(getKey(img))}
+              />
+            ))}
           </div>
         </SortableContext>
       </DndContext>
@@ -351,20 +341,63 @@ function SortableImage({
           Hlavní
         </div>
       )}
-      <img
-        src={
-          image.url.startsWith("blob:")
-            ? image.url
-            : ` ${VITE_API_URL}${image.url}`
-        }
-        onClick={onClick}
-        style={{
-          width: "100%",
-          height: "100%",
-          objectFit: "cover",
-          cursor: "default",
-        }}
-      />
+      {image.mimeType.startsWith("video/") ? (
+        <>
+          <video
+            src={
+              image.url.startsWith("blob:")
+                ? image.url
+                : `${VITE_API_URL}${image.url}`
+            }
+            muted
+            playsInline
+            preload="metadata"
+            onClick={onClick}
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              display: "block",
+              cursor: "default",
+            }}
+          />
+
+          <div
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              width: 42,
+              height: 42,
+              borderRadius: "50%",
+
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              pointerEvents: "none",
+            }}
+          >
+            <PlayCircleFilled className="play-btn" />
+          </div>
+        </>
+      ) : (
+        <img
+          src={
+            image.url.startsWith("blob:")
+              ? image.url
+              : `${VITE_API_URL}${image.url}`
+          }
+          onClick={onClick}
+          style={{
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            display: "block",
+            cursor: "default",
+          }}
+        />
+      )}
       {isMain && (
         <div
           style={{

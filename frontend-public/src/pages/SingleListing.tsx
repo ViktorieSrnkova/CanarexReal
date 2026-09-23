@@ -32,7 +32,6 @@ import { useFx } from "../FxContext";
 import Tooltip from "../components/General/Tooltip";
 import ListingGallery from "../components/Listing/Gallery";
 const Map = lazy(() => import("../components/General/Map"));
-import EditorRendererWrapper from "../components/Editor/EditorRendererWrapper";
 import { ExpandableDescription } from "../components/Listing/ExpandableDescription";
 import SEO from "../components/SEO/Meta";
 import StructuredData from "../components/SEO/StructuredData";
@@ -43,6 +42,8 @@ import { useAuth } from "../Auth/authStore";
 import toast from "react-hot-toast";
 import Reviews from "../components/Reviews/Reviews";
 import useImagePreloader from "../hooks/useImagePreloader";
+import { getContentText } from "../utils/getContextText";
+import ContentRenderer from "../components/Editor/ContentRenderer";
 
 function SingleListing() {
   const t = useT();
@@ -274,12 +275,12 @@ function SingleListing() {
   const detContent = detail?.inzeraty_preklady?.[0]?.detaily;
   const content = detail?.inzeraty_preklady?.[0]?.popis;
   if (!content) return;
-
+  const seoDescription = getContentText(content).slice(0, 150);
   return (
     <>
       <SEO
         title={`${listing.inzeraty_preklady[0]?.titulek} | Reality`}
-        description={content.slice(0, 150)}
+        description={seoDescription}
       />
       <StructuredData
         name={listing.inzeraty_preklady[0]?.titulek}
@@ -380,7 +381,15 @@ function SingleListing() {
           </div>
         </div>
       </div>
-      <ListingGallery imagesProp={detail?.obrazky ?? []} />
+      <ListingGallery
+        imagesProp={
+          detail?.obrazky?.map((img) => ({
+            id: img.id,
+            mimeType: img.mime_typ,
+            alt: img.obrazky_preklady[0]?.alt_text ?? "",
+          })) ?? []
+        }
+      />
       <div className="pictograms gray ">
         <Pictograms
           pictograms={detail?.inzeraty_piktogramy ?? []}
@@ -405,7 +414,7 @@ function SingleListing() {
       <div className="lower-section">
         <div className="details-wrapper">
           <h3>{t("listing.detail")}</h3>
-          <EditorRendererWrapper data={detContent} />
+          <ContentRenderer data={detContent} />
         </div>
         <div className="map-wrapper" id="listing-map">
           <h3>{t("listing.location")}</h3>

@@ -1,11 +1,12 @@
 import React from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import type { ImageItem } from "../../types/listing_form";
+import type { MediaItem } from "../../types/media";
+import { PlayCircleFilled } from "@ant-design/icons";
 
 type Props = {
   id: string;
-  image: ImageItem;
+  image: MediaItem;
   isMain: boolean;
   onDelete?: () => void;
 };
@@ -13,6 +14,7 @@ type Props = {
 const SortableImage: React.FC<Props> = ({ id, image, isMain, onDelete }) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id });
+
   return (
     <div
       ref={setNodeRef}
@@ -44,16 +46,54 @@ const SortableImage: React.FC<Props> = ({ id, image, isMain, onDelete }) => {
           Hlavní
         </div>
       )}
-      <img
-        src={image.url}
-        style={{
-          width: "100%",
-          height: "100%",
-          objectFit: "cover",
-          display: "block",
-          cursor: "default",
-        }}
-      />
+
+      {image.mimeType.startsWith("video/") ? (
+        <>
+          <video
+            src={image.url}
+            muted
+            playsInline
+            preload="metadata"
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              display: "block",
+              cursor: "default",
+            }}
+          />
+
+          <div
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              width: 42,
+              height: 42,
+              borderRadius: "50%",
+
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              pointerEvents: "none",
+            }}
+          >
+            <PlayCircleFilled className="play-btn" />
+          </div>
+        </>
+      ) : (
+        <img
+          src={image.url}
+          style={{
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            display: "block",
+            cursor: "default",
+          }}
+        />
+      )}
       <div
         {...listeners}
         {...attributes}
