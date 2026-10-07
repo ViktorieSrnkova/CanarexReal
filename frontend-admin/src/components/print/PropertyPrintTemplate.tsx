@@ -47,9 +47,9 @@ import type { ListingDetail } from "../../types/listings";
 import "./printPreview.css";
 import PrintPictograms from "./PrintPictograms";
 import PrintMap from "./PrintMap";
-import EditorRendererWrapper from "./EditorRendererWrapper";
 import { languageIds } from "../../types/print";
 import { formatMoneyEUR } from "../../utils/formatting";
+import ContentRenderer from "./ContentRenderer";
 
 type Language = "cs" | "sk" | "en";
 
@@ -170,7 +170,7 @@ const PropertyPrintTemplate = ({
         <section className="print-page">
           <div>
             <div className="top-section">
-              <EditorRendererWrapper
+              <ContentRenderer
                 data={
                   listing.inzeraty_preklady.find(
                     (t) => t.jazyky_id === languageIds[language],
@@ -178,7 +178,7 @@ const PropertyPrintTemplate = ({
                 }
               />
               <div className="last-row">
-                <EditorRendererWrapper
+                <ContentRenderer
                   data={
                     listing.inzeraty_preklady.find(
                       (t) => t.jazyky_id === languageIds[language],
@@ -218,10 +218,12 @@ const PropertyPrintTemplate = ({
                 key={image.id}
                 className={`print-image ${index >= 0 ? "print-image-gap" : ""}`}
               >
-                <img
-                  src={`${import.meta.env.VITE_API_URL}/api/files/images/${image.id}`}
-                  alt="Property"
-                />
+                {!image.mime_typ?.startsWith("video/") && (
+                  <img
+                    src={`${import.meta.env.VITE_API_URL}/api/files/images/${image.id}`}
+                    alt="Property"
+                  />
+                )}
               </div>
             ))}
           </div>

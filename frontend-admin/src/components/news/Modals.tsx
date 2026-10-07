@@ -1,7 +1,5 @@
-import { Modal, Input, Button } from "antd";
-import EditorMinimal from "../editor/RichMediaEditor";
+import { Modal, Input } from "antd";
 import type { useNewsForm } from "../../hooks/useNewsForm";
-import { fullEditorTools } from "../../config/editor-tools";
 
 type NewsFormHook = ReturnType<typeof useNewsForm>;
 
@@ -9,17 +7,13 @@ const Modals = (formHook: NewsFormHook) => {
   const {
     titleModal,
     altModal,
-    editorModal,
     activeLang,
     titleInput,
     altInput,
-    editorRef,
     setTitleInput,
     setAltInput,
     saveTitle,
     saveAltText,
-    saveEditorText,
-    setEditorReady,
   } = formHook;
   return (
     <>
@@ -48,25 +42,6 @@ const Modals = (formHook: NewsFormHook) => {
           onChange={(e) => setAltInput(e.target.value)}
           placeholder="Zadejte ALT text"
           style={{ fontSize: "16px" }}
-        />
-      </Modal>
-
-      <Modal
-        width={900}
-        title={`Text (${activeLang?.toUpperCase()})`}
-        open={editorModal}
-        onCancel={formHook.closeEditorModal}
-        footer={[
-          <Button key="save" type="primary" onClick={saveEditorText}>
-            Uložit text
-          </Button>,
-        ]}
-      >
-        <EditorMinimal
-          id="full-editor"
-          tools={fullEditorTools}
-          ref={editorRef}
-          onReady={() => setEditorReady(true)}
         />
       </Modal>
     </>

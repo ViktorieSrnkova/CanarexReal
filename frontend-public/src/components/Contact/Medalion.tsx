@@ -41,7 +41,7 @@ function Medalion(props: Props) {
               {props.flagPath && props.flagAlts && (
                 <img src={props.flagPath[0]} alt={props.flagAlts[0]} />
               )}
-              <img src={Phone} alt="phone icon" />
+              <img src={Phone} alt="phone icon" height="20" />
               {props.phoneMain}
             </div>
           )}
@@ -51,7 +51,7 @@ function Medalion(props: Props) {
               {props.flagPath && props.flagAlts && (
                 <img src={props.flagPath[1]} alt={props.flagAlts[1]} />
               )}
-              <img src={Phone} alt="phone icon" />
+              <img src={Phone} alt="phone icon" height="20" />
               {props.phoneSecondary}
             </div>
           )}
@@ -59,7 +59,7 @@ function Medalion(props: Props) {
         {props.email && (
           <div className="medalion-second-row">
             <a className="mail marginless" href={`mailto:${props.email}`}>
-              <img src={Mail} alt="mail icon" />
+              <img src={Mail} alt="mail icon" height="16" />
               {props.email}
             </a>
           </div>

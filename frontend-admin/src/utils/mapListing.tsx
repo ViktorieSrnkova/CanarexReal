@@ -47,6 +47,7 @@ export function mapListing(raw: RawListing): ListingRow {
           id: img.id,
           url: img.url,
           order: img.poradi ?? 0,
+          mimeType: img.mime_typ,
           hasAlt: {
             cs: imgLangSet.has(2),
             en: imgLangSet.has(1),

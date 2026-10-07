@@ -70,7 +70,7 @@ export const FEATURES = [
 
 export type FeatureKey = (typeof FEATURES)[number];
 
-export type CreateAdPayload = {
+export type EditAdPayload = {
   index: number;
   price: number;
   bedrooms: number;
@@ -96,11 +96,6 @@ export type CreateAdPayload = {
     >
   >;
 
-  media: {
-    id: number;
-    order: number;
-  }[];
-
   address: {
     value: number;
     label: string;
@@ -108,6 +103,14 @@ export type CreateAdPayload = {
     lon?: string;
   } | null;
 };
+
+export interface CreateAdPayload extends EditAdPayload {
+  media: {
+    id: number;
+    order: number;
+    mimeType: string;
+  }[];
+}
 export const PROPERTY_TYPE_MAP: Record<number, PropertyType> = {
   1: "apartman",
   2: "dum",
@@ -125,3 +128,17 @@ export type EditorContentState = Record<
     details?: JSONContent;
   }
 >;
+export const emptyEditorContentListing: EditorContentState = {
+  cs: {
+    description: { type: "doc", content: [] },
+    details: { type: "doc", content: [] },
+  },
+  en: {
+    description: { type: "doc", content: [] },
+    details: { type: "doc", content: [] },
+  },
+  sk: {
+    description: { type: "doc", content: [] },
+    details: { type: "doc", content: [] },
+  },
+};

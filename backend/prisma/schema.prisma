@@ -36,7 +36,7 @@ model aktuality {
 model aktuality_preklady {
   id           Int       @id(map: "aktuality_preklady_pk") @default(autoincrement())
   titulek      String
-  text         String
+  text         Json?     @db.Json
   jazyky_id    Int
   aktuality_id Int
   aktuality    aktuality @relation(fields: [aktuality_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "aktuality_preklady_aktuality")

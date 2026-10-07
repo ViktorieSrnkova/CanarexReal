@@ -1,11 +1,31 @@
-import React, { useEffect, useRef } from "react";
-import { Form, Button, Radio, Typography, Upload, Row, Col } from "antd";
-import type { Lang, NewsAdminItem } from "../../types/news";
+import React, { useEffect, useRef, useState } from "react";
+import {
+  Form,
+  Button,
+  Radio,
+  Typography,
+  Upload,
+  Tabs,
+  Input,
+  message,
+} from "antd";
+import {
+  emptyEditorContent,
+  emptyNewsFormValues,
+  type Lang,
+  type NewsAdminItem,
+  type NewsEditorContent,
+  type NewsFormValues,
+} from "../../types/news";
 import { useNewsForm } from "../../hooks/useNewsForm";
-import Modals from "../../components/news/Modals";
-import LangButtonGroup from "../../components/news/Buttons";
-import NewsPreview from "../../components/news/Preview";
-import { mapNewsToTranslations } from "../../utils/newsMapper";
+import RichTextEditor from "../../components/editor/RichTextEditor";
+import {
+  mapNewsToEditorContent,
+  mapNewsToFormValues,
+} from "../../utils/newsMapper";
+import type { Language } from "../../types/general";
+import { postNews, putAdminNews } from "../../api/news";
+import "../../styles/form.css";
 
 const { Title } = Typography;
 const languages: Lang[] = ["cs", "en", "sk"];
@@ -16,75 +36,111 @@ type Props = {
 };
 
 const NewsCreatePage: React.FC<Props> = ({ initialData, onSuccess }) => {
-  const [form] = Form.useForm();
-  const formHook = useNewsForm(initialData?.id, onSuccess);
+  const [form] = Form.useForm<NewsFormValues>();
+  const formHook = useNewsForm();
   const initializedRef = useRef(false);
+  const [activeTab, setActiveTab] = useState<Language>("cs");
+  const [editorContent, setEditorContent] =
+    useState<NewsEditorContent>(emptyEditorContent);
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
-    if (!initialData) return;
-    if (initializedRef.current) return;
+    if (!initialData || initializedRef.current) return;
 
     initializedRef.current = true;
 
-    const translations = mapNewsToTranslations(initialData);
+    const formValues = mapNewsToFormValues(initialData);
+    const editorValues = mapNewsToEditorContent(initialData);
+    console.log("FORM VALUES", formValues);
+    form.setFieldsValue(formValues);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setEditorContent(editorValues);
+    console.log("EDITOR VALUES", editorValues);
 
     const image = initialData.obrazky?.find((img) => img.poradi === 0);
-    const API_URL = import.meta.env.VITE_API_URL;
+    if (image) {
+      formHook.setData((prev) => ({
+        ...prev,
+        existingImageId: image.id,
+        existingImageUrl: `${import.meta.env.VITE_API_URL}/api/files/images/${image.id}`,
+      }));
+    }
+  }, [initialData, form, formHook]);
 
-    formHook.setData((prev) => ({
-      ...prev,
-      translations,
-      visible: initialData.viditelnost,
-      existingImageId: image?.id,
-      existingImageUrl: image
-        ? `${API_URL}/api/files/images/${image.id}`
-        : undefined,
-    }));
-    form.setFieldsValue({
-      visible: initialData.viditelnost,
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initialData]);
+  const handleSubmit = async (values: NewsFormValues) => {
+    setLoading(true);
+    const payload = formHook.createPayload(values, editorContent);
+    console.log("=== NEWS PAYLOAD ===");
+    console.log(JSON.stringify(payload, null, 2));
+    try {
+      if (initialData) {
+        await putAdminNews(initialData.id, payload);
+        message.success("Zajímavost upravena");
+      } else {
+        await postNews(payload);
+        message.success("Zajímavost vytvořena");
+      }
+      form.resetFields();
+      setEditorContent(emptyEditorContent);
+      formHook.resetImage();
+      setActiveTab("cs");
 
+      onSuccess?.();
+    } catch (error: unknown) {
+      if (error instanceof Error) message.error(error.message);
+      else message.error("Chyba při ukládání aktuality");
+      setLoading(false);
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <div>
-      <Title level={2}>Vytvořit zajímavost</Title>
+      <Title level={2}>
+        {initialData ? "Upravit zajímavost" : "Vytvořit zajímavost"}
+      </Title>
 
       <Form
         form={form}
         layout="vertical"
-        onFinish={(values) => formHook.submitNews(values, form.resetFields)}
-        style={{ maxWidth: 900 }}
+        initialValues={emptyNewsFormValues}
+        onFinish={handleSubmit}
       >
-        <Row gutter={16} wrap>
-          <Col xs={24} lg={17}>
-            <Form.Item label="Titulky">
-              <LangButtonGroup
-                languages={languages}
-                getValue={(lang) => formHook.data.translations[lang]?.title}
-                label="Titulek"
-                onClick={(lang) => formHook.openModal("title", lang)}
-              />
-            </Form.Item>
-          </Col>
-
-          <Col xs={24} lg={7}>
-            <Form.Item
-              label="Viditelnost"
-              name="visible"
-              rules={[{ required: true, message: "Vyberte viditelnost" }]}
-            >
-              <Radio.Group>
-                <Radio value={true}>Viditelné</Radio>
-                <Radio value={false}>Neviditelné</Radio>
-              </Radio.Group>
-            </Form.Item>
-          </Col>
-        </Row>
-
-        <Row gutter={16} wrap>
-          <Col xs={24} lg={5}>
-            <Form.Item label="Hlavní obrázek">
+        <div
+          className="row-form"
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            gap: 16,
+            flexWrap: "wrap",
+            height: 100,
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <Form.Item
+            label="Viditelnost"
+            name="visible"
+            rules={[{ required: true, message: "Vyberte viditelnost" }]}
+          >
+            <Radio.Group>
+              <Radio value={true}>Viditelné</Radio>
+              <Radio value={false}>Neviditelné</Radio>
+            </Radio.Group>
+          </Form.Item>
+          <div
+            className="image-upload-preview"
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              columnGap: 16,
+              flexWrap: "wrap",
+              alignItems: "center",
+              height: 100,
+            }}
+          >
+            <Form.Item required label="Hlavní obrázek">
               <Upload
+                accept="image/*"
                 beforeUpload={formHook.handleImageUpload}
                 maxCount={1}
                 showUploadList={false}
@@ -96,56 +152,95 @@ const NewsCreatePage: React.FC<Props> = ({ initialData, onSuccess }) => {
               >
                 <Button
                   onClick={formHook.handleImageClick}
-                  loading={formHook.pickingImage || formHook.uploading}
+                  loading={formHook.data.uploading}
                 >
-                  {formHook.pickingImage || formHook.uploading
-                    ? "Nahrávání..."
-                    : "Nahrát obrázek"}
+                  {formHook.data.uploading ? "Nahrávání..." : "Nahrát obrázek"}
                 </Button>
               </Upload>
             </Form.Item>
-          </Col>
 
-          <Col xs={24} lg={12}>
-            <Form.Item label="Alt texty obrázku">
-              <LangButtonGroup
-                languages={languages}
-                getValue={(lang) => formHook.data.translations[lang]?.alt}
-                label="ALT"
-                onClick={(lang) => formHook.openModal("alt", lang)}
-              />
-            </Form.Item>
-          </Col>
-
-          <Col xs={24} lg={12}>
-            <Form.Item label="Text zajímavosti">
-              <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>
-                <LangButtonGroup
-                  languages={languages}
-                  getValue={(lang) => formHook.data.translations[lang]?.text}
-                  label="Text"
-                  onClick={(lang) => formHook.openModal("editor", lang)}
+            {formHook.data.imagePreview || formHook.data.existingImageUrl ? (
+              <div style={{ marginTop: 0 }}>
+                <img
+                  src={
+                    formHook.data.imagePreview ?? formHook.data.existingImageUrl
+                  }
+                  alt="Náhled hlavního obrázku"
+                  style={{
+                    display: "block",
+                    width: "100%",
+                    height: "auto",
+                    maxWidth: 400,
+                    maxHeight: 100,
+                    objectFit: "contain",
+                    borderRadius: 8,
+                  }}
                 />
               </div>
-            </Form.Item>
-          </Col>
-        </Row>
+            ) : (
+              <div className="image-space"></div>
+            )}
+          </div>
+        </div>
+        <Form.Item label="Texty zajímavosti" required>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>
+            <Tabs
+              activeKey={activeTab}
+              onChange={(key) => setActiveTab(key as Language)}
+              type="card"
+              destroyOnHidden={false}
+              tabBarStyle={{
+                borderBottom: "1px solid #1890ff",
+              }}
+              style={{
+                backgroundColor: "#c7f1f765",
+                padding: 20,
+                borderRadius: 8,
+              }}
+              items={languages.map((lang) => ({
+                key: lang,
+                label: lang.toUpperCase(),
+                children: (
+                  <>
+                    <Form.Item
+                      name={["translations", lang, "title"]}
+                      label="Název zajímavosti"
+                    >
+                      <Input style={{ fontSize: "16px" }} />
+                    </Form.Item>
 
-        <NewsPreview languages={languages} data={formHook.data} />
+                    <Form.Item
+                      name={["translations", lang, "alt"]}
+                      label="Alt text obrázku"
+                    >
+                      <Input style={{ fontSize: "16px" }} />
+                    </Form.Item>
+
+                    <Form.Item label="Popis">
+                      <RichTextEditor
+                        version="full"
+                        content={editorContent[lang]}
+                        onChange={(content) => {
+                          setEditorContent((prev) => ({
+                            ...prev,
+                            [lang]: content,
+                          }));
+                        }}
+                      />
+                    </Form.Item>
+                  </>
+                ),
+              }))}
+            />
+          </div>
+        </Form.Item>
 
         <Form.Item style={{ marginTop: 24 }}>
-          <Button
-            type="primary"
-            htmlType="submit"
-            loading={formHook.loading}
-            block
-          >
+          <Button type="primary" htmlType="submit" loading={loading} block>
             Uložit zajímavost
           </Button>
         </Form.Item>
       </Form>
-
-      <Modals {...formHook} />
     </div>
   );
 };

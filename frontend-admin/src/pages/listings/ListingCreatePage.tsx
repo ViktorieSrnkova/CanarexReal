@@ -11,6 +11,7 @@ import {
   Upload,
 } from "antd";
 import {
+  emptyEditorContentListing,
   FEATURES,
   OBLASTI,
   PROPERTY_TYPE_OPTIONS,
@@ -35,12 +36,13 @@ import { useListingSubmit } from "../../hooks/useListingForm";
 import { useEffect, useRef, useState } from "react";
 import {
   checkListingIndex,
-  /* editListingTexts, */
+  editListingTexts,
   postListing,
 } from "../../api/listings";
 import { useEditedListing } from "../../hooks/useEditListing";
 import RichTextEditor from "../../components/editor/RichTextEditor";
 import { uploadMedia } from "../../services/mediaService";
+import { normalizeImageOrder } from "../../utils/normalizeImageOrder";
 
 type Props = {
   initialData?: CreateAdFormValues;
@@ -54,11 +56,9 @@ const ListingCreatePage: React.FC<Props> = ({
   onClose,
 }) => {
   const [fileList, setFileList] = useState<UploadFile[]>([]);
-  const [editorContent, setEditorContent] = useState<EditorContentState>({
-    cs: {},
-    en: {},
-    sk: {},
-  });
+  const [editorContent, setEditorContent] = useState<EditorContentState>(
+    emptyEditorContentListing,
+  );
   const languages: Language[] = ["cs", "en", "sk"];
   const isEditMode = !!initialData;
   const hasInitialData = typeof initialData?.id === "number";
@@ -120,7 +120,7 @@ const ListingCreatePage: React.FC<Props> = ({
         const payload = await buildEditPayload(mergedValues);
 
         console.log("EDIT PAYLOAD:", payload);
-        //await editListingTexts(id, payload);
+        await editListingTexts(id, payload);
 
         message.success("Inzerát upraven");
         onSuccess?.();
@@ -144,20 +144,7 @@ const ListingCreatePage: React.FC<Props> = ({
         form.resetFields();
         setImages([]);
         setFileList([]);
-        setEditorContent({
-          cs: {
-            description: { type: "doc", content: [] },
-            details: { type: "doc", content: [] },
-          },
-          en: {
-            description: { type: "doc", content: [] },
-            details: { type: "doc", content: [] },
-          },
-          sk: {
-            description: { type: "doc", content: [] },
-            details: { type: "doc", content: [] },
-          },
-        });
+        setEditorContent(emptyEditorContentListing);
       }
     } catch {
       message.error("Chyba při vytváření inzerátu");
@@ -483,7 +470,8 @@ const ListingCreatePage: React.FC<Props> = ({
                   }}
                 >
                   Pořadí obrázků lze upravit jejich uchopením jejich tmavého
-                  čtverečku v levém horním rohu a přetažením myši
+                  čtverečku v levém horním rohu a přetažením myši. Video nelze
+                  dát na první místo!
                 </Typography.Text>
               </Tooltip>
             )}
@@ -500,7 +488,13 @@ const ListingCreatePage: React.FC<Props> = ({
                     );
                     const newIndex = items.findIndex((i) => i.uid === over.id);
 
-                    return arrayMove(items, oldIndex, newIndex);
+                    if (oldIndex === -1 || newIndex === -1) {
+                      return items;
+                    }
+
+                    return normalizeImageOrder(
+                      arrayMove(items, oldIndex, newIndex),
+                    );
                   });
                 }}
               >

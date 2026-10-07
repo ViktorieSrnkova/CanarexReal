@@ -30,6 +30,7 @@ export type ListingImage = {
   url: string;
   order: number;
   hasAlt: ListingLanguageMap;
+  mimeType: string;
 };
 
 export type ListingRow = {
@@ -123,6 +124,7 @@ export type ListingDetail = {
   obrazky: {
     id: number;
     poradi: number;
+    mime_typ: string;
   }[];
 
   inzeraty_piktogramy: {

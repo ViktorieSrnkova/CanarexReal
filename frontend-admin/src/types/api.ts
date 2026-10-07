@@ -44,6 +44,7 @@ export type RawListing = {
     id: number;
     url: string;
     poradi: number | null;
+    mime_typ: string;
     obrazky_preklady?: {
       jazyky_id: number;
     }[];
@@ -103,6 +104,7 @@ export type RawListingDetail = {
     id: number;
     url: string;
     poradi: number;
+    mime_typ: string;
     obrazky_preklady: {
       jazyky_id: number;
       alt_text: string | null;

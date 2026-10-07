@@ -10,6 +10,13 @@
   padding: 16px;
   border-radius: 8px;
 }
+.image-space {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 400px;
+  max-height: 100px;
+}
 
 @media (max-width: 700px) {
   .marginless-mobile {

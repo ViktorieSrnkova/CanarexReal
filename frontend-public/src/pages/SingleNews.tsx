@@ -5,8 +5,8 @@ import { LANGUAGE_TO_ID } from "../types/general";
 import { getNewsDetail } from "../api/news";
 import { useParams } from "react-router-dom";
 import type { NewsDetail } from "../types/rawApi";
-import NewsEditorWrapper from "../components/Editor/NewsEditorWrapper";
 import "../styles/pages/single-news.css";
+import ContentRenderer from "../components/Editor/ContentRenderer";
 
 function SingleNews() {
   const [news, setNews] = useState<NewsDetail | null>(null);
@@ -49,7 +49,7 @@ function SingleNews() {
         />
       </div>
       <div className="news-text">
-        {news?.text && <NewsEditorWrapper data={news.text} />}
+        {news?.text && <ContentRenderer data={news.text} />}
       </div>
     </div>
   );

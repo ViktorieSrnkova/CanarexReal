@@ -14,7 +14,7 @@
   background: #87ceeb;
   /* font-size: 1.5em; */
   cursor: pointer;
-  box-shadow: 2px 2px 3px 2px #e3e3e3;
+  box-shadow: 2px 2px 3px 2px #00000020;
   letter-spacing: normal;
 }
 
@@ -34,7 +34,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: 2px 2px 3px 2px #e3e3e3;
+  box-shadow: 2px 2px 3px 2px #00000020;
+}
+.fab-item img {
+  padding: 0.15rem;
 }
 
 .fab-top {

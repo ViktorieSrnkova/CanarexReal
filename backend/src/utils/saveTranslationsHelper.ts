@@ -1,22 +1,23 @@
-import type { Prisma } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import prisma from "../lib/db.js";
+import type { NewsTranslationInput } from "./parseTranslationsHelper.js";
 
 export async function saveTranslations(params: {
   aktualitaId: number;
-  translationsObj: Record<
-    string,
-    { title?: string; text?: string; alt?: string }
-  >;
+  translationsObj: Record<string, NewsTranslationInput>;
   langIdMap: Record<string, number>;
 }) {
   for (const [langCode, t] of Object.entries(params.translationsObj)) {
-    if (!t.title && !t.text && !t.alt) continue;
     const jazyky_id = params.langIdMap[langCode];
+
     if (!jazyky_id) continue;
+
+    if (!t.title && !t.text && !t.alt) continue;
+
     await prisma.aktuality_preklady.create({
       data: {
         titulek: t.title ?? "",
-        text: t.text ?? "",
+        text: t.text ?? Prisma.JsonNull,
         jazyky_id,
         aktuality_id: params.aktualitaId,
       },

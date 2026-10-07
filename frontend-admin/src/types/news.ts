@@ -1,41 +1,32 @@
+import type { JSONContent } from "@tiptap/react";
+
 export type Lang = "cs" | "en" | "sk";
 
 export type Translation = {
-  title?: string;
-  text?: string;
-  alt?: string;
+  title: string;
+  alt: string;
 };
 
-export type AltTexts = {
-  cs?: string;
-  en?: string;
-  sk?: string;
+export type NewsFormValues = {
+  visible: boolean;
+  translations: Record<Lang, Translation>;
 };
 
 export type NewsFormState = {
-  visible?: boolean;
-  mainImage?: File;
+  mainImageId?: number;
   existingImageId?: number;
   existingImageUrl?: string;
-  translations: Record<Lang, Translation>;
   imagePreview?: string;
-};
-export type NewsFormValues = {
-  visible: boolean;
+  uploading?: boolean;
+  pickingImage?: boolean;
 };
 
-export type UploadedImage = {
-  success: number;
-  file: {
-    url: string;
-    alt?: string;
-  };
-};
+export type NewsEditorContent = Record<Lang, JSONContent | undefined>;
 
 export type NewsAdminTranslation = {
   jazyky_id: number;
   titulek: string | null;
-  text: string | null;
+  text: object | undefined;
 };
 
 export type NewsAdminImageTranslation = {
@@ -57,4 +48,35 @@ export type NewsAdminItem = {
   aktuality_preklady: NewsAdminTranslation[];
   obrazky: NewsAdminImage[];
 };
-export type Translations = Record<Lang, Translation>;
+
+export type UploadedImage = {
+  success: number;
+  file: {
+    url: string;
+    alt?: string;
+  };
+};
+
+export const emptyNewsFormValues: NewsFormValues = {
+  visible: true,
+  translations: {
+    cs: {
+      title: "",
+      alt: "",
+    },
+    en: {
+      title: "",
+      alt: "",
+    },
+    sk: {
+      title: "",
+      alt: "",
+    },
+  },
+};
+
+export const emptyEditorContent: NewsEditorContent = {
+  cs: { type: "doc", content: [] },
+  en: { type: "doc", content: [] },
+  sk: { type: "doc", content: [] },
+};

@@ -4,17 +4,13 @@ import "./TiptapRenderer.css";
 type TiptapRendererProps = {
   content: JSONContent;
 };
+const renderChildren = (node: JSONContent) =>
+  node.content?.map((child, childIndex) => renderNode(child, childIndex));
 
 const renderNode = (node: JSONContent, index: number): React.ReactNode => {
   switch (node.type) {
     case "doc":
-      return (
-        <div key={index}>
-          {node.content?.map((child, childIndex) =>
-            renderNode(child, childIndex),
-          )}
-        </div>
-      );
+      return <div key={index}>{renderChildren(node)}</div>;
 
     case "paragraph":
       return (
@@ -63,37 +59,81 @@ const renderNode = (node: JSONContent, index: number): React.ReactNode => {
     }
 
     case "bulletList":
-      return (
-        <ul key={index}>
-          {node.content?.map((child, childIndex) =>
-            renderNode(child, childIndex),
-          )}
-        </ul>
-      );
+      return <ul key={index}>{renderChildren(node)}</ul>;
 
     case "orderedList":
-      return (
-        <ol key={index}>
-          {node.content?.map((child, childIndex) =>
-            renderNode(child, childIndex),
-          )}
-        </ol>
-      );
+      return <ol key={index}>{renderChildren(node)}</ol>;
 
     case "listItem":
+      return <li key={index}>{renderChildren(node)}</li>;
+    case "taskItem":
       return (
-        <li key={index}>
-          {node.content?.map((child, childIndex) =>
-            renderNode(child, childIndex),
-          )}
+        <li
+          key={index}
+          className={`tiptap-task-item ${node.attrs?.checked ? "checked" : ""}`}
+        >
+          <input
+            type="checkbox"
+            checked={node.attrs?.checked === true}
+            readOnly
+          />
+
+          <div className="tiptap-task-content">{renderChildren(node)}</div>
         </li>
       );
+    case "blockquote":
+      return <blockquote key={index}>{renderChildren(node)}</blockquote>;
 
+    case "horizontalRule":
+      return <hr key={index} />;
+
+    case "hardBreak":
+      return <br key={index} />;
+
+    case "table":
+      return (
+        <table key={index}>
+          <tbody>{renderChildren(node)}</tbody>
+        </table>
+      );
+
+    case "tableRow":
+      return <tr key={index}>{renderChildren(node)}</tr>;
+
+    case "tableHeader":
+      return (
+        <th
+          key={index}
+          colSpan={node.attrs?.colspan ?? undefined}
+          rowSpan={node.attrs?.rowspan ?? undefined}
+        >
+          {renderChildren(node)}
+        </th>
+      );
+
+    case "tableCell":
+      return (
+        <td
+          key={index}
+          colSpan={node.attrs?.colspan ?? undefined}
+          rowSpan={node.attrs?.rowspan ?? undefined}
+        >
+          {renderChildren(node)}
+        </td>
+      );
+    case "image":
+      return (
+        <img
+          key={index}
+          src={node.attrs?.src}
+          alt={node.attrs?.alt ?? ""}
+          title={node.attrs?.title ?? undefined}
+        />
+      );
     case "text":
       return (
         <span key={index}>{renderMarks(node.text ?? "", node.marks)}</span>
       );
-
     default:
       return null;
   }
@@ -105,7 +145,7 @@ const renderMarks = (
 ): React.ReactNode => {
   let result: React.ReactNode = text;
 
-  marks?.forEach((mark) => {
+  marks?.forEach((mark, index) => {
     switch (mark.type) {
       case "bold":
         result = <strong>{result}</strong>;
@@ -130,6 +170,33 @@ const renderMarks = (
           </a>
         );
         break;
+      case "textStyle": {
+        const style: React.CSSProperties = {};
+
+        if (mark.attrs?.color) {
+          style.color = mark.attrs.color;
+        }
+
+        if (mark.attrs?.backgroundColor) {
+          style.backgroundColor = mark.attrs.backgroundColor;
+        }
+
+        if (mark.attrs?.fontSize) {
+          style.fontSize = mark.attrs.fontSize;
+        }
+
+        if (mark.attrs?.lineHeight) {
+          style.lineHeight = mark.attrs.lineHeight;
+        }
+
+        result = (
+          <span key={`text-style-${index}`} style={style}>
+            {result}
+          </span>
+        );
+
+        break;
+      }
 
       default:
         break;

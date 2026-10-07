@@ -72,6 +72,7 @@ export const useListingSubmit = (
       media: uploadedMedia.map((media, index) => ({
         id: media.id,
         order: index,
+        mimeType: media.mimeType,
       })),
 
       address: selectedAddress

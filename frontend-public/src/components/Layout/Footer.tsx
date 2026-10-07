@@ -58,22 +58,22 @@ const Footer: React.FC = () => {
             <div className="contacts">
               <div className="phone">
                 <img src="/flags/cz.svg" alt="cz flag" loading="lazy" />
-                <img src={Phone} alt="phone" height={16} loading="lazy" />
+                <img src={Phone} alt="phone" height={18} loading="lazy" />
                 <p className="number">+420 603 257 021</p>
               </div>
               <div className="phone">
                 <img src="/flags/sk.svg" alt="sk flag" loading="lazy" />
-                <img src={Phone} alt="phoneSK" height={16} loading="lazy" />
+                <img src={Phone} alt="phoneSK" height={18} loading="lazy" />
                 <p className="number">+421 919 490 980</p>
               </div>
 
               <div className="phone">
                 <img src="/flags/es.svg" alt="es flag" loading="lazy" />
-                <img src={Phone} alt="phoneES" height={16} loading="lazy" />
+                <img src={Phone} alt="phoneES" height={18} loading="lazy" />
                 <p className="number">+34 604 198 470</p>
               </div>
               <div className="mail">
-                <img src={Mail} alt="email" height={14} loading="lazy" />
+                <img src={Mail} alt="email" height="16" loading="lazy" />
                 <a href={`mailto:${t("contact.email")}`} className="number">
                   {t("contact.email")}
                 </a>

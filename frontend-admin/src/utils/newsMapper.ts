@@ -1,37 +1,65 @@
-import type { Lang, NewsAdminItem, Translation } from "../types/news";
+import type { JSONContent } from "@tiptap/react";
+import {
+  type Lang,
+  type NewsAdminItem,
+  type NewsEditorContent,
+  type NewsFormValues,
+} from "../types/news";
+
 const langMap: Record<number, Lang> = {
   1: "en",
   2: "cs",
   3: "sk",
 };
-export function mapNewsToTranslations(
-  news: NewsAdminItem,
-): Record<Lang, Translation> {
-  const result: Record<Lang, Translation> = {
-    cs: { title: "", text: "", alt: "" },
-    en: { title: "", text: "", alt: "" },
-    sk: { title: "", text: "", alt: "" },
-  };
 
+export const castTiptapContent = (
+  value: object | null | undefined,
+): JSONContent | undefined => {
+  if (!value) return undefined;
+
+  if ("type" in value && typeof value.type === "string") {
+    return value as JSONContent;
+  }
+
+  return undefined;
+};
+
+export function mapNewsToFormValues(
+  news: NewsAdminItem,
+): Pick<NewsFormValues, "visible" | "translations"> {
+  const translations: NewsFormValues["translations"] = {
+    cs: { title: "", alt: "" },
+    en: { title: "", alt: "" },
+    sk: { title: "", alt: "" },
+  };
+  news.aktuality_preklady.forEach((translation) => {
+    const lang = langMap[translation.jazyky_id];
+    if (!lang) return;
+    translations[lang].title = translation.titulek ?? "";
+  });
   const mainImage = news.obrazky.find((img) => img.poradi === 0);
 
-  // 👇 TADY je ten fix
-  const imageTranslations = mainImage?.obrazky_preklady ?? [];
-
-  imageTranslations.forEach((p) => {
-    const lang = langMap[p.jazyky_id];
+  mainImage?.obrazky_preklady?.forEach((translation) => {
+    const lang = langMap[translation.jazyky_id];
     if (!lang) return;
-
-    result[lang].alt = p.alt_text ?? "";
+    translations[lang].alt = translation.alt_text ?? "";
   });
+  return {
+    visible: news.viditelnost,
+    translations,
+  };
+}
 
-  news.aktuality_preklady.forEach((t) => {
-    const lang = langMap[t.jazyky_id];
+export function mapNewsToEditorContent(news: NewsAdminItem): NewsEditorContent {
+  const result: NewsEditorContent = {
+    cs: undefined,
+    en: undefined,
+    sk: undefined,
+  };
+  news.aktuality_preklady.forEach((translation) => {
+    const lang = langMap[translation.jazyky_id];
     if (!lang) return;
-
-    result[lang].title = t.titulek ?? "";
-    result[lang].text = t.text ?? "";
+    result[lang] = castTiptapContent(translation.text);
   });
-
   return result;
 }

@@ -109,7 +109,7 @@ router.get("/:id", async (req: PublicRequest, res) => {
           take: 1,
         },
         obrazky: {
-          where: { poradi: 1 },
+          where: { poradi: 0 },
           take: 1,
           select: {
             id: true,

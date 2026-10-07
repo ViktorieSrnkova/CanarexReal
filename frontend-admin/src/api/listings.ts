@@ -1,6 +1,6 @@
-import type { GallerySavePayload } from "../components/listings/GalleryModal";
 import type { Gallery, RawListing, RawListingDetail } from "../types/api";
-import type { CreateAdPayload } from "../types/listing_form";
+import type { GallerySavePayload } from "../types/gallery";
+import type { CreateAdPayload, EditAdPayload } from "../types/listing_form";
 import type { ListingFilterOption, ListingFilters } from "../types/listings";
 import { api } from "./client";
 
@@ -23,10 +23,7 @@ export const postListing = async (payload: CreateAdPayload) => {
   return data;
 };
 
-export const editListingTexts = async (
-  id: number,
-  payload: CreateAdPayload,
-) => {
+export const editListingTexts = async (id: number, payload: EditAdPayload) => {
   const { data } = await api.put(`/listings/${id}`, payload);
 
   return data;

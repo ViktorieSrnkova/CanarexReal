@@ -1,0 +1,40 @@
+.tiptap-renderer p {
+  margin: 0 0 1em;
+  line-height: 1.6;
+}
+
+.tiptap-renderer ul p,
+.tiptap-renderer ol {
+  margin: 0;
+  padding-left: 0;
+  line-height: 1.6;
+}
+
+.tiptap-renderer li {
+  margin-bottom: 0;
+}
+
+.tiptap-renderer a {
+  text-decoration: underline;
+}
+
+.tiptap-renderer p[style*="text-align: center"] {
+  text-align: center;
+}
+
+.tiptap-renderer p[style*="text-align: right"] {
+  text-align: right;
+}
+
+.tiptap-renderer strong {
+  font-weight: 700;
+}
+
+.tiptap-renderer em {
+  font-style: italic;
+}
+
+.tiptap-renderer sup {
+  vertical-align: super;
+  font-size: 0.75em;
+}

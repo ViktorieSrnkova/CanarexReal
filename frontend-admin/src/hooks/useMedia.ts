@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import type { CreateAdFormValues } from "../types/listing_form";
 import type { RcFile } from "antd/es/upload/interface";
 import type { MediaItem } from "../types/media";
+import { normalizeImageOrder } from "../utils/normalizeImageOrder";
 
 export function useMedia(form: FormInstance<CreateAdFormValues>) {
   const [images, setImages] = React.useState<MediaItem[]>([]);
@@ -23,7 +24,7 @@ export function useMedia(form: FormInstance<CreateAdFormValues>) {
         mimeType: file.type,
       }));
 
-      setImages(mapped);
+      setImages(normalizeImageOrder(mapped));
       setUploading(false);
     });
   };

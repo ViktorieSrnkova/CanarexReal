@@ -1,66 +1,94 @@
 import prisma from "../lib/db.js";
-import { extractImageId } from "./url.js";
+import type { NewsTranslationInput } from "./parseTranslationsHelper.js";
 
-export async function processEditorImages(params: {
-  translationsObj: Record<
-    string,
-    { title?: string; text?: string; alt?: string }
-  >;
+export async function attachEditorImages(params: {
+  mediaIds: number[];
   aktualitaId: number;
-  langIdMap: Record<string, number>;
 }) {
-  const { translationsObj, aktualitaId, langIdMap } = params;
+  if (params.mediaIds.length === 0) return;
 
-  for (const [langCode, t] of Object.entries(translationsObj) as [
-    string,
-    { text?: string; alt?: string },
-  ][]) {
-    const jazyky_id = langIdMap[langCode];
-    if (!jazyky_id || !t?.text) continue;
+  await prisma.obrazky.updateMany({
+    where: {
+      id: {
+        in: params.mediaIds,
+      },
+      docasne: true,
+    },
+    data: {
+      aktuality_id: params.aktualitaId,
+      docasne: false,
+      poradi: null,
+    },
+  });
+}
+export function parseMediaIds(value: string | undefined): number[] {
+  if (!value) return [];
 
-    let parsed;
-    try {
-      parsed = JSON.parse(t.text);
-    } catch {
-      continue;
-    }
+  const parsed: unknown = JSON.parse(value);
 
-    for (const block of parsed.blocks || []) {
-      if (block.type !== "image") continue;
-
-      const imageId =
-        block.data?.file?.id ?? extractImageId(block.data?.file?.url);
-
-      if (!imageId) continue;
-
-      const titulek = block.data?.titulek || null;
-
-      await prisma.obrazky.update({
-        where: { id: imageId },
-        data: {
-          docasne: false,
-          aktuality_id: aktualitaId,
-        },
-      });
-
-      await prisma.obrazky_preklady.upsert({
-        where: {
-          jazyky_id_obrazky_id: {
-            jazyky_id,
-            obrazky_id: imageId,
-          },
-        },
-        update: {
-          titulek,
-          alt_text: t.alt ?? null,
-        },
-        create: {
-          titulek,
-          alt_text: t.alt ?? null,
-          jazyky_id,
-          obrazky_id: imageId,
-        },
-      });
-    }
+  if (!Array.isArray(parsed)) {
+    throw new Error("Invalid editorMediaIds format");
   }
+
+  return parsed.filter(
+    (id): id is number =>
+      typeof id === "number" && Number.isInteger(id) && id > 0,
+  );
+}
+
+type JsonObject = {
+  [key: string]: unknown;
+};
+
+export function extractEditorMediaIds(value: unknown): number[] {
+  const ids = new Set<number>();
+
+  const visit = (node: unknown): void => {
+    if (Array.isArray(node)) {
+      node.forEach(visit);
+      return;
+    }
+
+    if (typeof node !== "object" || node === null) {
+      return;
+    }
+
+    const object = node as JsonObject;
+
+    if (object.type === "image") {
+      const attrs = object.attrs;
+
+      if (typeof attrs === "object" && attrs !== null) {
+        const mediaId = (attrs as JsonObject).mediaId;
+
+        if (
+          typeof mediaId === "number" &&
+          Number.isInteger(mediaId) &&
+          mediaId > 0
+        ) {
+          ids.add(mediaId);
+        }
+      }
+    }
+
+    Object.values(object).forEach(visit);
+  };
+
+  visit(value);
+
+  return [...ids];
+}
+
+export function extractAllEditorMediaIds(
+  translationsObj: Record<string, NewsTranslationInput>,
+): number[] {
+  const ids = new Set<number>();
+
+  for (const translation of Object.values(translationsObj)) {
+    const translationIds = extractEditorMediaIds(translation.text);
+
+    translationIds.forEach((id) => ids.add(id));
+  }
+
+  return [...ids];
 }

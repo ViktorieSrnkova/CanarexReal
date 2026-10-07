@@ -1,38 +1,43 @@
 import React from "react";
 import { Card } from "antd";
+import type { JSONContent } from "@tiptap/react";
 import type { Lang, NewsFormState } from "../../types/news";
 
 type Props = {
   languages: Lang[];
-  data: NewsFormState & { imagePreview?: string; mainImage?: File };
+  data: NewsFormState;
+};
+
+const getTiptapText = (node: JSONContent): string => {
+  if (node.type === "text") {
+    return node.text ?? "";
+  }
+
+  return node.content?.map((child) => getTiptapText(child)).join(" ") ?? "";
+};
+
+const getPreviewText = (
+  content: JSONContent | null | undefined,
+  maxLength = 150,
+): string => {
+  if (!content) {
+    return "Žádný obsah";
+  }
+
+  const text = getTiptapText(content).replace(/\s+/g, " ").trim();
+
+  if (!text) {
+    return "Žádný text ale je tam obrázek";
+  }
+
+  return text.length > maxLength
+    ? `${text.slice(0, maxLength).trim()}...`
+    : text;
 };
 
 const NewsPreview: React.FC<Props> = ({ languages, data }) => {
-  const getPreviewText = (jsonStr?: string, maxLength = 150) => {
-    if (!jsonStr) return "Žádný obsah";
-    try {
-      const content = JSON.parse(jsonStr);
-      type EditorJSBlock = { type: string; data: { text: string } };
-      const blocks = content.blocks as EditorJSBlock[];
-      let text = "";
-      for (const block of blocks) {
-        if (block.type === "paragraph" || block.type === "header") {
-          const clean = block.data.text
-            .replace(/&nbsp;/g, " ")
-            .replace(/<[^>]+>/g, "")
-            .trim();
-          if (clean) text += clean + " ";
-        }
-        if (text.length >= maxLength) break;
-      }
-      text = text.trim();
-      return text.length > maxLength
-        ? text.slice(0, maxLength).trim() + "..."
-        : text || "Žádný text ale je tam obrázek";
-    } catch {
-      return "Chybný obsah";
-    }
-  };
+  const imageSrc = data.imagePreview ?? data.existingImageUrl;
+
   return (
     <div
       style={{
@@ -45,34 +50,43 @@ const NewsPreview: React.FC<Props> = ({ languages, data }) => {
     >
       {languages.map((lang) => {
         const t = data.translations[lang];
-        const hasContent = Boolean(
-          t?.title?.trim() || t?.text?.trim() || t?.alt?.trim(),
-        );
-        const imageSrc = data.mainImage
-          ? data.imagePreview
-          : data.existingImageUrl;
 
-        if (!hasContent) return null;
+        const textPreview = getPreviewText(t?.text);
+
+        const hasContent = Boolean(
+          t?.title?.trim() ||
+          t?.alt?.trim() ||
+          (t?.text && getTiptapText(t.text).trim()),
+        );
+
+        if (!hasContent) {
+          return null;
+        }
 
         return (
           <div key={lang}>
-            <Card title={`${lang.toUpperCase()}`} style={{ maxWidth: "265px" }}>
-              {t?.title && (
+            <Card title={lang.toUpperCase()} style={{ maxWidth: "265px" }}>
+              {t?.title?.trim() && (
                 <p>
                   <strong>Titulek:</strong> {t.title}
                 </p>
               )}
 
-              {imageSrc && hasContent && (
+              {imageSrc && (
                 <div style={{ marginTop: 8 }}>
                   <img
-                    src={data.imagePreview ?? data.existingImageUrl}
-                    alt={t?.alt || "Hlavní obrázek"}
-                    style={{ maxWidth: "100%", maxHeight: 150 }}
+                    src={imageSrc}
+                    alt={t.alt?.trim() || "Hlavní obrázek"}
+                    style={{
+                      maxWidth: "100%",
+                      maxHeight: 150,
+                      objectFit: "cover",
+                    }}
                   />
                 </div>
               )}
-              {t?.alt && (
+
+              {t?.alt?.trim() && (
                 <p>
                   <strong>Alt:</strong> {t.alt}
                 </p>
@@ -80,7 +94,7 @@ const NewsPreview: React.FC<Props> = ({ languages, data }) => {
 
               {t?.text && (
                 <p>
-                  <strong>Text:</strong> {getPreviewText(t.text)}
+                  <strong>Text:</strong> {textPreview}
                 </p>
               )}
             </Card>

@@ -34,6 +34,14 @@ const ImageSelector = ({
   selectedImages,
   setSelectedImages,
 }: ImageSelectorProps) => {
+  const photoImages = images.filter(
+    (image) => !image.mime_typ?.startsWith("video/"),
+  );
+
+  const photoSelectedImages = selectedImages.filter(
+    (image) => !image.mime_typ?.startsWith("video/"),
+  );
+
   const {
     temporarySelection,
     modalOpen,
@@ -44,7 +52,12 @@ const ImageSelector = ({
     isSelected,
     handleConfirm,
     handleToggleImage,
-  } = useImageSelect({ images, selectedImages, setSelectedImages });
+  } = useImageSelect({
+    images: photoImages,
+    selectedImages: photoSelectedImages,
+    setSelectedImages,
+  });
+
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
@@ -64,11 +77,11 @@ const ImageSelector = ({
       return;
     }
 
-    const oldIndex = selectedImages.findIndex(
+    const oldIndex = photoSelectedImages.findIndex(
       (image) => image.id === Number(active.id),
     );
 
-    const newIndex = selectedImages.findIndex(
+    const newIndex = photoSelectedImages.findIndex(
       (image) => image.id === Number(over.id),
     );
 
@@ -76,7 +89,7 @@ const ImageSelector = ({
       return;
     }
 
-    setSelectedImages(arrayMove(selectedImages, oldIndex, newIndex));
+    setSelectedImages(arrayMove(photoSelectedImages, oldIndex, newIndex));
   };
   return (
     <div>
@@ -85,7 +98,7 @@ const ImageSelector = ({
           <Text strong>Fotografie</Text>
 
           <Text type="secondary" style={{ marginLeft: 8 }}>
-            {selectedImages.length} / {MAX_IMAGES} vybráno
+            {photoSelectedImages.length} / {MAX_IMAGES} vybráno
           </Text>
         </div>
 
@@ -94,7 +107,7 @@ const ImageSelector = ({
         </Button>
       </div>
 
-      {selectedImages.length > 0 ? (
+      {photoSelectedImages.length > 0 ? (
         <DndContext
           sensors={sensors}
           collisionDetection={closestCenter}
@@ -102,11 +115,11 @@ const ImageSelector = ({
           modifiers={[restrictToParentElement]}
         >
           <SortableContext
-            items={selectedImages.map((image) => image.id)}
+            items={photoSelectedImages.map((image) => image.id)}
             strategy={rectSortingStrategy}
           >
             <div className="image-selector-preview-container">
-              {selectedImages.map((image) => (
+              {photoSelectedImages.map((image) => (
                 <SortableImage
                   key={image.id}
                   image={image}
@@ -138,7 +151,7 @@ const ImageSelector = ({
         width={900}
       >
         <div className="image-selector-grid">
-          {images.map((image) => {
+          {photoImages.map((image) => {
             const selected = isSelected(image.id);
             const disabled =
               !selected && temporarySelection.length >= MAX_IMAGES;

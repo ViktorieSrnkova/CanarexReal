@@ -52,6 +52,7 @@ import EmojiPicker from "emoji-picker-react";
 import FileHandler from "@tiptap/extension-file-handler";
 import { useState, useRef, useEffect } from "react";
 import { getContrastColor } from "../../utils/getContrastColor";
+import { uploadMedia } from "../../services/mediaService";
 
 Emoji.configure({
   emojis: gitHubEmojis,
@@ -60,16 +61,41 @@ Emoji.configure({
 type RichTextEditorProps = {
   version: "normal" | "full";
   content?: JSONContent;
-  /*  onEditorReady?: (editor: Editor) => void; */
   onChange?: (content: JSONContent) => void;
 };
+
+const CustomImage = Image.extend({
+  addAttributes() {
+    return {
+      ...this.parent?.(),
+
+      mediaId: {
+        default: null,
+        parseHTML: (element) => {
+          const value = element.getAttribute("data-media-id");
+
+          return value ? Number(value) : null;
+        },
+        renderHTML: (attributes) => {
+          if (!attributes.mediaId) {
+            return {};
+          }
+
+          return {
+            "data-media-id": attributes.mediaId,
+          };
+        },
+      },
+    };
+  },
+});
+
 export default function RichTextEditor({
   version,
   content,
   onChange,
 }: RichTextEditorProps) {
   const isFull = version === "full";
-  const pendingImages = useRef<Map<string, File>>(new Map());
 
   const editor = useEditor({
     extensions: [
@@ -121,7 +147,7 @@ export default function RichTextEditor({
             Gapcursor,
             DetailsContent,
             Blockquote,
-            Image.configure({
+            CustomImage.configure({
               resize: {
                 enabled: true,
                 directions: ["top", "bottom", "left", "right"],
@@ -149,30 +175,37 @@ export default function RichTextEditor({
                 "image/jpeg",
                 "image/gif",
                 "image/webp",
-                /*    "video/webm",
-                "video/mp4", */
               ],
 
               onDrop: (currentEditor, files, pos) => {
                 files.forEach((file) => {
-                  insertImageFile(currentEditor, file, pos);
-                });
-              },
-
-              onPaste: (currentEditor, files, htmlContent) => {
-                if (htmlContent) {
-                  return false;
-                }
-
-                files.forEach((file) => {
-                  insertImageFile(currentEditor, file);
+                  void insertImageFile(currentEditor, file, pos);
                 });
               },
             }),
           ]
         : []),
     ],
+    editorProps: {
+      handlePaste: (_view, event) => {
+        const html = event.clipboardData?.getData("text/html") ?? "";
 
+        if (html.includes("<img")) {
+          return true;
+        }
+
+        const files = event.clipboardData?.files;
+
+        if (
+          files &&
+          Array.from(files).some((file) => file.type.startsWith("image/"))
+        ) {
+          return true;
+        }
+
+        return false;
+      },
+    },
     content: content || "",
     onUpdate: ({ editor }) => {
       onChange?.(editor.getJSON());
@@ -182,28 +215,39 @@ export default function RichTextEditor({
   useEffect(() => {
     if (!editor || !content) return;
 
-    editor.commands.setContent(content);
+    const currentContent = editor.getJSON();
+
+    if (JSON.stringify(currentContent) === JSON.stringify(content)) {
+      return;
+    }
+
+    editor.commands.setContent(content, {
+      emitUpdate: false,
+    });
   }, [editor, content]);
 
-  const insertImageFile = (
+  const insertImageFile = async (
     currentEditor: Editor,
     file: File,
     position?: number,
   ) => {
-    const blobUrl = URL.createObjectURL(file);
+    try {
+      const uploaded = await uploadMedia(file, "news");
 
-    pendingImages.current.set(blobUrl, file);
-
-    currentEditor
-      .chain()
-      .focus()
-      .insertContentAt(position ?? currentEditor.state.selection.anchor, {
-        type: "image",
-        attrs: {
-          src: blobUrl,
-        },
-      })
-      .run();
+      currentEditor
+        .chain()
+        .focus()
+        .insertContentAt(position ?? currentEditor.state.selection.anchor, {
+          type: "image",
+          attrs: {
+            src: `${import.meta.env.VITE_API_URL}/api/files/images/${uploaded.id}`,
+            mediaId: uploaded.id,
+          },
+        })
+        .run();
+    } catch (error) {
+      console.error("Editor image upload failed", error);
+    }
   };
   const editorState = useEditorState({
     editor,
@@ -211,8 +255,8 @@ export default function RichTextEditor({
       const attrs = ctx.editor.getAttributes("textStyle");
 
       return {
-        backgroundColor: attrs.backgroundColor ?? null,
-        textColor: attrs.color ?? null,
+        backgroundColor: attrs.backgroundColor ?? "#f6e6e3",
+        textColor: attrs.color ?? "#f6e6e3",
         isTaskList: ctx.editor.isActive("taskList") ?? false,
         isDetails: ctx.editor.isActive("details"),
         blockType: getCurrentBlockType(ctx.editor),
@@ -399,7 +443,7 @@ export default function RichTextEditor({
                   return;
                 }
 
-                insertImageFile(editor, file);
+                void insertImageFile(editor, file);
 
                 event.target.value = "";
               }}

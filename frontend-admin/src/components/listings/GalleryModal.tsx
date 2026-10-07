@@ -19,6 +19,7 @@ import {
   type GallerySavePayload,
   type LocalImage,
 } from "../../types/gallery";
+import { normalizeImageOrder } from "../../utils/normalizeImageOrder";
 
 type Props = {
   listingId: number;
@@ -91,12 +92,17 @@ export default function ListingGalleryModal({
     setLocalImages((items) => {
       const oldIndex = items.findIndex((i) => getKey(i) === active.id);
       const newIndex = items.findIndex((i) => getKey(i) === over.id);
-      const reordered = arrayMove(items, oldIndex, newIndex);
 
-      return reordered.map((img, index) => ({
-        ...img,
-        order: index,
-      }));
+      if (oldIndex === -1 || newIndex === -1) {
+        return items;
+      }
+
+      return normalizeImageOrder(arrayMove(items, oldIndex, newIndex)).map(
+        (image, index) => ({
+          ...image,
+          order: index,
+        }),
+      );
     });
   };
 
@@ -133,8 +139,8 @@ export default function ListingGalleryModal({
       setLocalImages((prev) => {
         const merged = [...prev, ...uploadedImages];
 
-        return merged.map((img, index) => ({
-          ...img,
+        return normalizeImageOrder(merged).map((image, index) => ({
+          ...image,
           order: index,
         }));
       });
@@ -155,13 +161,11 @@ export default function ListingGalleryModal({
       if (img?.kind === "existing") {
         setRemovedImageIds((r) => (r.includes(img.id) ? r : [...r, img.id]));
       }
-
-      return prev
-        .filter((i) => getKey(i) !== key)
-        .map((img, index) => ({
-          ...img,
-          order: index,
-        }));
+      const remaining = prev.filter((i) => getKey(i) !== key);
+      return normalizeImageOrder(remaining).map((image, index) => ({
+        ...image,
+        order: index,
+      }));
     });
   };
 

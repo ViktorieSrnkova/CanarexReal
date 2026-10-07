@@ -8,7 +8,7 @@ import Facebook from "../../assets/Facebook.svg";
 import Instagram from "../../assets/Instagram.svg";
 import TikTok from "../../assets/Tiktok.svg";
 import { useT } from "../../i18n";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLang } from "../../hooks/i18n/useLang";
 import Nav from "./Nav";
 import CanarexReal from "../../assets/CanarexReal.svg";
@@ -18,6 +18,17 @@ function Header() {
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
   const { lang } = useLang();
+  useEffect(() => {
+    if (menuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [menuOpen]);
 
   return (
     <header className="header">
@@ -41,11 +52,11 @@ function Header() {
             </a>
           </div>
           <span className="phone number">
-            <img src={Phone} alt="phone" />
+            <img src={Phone} alt="phone" height="20" />
             +420 603 257 021
           </span>
           <a href="mailto:info@canarexreal.com" className="mail">
-            <img src={Mail} alt="email" />
+            <img src={Mail} alt="email" height="16" />
             stan@canarexreal.com
           </a>
         </div>

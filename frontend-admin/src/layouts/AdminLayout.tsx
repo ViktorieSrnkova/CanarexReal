@@ -10,14 +10,14 @@ import {
   SolutionOutlined,
   ToolOutlined,
 } from "@ant-design/icons";
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import axios from "axios";
 
 const { Sider, Header, Content } = Layout;
 
 export default function AdminLayout() {
   const [collapsed, setCollapsed] = useState(false);
-  const [openKeys, setOpenKeys] = useState<string[]>([]);
+  const [openKeys, setOpenKeys] = useState<string[]>(["2", "3"]);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -35,24 +35,15 @@ export default function AdminLayout() {
   };
   const selectedKey = (() => {
     if (path === "/") return "1";
-    if (path.startsWith("/listings/create")) return "2-2";
-    if (path.startsWith("/listings")) return "2-1";
-    if (path.startsWith("/news/create")) return "3-2";
-    if (path.startsWith("/news")) return "3-1";
+    if (path.startsWith("/listings/create")) return "2-1";
+    if (path.startsWith("/listings")) return "2-2";
+    if (path.startsWith("/news/create")) return "3-1";
+    if (path.startsWith("/news")) return "3-2";
     if (path.startsWith("/forms")) return "4";
     if (path.startsWith("/print")) return "5";
     return "1";
   })();
 
-  React.useEffect(() => {
-    if (window.innerWidth < 992) return;
-    const keys: string[] = [];
-
-    if (path.startsWith("/listings")) keys.push("2");
-    if (path.startsWith("/news")) keys.push("3");
-
-    setOpenKeys(keys);
-  }, [path]);
   const checkingAuth = useRef(false);
   const lastAuthCheck = useRef(Date.now());
   const VITE_API_URL = import.meta.env.VITE_API_URL;
@@ -151,16 +142,16 @@ export default function AdminLayout() {
                 {
                   key: "2-1",
                   label: (
-                    <Link to="/listings">
-                      <ToolOutlined /> Spravovat inzeráty
+                    <Link to="/listings/create">
+                      <PlusOutlined /> Vytvořit inzerát
                     </Link>
                   ),
                 },
                 {
                   key: "2-2",
                   label: (
-                    <Link to="/listings/create">
-                      <PlusOutlined /> Vytvořit inzerát
+                    <Link to="/listings">
+                      <ToolOutlined /> Spravovat inzeráty
                     </Link>
                   ),
                 },
@@ -182,16 +173,16 @@ export default function AdminLayout() {
                 {
                   key: "3-1",
                   label: (
-                    <Link to="/news">
-                      <ToolOutlined /> Spravovat zajímavosti
+                    <Link to="/news/create">
+                      <PlusOutlined /> Vytvořit zajímavost
                     </Link>
                   ),
                 },
                 {
                   key: "3-2",
                   label: (
-                    <Link to="/news/create">
-                      <PlusOutlined /> Vytvořit zajímavost
+                    <Link to="/news">
+                      <ToolOutlined /> Spravovat zajímavosti
                     </Link>
                   ),
                 },

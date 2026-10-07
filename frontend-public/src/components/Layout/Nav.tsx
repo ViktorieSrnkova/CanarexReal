@@ -86,11 +86,11 @@ function Navbar({ onLinkClick }: Props) {
           </button>
 
           {userMenuOpen && (
-            <div className="user-dropdown">
+            <div className="user-dropdown desktop-user-dropdown">
               {!user ? (
                 <>
                   <button
-                    className="hoverRed"
+                    className="hoverRed "
                     type="button"
                     onClick={() => {
                       setAuthMode("login");
@@ -101,7 +101,7 @@ function Navbar({ onLinkClick }: Props) {
                   </button>
 
                   <button
-                    className="hoverRed"
+                    className="hoverRed "
                     type="button"
                     onClick={() => {
                       setAuthMode("register");
@@ -143,6 +143,52 @@ function Navbar({ onLinkClick }: Props) {
               )}
             </div>
           )}
+          <div className="mobile-user-menu">
+            {!user ? (
+              <>
+                <button
+                  className="hoverRed nav-btn-style"
+                  type="button"
+                  onClick={() => setAuthMode("login")}
+                >
+                  {t("login.submit")}
+                </button>
+
+                <button
+                  className="hoverRed nav-btn-style"
+                  type="button"
+                  onClick={() => setAuthMode("register")}
+                >
+                  {t("register.submit")}
+                </button>
+              </>
+            ) : (
+              <ul className="logged-list">
+                <li>
+                  <NavLink to={`/${lang}/favorites`} onClick={onLinkClick}>
+                    {t("auth.favorites")}
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink to={`/${lang}/forms`} onClick={onLinkClick}>
+                    {t("auth.forms")}
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink to={`/${lang}/me`} onClick={onLinkClick}>
+                    {t("auth.settings")}
+                  </NavLink>
+                </li>
+                <button
+                  className="hoverRed nav-btn-style"
+                  type="button"
+                  onClick={logout}
+                >
+                  {t("auth.logout")}
+                </button>
+              </ul>
+            )}
+          </div>
         </li>
       </ul>
       {authMode && (
