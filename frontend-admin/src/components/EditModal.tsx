@@ -21,7 +21,7 @@ export function EditModal<T>({
       open={open}
       footer={null}
       onCancel={onClose}
-      width={1000}
+      width={1200}
       destroyOnHidden={true}
     >
       {open && initialData && children({ data: initialData, onSuccess })}{" "}

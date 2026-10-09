@@ -289,7 +289,7 @@ export default function RichTextEditor({
         <button
           type="button"
           onClick={() => editor.chain().focus().toggleBold().run()}
-          className={`btn $editor.isActive("bold") ? "active" : ""`}
+          className={`btn ${editor.isActive("bold") ? "active" : ""}`}
         >
           <BoldOutlined />
         </button>
@@ -457,10 +457,10 @@ export default function RichTextEditor({
             </button>
             <div
               className={`color-control background-color ${
-                backgroundColor ? "has-color" : ""
+                backgroundColor !== "#f6e6e3" ? "has-color" : ""
               }`}
               style={
-                backgroundColor
+                backgroundColor !== "#f6e6e3"
                   ? {
                       backgroundColor,
                       color: backgroundContrastColor,
@@ -485,7 +485,7 @@ export default function RichTextEditor({
                 />
               </div>
 
-              {backgroundColor && (
+              {backgroundColor !== "#f6e6e3" && (
                 <button
                   type="button"
                   className="color-clear"
@@ -502,10 +502,10 @@ export default function RichTextEditor({
 
             <div
               className={`color-control text-color ${
-                textColor ? "has-color" : ""
+                textColor !== "#f6e6e3" ? "has-color" : ""
               }`}
               style={
-                textColor
+                textColor !== "#f6e6e3"
                   ? {
                       backgroundColor: textColor,
                       color: textContrastColor,
@@ -530,7 +530,7 @@ export default function RichTextEditor({
                 />
               </div>
 
-              {textColor && (
+              {textColor !== "#f6e6e3" && (
                 <button
                   type="button"
                   className="color-clear"
@@ -559,27 +559,7 @@ export default function RichTextEditor({
                 <CaretDownFilled />
               </span>
             </label>
-            <div className="vertical-separator"></div>
-            <select
-              className="line-height-select"
-              value={editorState.lineHeight}
-              onChange={(event) => {
-                editor.chain().focus().setLineHeight(event.target.value).run();
-              }}
-            >
-              {editorState.lineHeight === "mixed" && (
-                <option value="mixed" disabled>
-                  Mixed
-                </option>
-              )}
 
-              <option value="1.4">1.4</option>
-              <option value="1.5">1.5</option>
-              <option value="2.0">2.0</option>
-              <option value="2.5">2.5</option>
-              <option value="3.0">3.0</option>
-            </select>
-            <div className="vertical-separator"></div>
             <button
               type="button"
               className={`btn ${editorState.isBlockquote ? "active" : ""}`}
@@ -619,6 +599,27 @@ export default function RichTextEditor({
                 </div>
               )}
             </div>
+            <div className="vertical-separator"></div>
+            <select
+              className="line-height-select"
+              value={editorState.lineHeight}
+              onChange={(event) => {
+                editor.chain().focus().setLineHeight(event.target.value).run();
+              }}
+            >
+              {editorState.lineHeight === "mixed" && (
+                <option value="mixed" disabled>
+                  Mixed
+                </option>
+              )}
+
+              <option value="1.4">1.4</option>
+              <option value="1.5">1.5</option>
+              <option value="2.0">2.0</option>
+              <option value="2.5">2.5</option>
+              <option value="3.0">3.0</option>
+            </select>
+            <div className="vertical-separator"></div>
           </>
         )}
       </div>

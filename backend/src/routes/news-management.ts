@@ -195,7 +195,7 @@ router.put("/:id", async (req, res) => {
 
     await prisma.aktuality.update({
       where: { id },
-      data: { viditelnost: visible === "true" },
+      data: { viditelnost: visible },
     });
 
     await prisma.aktuality_preklady.deleteMany({

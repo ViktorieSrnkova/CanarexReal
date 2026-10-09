@@ -23,14 +23,20 @@ export default function AdminLayout() {
   const location = useLocation();
 
   const path = location.pathname;
+
+  const clearLocalAuth = () => {
+    localStorage.removeItem("token");
+    delete api.defaults.headers.common["Authorization"];
+    navigate("/login", { replace: true });
+  };
+
   const handleLogout = async () => {
     try {
       await api.post("/logout");
-      localStorage.removeItem("token");
-      delete api.defaults.headers.common["Authorization"];
-      navigate("/login");
     } catch (err) {
       console.error("Logout failed:", err);
+    } finally {
+      clearLocalAuth();
     }
   };
   const selectedKey = (() => {
@@ -48,6 +54,7 @@ export default function AdminLayout() {
   const lastAuthCheck = useRef(Date.now());
   const VITE_API_URL = import.meta.env.VITE_API_URL;
   const AUTH_CHECK_INTERVAL = 60 * 1000;
+
   const checkAuth = async (): Promise<boolean> => {
     const now = Date.now();
 
@@ -68,7 +75,7 @@ export default function AdminLayout() {
 
       lastAuthCheck.current = Date.now();
       console.log("didnt catch");
-      message.success("Success check");
+      message.success("Still logged in", 2);
       return true;
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -81,7 +88,7 @@ export default function AdminLayout() {
       } else {
         message.error(`CHECK: ${String(error)}`, 5);
       }
-
+      await clearLocalAuth();
       return false;
     } finally {
       checkingAuth.current = false;

@@ -12,8 +12,8 @@ const createDashboardSections = (stats: DashboardResponse) => [
   {
     title: "Inzeráty",
     actions: [
-      { path: "/listings", purpose: "Spravovat inzeráty" },
       { path: "/listings/create", purpose: "Vytvořit nový inzerát" },
+      { path: "/listings", purpose: "Spravovat inzeráty" },
     ],
     stats: {
       created: stats.listings.latestCreated,
@@ -26,8 +26,8 @@ const createDashboardSections = (stats: DashboardResponse) => [
   {
     title: "Zajímavosti",
     actions: [
-      { path: "/news", purpose: "Spravovat zajímavosti" },
       { path: "/news/create", purpose: "Vytvořit nový článek (zajímavost)" },
+      { path: "/news", purpose: "Spravovat zajímavosti" },
     ],
     stats: {
       created: stats.news.latestCreated,

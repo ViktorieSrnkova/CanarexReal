@@ -94,7 +94,7 @@ const NewsCreatePage: React.FC<Props> = ({ initialData, onSuccess }) => {
     }
   };
   return (
-    <div>
+    <>
       <Title level={2}>
         {initialData ? "Upravit zajímavost" : "Vytvořit zajímavost"}
       </Title>
@@ -110,11 +110,11 @@ const NewsCreatePage: React.FC<Props> = ({ initialData, onSuccess }) => {
           style={{
             display: "flex",
             flexDirection: "row",
-            gap: 16,
+            columnGap: 160,
             flexWrap: "wrap",
             height: 100,
             alignItems: "center",
-            justifyContent: "space-between",
+            justifyContent: "start",
           }}
         >
           <Form.Item
@@ -196,6 +196,7 @@ const NewsCreatePage: React.FC<Props> = ({ initialData, onSuccess }) => {
                 backgroundColor: "#c7f1f765",
                 padding: 20,
                 borderRadius: 8,
+                width: "100%",
               }}
               items={languages.map((lang) => ({
                 key: lang,
@@ -241,7 +242,7 @@ const NewsCreatePage: React.FC<Props> = ({ initialData, onSuccess }) => {
           </Button>
         </Form.Item>
       </Form>
-    </div>
+    </>
   );
 };
 

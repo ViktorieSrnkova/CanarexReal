@@ -1,5 +1,5 @@
 import { DeleteObjectsCommand } from "@aws-sdk/client-s3";
-import { r2 } from "../lib/r2";
+import { r2 } from "../lib/r2.js";
 export async function deleteMediaFromR2(storageKeys: string[]): Promise<void> {
   if (storageKeys.length === 0) {
     return;

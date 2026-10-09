@@ -63,6 +63,8 @@
   background: white;
   font-family: Raleway, sans-serif;
   line-height: 1.4;
+
+  width: 100%;
 }
 .editor-container .ProseMirror p {
   margin: 0;
@@ -96,7 +98,7 @@
   height: 40px;
   border-radius: 4px;
   width: 100%;
-  max-width: calc(100% / 22);
+  max-width: calc(100% / 15);
   min-width: 48px;
   font-size: 1.25rem;
   display: flex;
@@ -124,31 +126,37 @@
   height: 0;
 }
 
-h1 {
-  font-size: 32px;
+.editor-container .ProseMirror h1 {
+  font-size: 2rem;
+  margin-top: 1.34rem;
 }
-h2 {
-  font-size: 28px;
+.editor-container .ProseMirror h2 {
+  font-size: 1.74rem;
+  margin-top: 1.444rem;
 }
-h3 {
-  font-size: 24px;
+.editor-container .ProseMirror h3 {
+  font-size: 1.5rem;
+  margin-top: 1.5rem;
 }
-h4 {
-  font-size: 20px;
+.editor-container .ProseMirror h4 {
+  font-size: 1.32rem;
+  margin-top: 1.694rem;
 }
-h5 {
-  font-size: 18px;
+.editor-container .ProseMirror h5 {
+  font-size: 1.15rem;
+  margin-top: 1.921rem;
 }
-h6 {
-  font-size: 16px;
+.editor-container .ProseMirror h6 {
+  font-size: 1rem;
+  margin-top: 2.33rem;
 }
+
 p {
-  font-size: 14px;
+  font-size: 1rem;
 }
 .editor-container .ProseMirror img {
   width: 100%;
   height: auto;
-  max-width: 100%;
 }
 .editor_toolbar select {
   background: none;
@@ -400,7 +408,7 @@ p {
   height: 40px;
   border-radius: 4px;
   width: 100%;
-  max-width: calc(100% / 22);
+  max-width: calc(100% / 16);
   min-width: 48px;
   font-size: 1.25rem;
 }
