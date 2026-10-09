@@ -7,7 +7,7 @@ import type {
   CreateUploadUrlParams,
   CreateUploadUrlResult,
   MediaResourceType,
-} from "../../types/media.types";
+} from "../../types/media.types.js";
 
 const bucketName = process.env.R2_BUCKET_NAME;
 

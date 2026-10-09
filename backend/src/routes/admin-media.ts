@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { createUploadUrl } from "../services/media/mediaService";
-import { requireRole } from "../middleware/auth";
-import prisma from "../lib/db";
+import { createUploadUrl } from "../services/media/mediaService.js";
+import { requireRole } from "../middleware/auth.js";
+import prisma from "../lib/db.js";
 
 const router = Router();
 router.use(requireRole([1, 3]));

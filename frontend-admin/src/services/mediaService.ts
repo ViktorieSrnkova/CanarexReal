@@ -1,5 +1,5 @@
-import { completeMediaUpload, createMediaUploadUrl } from "../api/media";
-import type { MediaResourceType, MediaUploadResult } from "../types/media";
+import { completeMediaUpload, createMediaUploadUrl } from "../api/media.js";
+import type { MediaResourceType, MediaUploadResult } from "../types/media.js";
 
 export async function uploadMedia(
   file: File,
