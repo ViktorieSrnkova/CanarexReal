@@ -41,3 +41,13 @@
   font-style: normal;
   font-display: swap;
 }
+
+/* NOTO COLOR EMOJI */
+@font-face {
+  font-family: "Noto Color Emoji";
+  src: url("../assets/fonts/NotoColorEmoji/NotoColorEmoji-Regular.woff2")
+    format("woff2");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}

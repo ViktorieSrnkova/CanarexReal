@@ -52,7 +52,6 @@ const NewsCreatePage: React.FC<Props> = ({ initialData, onSuccess }) => {
     const editorValues = mapNewsToEditorContent(initialData);
     console.log("FORM VALUES", formValues);
     form.setFieldsValue(formValues);
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setEditorContent(editorValues);
     console.log("EDITOR VALUES", editorValues);
 
@@ -94,7 +93,7 @@ const NewsCreatePage: React.FC<Props> = ({ initialData, onSuccess }) => {
     }
   };
   return (
-    <>
+    <div style={{ padding: 24, maxWidth: 1150, margin: "0 auto" }}>
       <Title level={2}>
         {initialData ? "Upravit zajímavost" : "Vytvořit zajímavost"}
       </Title>
@@ -114,7 +113,7 @@ const NewsCreatePage: React.FC<Props> = ({ initialData, onSuccess }) => {
             flexWrap: "wrap",
             height: 100,
             alignItems: "center",
-            justifyContent: "start",
+            justifyContent: "space-between",
           }}
         >
           <Form.Item
@@ -242,7 +241,7 @@ const NewsCreatePage: React.FC<Props> = ({ initialData, onSuccess }) => {
           </Button>
         </Form.Item>
       </Form>
-    </>
+    </div>
   );
 };
 

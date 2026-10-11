@@ -391,7 +391,8 @@
     max-width: none !important;
     max-height: 100%;
   }
-  .gallery-main img {
+  .gallery-main img,
+  .gallery-main video {
     width: 100%;
     min-height: 20rem !important;
     max-height: 20rem !important;

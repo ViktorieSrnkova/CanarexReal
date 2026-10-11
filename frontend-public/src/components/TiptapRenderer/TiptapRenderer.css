@@ -1,13 +1,17 @@
+.tiptap-renderer .tiptap-emoji {
+  font-family: "Noto Color Emoji", sans-serif;
+}
+
 .tiptap-renderer p {
   margin: 0 0 1em;
-  line-height: 1.6;
+  line-height: 1.4;
 }
 
 .tiptap-renderer ul p,
 .tiptap-renderer ol {
   margin: 0;
   padding-left: 0;
-  line-height: 1.6;
+  line-height: 1.4;
 }
 
 .tiptap-renderer li {
@@ -37,4 +41,212 @@
 .tiptap-renderer sup {
   vertical-align: super;
   font-size: 0.75em;
+}
+.tiptap-details {
+  margin: 1rem 0;
+}
+
+.tiptap-details summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.tiptap-details-content {
+  padding-top: 0.5rem;
+}
+
+.tiptap-renderer ul,
+.tiptap-renderer ol {
+  text-align: inherit;
+}
+
+.tiptap-renderer li {
+  text-align: inherit;
+  list-style-position: inside;
+}
+
+.tiptap-renderer li > p {
+  text-align: inherit;
+  display: inline;
+}
+
+/* Task list / checkboxy */
+.tiptap-renderer li[data-checked] {
+  list-style: none;
+  display: flex;
+  align-items: flex-start;
+}
+
+.tiptap-renderer li[data-checked] > div > p {
+  margin: 0;
+}
+
+.tiptap-renderer li[data-checked]:has(p[style*="text-align: center"]) {
+  justify-content: center;
+}
+
+.tiptap-renderer li[data-checked]:has(p[style*="text-align: right"]) {
+  justify-content: flex-end;
+}
+
+/* Task list nesmí zobrazovat klasické odrážky */
+.tiptap-renderer ul.tiptap-task-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 0 0 1em;
+}
+
+/* Každá položka je jeden zarovnatelný celek */
+.tiptap-renderer .tiptap-task-item {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 6px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Checkbox zůstává vedle textu */
+.tiptap-renderer .tiptap-task-item > input[type="checkbox"] {
+  flex: 0 0 auto;
+  margin: 0.3em 0 0;
+}
+
+/* Obsah se nesmí roztáhnout přes celou šířku */
+.tiptap-renderer .tiptap-task-content {
+  flex: 0 1 auto;
+  min-width: 0;
+}
+
+/* Odstavce uvnitř položky */
+.tiptap-renderer .tiptap-task-content > p {
+  display: block;
+  margin: 0;
+  line-height: 1.6;
+}
+/* Nadpisy */
+.tiptap-renderer h1 {
+  font-size: 2rem;
+  margin-top: 1.34rem;
+  margin-bottom: 0.5em;
+}
+
+.tiptap-renderer h2 {
+  font-size: 1.74rem;
+  margin-top: 1.444rem;
+  margin-bottom: 0.5em;
+}
+
+.tiptap-renderer h3 {
+  font-size: 1.5rem;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5em;
+}
+
+.tiptap-renderer h4 {
+  font-size: 1.32rem;
+  margin-top: 1.694rem;
+  margin-bottom: 0.5em;
+}
+
+.tiptap-renderer h5 {
+  font-size: 1.15rem;
+  margin-top: 1.921rem;
+  margin-bottom: 0.5em;
+}
+
+.tiptap-renderer h6 {
+  font-size: 1rem;
+  margin-top: 2.33rem;
+  margin-bottom: 0.5em;
+}
+.tiptap-renderer h6 span {
+  font-weight: bold;
+}
+
+/* Odstavce */
+.tiptap-renderer p {
+  font-size: 1rem;
+  margin: 0;
+}
+/* Rozbalovací sekce */
+.tiptap-renderer .tiptap-details {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 0.5rem;
+
+  background-color: #fafafa;
+  border-radius: 8px;
+  margin-top: 12px;
+  padding: 1rem;
+}
+
+.tiptap-renderer .tiptap-details summary {
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.tiptap-renderer .tiptap-details-content {
+  flex-basis: 100%;
+  padding-top: 0.5rem;
+}
+
+/* Citace */
+.tiptap-renderer blockquote {
+  margin: 1rem 0;
+  padding: 0.75rem 1rem;
+  border-left: 3px solid #87ceeb;
+  background: #f9f9f9;
+  color: #555;
+  font-style: italic;
+}
+
+/* Tabulky */
+.tiptap-renderer table {
+  border-collapse: collapse;
+  margin: 0;
+  overflow: hidden;
+  table-layout: fixed;
+  width: 100%;
+  border-radius: 0px;
+}
+
+.tiptap-renderer td,
+.tiptap-renderer th {
+  border: 1px solid #d8d8d8;
+  box-sizing: border-box;
+  min-width: 1em;
+  padding: 6px 8px;
+  position: relative;
+  vertical-align: top;
+}
+
+.tiptap-renderer td > *,
+.tiptap-renderer th > * {
+  margin-bottom: 0;
+}
+
+.tiptap-renderer th {
+  background-color: #87cfeb3a;
+
+  text-align: left;
+}
+.tiptap-renderer th p span {
+  font-weight: bold !important;
+}
+
+.tiptap-renderer .tableWrapper {
+  margin: 1.5rem 0;
+  overflow-x: auto;
+}
+.tiptap-renderer .tiptap-details summary span {
+  font-weight: bold;
+}
+.tiptap-renderer sup {
+  vertical-align: super;
+  font-size: 0.75em;
+  text-decoration: inherit;
+  text-underline-offset: -0.15em;
 }

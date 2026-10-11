@@ -6,6 +6,7 @@
 .editor-container .ProseMirror ul,
 .editor-container .ProseMirror ol {
   text-align: inherit;
+  margin: 1rem 0 1rem 0;
 }
 
 .editor-container .ProseMirror li {
@@ -129,26 +130,32 @@
 .editor-container .ProseMirror h1 {
   font-size: 2rem;
   margin-top: 1.34rem;
+  font-weight: 400;
 }
 .editor-container .ProseMirror h2 {
   font-size: 1.74rem;
   margin-top: 1.444rem;
+  font-weight: 400;
 }
 .editor-container .ProseMirror h3 {
   font-size: 1.5rem;
   margin-top: 1.5rem;
+  font-weight: 400;
 }
 .editor-container .ProseMirror h4 {
   font-size: 1.32rem;
   margin-top: 1.694rem;
+  font-weight: 400;
 }
 .editor-container .ProseMirror h5 {
   font-size: 1.15rem;
   margin-top: 1.921rem;
+  font-weight: 400;
 }
 .editor-container .ProseMirror h6 {
   font-size: 1rem;
   margin-top: 2.33rem;
+  font-weight: bold;
 }
 
 p {
@@ -157,6 +164,8 @@ p {
 .editor-container .ProseMirror img {
   width: 100%;
   height: auto;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
 }
 .editor_toolbar select {
   background: none;
@@ -289,6 +298,9 @@ p {
     background-color: #87cfeb3a;
     font-weight: bold;
     text-align: left;
+  }
+  tr:nth-child(even) {
+    background-color: #f8f8f8;
   }
 
   .selectedCell:after {
@@ -472,4 +484,9 @@ p {
 .color-clear:hover {
   color: #333;
   background-color: rgba(0, 0, 0, 0.06);
+}
+.editor-container .ProseMirror img {
+  max-width: 100%;
+  height: auto;
+  box-sizing: border-box;
 }

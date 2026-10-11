@@ -132,6 +132,14 @@ export default function ListingGallery({ imagesProp }: Props) {
                 src={activeImage.url}
                 controls
                 playsInline
+                autoPlay
+                style={{
+                  maxHeight: "444px",
+                  maxWidth: "100%",
+                  aspectRatio: 16 / 9,
+                  width: "100%",
+                  objectFit: "contain",
+                }}
                 preload="metadata"
                 className="lightbox-image"
               />
@@ -172,7 +180,13 @@ export default function ListingGallery({ imagesProp }: Props) {
               src={activeImage.url}
               controls
               playsInline
-              autoPlay
+              style={{
+                maxHeight: "444px",
+                maxWidth: "100%",
+                aspectRatio: 16 / 9,
+                width: "100%",
+                objectFit: "contain",
+              }}
               className="lightbox-image"
             />
           ) : (
