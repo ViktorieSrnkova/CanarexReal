@@ -1,16 +1,10 @@
 import type { JSONContent } from "@tiptap/react";
 import {
-  type Lang,
   type NewsAdminItem,
   type NewsEditorContent,
   type NewsFormValues,
 } from "../types/news";
-
-const langMap: Record<number, Lang> = {
-  1: "en",
-  2: "cs",
-  3: "sk",
-};
+import { LANGUAGE_MAP } from "../types/general";
 
 export const castTiptapContent = (
   value: object | null | undefined,
@@ -33,14 +27,14 @@ export function mapNewsToFormValues(
     sk: { title: "", alt: "" },
   };
   news.aktuality_preklady.forEach((translation) => {
-    const lang = langMap[translation.jazyky_id];
+    const lang = LANGUAGE_MAP[translation.jazyky_id];
     if (!lang) return;
     translations[lang].title = translation.titulek ?? "";
   });
   const mainImage = news.obrazky.find((img) => img.poradi === 0);
 
   mainImage?.obrazky_preklady?.forEach((translation) => {
-    const lang = langMap[translation.jazyky_id];
+    const lang = LANGUAGE_MAP[translation.jazyky_id];
     if (!lang) return;
     translations[lang].alt = translation.alt_text ?? "";
   });
@@ -57,7 +51,7 @@ export function mapNewsToEditorContent(news: NewsAdminItem): NewsEditorContent {
     sk: undefined,
   };
   news.aktuality_preklady.forEach((translation) => {
-    const lang = langMap[translation.jazyky_id];
+    const lang = LANGUAGE_MAP[translation.jazyky_id];
     if (!lang) return;
     result[lang] = castTiptapContent(translation.text);
   });

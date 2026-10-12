@@ -16,7 +16,7 @@ import FormDetailPage from "../pages/forms/FormDetailPage";
 import NotFoundPage from "../pages/errors/NotFoundPage";
 import UnauthorizedPage from "../pages/errors/UnauthorizedPage";
 import CenteredLayout from "../layouts/CenteredLayout";
-import AuthGuard from "../auth/AuthGueard";
+import AuthGuard from "../auth/AuthGuard";
 import PrintListing from "../pages/print/PrintListing";
 
 export default function Router() {

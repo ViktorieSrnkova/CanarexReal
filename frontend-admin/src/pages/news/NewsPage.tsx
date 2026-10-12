@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { getAdminNews, deleteNews, toggleNewsVisibility } from "../../api/news";
 import NewsTable from "../../components/news/Table";
-import DeleteConfirmModal from "../../components/DeleteModal";
+import DeleteConfirmModal from "../../components/Modals/DeleteModal";
 import type { NewsAdminItem } from "../../types/news";
 import Title from "antd/es/typography/Title";
-import { EditModal } from "../../components/EditModal";
+import { EditModal } from "../../components/Modals/EditModal";
 import NewsCreatePage from "./NewsCreatePage";
 
 const AdminNewsPage = () => {

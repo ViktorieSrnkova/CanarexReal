@@ -139,6 +139,9 @@
   text-size-adjust: none !important;
   transform-origin: top left;
 }
+.print-page .top-section p {
+  font-size: 14px;
+}
 
 .print-page-wrapper:last-child .print-page {
   break-after: auto;

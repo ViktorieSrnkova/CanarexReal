@@ -1,28 +1,3 @@
-/* 
- const formatLocation = (address: string, lang: Lang) => {
-    if (!address) return "";
-
-    return address
-      .replace(
-        /Kanárske ostrovy|Kanárské ostrovy/g,
-        {
-          cs: "Kanárské ostrovy",
-          sk: "Kanárske ostrovy",
-          en: "Canary Islands",
-        }[lang],
-      )
-      .replace(
-        /Španělsko|Spain/g,
-        {
-          cs: "Španělsko",
-          sk: "Španielsko",
-          en: "Spain",
-        }[lang],
-      );
-  };
-
-
-*/
 import { useEffect, useRef, useState } from "react";
 import { Select } from "antd";
 import PropertyPrintTemplate from "./PropertyPrintTemplate";

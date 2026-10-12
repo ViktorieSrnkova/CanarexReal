@@ -101,32 +101,6 @@ export const getGalery = async (id: number): Promise<Gallery[]> => {
   return data;
 };
 
-/* export const saveGallery = async (payload: GallerySavePayload) => {
-  const formData = new FormData();
-
-  formData.append("listingId", String(payload.listingId));
-
-  formData.append("existingImages", JSON.stringify(payload.existingImages));
-
-  formData.append("removedImageIds", JSON.stringify(payload.removedImageIds));
-
-  formData.append(
-    "newImagesMeta",
-    JSON.stringify(
-      payload.newImages.map(({ tempId, order, alts }) => ({
-        tempId,
-        order,
-        alts,
-      })),
-    ),
-  );
-
-  payload.newImages.forEach((img) => {
-    formData.append(img.tempId, img.file);
-  });
-
-  return api.put("/listings/gallery/save", formData, {});
-}; */
 export const saveGallery = async (payload: GallerySavePayload) => {
   const { data } = await api.put("/listings/gallery/save", payload);
 

@@ -1,6 +1,5 @@
 import type { JSONContent } from "@tiptap/react";
-
-export type Lang = "cs" | "en" | "sk";
+import type { Language } from "./general";
 
 export type Translation = {
   title: string;
@@ -9,7 +8,7 @@ export type Translation = {
 
 export type NewsFormValues = {
   visible: boolean;
-  translations: Record<Lang, Translation>;
+  translations: Record<Language, Translation>;
 };
 
 export type NewsFormState = {
@@ -21,7 +20,7 @@ export type NewsFormState = {
   pickingImage?: boolean;
 };
 
-export type NewsEditorContent = Record<Lang, JSONContent | undefined>;
+export type NewsEditorContent = Record<Language, JSONContent | undefined>;
 
 export type NewsAdminTranslation = {
   jazyky_id: number;

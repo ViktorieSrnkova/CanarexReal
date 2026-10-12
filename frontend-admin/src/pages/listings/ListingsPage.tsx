@@ -19,13 +19,13 @@ import {
   getGalery,
 } from "../../api/listings";
 import Title from "antd/es/typography/Title";
-import DeleteConfirmModal from "../../components/DeleteModal";
+import DeleteConfirmModal from "../../components/Modals/DeleteModal";
 import ListingCreatePage from "./ListingCreatePage";
-import { EditModal } from "../../components/EditModal";
+import { EditModal } from "../../components/Modals/EditModal";
 import type { CreateAdFormValues } from "../../types/listing_form";
 import { mapRawListingToFormValues } from "../../utils/listingsMapper";
 import LoadingPage from "../system/LoadingPage";
-import ListingGalleryModal from "../../components/listings/GalleryModal";
+import ListingGalleryModal from "../../components/Modals/GalleryModal";
 import type { Gallery } from "../../types/api";
 import { Button, Collapse, Tabs } from "antd";
 import "../../components/listings/columns.css";

@@ -78,11 +78,7 @@ const ListingCreatePage: React.FC<Props> = ({
   } = useMedia(form);
   const { options, searchAddress } = useAddressSearch();
 
-  const { buildPayload } = useListingSubmit(
-    images,
-    selectedAddress,
-    editorContent,
-  );
+  const { buildPayload } = useListingSubmit(selectedAddress, editorContent);
   const { buildEditPayload } = useEditedListing(
     selectedAddress,
     initialData,

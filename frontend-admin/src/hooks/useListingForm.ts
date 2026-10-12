@@ -3,14 +3,12 @@ import type {
   CreateAdFormValues,
   CreateAdPayload,
   EditorContentState,
-  ImageItem,
 } from "../types/listing_form";
 
 import type { JSONContent } from "@tiptap/react";
 import type { MediaUploadResult } from "../types/media";
 
 export const useListingSubmit = (
-  images: ImageItem[],
   selectedAddress: AddressOption | null,
   editorContent: EditorContentState,
 ) => {
