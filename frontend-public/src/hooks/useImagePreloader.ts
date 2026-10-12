@@ -20,7 +20,6 @@ export default function useImagePreloader(imageList: string[]) {
   useEffect(() => {
     if (!imageList?.length) return;
 
-    // 🔒 prevent rerun for same set
     if (lastKeyRef.current === stableKey) return;
 
     lastKeyRef.current = stableKey;

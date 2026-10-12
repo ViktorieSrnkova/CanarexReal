@@ -4,7 +4,7 @@ import "../../styles/login/authmodal.css";
 import { createPortal } from "react-dom";
 import ForgotPasswordForm from "./ForgotPasswordForm";
 import { useState } from "react";
-type AuthMode = "login" | "register" | "forgot";
+export type AuthMode = "login" | "register" | "forgot";
 type Props = {
   onClose: () => void;
   initialMode: AuthMode;

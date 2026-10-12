@@ -1,10 +1,9 @@
 import { createContext } from "react";
-
-export type Lang = "cs" | "en" | "sk";
+import type { Language } from "../types/general";
 
 export type LangContextType = {
-  lang: Lang;
-  setLang: (lang: Lang) => void;
+  lang: Language;
+  setLang: (lang: Language) => void;
 };
 
 export const LangContext = createContext<LangContextType | null>(null);

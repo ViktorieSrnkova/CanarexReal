@@ -88,8 +88,8 @@ export type RawListingDetail = {
 
   adresy: {
     lokace: string | null;
-    lat: string; //Prisma Decimal → string
-    lng: string; //Prisma Decimal → string
+    lat: string;
+    lng: string;
     nominatim_id: string | null;
     cela_adresa: string | null;
     komplex?: string;

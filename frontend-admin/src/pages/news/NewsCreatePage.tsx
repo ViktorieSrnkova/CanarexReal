@@ -12,7 +12,6 @@ import {
 import {
   emptyEditorContent,
   emptyNewsFormValues,
-  type Lang,
   type NewsAdminItem,
   type NewsEditorContent,
   type NewsFormValues,
@@ -28,7 +27,7 @@ import { postNews, putAdminNews } from "../../api/news";
 import "../../styles/form.css";
 
 const { Title } = Typography;
-const languages: Lang[] = ["cs", "en", "sk"];
+const languages: Language[] = ["cs", "en", "sk"];
 
 type Props = {
   initialData?: NewsAdminItem;

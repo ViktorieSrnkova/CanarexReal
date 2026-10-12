@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { api } from "../../api/axios";
 import { useT } from "../../i18n";
-
-type AuthMode = "login" | "register" | "forgot";
+import type { AuthMode } from "./AuthModal";
 
 type Props = {
   onSwitch: (mode: AuthMode) => void;
