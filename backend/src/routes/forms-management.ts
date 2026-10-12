@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { requireRole, type AuthRequest } from "../middleware/auth.js";
+import { requireRole } from "../middleware/auth.js";
 import prisma from "../lib/db.js";
 import { fullFormSelect } from "../lib/prismaSelect.js";
 

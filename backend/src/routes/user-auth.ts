@@ -14,7 +14,6 @@ import {
 } from "../services/email.js";
 import {
   optionalUser,
-  requireRole,
   requireUser,
   type AuthRequest,
 } from "../middleware/auth.js";

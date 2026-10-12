@@ -12,7 +12,7 @@ import newsRouter from "./routes/news.js";
 import adminNewsRouter from "./routes/news-management.js";
 import formsManagementRouter from "./routes/forms-management.js";
 import filesRouter from "./routes/images.js";
-import uploadRouter from "./routes/upload.js";
+
 import formsRouter from "./routes/forms.js";
 import sitemapRoute from "./routes/sitemap.js";
 import mediaRoutes from "./routes/admin-media.js";
@@ -42,7 +42,6 @@ app.use("/api/admin/listings", adminListingsRouter);
 app.use("/api/admin/aktuality", adminNewsRouter);
 app.use("/api/admin/forms-management", formsManagementRouter);
 app.use("/api/admin/dashboard", dashboardRoutes);
-app.use("/api/admin/files", uploadRouter);
 app.use("/api/admin/media", mediaRoutes);
 
 app.use("/api/listings", listingsRouter);

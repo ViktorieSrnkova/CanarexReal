@@ -1,22 +1,11 @@
-// @ts-ignore
 import { Router } from "express";
 import { requireRole, type AuthRequest } from "../middleware/auth.js";
-import {
-  listingDetailSelect,
-  listingPrintSelect,
-} from "../lib/prismaSelect.js";
+import { listingPrintSelect } from "../lib/prismaSelect.js";
 import prisma from "../lib/db.js";
-import { processAdImages } from "../utils/processImagesHelper.js";
 import { reverseGeocode } from "../utils/reverseGeocode.js";
 import { getSelectedPictogramIds } from "../utils/mapPictogramsHelper.js";
-import { upload } from "../middleware/uploader.js";
 import { replaceTranslations } from "../utils/saveTranslationsHelper.js";
-import { parseTranslations } from "../utils/parseTranslationsHelper.js";
-import {
-  prepareGalleryImages,
-  processGalleryImages,
-} from "../utils/processGalleryImages.js";
-import { convertBufferToThumbnail } from "../utils/thumbnailMaker.js";
+
 import { Prisma } from "@prisma/client";
 import { deleteMediaFromR2 } from "../utils/deleteMediaFromR2Helper.js";
 

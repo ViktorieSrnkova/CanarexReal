@@ -21,20 +21,6 @@ export async function attachEditorImages(params: {
     },
   });
 }
-export function parseMediaIds(value: string | undefined): number[] {
-  if (!value) return [];
-
-  const parsed: unknown = JSON.parse(value);
-
-  if (!Array.isArray(parsed)) {
-    throw new Error("Invalid editorMediaIds format");
-  }
-
-  return parsed.filter(
-    (id): id is number =>
-      typeof id === "number" && Number.isInteger(id) && id > 0,
-  );
-}
 
 type JsonObject = {
   [key: string]: unknown;

@@ -26,7 +26,6 @@ router.get("/images/:id", async (req, res) => {
       return res.status(404).send("Not found");
     }
 
-    // New media stored in Cloudflare R2
     if (image.klic_uloziste) {
       const publicUrl = process.env.R2_PUBLIC_URL;
 
