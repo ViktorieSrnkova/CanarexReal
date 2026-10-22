@@ -180,7 +180,7 @@ function Map() {
                               selected.is_favorite,
                             )
                           }
-                          id={selected.id}
+                          index={selected.index}
                           titulek={selected.inzeraty_preklady[0]?.titulek ?? ""}
                           lokace={selected.adresy?.lokace ?? ""}
                           typ={

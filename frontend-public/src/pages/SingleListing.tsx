@@ -49,7 +49,7 @@ function SingleListing() {
   const t = useT();
   const location = useLocation();
   const rates = useFx();
-  const { id } = useParams();
+  const { index } = useParams();
   const { lang } = useLang();
   const langId = LANGUAGE_TO_ID[lang];
   const [listing, setListing] = useState<ListingThumbnail | null>(null);
@@ -62,16 +62,22 @@ function SingleListing() {
   const [isFavorite, setIsFavorite] = useState(false);
   const { toggleFavoriteApi } = useListings({ paginated: false });
   const { user } = useAuth();
+  const [id, setId] = useState<number>();
 
   useEffect(() => {
-    if (!id) return;
+    if (!index) return;
 
     const load = async () => {
       try {
-        const data = await getListingByThumb({ id: Number(id) }, langId);
-        setListing(data);
-        const detail = await getListingDetail(id, langId);
+        console.log(index);
+        const detail = await getListingDetail(Number(index), langId);
         setDetail(detail);
+
+        const databaseID = detail.id;
+        setId(databaseID);
+        const data = await getListingByThumb({ id: databaseID }, langId);
+        setListing(data);
+        console.log(index);
         setNotAvailable(false);
       } catch (err) {
         const error = err as AxiosError;
@@ -87,7 +93,7 @@ function SingleListing() {
     };
 
     load();
-  }, [id, langId, user]);
+  }, [langId, user, index]);
   useLayoutEffect(() => {
     if (!location.state?.scrollToMap) return;
 
@@ -227,7 +233,7 @@ function SingleListing() {
   }
 
   const cardData = {
-    id: listing.id,
+    index: listing.index,
     titulek: listing.inzeraty_preklady[0]?.titulek ?? "",
     lokace: listing.adresy?.lokace ?? "",
     typ: listing.typy_nemovitosti?.typy_nemovitosti_preklady[0]?.nazev ?? "",

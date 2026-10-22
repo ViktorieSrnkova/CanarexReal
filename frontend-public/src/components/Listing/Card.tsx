@@ -6,7 +6,7 @@ import Favorite from "../General/Favorite";
 import { useState } from "react";
 
 type Props = {
-  id: number;
+  index: number;
   titulek: string;
   lokace: string;
   typ: string;
@@ -33,7 +33,7 @@ function Card(props: Props) {
   return (
     <div className={`card ${props.status_id === 2 ? "status-2-active" : ""}`}>
       <Link
-        to={`/${lang}/listings/${props.id}`}
+        to={`/${lang}/listings/${props.index}`}
         className="card-image"
         onClick={handleNavigate}
       >
@@ -91,7 +91,7 @@ function Card(props: Props) {
         <div className="card-location">
           <img src="/utils/map-pin.svg" alt="map pin" loading="lazy" />
           <Link
-            to={`/${lang}/listings/${props.id}`}
+            to={`/${lang}/listings/${props.index}`}
             className="card-loc-link"
             state={{ scrollToMap: true }}
           >

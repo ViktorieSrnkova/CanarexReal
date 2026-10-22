@@ -277,14 +277,19 @@ router.get("/thumb", async (req: PublicRequest, res) => {
   }
 });
 
-router.get("/:id", optionalUser, async (req: AuthRequest, res) => {
+router.get("/:index", optionalUser, async (req: AuthRequest, res) => {
   try {
-    const id = Number(req.params.id);
+    const index = Number(req.params.index);
+
+    if (!Number.isInteger(index) || index <= 0) {
+      return res.status(400).json({ message: "Invalid index" });
+    }
     const langId = req.langId ?? 2;
     const userId = req.user?.userId ?? undefined;
+
     const listing = await prisma.inzeraty.findFirst({
       where: {
-        id,
+        index,
         inzeraty_preklady: {
           some: {
             jazyky_id: langId,
@@ -297,8 +302,9 @@ router.get("/:id", optionalUser, async (req: AuthRequest, res) => {
     if (!listing) {
       return res.status(404).json({ message: "Listing not found" });
     }
+    const listingId = listing.id;
     const listingPictograms = await prisma.inzeraty_piktogramy.findMany({
-      where: { inzeraty_id: id },
+      where: { inzeraty_id: listingId },
       select: { piktogramy_id: true },
     });
 

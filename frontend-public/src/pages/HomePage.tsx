@@ -153,14 +153,14 @@ function HomePage() {
 
           {listings.slice(0, 6).map((listing, i) => (
             <Card
-              key={listing.id}
+              key={listing.index}
               fetchpriority={i < 2}
               favorited={listing.is_favorite}
               onToggleFavorite={() =>
                 handleToggleFavorite(listing.id, listing.is_favorite)
               }
               {...{
-                id: listing.id,
+                index: listing.index,
                 titulek: listing.inzeraty_preklady[0]?.titulek ?? "",
                 lokace: listing.adresy?.lokace ?? "",
                 typ:

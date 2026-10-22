@@ -110,7 +110,7 @@ export default function Router() {
               }
             />
             <Route
-              path="listings/:id"
+              path="listings/:index"
               element={
                 <FxContext.Provider value={rates}>
                   <SingleListing />

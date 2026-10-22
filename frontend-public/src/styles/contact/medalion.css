@@ -17,6 +17,7 @@
 
 .medalion-role {
   font-size: 0.875em;
+  text-align: center;
 }
 .medalion-hr {
   width: 4.375rem;
@@ -79,4 +80,8 @@
 }
 .marginless {
   margin: 0;
+}
+.medalion-image {
+  min-height: 240px;
+  min-width: 200px;
 }

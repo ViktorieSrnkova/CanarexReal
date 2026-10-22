@@ -7,10 +7,10 @@ import "../styles/pages/contact.css";
 import SEO from "../components/SEO/Meta";
 
 import Stan from "/contact/stan.webp";
-import Chloe from "/contact/chloe.webp";
+import Assistant from "/contact/assistant.jpeg";
 import useImagePreloader from "../hooks/useImagePreloader";
 
-const preloadSrcList: string[] = [Stan, Chloe];
+const preloadSrcList: string[] = [Stan, Assistant];
 
 function Contact() {
   useImagePreloader(preloadSrcList);
@@ -48,14 +48,15 @@ function Contact() {
             flagAlts={["cz flag", "es flag"]}
           />
           <Medalion
-            name="Chloe Golem"
+            name="Vladěna Dolejší"
             role={t("contact.assistRole")}
-            phoneMain="+421 919 490 980"
-            email="chloe@canarexreal.com"
-            alt="Chloe Golem"
-            image={Chloe}
-            flagPath={["/flags/sk.svg"]}
-            flagAlts={["sk flag"]}
+            phoneMain="+420 721 005 339"
+            phoneSecondary="+420 721 005 339"
+            email="vladena@canarexreal.com"
+            alt="Vladěna Dolejší"
+            image={Assistant}
+            flagPath={["/flags/cz.svg", "/flags/cz.svg"]}
+            flagAlts={["cz flag", "cz flag"]}
           />
         </div>
         <div className="contact-map-wrapper">

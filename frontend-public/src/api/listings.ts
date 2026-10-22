@@ -95,10 +95,10 @@ export const getFxRates = async (): Promise<FxRates> => {
 };
 
 export const getListingDetail = async (
-  id: number | string,
+  index: number | string,
   langId: number,
 ): Promise<ListingDetailResponse> => {
-  const { data } = await api.get(`/listings/${id}`, {
+  const { data } = await api.get(`/listings/${index}`, {
     headers: {
       "x-lang-id": langId,
     },

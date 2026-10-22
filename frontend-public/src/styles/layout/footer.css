@@ -82,3 +82,10 @@
 .faq-link {
   color: #1e1e1e;
 }
+.name-title-footer {
+  margin-top: 0;
+  margin-bottom: 8px;
+}
+.gap-br {
+  margin: 0.5rem;
+}

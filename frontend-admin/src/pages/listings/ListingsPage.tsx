@@ -47,7 +47,7 @@ const ListingsPage: React.FC = () => {
   const [galleryOpen, setGalleryOpen] = useState(false);
   const [pagination, setPagination] = useState({
     page: 1,
-    limit: 200,
+    limit: 25,
     total: 0,
   });
   const [images, setImages] = useState<Gallery[]>([]);
@@ -208,7 +208,7 @@ const ListingsPage: React.FC = () => {
   return (
     <div className="listings-page">
       <Title level={2}>Spravovat inzeráty</Title>
-      <div>Počet inzerátů: {data.length}</div>
+      <div>Počet inzerátů: {pagination.total}</div>
 
       <Collapse
         activeKey={filtersOpen ? ["filters"] : []}

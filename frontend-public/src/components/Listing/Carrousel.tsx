@@ -45,7 +45,7 @@ function Carrousel(props: Props) {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
   const mapCard = (sim: ListingThumbnail) => ({
-    id: sim.id,
+    index: sim.index,
     titulek: sim.inzeraty_preklady[0]?.titulek ?? "",
     lokace: sim.adresy?.lokace ?? "",
     typ: sim.typy_nemovitosti?.typy_nemovitosti_preklady[0]?.nazev ?? "",
@@ -155,7 +155,7 @@ function Carrousel(props: Props) {
         <div className="crsl-listings-wrapper">
           {visibleItems.map((sim) => (
             <Card
-              key={sim.id}
+              key={sim.index}
               favorited={sim.is_favorite}
               onToggleFavorite={() =>
                 handleToggleFavorite(sim.id, sim.is_favorite)

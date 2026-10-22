@@ -1,6 +1,7 @@
 import "../../styles/contact/medalion.css";
 import Phone from "../../assets/Phone.svg";
 import Mail from "../../assets/Mail.svg";
+import Whatsapp from "../../assets/Whatsapp.svg";
 type Props = {
   name: string;
   role: string;
@@ -24,6 +25,7 @@ function Medalion(props: Props) {
             loading="eager"
             width={200}
             height={240}
+            className="medalion-image"
             fetchPriority="high"
           />
 
@@ -51,7 +53,7 @@ function Medalion(props: Props) {
               {props.flagPath && props.flagAlts && (
                 <img src={props.flagPath[1]} alt={props.flagAlts[1]} />
               )}
-              <img src={Phone} alt="phone icon" height="20" />
+              <img src={Whatsapp} alt="phone icon" height="20" />
               {props.phoneSecondary}
             </div>
           )}

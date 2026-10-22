@@ -17,7 +17,7 @@ export function useMedia(form: FormInstance<CreateAdFormValues>) {
     setUploading(true);
 
     requestAnimationFrame(() => {
-      const mapped = fileList.slice(0, 30).map((file) => ({
+      const mapped = fileList.slice(0, 50).map((file) => ({
         uid: file.uid,
         file,
         url: URL.createObjectURL(file),

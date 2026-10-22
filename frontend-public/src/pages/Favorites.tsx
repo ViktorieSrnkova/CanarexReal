@@ -80,7 +80,7 @@ function Favorites() {
           <div className="hp-cards-wrapper" style={{ maxWidth: "68.75rem" }}>
             {listings.map((listing, i) => {
               const cardData = {
-                id: listing.id,
+                index: listing.index,
                 titulek: listing.inzeraty_preklady[0]?.titulek ?? "",
                 lokace: listing.adresy?.lokace ?? "",
                 typ:
@@ -99,7 +99,7 @@ function Favorites() {
               return (
                 <Card
                   fetchpriority={i < 2}
-                  key={listing.id}
+                  key={listing.index}
                   favorited={listing.is_favorite}
                   onToggleFavorite={() => openRemoveModal(listing.id)}
                   {...cardData}

@@ -5,6 +5,7 @@ import { useT } from "../../i18n";
 import type { FormValues, InquiryFormPatch } from "../../types/forms";
 import type { FormErrorMap } from "./InqueryFormPartRHF";
 import { useId } from "react";
+import CheckboxOptions from "./CheckboxOptions";
 
 type Props = {
   value: FormValues;
@@ -64,7 +65,7 @@ export default function InqueryFormPart({
         value={[value.sizeFrom ?? 0, value.sizeTo ?? 5000]}
         onChange={([min, max]) => onChange({ sizeFrom: min, sizeTo: max })}
       />
-      <ToggleGroup
+      <CheckboxOptions
         label={t("form.bedrooms")}
         options={[
           { label: "1", value: 1 },
@@ -77,7 +78,7 @@ export default function InqueryFormPart({
         onChange={(val) => onChange({ bedrooms: val })}
       />
       {errors?.bedrooms && <span className="error">{t("form.toggleErr")}</span>}
-      <ToggleGroup
+      <CheckboxOptions
         label={t("form.bathrooms")}
         options={[
           { label: "1", value: 1 },

@@ -192,6 +192,7 @@ const ListingCreatePage: React.FC<Props> = ({
         layout="vertical"
         onFinish={onFinish}
         form={form}
+        initialValues={!isEditMode ? { oblast_prodeje: "Tenerife" } : undefined}
         onFinishFailed={({ errorFields }) => {
           if (errorFields.length > 0) {
             const firstError = errorFields[0];
@@ -381,7 +382,7 @@ const ListingCreatePage: React.FC<Props> = ({
             required
             rules={[{ required: true, message: "Vyplň adresu" }]}
             name="address"
-            label="Adresa"
+            label="Adresa - zadej souřadnice a vyber z nabídky např: 28.0975882,-16.7408147"
             style={{ width: "100%" }}
           >
             <Select
@@ -579,7 +580,7 @@ const ListingCreatePage: React.FC<Props> = ({
                 </Form.Item>
                 <Form.Item
                   name={["translations", lang, "details"]}
-                  label="Podrobnosti"
+                  label="Hlavní charakteristiky nemovitosti - pouze odrážky seznamu!"
                   getValueFromEvent={() => undefined}
                 >
                   <RichTextEditor
