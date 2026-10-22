@@ -4,10 +4,9 @@ import { useT } from "../../i18n";
 import "../../styles/listing/expendableDescription.css";
 import Button from "../General/Button";
 import type { JSONContent } from "@tiptap/core";
-import type { EditorData } from "../../types/editor";
 
 type Props = {
-  content: string | EditorData | JSONContent;
+  content: string | JSONContent;
 };
 
 export const ExpandableDescription: React.FC<Props> = ({ content }) => {
