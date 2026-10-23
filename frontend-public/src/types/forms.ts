@@ -10,19 +10,10 @@ export type ContactFormValues = {
   newsletter: boolean;
 };
 
-export type DetailListingFormValues = ContactFormValues & {
+type DetailListingFormValues = ContactFormValues & {
   index: number;
 };
-export type InqueryForm = {
-  type: string[];
-  priceFrom: number;
-  priceTo: number;
-  sizeFrom: number;
-  sizeTo: number;
-  bathrooms: number[];
-  bedrooms: number[];
-  arrival: string;
-};
+
 export type InqueryFormValues = ContactFormValues & {
   type: string[];
   priceFrom: number;
@@ -40,7 +31,7 @@ type BasePayload = {
   fullPhone: string;
 };
 
-export type FormPayload<T> = T & BasePayload;
+type FormPayload<T> = T & BasePayload;
 
 export type ContactFormPayload = FormPayload<ContactFormValues>;
 
@@ -61,7 +52,7 @@ export type FormValues = {
 };
 export type InquiryFormPatch = Partial<FormValues>;
 
-export interface FormSummary {
+interface FormSummary {
   id: number;
   jmeno: string;
   prijmeni: string;

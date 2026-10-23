@@ -5,7 +5,7 @@ import BaseForm from "../components/Forms/BaseForm";
 import { useT } from "../i18n";
 import "../styles/pages/contact.css";
 import SEO from "../components/SEO/Meta";
-
+import { formatPhoneNumber } from "../utils/formatting";
 import Stan from "/contact/stan.webp";
 import Assistant from "/contact/assistant.jpeg";
 import useImagePreloader from "../hooks/useImagePreloader";
@@ -28,7 +28,7 @@ function Contact() {
           name: "CanarexReal",
           contactPoint: {
             "@type": "ContactPoint",
-            telephone: "+420603257021",
+            telephone: formatPhoneNumber(t("contact.phoneCZ1")),
           },
         }}
       />
@@ -39,8 +39,8 @@ function Contact() {
           <Medalion
             name="Stan Srnka"
             role={t("contact.ceoRole")}
-            phoneMain="+420 603 257 021"
-            phoneSecondary="+34 604 198 470"
+            phoneMain={formatPhoneNumber(t("contact.phoneCZ1"))}
+            phoneSecondary={formatPhoneNumber(t("contact.phoneES"))}
             email="stan@canarexreal.com"
             alt="Stanislav Srnka"
             image={Stan}
@@ -50,8 +50,8 @@ function Contact() {
           <Medalion
             name="Vladěna Dolejší"
             role={t("contact.assistRole")}
-            phoneMain="+420 721 005 339"
-            phoneSecondary="+420 721 005 339"
+            phoneMain={formatPhoneNumber(t("contact.phoneCZ2"))}
+            phoneSecondary={formatPhoneNumber(t("contact.phoneCZ2"))}
             email="vladena@canarexreal.com"
             alt="Vladěna Dolejší"
             image={Assistant}

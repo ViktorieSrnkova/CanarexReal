@@ -1,4 +1,3 @@
-export type LanguageId = 1 | 2 | 3;
 export type RawListing = {
   id: number;
   index: number;
@@ -119,7 +118,7 @@ export type RawListingDetail = {
   }[];
 };
 
-export type GalleryAlt = {
+type GalleryAlt = {
   lang: number;
   text: string;
 };

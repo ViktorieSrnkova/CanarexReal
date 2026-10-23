@@ -38,17 +38,12 @@ export type ListingThumbnail = {
   }[];
 };
 
-export type GetListingsQuery = {
-  page?: number;
-  limit?: number;
-};
-
 export type ListingsThumbResponse = {
   thumbnails: ListingThumbnail[];
   total: number;
 };
 
-export type listingDetailSelect = {
+type listingDetailSelect = {
   id: number;
   index: number;
   cena_v_eur: number;
@@ -94,7 +89,7 @@ export type listingDetailSelect = {
 
   obrazky: ListingImageRaw[];
 };
-export type ListingImageRaw = {
+type ListingImageRaw = {
   id: number;
   poradi: number;
   mime_typ: string;
@@ -112,7 +107,7 @@ export type ListingDetailResponse = listingDetailSelect & {
   inzeraty_piktogramy: PictogramDTO[];
 };
 
-export type NewsThumbnailImage = {
+type NewsThumbnailImage = {
   id: number;
   alt: string | null;
 };

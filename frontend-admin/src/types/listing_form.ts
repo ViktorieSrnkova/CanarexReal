@@ -14,13 +14,13 @@ export const OBLASTI = [
   { value: "Costa del Sol", label: "Costa del Sol" },
 ] as const;
 export type PropertyType = (typeof PROPERTY_TYPE_OPTIONS)[number]["value"];
-export interface Translation {
+interface Translation {
   alt?: string;
   title?: string;
   description?: JSONContent;
   details?: JSONContent;
 }
-export type Translations = Record<Language, Translation>;
+type Translations = Record<Language, Translation>;
 
 export type AddressOption = {
   label: string;
@@ -28,11 +28,7 @@ export type AddressOption = {
   lat?: string;
   lon?: string;
 };
-export type ImageItem = {
-  uid: string;
-  file: File;
-  url: string;
-};
+
 export interface CreateAdFormValues {
   id?: number;
   isOnHomepage: boolean;
@@ -50,9 +46,7 @@ export interface CreateAdFormValues {
   komplex?: string;
   oblast_prodeje: string;
 }
-export interface CreateListingPayload extends CreateAdFormValues {
-  translations: Translations;
-}
+
 export const FEATURES = [
   { label: "Parkování", value: 14 },
   { label: "Terasa", value: 4 },
@@ -67,8 +61,6 @@ export const FEATURES = [
   { label: "Komunitní zahrada", value: 16 },
   { label: "Blízko pláže", value: 13 },
 ] as const;
-
-export type FeatureKey = (typeof FEATURES)[number];
 
 export type EditAdPayload = {
   index: number;

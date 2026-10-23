@@ -28,9 +28,7 @@ export type GetListingsParams = {
   filters?: ListingFilters;
   sort?: ListingSort;
 };
-export type GetListingsResponse = {
-  data: ListingThumbnail[];
-};
+
 export const getListingsThumbs = async (
   langId: number,
   params?: GetListingsParams,

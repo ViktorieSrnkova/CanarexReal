@@ -9,7 +9,7 @@ type Props<T> = {
   onEditGallery?: (value: T) => void;
 };
 
-export function Actions<T>({
+function Actions<T>({
   value,
   onEdit,
   onDelete,

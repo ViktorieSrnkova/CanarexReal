@@ -8,7 +8,7 @@ import {
 } from "../../types/listings";
 import { PROPERTY_TYPE_OPTIONS } from "../../types/listing_form";
 
-import { Actions } from "../Actions";
+import Actions from "../Actions";
 import { Status } from "./TableRow/Status";
 import { Visibility } from "./TableRow/Visibility";
 import { Language } from "./TableRow/Language";

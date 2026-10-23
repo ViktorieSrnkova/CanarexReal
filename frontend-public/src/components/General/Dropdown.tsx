@@ -1,5 +1,6 @@
 import "../../styles/general/dropdown.css";
-export type DropdownOption<T extends string | number = string | number> = {
+
+type DropdownOption<T extends string | number = string | number> = {
   label: string;
   value: T;
 };

@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { type Lang, LangContext } from "./langContext";
+import { LangContext } from "./langContext";
+import type { Language } from "../types/general";
 
-const getInitialLang = (): Lang => {
+const getInitialLang = (): Language => {
   const path = window.location.pathname;
 
   if (path.startsWith("/cs")) return "cs";
@@ -21,7 +22,7 @@ const getInitialLang = (): Lang => {
 };
 
 export function LangProvider({ children }: { children: React.ReactNode }) {
-  const [lang, setLang] = useState<Lang>(getInitialLang);
+  const [lang, setLang] = useState<Language>(getInitialLang);
 
   useEffect(() => {
     localStorage.setItem("lang", lang);

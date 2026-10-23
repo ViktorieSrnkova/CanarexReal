@@ -32,10 +32,9 @@ function typeIDsToNames(typeIds: number[] | undefined): string[] | undefined {
   return typeIds.map((id) => typeMap[id] || `Neznámý typ (${id})`);
 }
 
-export const formatDate = (date: string | Date) =>
-  new Date(date).toLocaleDateString();
+const formatDate = (date: string | Date) => new Date(date).toLocaleDateString();
 
-export const formatMoneyEUR = (amount: number) =>
+const formatMoneyEUR = (amount: number) =>
   new Intl.NumberFormat("cs-CZ", {
     style: "currency",
     currency: "EUR",

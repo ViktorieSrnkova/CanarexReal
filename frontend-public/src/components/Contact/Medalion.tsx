@@ -2,6 +2,7 @@ import "../../styles/contact/medalion.css";
 import Phone from "../../assets/Phone.svg";
 import Mail from "../../assets/Mail.svg";
 import Whatsapp from "../../assets/Whatsapp.svg";
+import { formatPhoneNumber } from "../../utils/formatting";
 type Props = {
   name: string;
   role: string;
@@ -44,7 +45,7 @@ function Medalion(props: Props) {
                 <img src={props.flagPath[0]} alt={props.flagAlts[0]} />
               )}
               <img src={Phone} alt="phone icon" height="20" />
-              {props.phoneMain}
+              {formatPhoneNumber(props.phoneMain)}
             </div>
           )}
 
@@ -54,7 +55,7 @@ function Medalion(props: Props) {
                 <img src={props.flagPath[1]} alt={props.flagAlts[1]} />
               )}
               <img src={Whatsapp} alt="phone icon" height="20" />
-              {props.phoneSecondary}
+              {formatPhoneNumber(props.phoneSecondary)}
             </div>
           )}
         </div>

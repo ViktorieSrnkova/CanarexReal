@@ -150,7 +150,7 @@ router.get("/:id", async (req: PublicRequest, res) => {
   }
 });
 
-export function newsWithLangWhere(langId: number) {
+function newsWithLangWhere(langId: number) {
   return {
     aktuality_preklady: {
       some: {

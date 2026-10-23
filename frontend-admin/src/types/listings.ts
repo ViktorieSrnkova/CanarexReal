@@ -1,19 +1,17 @@
 import type { PropertyType } from "./listing_form";
 
-export type ListingLanguageMap = {
+type ListingLanguageMap = {
   en: boolean;
   cs: boolean;
   sk: boolean;
 };
-
-export type ImageLanguageMap = ListingLanguageMap;
 
 export type ListingStatus = {
   id: number;
   label: string | null;
 };
 
-export type ListingType = {
+type ListingType = {
   id: number;
   kod: string;
   label: string | null;
@@ -25,7 +23,7 @@ export type ListingPictogram = {
   label: string | null;
 };
 
-export type ListingImage = {
+type ListingImage = {
   id: number;
   url: string;
   order: number;
@@ -82,9 +80,8 @@ export const statusOptions = [
   { value: 2, label: "PRODÁNO" },
   { value: 3, label: "REZERVOVÁNO" },
 ] as const;
-export type StatusOption = (typeof statusOptions)[number];
 
-export type ListingSearchResult = {
+type ListingSearchResult = {
   id: number;
   index: number;
   cena_v_eur: number | null;

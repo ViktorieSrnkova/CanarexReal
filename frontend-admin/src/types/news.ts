@@ -1,7 +1,7 @@
 import type { JSONContent } from "@tiptap/react";
 import type { Language } from "./general";
 
-export type Translation = {
+type Translation = {
   title: string;
   alt: string;
 };
@@ -22,18 +22,18 @@ export type NewsFormState = {
 
 export type NewsEditorContent = Record<Language, JSONContent | undefined>;
 
-export type NewsAdminTranslation = {
+type NewsAdminTranslation = {
   jazyky_id: number;
   titulek: string | null;
   text: object | undefined;
 };
 
-export type NewsAdminImageTranslation = {
+type NewsAdminImageTranslation = {
   jazyky_id: number;
   alt_text: string | null;
 };
 
-export type NewsAdminImage = {
+type NewsAdminImage = {
   id: number;
   poradi: number | null;
   url: string;
@@ -46,14 +46,6 @@ export type NewsAdminItem = {
   viditelnost: boolean;
   aktuality_preklady: NewsAdminTranslation[];
   obrazky: NewsAdminImage[];
-};
-
-export type UploadedImage = {
-  success: number;
-  file: {
-    url: string;
-    alt?: string;
-  };
 };
 
 export const emptyNewsFormValues: NewsFormValues = {

@@ -3,12 +3,12 @@ export const LANGS = [
   { id: 1, label: "EN" },
   { id: 3, label: "SK" },
 ];
-export type newImage = {
+type newImage = {
   id: number;
   order: number;
   alts: { lang: number; text: string }[];
 };
-export type existingImage = {
+type existingImage = {
   id: number;
   order: number;
   alts: { lang: number; text: string }[];

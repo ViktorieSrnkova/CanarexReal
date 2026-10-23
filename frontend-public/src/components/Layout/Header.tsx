@@ -12,6 +12,7 @@ import { useState, useEffect } from "react";
 import { useLang } from "../../hooks/i18n/useLang";
 import Nav from "./Nav";
 import CanarexReal from "../../assets/CanarexReal.svg";
+import { formatPhoneNumber } from "../../utils/formatting";
 
 function Header() {
   const t = useT();
@@ -53,7 +54,7 @@ function Header() {
           </div>
           <span className="phone number">
             <img src={Phone} alt="phone" height="20" />
-            +420 603 257 021
+            {formatPhoneNumber(t("contact.phoneCZ1"))}
           </span>
           <a href="mailto:info@canarexreal.com" className="mail">
             <img src={Mail} alt="email" height="16" />

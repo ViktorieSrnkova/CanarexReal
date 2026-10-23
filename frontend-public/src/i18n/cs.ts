@@ -115,6 +115,9 @@ export const cs = {
   contact: {
     email: "stan@canarexreal.com",
     email2: "vladena@canarexreal.com",
+    phoneCZ1: "+420603257021",
+    phoneCZ2: "+420721005339",
+    phoneES: "+34604198470",
     title: "Kontaktujte nás!",
     subtitle: "Rádi zodpovíme veškeré Vaše dotazy.",
     ceoRole: "CEO CanarexReal",

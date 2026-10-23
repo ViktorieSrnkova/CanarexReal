@@ -1,13 +1,3 @@
-export type ReverseGeocodeResult = {
-  city?: string;
-  country?: string;
-  state?: string;
-  street?: string;
-  houseNumber?: string;
-  postcode?: string;
-  label: string;
-};
-
 export async function reverseGeocode(lat: number, lon: number) {
   const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`;
 

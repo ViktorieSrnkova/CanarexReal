@@ -4,8 +4,8 @@ import type {
   NewsFormState,
   NewsFormValues,
   NewsEditorContent,
-  Lang,
 } from "../types/news";
+import type { Language } from "../types/general";
 import { uploadMedia } from "../services/mediaService";
 import type { NewsPayload } from "../api/news";
 
@@ -22,7 +22,7 @@ export const useNewsForm = () => {
     return {
       visible: values.visible,
       translations: Object.fromEntries(
-        (Object.keys(values.translations) as Lang[]).map((lang) => [
+        (Object.keys(values.translations) as Language[]).map((lang) => [
           lang,
           {
             title: values.translations[lang]?.title ?? "",

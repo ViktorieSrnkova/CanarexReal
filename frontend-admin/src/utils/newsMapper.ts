@@ -6,7 +6,7 @@ import {
 } from "../types/news";
 import { LANGUAGE_MAP } from "../types/general";
 
-export const castTiptapContent = (
+const castTiptapContent = (
   value: object | null | undefined,
 ): JSONContent | undefined => {
   if (!value) return undefined;

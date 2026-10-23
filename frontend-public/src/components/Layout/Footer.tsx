@@ -8,6 +8,7 @@ import Mail from "../../assets/Mail.svg";
 import Whatsapp from "../../assets/Whatsapp.svg";
 import "../../styles/responsivity/resize.css";
 import { useLang } from "../../hooks/i18n/useLang";
+import { formatPhoneNumber } from "../../utils/formatting";
 
 const Footer: React.FC = () => {
   const t = useT();
@@ -61,13 +62,17 @@ const Footer: React.FC = () => {
               <div className="phone">
                 <img src="/flags/cz.svg" alt="cz flag" loading="lazy" />
                 <img src={Phone} alt="phone" height={18} loading="lazy" />
-                <p className="number">+420 603 257 021</p>
+                <p className="number">
+                  {formatPhoneNumber(t("contact.phoneCZ1"))}
+                </p>
               </div>
 
               <div className="phone">
                 <img src="/flags/es.svg" alt="es flag" loading="lazy" />
                 <img src={Whatsapp} alt="phoneES" height={18} loading="lazy" />
-                <p className="number">+34 604 198 470</p>
+                <p className="number">
+                  {formatPhoneNumber(t("contact.phoneES"))}
+                </p>
               </div>
               <div className="mail">
                 <img src={Mail} alt="email" height="16" loading="lazy" />
@@ -81,12 +86,18 @@ const Footer: React.FC = () => {
               <div className="phone">
                 <img src="/flags/cz.svg" alt="cz-vladka flag" loading="lazy" />
                 <img src={Phone} alt="phone" height={18} loading="lazy" />
-                <p className="number">+420 721 005 339</p>
+                <p className="number">
+                  {" "}
+                  {formatPhoneNumber(t("contact.phoneCZ2"))}
+                </p>
               </div>
               <div className="phone">
                 <img src="/flags/cz.svg" alt="cz-vladka flag" loading="lazy" />
                 <img src={Whatsapp} alt="phone" height={18} loading="lazy" />
-                <p className="number">+420 721 005 339</p>
+                <p className="number">
+                  {" "}
+                  {formatPhoneNumber(t("contact.phoneCZ2"))}
+                </p>
               </div>
               <div className="mail">
                 <img src={Mail} alt="email-vladka" height="16" loading="lazy" />

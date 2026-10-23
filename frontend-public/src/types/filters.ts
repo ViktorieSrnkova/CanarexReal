@@ -8,10 +8,4 @@ export type ListingFilters = {
   bathrooms?: number[];
   sort?: ListingSort;
 };
-export const SORT_OPTIONS = [
-  { label: "Nejnovější", value: "date" },
-  { label: "Cena od nejnižší", value: "price_asc" },
-  { label: "Cena od nejvyšší", value: "price_desc" },
-] as const;
-
-export type ListingSort = (typeof SORT_OPTIONS)[number]["value"];
+export type ListingSort = "date" | "price_asc" | "price_desc";

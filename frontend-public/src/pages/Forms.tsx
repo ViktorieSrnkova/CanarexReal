@@ -175,7 +175,7 @@ export default function UserFormsTable() {
                           <div className="form-listing-row">
                             <div className="form-card">
                               <Card
-                                id={listing.id}
+                                index={listing.index}
                                 titulek={
                                   listing.inzeraty_preklady[0]?.titulek ?? ""
                                 }

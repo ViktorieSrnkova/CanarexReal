@@ -26,7 +26,7 @@ type JsonObject = {
   [key: string]: unknown;
 };
 
-export function extractEditorMediaIds(value: unknown): number[] {
+function extractEditorMediaIds(value: unknown): number[] {
   const ids = new Set<number>();
 
   const visit = (node: unknown): void => {

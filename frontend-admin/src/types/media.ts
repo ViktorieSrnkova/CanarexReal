@@ -5,11 +5,6 @@ export type MediaUploadResult = {
   size: number;
 };
 
-export type UploadUrlResponse = {
-  uploadUrl: string;
-  storageKey: string;
-};
-
 export type MediaResourceType = "properties" | "news";
 
 export type CreateUploadUrlRequest = {

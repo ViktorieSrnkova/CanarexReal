@@ -3,7 +3,7 @@ import { cs } from "./cs";
 import { en } from "./en";
 import { sk } from "./sk";
 
-export const translations = {
+const translations = {
   cs,
   en,
   sk,
