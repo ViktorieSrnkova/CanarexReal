@@ -485,6 +485,10 @@ export const cs = {
     ok: "Odebrat",
     cancel: "Ponechat",
     loginNeeded: "Pro přidání do oblíbených je nutné se přihlásit.",
+    button: "Přejít na nabídku nemovitostí",
+    empty: "Žádné oblíbené inzeráty",
+    emptyDescription:
+      "Zatím jste nepřidali žádný inzerát mezi oblíbené. Inzeráty můžete přidat kliknutím na srdíčko v pravém horním rohu jejich karty nebo v horní části stránky s detailem inzerátu.",
   },
   usrSettings: {
     nameReq: "Jméno je povinné",
@@ -549,5 +553,12 @@ export const cs = {
     price: "Rozpočet:",
     text: "Text zprávy:",
     unsure: "Nevím",
+  },
+  err404: {
+    title: "404 – Stránka nenalezena",
+    subtext: "Tato stránka neexistuje nebo byla odstraněna.",
+    description:
+      "Zkontrolujte prosím zadanou adresu, případně se pomocí tlačítka níže vraťte na domovskou stránku.",
+    button: "Zpět na domovskou stránku",
   },
 };

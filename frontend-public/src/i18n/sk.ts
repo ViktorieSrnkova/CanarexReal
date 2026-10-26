@@ -115,6 +115,9 @@ export const sk = {
   contact: {
     email: "stan@canarexreal.com",
     email2: "vladena@canarexreal.com",
+    phoneCZ1: "+420603257021",
+    phoneCZ2: "+420721005339",
+    phoneES: "+34604198470",
     title: "Kontaktujte nás!",
     subtitle: "Radi zodpovieme všetky Vaše dotazy.",
     ceoRole: "CEO CanarexReal",
@@ -484,6 +487,10 @@ export const sk = {
     ok: "Odstrániť",
     cancel: "Nechávať",
     loginNeeded: "Na pridanie do obľúbených sa musíte prihlásiť.",
+    button: "Prejsť na ponuku nehnuteľností",
+    empty: "Žiadne obľúbené inzeráty",
+    emptyDescription:
+      "Zatiaľ ste nepridali žiadny inzerát medzi obľúbené. Inzeráty môžete pridať kliknutím na srdiečko v pravom hornom rohu ich karty alebo v hornej časti detailu inzerátu.",
   },
   usrSettings: {
     nameReq: "Meno je povinné",
@@ -548,5 +555,12 @@ export const sk = {
     price: "ozpočet:",
     text: "Text správy:",
     unsure: "Neviem",
+  },
+  err404: {
+    title: "404 – Stránka sa nenašla",
+    subtext: "Táto stránka neexistuje alebo bola odstránená.",
+    description:
+      "Skontrolujte, prosím, zadanú adresu, prípadne sa pomocou tlačidla nižšie vráťte na domovskú stránku.",
+    button: "Späť na domovskú stránku",
   },
 };

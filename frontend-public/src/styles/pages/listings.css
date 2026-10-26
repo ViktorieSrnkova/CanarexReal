@@ -139,3 +139,13 @@
 .filters-toggle {
   display: none;
 }
+.map-loader {
+  width: 854px;
+  height: 560px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.content {
+  max-width: 90rem;
+}

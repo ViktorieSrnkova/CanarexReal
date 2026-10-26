@@ -10,7 +10,7 @@ import { useLang } from "../hooks/i18n/useLang";
 import Filters from "../components/General/Filters";
 import Card from "../components/Listing/Card";
 import "../styles/pages/listings.css";
-import toast from "react-hot-toast";
+import toast, { LoaderIcon } from "react-hot-toast";
 import { useAuth } from "../Auth/authStore";
 const SearchMap = lazy(() => import("../components/Listing/SearchMap"));
 
@@ -30,6 +30,7 @@ function Map() {
     setFiltersOpen,
     toggleFavoriteApi,
     setListings,
+    isLoading,
   } = useListings({
     paginated: false,
   });
@@ -115,8 +116,12 @@ function Map() {
       );
     }
   };
-  if (!filtersReady) {
-    return <p>{t("general.loading")}</p>;
+  if (!filtersReady || isLoading) {
+    return (
+      <div className="map-loader">
+        <LoaderIcon />
+      </div>
+    );
   }
   return (
     <>
@@ -140,7 +145,13 @@ function Map() {
                 <NoFilters />
               ) : (
                 <>
-                  <Suspense fallback={<div>Loading map...</div>}>
+                  <Suspense
+                    fallback={
+                      <div className="map-loader">
+                        <LoaderIcon />
+                      </div>
+                    }
+                  >
                     <SearchMap
                       markers={listings.filter(hasCoords).map((l) => ({
                         id: l.id,

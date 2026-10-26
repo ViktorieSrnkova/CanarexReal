@@ -1,6 +1,7 @@
 .news {
   padding-inline: 20px;
   width: 100%;
+  max-width: 90rem;
 }
 .news .content {
   padding-top: 0 !important;

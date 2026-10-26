@@ -115,6 +115,9 @@ export const en = {
   contact: {
     email: "stan@canarexreal.com",
     email2: "vladena@canarexreal.com",
+    phoneCZ1: "+420603257021",
+    phoneCZ2: "+420721005339",
+    phoneES: "+34604198470",
     title: "Contact us!",
     subtitle: "We will happily answer all your questions.",
     ceoRole: "CEO of CanarexReal",
@@ -482,6 +485,10 @@ export const en = {
     ok: "Remove",
     cancel: "Keep",
     loginNeeded: "You must be logged in to add this to your favorites.",
+    button: "Go to property listings",
+    empty: "No favorite listings",
+    emptyDescription:
+      "You haven't added any listings to your favorites yet. You can add listings by clicking the heart icon in the top-right corner of a listing card or at the top of the listing details page.",
   },
   usrSettings: {
     nameReq: "Name is required",
@@ -548,5 +555,12 @@ export const en = {
     price: "Budget:",
     text: "Message:",
     unsure: "I don't know",
+  },
+  err404: {
+    title: "404 – Page Not Found",
+    subtext: "This page doesn't exist or has been removed.",
+    description:
+      "Please check the address you entered or use the button below to return to the homepage.",
+    button: "Back to Homepage",
   },
 };

@@ -11,6 +11,8 @@ import { getFavoritesList, removeFavorite } from "../api/favorites";
 import ConfirmModal from "../components/General/ConfirmModal";
 import "../styles/pages/favorites.css";
 import { useT } from "../i18n";
+import { Link } from "react-router-dom";
+import Button from "../components/General/Button";
 
 function Favorites() {
   const { page, setPage } = useListings({
@@ -25,8 +27,10 @@ function Favorites() {
   const totalPages = Math.ceil(total / limit);
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [selectedId, setSelectedId] = useState<number | null>(null);
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     const load = async () => {
+      setLoading(true);
       try {
         const { thumbnails, total } = await getFavoritesList(
           langId,
@@ -38,6 +42,8 @@ function Favorites() {
         setTotal(total);
       } catch (err) {
         console.error(err);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -70,11 +76,21 @@ function Favorites() {
         <h1>Oblíbené inzeráty</h1>
       </div>
       <div className="listings favorites">
-        {listings.length === 0 ? (
+        {loading ? (
           <div className="hp-cards-wrapper">
             {Array.from({ length: 9 }).map((_, i) => (
               <CardSkeleton key={i} />
             ))}
+          </div>
+        ) : listings.length === 0 ? (
+          <div className="favorites-empty">
+            <h2>{t("favorites.empty")}</h2>
+            <p>{t("favorites.emptyDescription")}</p>
+            <Button>
+              <Link className="no-underline" to={"/listings"}>
+                {t("favorites.button")}
+              </Link>
+            </Button>
           </div>
         ) : (
           <div className="hp-cards-wrapper" style={{ maxWidth: "68.75rem" }}>
@@ -119,7 +135,9 @@ function Favorites() {
           }}
           onConfirm={confirmRemove}
         />
-        <Pagination page={page} totalPages={totalPages} onChange={setPage} />
+        {listings.length !== 0 && (
+          <Pagination page={page} totalPages={totalPages} onChange={setPage} />
+        )}
       </div>
     </>
   );

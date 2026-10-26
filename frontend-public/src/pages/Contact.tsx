@@ -9,6 +9,7 @@ import { formatPhoneNumber } from "../utils/formatting";
 import Stan from "/contact/stan.webp";
 import Assistant from "/contact/assistant.jpeg";
 import useImagePreloader from "../hooks/useImagePreloader";
+import { LoaderIcon } from "react-hot-toast";
 
 const preloadSrcList: string[] = [Stan, Assistant];
 
@@ -65,8 +66,20 @@ function Contact() {
         </div>
       </div>
       <div className="contact-map">
-        <Suspense fallback={<div>Loading map...</div>}>
-          <Map lat={28.239334} lng={-16.840377} height="20rem" zoom={16} />
+        <Suspense
+          fallback={
+            <div className="map-loader">
+              <LoaderIcon />
+            </div>
+          }
+        >
+          <Map
+            lat={28.239334}
+            lng={-16.840377}
+            height="20rem"
+            zoom={16}
+            contact={true}
+          />
         </Suspense>
       </div>
       <img

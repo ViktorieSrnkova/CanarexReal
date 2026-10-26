@@ -117,33 +117,31 @@ function Listings() {
               )}
 
               {listings.map((listing, i) => (
-                <>
-                  <Card
-                    key={listing.index}
-                    fetchpriority={i < 2}
-                    favorited={listing.is_favorite}
-                    onToggleFavorite={() =>
-                      handleToggleFavorite(listing.id, listing.is_favorite)
-                    }
-                    status={listing.statusy?.statusy_preklady[0]?.nazev ?? ""}
-                    status_id={listing.statusy_id}
-                    {...{
-                      index: listing.index,
-                      titulek: listing.inzeraty_preklady[0]?.titulek ?? "",
-                      lokace: listing.adresy?.lokace ?? "",
-                      typ:
-                        listing.typy_nemovitosti?.typy_nemovitosti_preklady[0]
-                          ?.nazev ?? "",
-                      cena_v_eur: listing.cena_v_eur,
-                      loznice: listing.loznice,
-                      koupelny: listing.koupelny,
-                      velikost: listing.velikost,
-                      obrazekId: listing.obrazky[0]?.id ?? 0,
-                      alt:
-                        listing.obrazky[0]?.obrazky_preklady[0]?.alt_text ?? "",
-                    }}
-                  />
-                </>
+                <Card
+                  key={listing.index}
+                  fetchpriority={i < 2}
+                  favorited={listing.is_favorite}
+                  onToggleFavorite={() =>
+                    handleToggleFavorite(listing.id, listing.is_favorite)
+                  }
+                  status={listing.statusy?.statusy_preklady[0]?.nazev ?? ""}
+                  status_id={listing.statusy_id}
+                  {...{
+                    index: listing.index,
+                    titulek: listing.inzeraty_preklady[0]?.titulek ?? "",
+                    lokace: listing.adresy?.lokace ?? "",
+                    typ:
+                      listing.typy_nemovitosti?.typy_nemovitosti_preklady[0]
+                        ?.nazev ?? "",
+                    cena_v_eur: listing.cena_v_eur,
+                    loznice: listing.loznice,
+                    koupelny: listing.koupelny,
+                    velikost: listing.velikost,
+                    obrazekId: listing.obrazky[0]?.id ?? 0,
+                    alt:
+                      listing.obrazky[0]?.obrazky_preklady[0]?.alt_text ?? "",
+                  }}
+                />
               ))}
             </div>
 

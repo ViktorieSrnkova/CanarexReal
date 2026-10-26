@@ -14,16 +14,22 @@ type Props = {
   lng: number;
   zoom: number;
   height: string;
+  contact?: boolean;
 };
 
-function Map({ lat, lng, zoom, height }: Props) {
+function Map({ lat, lng, zoom, height, contact }: Props) {
   const position: [number, number] = [lat, lng];
 
   return (
     <MapContainer
       center={position}
       zoom={zoom}
-      style={{ height: height, width: "100%" }}
+      style={{
+        height: height,
+        width: "100%",
+        position: contact ? "absolute" : "relative",
+        left: contact ? 0 : "unset",
+      }}
       scrollWheelZoom={false}
       className="map"
     >

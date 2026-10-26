@@ -91,7 +91,14 @@ export default function Router() {
               </ProtectedRoute>
             }
           />
-          <Route path="reset-password" element={<ResetPassword />} />
+          <Route
+            path="reset-password"
+            element={
+              <ProtectedRoute>
+                <ResetPassword />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="favorites"
             element={

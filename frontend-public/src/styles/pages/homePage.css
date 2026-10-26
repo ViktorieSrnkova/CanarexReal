@@ -6,6 +6,7 @@
   justify-content: center;
   align-items: flex-start;
   transition: opacity 200ms ease;
+  max-width: 90rem;
 }
 .home-page .hp-cards-wrapper {
   padding: 0.75em 2em 3em 2em;
@@ -25,15 +26,15 @@
 .hero {
   position: relative;
   width: 100%;
-  max-width: 90rem;
+
   height: 19.438rem;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   color: #1e1e1e;
-  padding-left: 8.875em;
-  padding-right: 1em;
+
+  align-items: center;
 }
 .heroImage {
   position: absolute;
@@ -41,7 +42,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center;
+  object-position: top;
   z-index: 0;
 }
 .heroOverlay {
@@ -57,6 +58,9 @@
   flex-direction: column;
   justify-content: flex-start;
   color: #1e1e1e;
+  max-width: 90rem;
+  width: 100%;
+  padding-inline: 2rem;
 }
 
 .heroContent h1 {

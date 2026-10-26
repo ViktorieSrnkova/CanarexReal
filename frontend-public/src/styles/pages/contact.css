@@ -4,6 +4,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  max-width: 90rem;
 }
 .contact h1 {
   font-size: 1.75em !important;
@@ -74,4 +75,11 @@
 }
 .details-form .card {
   background-color: #fff;
+}
+.map-loader {
+  width: 100%;
+  height: 20rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
