@@ -65,7 +65,7 @@ function Services() {
         noindex
       />
 
-      <div className="white faq serv beggining">
+      <div className="white  serv beggining">
         <h1>{t("services.title")}</h1>
         <div className="s-first">
           <img

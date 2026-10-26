@@ -1,3 +1,13 @@
+/* NOTO COLOR EMOJI */
+@font-face {
+  font-family: "Noto Color Emoji";
+  src: url("../../assets/fonts/NotoColorEmoji/NotoColorEmoji-Regular.woff2")
+    format("woff2");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
 .tiptap-renderer .tiptap-emoji {
   font-family: "Noto Color Emoji", sans-serif;
 }
@@ -249,4 +259,19 @@
   font-size: 0.75em;
   text-decoration: inherit;
   text-underline-offset: -0.15em;
+}
+.tiptap-renderer td {
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+.tiptap-renderer tbody tr:nth-child(2n) {
+  background: #f8f8f8;
+}
+.tiptap-renderer tbody tr {
+  border-bottom: 1px solid #e5e5e5;
+}
+.tiptap-renderer td:first-child {
+  font-weight: 600;
+  color: #1e1e1e;
 }

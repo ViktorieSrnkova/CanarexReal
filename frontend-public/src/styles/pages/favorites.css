@@ -13,4 +13,17 @@
 }
 .favorites .hp-cards-wrapper {
   padding-bottom: 1rem;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  align-items: flex-start;
+  transition: opacity 200ms ease;
+  max-width: 68.75rem;
+}
+.favorites h1 {
+  font-size: 1.75em;
+  text-align: center;
+  margin-top: 2rem;
 }

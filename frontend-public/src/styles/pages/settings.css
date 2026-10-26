@@ -5,7 +5,11 @@
   /*  justify-content: space-between; */
   justify-content: center;
 }
-
+.settings h1 {
+  font-size: 1.75em;
+  text-align: center;
+  margin-top: 2rem;
+}
 .settings-infosection,
 .button-section {
   display: flex;

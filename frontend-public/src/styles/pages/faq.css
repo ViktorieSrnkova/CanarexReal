@@ -19,5 +19,5 @@
 }
 .faq.description-wrapper {
   gap: 0 !important;
-  padding-inline: 2rem !important;
+  padding-inline: 2rem;
 }

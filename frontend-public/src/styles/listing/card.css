@@ -69,6 +69,8 @@
   font-size: 0.875em;
   min-height: 3rem;
   line-height: 140%;
+  margin-top: 0.25rem;
+  margin-bottom: 0.3rem;
 }
 .card-loc-link {
   color: #1e1e1e;
@@ -89,6 +91,7 @@
   line-height: 140%;
   height: 1.375rem;
   align-items: center;
+  margin-bottom: 0.25rem;
 }
 .card-price {
   font-size: 1em;

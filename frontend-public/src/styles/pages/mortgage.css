@@ -1,5 +1,16 @@
 .mortgage {
   margin-bottom: 2rem;
+  padding-inline: 2rem;
+}
+.mortgage h2 {
+  font-weight: 700;
+  font-size: 1.125em !important;
+  margin-top: 3rem;
+}
+.mortgage h1 {
+  font-size: 1.75em;
+  text-align: center;
+  margin-top: 2rem;
 }
 table {
   width: 100%;

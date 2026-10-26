@@ -52,6 +52,8 @@
 }
 .serv h2 {
   margin-top: 2rem;
+  font-weight: 700;
+  font-size: 1.125em !important;
 }
 .serv > *:first-child .s-text h2:first-of-type {
   margin-top: 0;
@@ -62,6 +64,8 @@
 .beggining h1 {
   margin-bottom: 2rem;
   margin-top: 1rem;
+  font-size: 1.75em;
+  text-align: center;
 }
 .stan {
   max-width: 18.75rem;

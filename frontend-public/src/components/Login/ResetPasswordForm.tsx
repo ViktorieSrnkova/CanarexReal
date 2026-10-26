@@ -7,6 +7,7 @@ import { z } from "zod";
 import eye from "../../assets/eye.svg";
 import noeye from "../../assets/noeye.svg";
 import { useLang } from "../../hooks/i18n/useLang";
+import "../../styles/login/loginPage.css";
 type Errors = {
   password?: string;
   confirmPassword?: string;

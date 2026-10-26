@@ -13,7 +13,7 @@ function Mortgage() {
         description={t("SEO.Mortgage_description")}
         noindex
       />
-      <div className="description-wrapper faq mortgage">
+      <div className="description-wrapper mortgage ">
         <h1>{t("mortgage.title")}</h1>
         <h2>{t("mortgage.subtitle1")}</h2>
         <ul>

@@ -66,7 +66,7 @@ function Favorites() {
   };
   return (
     <>
-      <div className="faq">
+      <div className="favorites">
         <h1>Oblíbené inzeráty</h1>
       </div>
       <div className="listings favorites">

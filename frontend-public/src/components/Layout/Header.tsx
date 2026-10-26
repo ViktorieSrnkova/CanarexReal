@@ -4,9 +4,9 @@ import "../../styles/responsivity/resize.css";
 import LangSwitcher from "./LangSwitcher";
 import Phone from "../../assets/Phone.svg";
 import Mail from "../../assets/Mail.svg";
-import Facebook from "../../assets/Facebook.svg";
-import Instagram from "../../assets/Instagram.svg";
-import TikTok from "../../assets/Tiktok.svg";
+import Facebook from "/socials/Facebook.svg";
+import Instagram from "/socials/Instagram.svg";
+import TikTok from "/socials/TikTok.svg";
 import { useT } from "../../i18n";
 import { useState, useEffect } from "react";
 import { useLang } from "../../hooks/i18n/useLang";
@@ -37,19 +37,19 @@ function Header() {
         <div className="info-left">
           <div className="socials">
             <a href="https://www.facebook.com/CanarexReal" target="_blank">
-              <img src={Facebook} alt="Facebook" />
+              <img src={Facebook} alt="Facebook" height={20} />
             </a>
             <a
               href="https://www.instagram.com/canarexreal/?hl=en"
               target="_blank"
             >
-              <img src={Instagram} alt="Instagram" />
+              <img src={Instagram} alt="Instagram" height={20} />
             </a>
             <a
               href="https://www.tiktok.com/@canarexreal2?_t=ZN-8zTWsOtJa90&_r=1"
               target="_blank"
             >
-              <img src={TikTok} alt="TikTok" />
+              <img src={TikTok} alt="TikTok" height={20} />
             </a>
           </div>
           <span className="phone number">

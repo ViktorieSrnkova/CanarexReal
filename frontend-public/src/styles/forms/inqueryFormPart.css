@@ -36,3 +36,7 @@
 .field {
   margin-top: 0.5rem;
 }
+.radio-group {
+  display: flex;
+  gap: 1rem;
+}

@@ -1,4 +1,5 @@
 import { Outlet } from "react-router-dom";
+import { Suspense } from "react";
 import Header from "../components/Layout/Header";
 import Footer from "../components/Layout/Footer";
 import "../styles/layout/publicLayout.css";
@@ -24,7 +25,9 @@ export default function PublicLayout() {
 
         <main className="layout__main">
           <div className="layout__content">
-            <Outlet />
+            <Suspense fallback={null}>
+              <Outlet />
+            </Suspense>
           </div>
         </main>
 

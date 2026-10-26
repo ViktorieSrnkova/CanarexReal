@@ -306,7 +306,7 @@ function UserSettings() {
   };
   return (
     <>
-      <div className="faq">
+      <div className="settings">
         <h1>{t("usrSettings.title")}</h1>
       </div>
       <div className="settings">

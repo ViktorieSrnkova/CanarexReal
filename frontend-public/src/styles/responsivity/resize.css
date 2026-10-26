@@ -265,6 +265,7 @@
     flex-direction: column !important;
     align-items: center;
   }
+
   .listing-hero {
     padding: 0 !important;
     padding-inline: 1rem !important;
@@ -361,6 +362,9 @@
 }
 
 @media screen and (max-width: 780px) {
+  .main-header {
+    padding-inline: 0;
+  }
   .middle-footer {
     align-items: center !important;
   }
@@ -413,8 +417,8 @@
     min-height: 4.827rem !important;
   }
   .listing-hero h1 {
-    font-size: 0.95rem !important;
-    margin-top: 0.5rem !important;
+    font-size: 1.2rem !important;
+    margin-top: 0.8rem !important;
   }
   .det-content,
   .details-wrapper div,
@@ -553,7 +557,6 @@
   }
   .wawe {
     object-position: top !important;
-    height: 45px !important;
   }
   footer .wawe {
     margin-top: 2rem !important;
@@ -603,7 +606,7 @@
   }
 
   .services {
-    padding-inline: 1rem !important;
+    padding-inline: 0rem !important;
   }
   .arrow-right {
     width: 1.5rem !important;
@@ -680,6 +683,59 @@
   }
   .tooltip-wrapper {
     display: none;
+  }
+  .pict {
+    gap: 0 !important;
+    column-gap: 0.25rem !important;
+  }
+  .pictograms {
+    padding-top: 0.5rem !important;
+    padding-bottom: 0.5rem !important;
+  }
+  .tiptap-renderer ul {
+    padding-left: 0.75rem;
+  }
+  .reviews {
+    padding: 1rem !important;
+  }
+  .reviews-wrapper {
+    padding-top: 0 !important;
+  }
+  .crsl-first-row h2 {
+    margin-top: 1rem !important;
+  }
+  .crsl-wrapper {
+    padding-inline: 0.8rem;
+  }
+  .home-page {
+    padding-top: 0 !important;
+  }
+  .home-page .hp-cards-wrapper {
+    padding: 0.75rem 0 2rem 0 !important;
+  }
+  .description-wrapper {
+    gap: 0 !important;
+  }
+  .mortgage h2 {
+    margin-top: 1rem !important;
+  }
+  .mortgage {
+    padding-inline: 0.8rem !important;
+    padding-bottom: 2rem !important;
+    margin-bottom: 0 !important;
+  }
+
+  input,
+  textarea {
+    font-size: 1rem !important;
+  }
+  .faq.description-wrapper,
+  .gdpr.description-wrapper {
+    padding-inline: 0.8rem !important;
+  }
+  .faq h2,
+  .gdpr h2 {
+    margin-top: 1rem !important;
   }
 }
 @media screen and (max-width: 500px) {

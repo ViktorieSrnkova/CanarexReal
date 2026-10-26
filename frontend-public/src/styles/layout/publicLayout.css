@@ -20,12 +20,10 @@
   align-items: center;
 }
 .layout__footer {
-  max-width: 90rem;
   width: 100%;
   margin: auto;
 }
 .layout__header {
-  max-width: 90rem;
   width: 100%;
   margin: auto;
 }
