@@ -240,11 +240,11 @@ const renderNode = (node: JSONContent, index: number): React.ReactNode => {
     case "image": {
       const width = node.attrs?.width;
       const height = node.attrs?.height;
-
+      const VITE_API_URL = import.meta.env.VITE_API_URL;
       return (
         <img
           key={index}
-          src={node.attrs?.src}
+          src={`${VITE_API_URL}${node.attrs?.src}`}
           alt={node.attrs?.alt ?? ""}
           title={node.attrs?.title ?? undefined}
           width={typeof width === "number" ? width : undefined}
