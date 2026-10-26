@@ -240,7 +240,7 @@ export default function RichTextEditor({
         .insertContentAt(position ?? currentEditor.state.selection.anchor, {
           type: "image",
           attrs: {
-            src: `${import.meta.env.VITE_API_URL}/api/files/images/${uploaded.id}`,
+            src: `${import.meta.env.REAL_API_URL}/api/files/images/${uploaded.id}`,
             mediaId: uploaded.id,
           },
         })
