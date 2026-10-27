@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AdminLayout from "../layouts/AdminLayout";
 import CenteredLayout from "../layouts/CenteredLayout";
 import AuthGuard from "../auth/AuthGuard";
+import { Spin } from "antd";
 
 const LoginPage = lazy(() => import("../pages/login/LoginPage"));
 const DashboardPage = lazy(() => import("../pages/dashboard/DashboardPage"));
@@ -35,7 +36,7 @@ function PageLoader() {
         minHeight: "50vh",
       }}
     >
-      Načítání stránky…
+      <Spin size="large" />
     </div>
   );
 }
