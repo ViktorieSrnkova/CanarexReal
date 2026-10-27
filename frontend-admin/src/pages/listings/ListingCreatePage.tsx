@@ -33,19 +33,16 @@ import SortableImage from "../../components/listings/SortableImage";
 import { useAddressSearch } from "../../hooks/useAddressSearch";
 import { useMedia } from "../../hooks/useMedia";
 import { useListingSubmit } from "../../hooks/useListingForm";
-import { lazy, Suspense, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   checkListingIndex,
   editListingTexts,
   postListing,
 } from "../../api/listings";
 import { useEditedListing } from "../../hooks/useEditListing";
-const RichTextEditor = lazy(
-  () => import("../../components/editor/RichTextEditor"),
-);
+import RichTextEditor from "../../components/editor/RichTextEditor";
 import { uploadMedia } from "../../services/mediaService";
 import { normalizeImageOrder } from "../../utils/normalizeImageOrder";
-import { Loader } from "lucide-react";
 
 type Props = {
   initialData?: CreateAdFormValues;
@@ -567,54 +564,38 @@ const ListingCreatePage: React.FC<Props> = ({
                   label="Popis"
                   getValueFromEvent={() => undefined}
                 >
-                  <Suspense
-                    fallback={
-                      <div>
-                        <Loader />
-                      </div>
-                    }
-                  >
-                    <RichTextEditor
-                      version="normal"
-                      content={editorContent[lang].description}
-                      onChange={(content) => {
-                        setEditorContent((prev) => ({
-                          ...prev,
-                          [lang]: {
-                            ...prev[lang],
-                            description: content,
-                          },
-                        }));
-                      }}
-                    />
-                  </Suspense>
+                  <RichTextEditor
+                    version="normal"
+                    content={editorContent[lang].description}
+                    onChange={(content) => {
+                      setEditorContent((prev) => ({
+                        ...prev,
+                        [lang]: {
+                          ...prev[lang],
+                          description: content,
+                        },
+                      }));
+                    }}
+                  />
                 </Form.Item>
                 <Form.Item
                   name={["translations", lang, "details"]}
                   label="Hlavní charakteristiky nemovitosti - pouze odrážky seznamu!"
                   getValueFromEvent={() => undefined}
                 >
-                  <Suspense
-                    fallback={
-                      <div>
-                        <Loader />
-                      </div>
-                    }
-                  >
-                    <RichTextEditor
-                      version="normal"
-                      content={editorContent[lang].details}
-                      onChange={(content) => {
-                        setEditorContent((prev) => ({
-                          ...prev,
-                          [lang]: {
-                            ...prev[lang],
-                            details: content,
-                          },
-                        }));
-                      }}
-                    />
-                  </Suspense>
+                  <RichTextEditor
+                    version="normal"
+                    content={editorContent[lang].details}
+                    onChange={(content) => {
+                      setEditorContent((prev) => ({
+                        ...prev,
+                        [lang]: {
+                          ...prev[lang],
+                          details: content,
+                        },
+                      }));
+                    }}
+                  />
                 </Form.Item>
               </>
             ),
