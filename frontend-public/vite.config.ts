@@ -7,7 +7,7 @@ export default defineConfig({
     modulePreload: {
       polyfill: true,
     },
-    rolldownOptions: {
+    /* rolldownOptions: {
       output: {
         codeSplitting: {
           minSize: 20000,
@@ -27,6 +27,6 @@ export default defineConfig({
           ],
         },
       },
-    },
+    }, */
   },
 });
