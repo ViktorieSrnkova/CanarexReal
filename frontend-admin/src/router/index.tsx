@@ -33,7 +33,7 @@ function PageLoader() {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        minHeight: "50vh",
+        height: "100vh",
       }}
     >
       <Spin size="large" />
