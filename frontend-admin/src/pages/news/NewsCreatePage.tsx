@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { lazy, Suspense, useEffect, useRef, useState } from "react";
 import {
   Form,
   Button,
@@ -17,7 +17,9 @@ import {
   type NewsFormValues,
 } from "../../types/news";
 import { useNewsForm } from "../../hooks/useNewsForm";
-import RichTextEditor from "../../components/editor/RichTextEditor";
+const RichTextEditor = lazy(
+  () => import("../../components/editor/RichTextEditor"),
+);
 import {
   mapNewsToEditorContent,
   mapNewsToFormValues,
@@ -25,6 +27,7 @@ import {
 import type { Language } from "../../types/general";
 import { postNews, putAdminNews } from "../../api/news";
 import "../../styles/form.css";
+import { Loader } from "lucide-react";
 
 const { Title } = Typography;
 const languages: Language[] = ["cs", "en", "sk"];
@@ -216,16 +219,24 @@ const NewsCreatePage: React.FC<Props> = ({ initialData, onSuccess }) => {
                     </Form.Item>
 
                     <Form.Item label="Popis">
-                      <RichTextEditor
-                        version="full"
-                        content={editorContent[lang]}
-                        onChange={(content) => {
-                          setEditorContent((prev) => ({
-                            ...prev,
-                            [lang]: content,
-                          }));
-                        }}
-                      />
+                      <Suspense
+                        fallback={
+                          <div>
+                            <Loader />
+                          </div>
+                        }
+                      >
+                        <RichTextEditor
+                          version="full"
+                          content={editorContent[lang]}
+                          onChange={(content) => {
+                            setEditorContent((prev) => ({
+                              ...prev,
+                              [lang]: content,
+                            }));
+                          }}
+                        />
+                      </Suspense>
                     </Form.Item>
                   </>
                 ),

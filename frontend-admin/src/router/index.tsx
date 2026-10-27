@@ -1,53 +1,79 @@
+import { lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import AdminLayout from "../layouts/AdminLayout";
-
-import LoginPage from "../pages/login/LoginPage";
-import DashboardPage from "../pages/dashboard/DashboardPage";
-
-import ListingsPage from "../pages/listings/ListingsPage";
-import ListingCreatePage from "../pages/listings/ListingCreatePage";
-
-import NewsPage from "../pages/news/NewsPage";
-import NewsCreatePage from "../pages/news/NewsCreatePage";
-
-import ContactFormsPage from "../pages/forms/ContactFormsPage";
-import FormDetailPage from "../pages/forms/FormDetailPage";
-import NotFoundPage from "../pages/errors/NotFoundPage";
-import UnauthorizedPage from "../pages/errors/UnauthorizedPage";
 import CenteredLayout from "../layouts/CenteredLayout";
 import AuthGuard from "../auth/AuthGuard";
-import PrintListing from "../pages/print/PrintListing";
+
+const LoginPage = lazy(() => import("../pages/login/LoginPage"));
+const DashboardPage = lazy(() => import("../pages/dashboard/DashboardPage"));
+
+const ListingsPage = lazy(() => import("../pages/listings/ListingsPage"));
+const ListingCreatePage = lazy(
+  () => import("../pages/listings/ListingCreatePage"),
+);
+
+const NewsPage = lazy(() => import("../pages/news/NewsPage"));
+const NewsCreatePage = lazy(() => import("../pages/news/NewsCreatePage"));
+
+const ContactFormsPage = lazy(() => import("../pages/forms/ContactFormsPage"));
+const FormDetailPage = lazy(() => import("../pages/forms/FormDetailPage"));
+
+const NotFoundPage = lazy(() => import("../pages/errors/NotFoundPage"));
+const UnauthorizedPage = lazy(() => import("../pages/errors/UnauthorizedPage"));
+const PrintListing = lazy(() => import("../pages/print/PrintListing"));
+
+function PageLoader() {
+  return (
+    <div
+      role="status"
+      aria-live="polite"
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        minHeight: "50vh",
+      }}
+    >
+      Načítání stránky…
+    </div>
+  );
+}
 
 export default function Router() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route element={<CenteredLayout />}>
-          <Route path="/login" element={<LoginPage />} />
-        </Route>
-        <Route
-          element={
-            <AuthGuard>
-              <AdminLayout />
-            </AuthGuard>
-          }
-        >
-          <Route path="/" element={<DashboardPage />} />
+      <Suspense fallback={<PageLoader />}>
+        <Routes>
+          <Route element={<CenteredLayout />}>
+            <Route path="/login" element={<LoginPage />} />
+          </Route>
 
-          <Route path="/listings" element={<ListingsPage />} />
-          <Route path="/listings/create" element={<ListingCreatePage />} />
+          <Route
+            element={
+              <AuthGuard>
+                <AdminLayout />
+              </AuthGuard>
+            }
+          >
+            <Route path="/" element={<DashboardPage />} />
 
-          <Route path="/news" element={<NewsPage />} />
-          <Route path="/news/create" element={<NewsCreatePage />} />
+            <Route path="/listings" element={<ListingsPage />} />
+            <Route path="/listings/create" element={<ListingCreatePage />} />
 
-          <Route path="/forms" element={<ContactFormsPage />} />
-          <Route path="/forms/:id" element={<FormDetailPage />} />
-          <Route path="/print" element={<PrintListing />} />
-        </Route>
-        <Route path="/unauthorized" element={<UnauthorizedPage />} />
-        <Route path="*" element={<NotFoundPage />} />
-      </Routes>
+            <Route path="/news" element={<NewsPage />} />
+            <Route path="/news/create" element={<NewsCreatePage />} />
+
+            <Route path="/forms" element={<ContactFormsPage />} />
+            <Route path="/forms/:id" element={<FormDetailPage />} />
+
+            <Route path="/print" element={<PrintListing />} />
+          </Route>
+
+          <Route path="/unauthorized" element={<UnauthorizedPage />} />
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </Suspense>
     </BrowserRouter>
   );
 }
