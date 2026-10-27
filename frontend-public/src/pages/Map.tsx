@@ -154,7 +154,7 @@ function Map() {
                   >
                     <SearchMap
                       markers={listings.filter(hasCoords).map((l) => ({
-                        id: l.id,
+                        id: l.index,
                         price: l.cena_v_eur,
                         position: {
                           lat: l.adresy?.lat,
