@@ -11,15 +11,16 @@
   color: #1e1e1e;
   margin: 0.25rem;
   margin-bottom: 0.5rem;
-  min-height: 20.563rem;
+  min-height: 20.063rem;
   width: 100%;
 }
 .news-img {
+  display: block;
   width: 100%;
-  height: 100%;
+  aspect-ratio: 3 / 2;
+  height: auto;
   object-fit: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  object-position: center;
 }
 .news-title {
   font-size: 1.25em;
@@ -29,6 +30,9 @@
   text-align: center;
 }
 .news-card-link {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
   text-decoration: none;
   color: inherit;
 }
