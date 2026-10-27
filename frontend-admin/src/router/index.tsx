@@ -10,12 +10,10 @@ const LoginPage = lazy(() => import("../pages/login/LoginPage"));
 const DashboardPage = lazy(() => import("../pages/dashboard/DashboardPage"));
 
 const ListingsPage = lazy(() => import("../pages/listings/ListingsPage"));
-const ListingCreatePage = lazy(
-  () => import("../pages/listings/ListingCreatePage"),
-);
+import ListingCreatePage from "../pages/listings/ListingCreatePage";
 
 const NewsPage = lazy(() => import("../pages/news/NewsPage"));
-const NewsCreatePage = lazy(() => import("../pages/news/NewsCreatePage"));
+import NewsCreatePage from "../pages/news/NewsCreatePage";
 
 const ContactFormsPage = lazy(() => import("../pages/forms/ContactFormsPage"));
 const FormDetailPage = lazy(() => import("../pages/forms/FormDetailPage"));
