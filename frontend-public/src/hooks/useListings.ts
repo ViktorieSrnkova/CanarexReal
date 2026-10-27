@@ -40,6 +40,18 @@ export function useListings({ paginated = true }: Props) {
   const parseArray = (val: string | null) =>
     val ? val.split(",").map(Number) : [];
   const filterString = searchParams.toString();
+
+  const listingFilterString = [
+    "type",
+    "priceFrom",
+    "priceTo",
+    "sizeFrom",
+    "sizeTo",
+    "bedrooms",
+    "bathrooms",
+  ]
+    .map((key) => `${key}=${searchParams.get(key) ?? ""}`)
+    .join("&");
   const filtersReady = !!priceRange && !!sizeRange;
 
   const [filtersOpen, setFiltersOpen] = useState(false);
@@ -128,7 +140,7 @@ export function useListings({ paginated = true }: Props) {
 
     load();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, langId, filterString, sort, rangesReady, user]);
+  }, [page, langId, listingFilterString, sort, rangesReady, user]);
 
   const setPage = (p: number) => {
     setURL({ page: p });
