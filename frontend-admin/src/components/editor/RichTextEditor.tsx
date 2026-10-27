@@ -63,7 +63,32 @@ type RichTextEditorProps = {
   content?: JSONContent;
   onChange?: (content: JSONContent) => void;
 };
+const API_URL = import.meta.env.VITE_API_URL;
 
+function normalizeEditorImages(content: JSONContent): JSONContent {
+  const normalizeNode = (node: JSONContent): JSONContent => {
+    const normalized = { ...node };
+
+    if (normalized.type === "image" && normalized.attrs?.src) {
+      const src = normalized.attrs.src;
+
+      if (typeof src === "string" && src.startsWith("/")) {
+        normalized.attrs = {
+          ...normalized.attrs,
+          src: `${API_URL}${src}`,
+        };
+      }
+    }
+
+    if (normalized.content) {
+      normalized.content = normalized.content.map(normalizeNode);
+    }
+
+    return normalized;
+  };
+
+  return normalizeNode(content);
+}
 const CustomImage = Image.extend({
   addAttributes() {
     return {
@@ -206,7 +231,7 @@ export default function RichTextEditor({
         return false;
       },
     },
-    content: content || "",
+    content: content ? normalizeEditorImages(content) : "",
     onUpdate: ({ editor }) => {
       onChange?.(editor.getJSON());
     },
@@ -221,7 +246,7 @@ export default function RichTextEditor({
       return;
     }
 
-    editor.commands.setContent(content, {
+    editor.commands.setContent(normalizeEditorImages(content), {
       emitUpdate: false,
     });
   }, [editor, content]);

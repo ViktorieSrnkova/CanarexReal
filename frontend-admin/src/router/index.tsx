@@ -32,6 +32,7 @@ function PageLoader() {
         justifyContent: "center",
         alignItems: "center",
         height: "100vh",
+        background: "transparent",
       }}
     >
       <Spin size="large" />
