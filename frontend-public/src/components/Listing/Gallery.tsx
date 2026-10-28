@@ -175,7 +175,7 @@ export default function ListingGallery({ imagesProp, index }: Props) {
       )}
       <div style={{ opacity: loaded ? 1 : 0 }} className="gallery-main">
         <div onClick={prev} className="arrow arrow-left"></div>
-        <p className="abs-index number">{index}</p>
+        <p className="abs-index number">ID: {index}</p>
         <div className="gallery-image" onClick={() => setIsOpen(true)}>
           {activeImage.mimeType?.startsWith("video/") ? (
             <video

@@ -54,7 +54,7 @@ function Card(props: Props) {
         <div className={`card-status status-${props.status_id}`}>
           {props.status}
         </div>
-        <div className={`card-index number`}>{props.index}</div>
+        <div className={`card-index number`}>ID: {props.index}</div>
       </Link>
       {!props.inForms && (
         <div
