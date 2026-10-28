@@ -1,5 +1,5 @@
 /* NOTO COLOR EMOJI */
-@font-face {
+/* @font-face {
   font-family: "Noto Color Emoji";
   src: url("../../assets/fonts/NotoColorEmoji/NotoColorEmoji-Regular.woff2")
     format("woff2");
@@ -10,7 +10,7 @@
 
 .tiptap-renderer .tiptap-emoji {
   font-family: "Noto Color Emoji", sans-serif;
-}
+} */
 
 .tiptap-renderer p {
   margin: 0 0 1em;

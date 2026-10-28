@@ -1,6 +1,6 @@
 * {
-  font-family: "Raleway", sans-serif;
-  font-weight: 400;
+  /*   font-family: "Raleway", sans-serif;
+  font-weight: 400; */
   box-sizing: border-box;
 }
 
@@ -8,9 +8,9 @@ b {
   font-weight: 700;
 }
 .number {
-  font-family: "Roboto", sans-serif;
+  /*   font-family: "Roboto", sans-serif;
   font-style: 400;
-  font-weight: 300;
+  font-weight: 300; */
   line-height: 100%;
 }
 
@@ -23,9 +23,9 @@ body {
   flex-direction: column;
 }
 
-button {
+/* button {
   font-family: inherit;
-}
+} */
 
 .gray {
   background-color: #f5f5f5;
@@ -70,9 +70,9 @@ button {
   border: 0.063rem solid #5bb8e6;
   transform: scale(1.1);
 }
-.bold-num {
+/* .bold-num {
   font-family: "Roboto", sans-serif;
-}
+} */
 .w-600 {
   font-weight: 600;
 }
