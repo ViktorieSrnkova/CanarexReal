@@ -153,6 +153,22 @@
   justify-content: center;
   z-index: 10;
 }
+.card-index {
+  padding: 0.063em 0.5em;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  left: 0.25rem;
+  bottom: 0.25rem;
+  border-radius: 0 0.5rem;
+  width: fit-content;
+  font-size: 0.813em;
+  line-height: 140%;
+  z-index: 10;
+  background-color: #000000b7;
+  color: white;
+  /* background-color: #ffffffc0; */
+}
 
 .spinner {
   width: 28px;

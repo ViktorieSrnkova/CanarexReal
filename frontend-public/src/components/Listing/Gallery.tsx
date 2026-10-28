@@ -17,9 +17,10 @@ type GalleryProp = {
 
 type Props = {
   imagesProp: GalleryProp[];
+  index: number;
 };
 const VITE_API_URL = import.meta.env.VITE_API_URL;
-export default function ListingGallery({ imagesProp }: Props) {
+export default function ListingGallery({ imagesProp, index }: Props) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
   const [loaded, setLoaded] = useState(false);
@@ -174,6 +175,7 @@ export default function ListingGallery({ imagesProp }: Props) {
       )}
       <div style={{ opacity: loaded ? 1 : 0 }} className="gallery-main">
         <div onClick={prev} className="arrow arrow-left"></div>
+        <p className="abs-index">{index}</p>
         <div className="gallery-image" onClick={() => setIsOpen(true)}>
           {activeImage.mimeType?.startsWith("video/") ? (
             <video

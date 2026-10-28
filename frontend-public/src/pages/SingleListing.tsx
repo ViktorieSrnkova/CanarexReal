@@ -388,6 +388,7 @@ function SingleListing() {
         </div>
       </div>
       <ListingGallery
+        index={listing.index}
         imagesProp={
           detail?.obrazky?.map((img) => ({
             id: img.id,
