@@ -27,6 +27,12 @@
   min-height: 38.75rem;
   gap: 0.5rem;
   transition: opacity 200ms ease;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  max-width: 90rem;
 }
 
 .listings-wrapper .listings .hp-cards-wrapper.loading {
@@ -148,4 +154,15 @@
 }
 .content {
   max-width: 90rem;
+}
+@media screen and (max-width: 1112px) {
+  .listings-wrapper .listings .hp-cards-wrapper {
+    padding: 0.75em 0 3em 0;
+    justify-content: center;
+  }
+}
+@media screen and (max-width: 780px) {
+  .listings-wrapper .listings .hp-cards-wrapper {
+    padding: 0.75rem 0 2rem 0;
+  }
 }

@@ -1,4 +1,4 @@
-.hp-cards-wrapper {
+.home-page .hp-cards-wrapper {
   width: 100%;
   display: flex;
   flex-wrap: wrap;
@@ -7,33 +7,20 @@
   align-items: flex-start;
   transition: opacity 200ms ease;
   max-width: 90rem;
-}
-.home-page .hp-cards-wrapper {
   padding: 0.75em 2em 3em 2em;
 }
-.hp-cards-wrapper.loading {
+.home-page .hp-cards-wrapper.loading {
   opacity: 0.5;
-}
-.wawe {
-  width: 100%;
-  min-width: 100%;
-  padding: 0;
-  margin: 0;
-  max-width: 90rem;
-  object-fit: cover;
-  height: 1.875rem;
 }
 .hero {
   position: relative;
   width: 100%;
-
   height: 19.438rem;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   color: #1e1e1e;
-
   align-items: center;
 }
 .heroImage {
@@ -62,7 +49,6 @@
   width: 100%;
   padding-inline: 2rem;
 }
-
 .heroContent h1 {
   font-size: 4.5em;
   font-weight: 700;
@@ -121,13 +107,76 @@
   display: flex;
   gap: 1rem;
 }
-.mobile {
-  display: none;
-}
-.reviews {
+
+.hp-reviews {
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 2rem;
+}
+@media screen and (max-width: 1112px) {
+  .hero h1 {
+    font-size: 3rem;
+  }
+  .hero h2 {
+    font-size: 1.5rem;
+  }
+  .hero {
+    padding-inline: 1rem;
+    justify-content: space-around;
+  }
+  .home-page .hp-cards-wrapper {
+    padding: 0.75em 0 3em 0;
+    justify-content: center;
+  }
+}
+@media screen and (max-width: 780px) {
+  .hero h1 {
+    font-size: 1.75rem;
+  }
+  .hero h2 {
+    font-size: 1.15rem;
+  }
+  .heroContent {
+    padding-inline: 0;
+  }
+  .home-page {
+    padding-top: 0;
+  }
+  .home-page .hp-cards-wrapper {
+    padding: 0.75rem 0 2rem 0;
+  }
+  .hp-reviews {
+    padding: 1rem;
+  }
+  .hp-contact {
+    flex-direction: column;
+    gap: 0rem;
+    margin-bottom: 1rem;
+    width: 100%;
+    padding-inline: 1rem;
+    margin-top: -2rem;
+  }
+  .hp-2-contact {
+    gap: 0rem;
+    max-width: none;
+    padding-inline: 1rem;
+    width: 100%;
+    margin-top: -1rem;
+  }
+  .hp-2-contact p {
+    margin: 0;
+    width: 100%;
+    font-size: 0.813em;
+    border-radius: 0;
+    background: rgb(242, 250, 255);
+  }
+  .hp-2-contact p:first-child {
+    border-top-right-radius: 2rem;
+  }
+
+  .hp-2-contact p:last-child {
+    border-bottom-left-radius: 2rem;
+  }
 }

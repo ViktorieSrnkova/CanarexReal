@@ -4,7 +4,7 @@
 }
 .mortgage h2 {
   font-weight: 700;
-  font-size: 1.125em !important;
+  font-size: 1.125em;
   margin-top: 2rem;
 }
 .mortgage h1 {
@@ -12,7 +12,7 @@
   text-align: center;
   margin-top: 2rem;
 }
-table {
+.mortgage table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 1.5rem;
@@ -21,41 +21,95 @@ table {
   background: white;
 }
 
-tbody tr {
+.mortgage tbody tr {
   border-bottom: 1px solid #e5e5e5;
 }
 
-tbody tr:last-child {
+.mortgage tbody tr:last-child {
   border-bottom: none;
 }
 
-td {
+.mortgage td {
   padding: 1rem 1.25rem;
   font-size: 1rem;
   line-height: 1.4;
 }
 
-td:first-child {
+.mortgage td:first-child {
   font-weight: 600;
   color: #1e1e1e;
   width: 35%;
 }
 
-td:not(:first-child) {
+.mortgage td:not(:first-child) {
   text-align: right;
   color: #4b4b4b;
 }
 
-tbody tr:nth-child(even) {
+.mortgage tbody tr:nth-child(even) {
   background: #f8f8f8;
 }
-.mortgage .form-title-mortgage {
+
+.mortgage .contact-form {
+  background-color: #fff;
+  flex-direction: column;
+  align-items: center;
+}
+.mortgage .base-form {
+  max-width: 44.25rem;
+}
+.mortgage.contactssss {
+  padding: 2em;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 90rem;
+}
+.mortgage.contactssss h2 {
+  margin-bottom: 0.25rem;
+  font-size: 1.5rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 120%;
+  letter-spacing: -0.03em;
+}
+.mortgage.contactssss .form-title-mortgage {
   margin-bottom: 2rem;
 }
 
+@media screen and (max-width: 1112px) {
+  .mortgage h1 {
+    font-size: 1.5em;
+  }
+  .mortgage.contactssss {
+    padding: 1em;
+    padding-top: 0;
+  }
+}
+@media screen and (max-width: 780px) {
+  .mortgage .grid-2 {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .mortgage h2 {
+    margin-top: 1rem;
+  }
+  .mortgage {
+    padding-inline: 0.8rem;
+    padding-bottom: 2rem;
+    margin-bottom: 0;
+  }
+  .mortgage.contactssss .form-title-mortgage {
+    text-align: center;
+  }
+}
+
 @media (max-width: 700px) {
-  td {
+  .mortgage td {
     padding: 0.5rem;
-    font-size: 0.875rem !important;
+    font-size: 0.875rem;
   }
 }

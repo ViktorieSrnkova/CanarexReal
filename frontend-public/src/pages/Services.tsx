@@ -17,10 +17,9 @@ import villa from "../assets/villa.avif";
 import garden from "../assets/garden.avif";
 import { useAuth } from "../Auth/authStore";
 import useImagePreloader from "../hooks/useImagePreloader";
-import Vlnka from "/general/vlnka-white-gray.svg";
-import MobileVlnka from "/general/small-vlnka-white-gray.svg";
+import Wave from "../components/General/Wave";
 
-const preloadSrcList: string[] = [stan, Vlnka, MobileVlnka];
+const preloadSrcList: string[] = [stan];
 
 function Services() {
   useImagePreloader(preloadSrcList);
@@ -103,18 +102,8 @@ function Services() {
           </div>
         </div>
       </div>
-      <img
-        className="wawe"
-        src={Vlnka}
-        alt="vlnka-white-to-gray"
-        fetchPriority="high"
-      />
-      <img
-        className="wawe mobile"
-        src={MobileVlnka}
-        alt="vlnka-white-to-gray"
-        fetchPriority="high"
-      />
+      <Wave variant="white-gray" className="wawe" />
+      <Wave variant="small-white-gray" className="wawe mobile" />
       <div className="gray faq serv">
         <div className="s-first">
           <div className="s-text">
@@ -156,16 +145,8 @@ function Services() {
         </div>
         <img className="services-img mobile" src={beach} alt="Tenerife beach" />
       </div>
-      <img
-        className="wawe"
-        src="/general/vlnka-gray-white-nm.svg"
-        alt="vlnka-gray-to-white"
-      />
-      <img
-        className="wawe mobile"
-        src="/general/small-vlnka-gray-white.svg"
-        alt="vlnka-gray-to-white"
-      />
+      <Wave variant="gray-white" className="wawe" />
+      <Wave variant="small-gray-white" className="wawe mobile" />
       <div className="white faq serv">
         <div className="s-first">
           <div className="s-text">
@@ -288,16 +269,8 @@ function Services() {
           <strong className="bold"> {t("services.b34")}</strong>
         </p>
       </div>
-      <img
-        className="wawe"
-        src="/general/vlnka-white-gray.svg"
-        alt="vlnka-white-to-gray"
-      />
-      <img
-        className="wawe mobile"
-        src="/general/small-vlnka-white-gray.svg"
-        alt="vlnka-white-to-gray"
-      />
+      <Wave variant="white-gray" className="wawe" />
+      <Wave variant="small-white-gray" className="wawe mobile" />
       <div className="services gray">
         <Carrousel
           similar={similar}
@@ -312,16 +285,8 @@ function Services() {
           </Button>
         </div>
       </div>
-      <img
-        className="wawe"
-        src="/general/vlnka-gray-white-nm.svg"
-        alt="vlnka-gray-to-white"
-      />
-      <img
-        className="wawe mobile"
-        src="/general/small-vlnka-gray-white.svg"
-        alt="vlnka-gray-to-white"
-      />
+      <Wave variant="gray-white" className="wawe " />
+      <Wave variant="small-gray-white" className="wawe mobile" />
       <div className="contact white">
         <h2>{t("form.titleInq")}</h2>
         <h3 className="inq-subtitle">{t("form.subtitleInq")}</h3>

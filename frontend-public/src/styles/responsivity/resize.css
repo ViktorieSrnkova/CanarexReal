@@ -55,14 +55,6 @@
   z-index: 999;
   box-shadow: 1px 1px 3px 2px rgba(0, 0, 0, 0.3);
 }
-.mortgage .contact-form {
-  background-color: #fff;
-  flex-direction: column;
-  align-items: center;
-}
-.mortgage .base-form {
-  max-width: 44.25rem !important;
-}
 
 @media screen and (max-width: 1112px) {
   .s-first {
@@ -130,20 +122,7 @@
 
     min-height: 5rem;
   }
-  .hp-cards-wrapper {
-    justify-content: center !important;
-  }
-  .hero h1 {
-    font-size: 3rem !important;
-  }
-  .hero h2 {
-    font-size: 1.5rem !important;
-  }
-  .hero {
-    padding-inline: 1rem !important;
 
-    justify-content: space-around !important;
-  }
   .medalion-group {
     gap: 1rem !important;
     justify-content: space-between !important;
@@ -187,7 +166,6 @@
   .serv h1,
   .news h1,
   .gdpr h1,
-  .mortgage h1,
   .faq h1,
   .single-news h1 {
     font-size: 1.5em !important;
@@ -202,9 +180,7 @@
   .contact .card {
     min-width: 20.688rem !important;
   }
-  .home-page .hp-cards-wrapper {
-    padding: 0.75em 0 3em 0 !important;
-  }
+
   .filters {
     position: fixed;
     top: 0;
@@ -452,9 +428,7 @@
   .contact h2 {
     text-align: center;
   }
-  .pc {
-    display: none !important;
-  }
+
   .medalion-wrapper {
     scale: 0.87;
     margin-bottom: 0 !important;
@@ -462,14 +436,7 @@
   .details-wrapper {
     width: 100%;
   }
-  .hp-contact {
-    flex-direction: column;
-    gap: 0rem !important;
-    margin-bottom: 1rem;
-    width: 100%;
-    padding-inline: 1rem;
-    margin-top: -2rem;
-  }
+
   .card-status,
   .card-location {
     font-size: 0.813em !important;
@@ -477,27 +444,7 @@
   .card-third-row {
     font-size: 0.875em !important;
   }
-  .hp-2-contact {
-    gap: 0rem !important;
-    max-width: none !important;
-    padding-inline: 1rem;
-    width: 100%;
-    margin-top: -1rem;
-  }
-  .hp-2-contact p {
-    margin: 0 !important;
-    width: 100%;
-    font-size: 0.813em;
-    border-radius: 0 !important;
-    background: rgb(242, 250, 255) !important;
-  }
-  .hp-2-contact p:first-child {
-    border-top-right-radius: 2rem !important;
-  }
 
-  .hp-2-contact p:last-child {
-    border-bottom-left-radius: 2rem !important;
-  }
   .nav {
     width: 100%;
   }
@@ -528,10 +475,6 @@
     display: none;
   }
 
-  .mortgage .grid-2 {
-    display: flex !important;
-    flex-direction: column;
-  }
   .middle-footer h2 {
     text-align: center;
   }
@@ -549,15 +492,7 @@
     border-right: none;
     border-bottom: 0.063rem solid #303030;
   }
-  .wawe {
-    display: none !important;
-  }
-  .mobile {
-    display: flex !important;
-  }
-  .wawe {
-    object-position: top !important;
-  }
+
   footer .wawe {
     margin-top: 2rem !important;
   }
@@ -568,17 +503,6 @@
     display: block;
   }
 
-  .hero h1 {
-    font-size: 1.75rem !important;
-  }
-  .hero h2 {
-    font-size: 1.15rem !important;
-  }
-
-  .content {
-    padding: 0 !important;
-    padding-top: 1rem !important;
-  }
   .toggle-btn {
     height: 2.3rem !important;
   }
@@ -695,37 +619,16 @@
   .tiptap-renderer ul {
     padding-left: 0.75rem;
   }
-  .reviews {
-    padding: 1rem !important;
-  }
-  .reviews-wrapper {
-    padding-top: 0 !important;
-  }
+
   .crsl-first-row h2 {
     margin-top: 1rem !important;
   }
   .crsl-wrapper {
     padding-inline: 0.8rem;
   }
-  .home-page {
-    padding-top: 0 !important;
-  }
-  .home-page .hp-cards-wrapper {
-    padding: 0.75rem 0 2rem 0 !important;
-  }
+
   .description-wrapper {
     gap: 0 !important;
-  }
-  .mortgage h2 {
-    margin-top: 1rem !important;
-  }
-  .mortgage {
-    padding-inline: 0.8rem !important;
-    padding-bottom: 2rem !important;
-    margin-bottom: 0 !important;
-  }
-  .heroContent {
-    padding-inline: 0 !important;
   }
 
   input,

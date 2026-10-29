@@ -9,7 +9,6 @@ import Button from "../components/General/Button";
 import { useNavigate } from "react-router-dom";
 import { useT } from "../i18n";
 import Medalion from "../components/Contact/Medalion";
-import "../styles/responsivity/resize.css";
 import SEO from "../components/SEO/Meta";
 import CardSkeleton from "../components/Listing/SkeletonCard";
 import { useAuth } from "../Auth/authStore";
@@ -17,12 +16,10 @@ import { addFavorite, removeFavorite } from "../api/favorites";
 import toast from "react-hot-toast";
 import Reviews from "../components/Reviews/Reviews";
 import useImagePreloader from "../hooks/useImagePreloader";
-
+import Wave from "../components/General/Wave";
 import Hero from "/pages/hero.webp";
-import Vlnka from "/general/vlnka-gray-white-nm.svg";
-import MobileVlnka from "/general/small-vlnka-gray-white.svg";
 
-const preloadSrcList: string[] = [Hero, Vlnka, MobileVlnka];
+const preloadSrcList: string[] = [Hero];
 
 function HomePage() {
   const navigate = useNavigate();
@@ -133,20 +130,11 @@ function HomePage() {
           </div>
         </div>
       </div>
-      <img
-        fetchPriority="high"
-        className="wawe"
-        src={Vlnka}
-        alt="vlnka-gray-to-white"
-      />
-      <img
-        fetchPriority="high"
-        className="wawe mobile"
-        src={MobileVlnka}
-        alt="vlnka-gray-to-white"
-      />
 
-      <div className="content home-page">
+      <Wave variant="gray-white" className="wawe gray-wawe " />
+      <Wave variant="small-gray-white" className="wawe gray-wawe mobile" />
+
+      <div className="home-page">
         <div className={`hp-cards-wrapper ${isLoading ? "loading" : ""}`}>
           {isLoading &&
             Array.from({ length: 6 }).map((_, i) => <CardSkeleton key={i} />)}
@@ -180,34 +168,16 @@ function HomePage() {
         </div>
       </div>
 
-      <img
-        className="wawe"
-        src="/general/vlnka-white-gray.svg"
-        alt="vlnka-white-to-gray"
-        loading="lazy"
-      />
-      <img
-        className="wawe mobile"
-        src="/general/small-vlnka-white-gray.svg"
-        alt="vlnka-white-to-gray"
-        loading="lazy"
-      />
-      <div className="reviews gray">
+      <Wave variant="white-gray" className="wawe" />
+      <Wave variant="small-white-gray" className="wawe mobile" />
+
+      <div className="hp-reviews gray">
         <Reviews />
       </div>
 
-      <img
-        className="wawe mobile"
-        src="/general/small-vlnka-gray-white.svg"
-        alt="vlnka-gray-to-white"
-        loading="lazy"
-      />
-      <img
-        className="wawe"
-        src="/general/vlnka-gray-white-nm.svg"
-        alt="vlnka-gray-to-white"
-        loading="lazy"
-      />
+      <Wave variant="small-gray-white" className="wawe gray-wawe mobile" />
+      <Wave variant="gray-white" className="wawe gray-wawe" />
+
       <div className="hp-contact-wrapper">
         <div className="hp-contact">
           <div className="hp-2-contact pc">

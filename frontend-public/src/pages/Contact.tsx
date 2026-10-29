@@ -82,12 +82,6 @@ function Contact() {
           />
         </Suspense>
       </div>
-      <img
-        className="wawe"
-        src="/general/vlnka-gray-white-nm.svg"
-        alt="vlnka-gray-to-white"
-        loading="lazy"
-      />
       <div className="contact white">
         <h2>{t("form.titleInq")}</h2>
         <h3 className="inq-subtitle">{t("form.subtitleInq")}</h3>

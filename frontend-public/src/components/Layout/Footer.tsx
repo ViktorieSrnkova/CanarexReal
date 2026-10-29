@@ -9,18 +9,14 @@ import Whatsapp from "../../assets/Whatsapp.svg";
 import "../../styles/responsivity/resize.css";
 import { useLang } from "../../hooks/i18n/useLang";
 import { formatPhoneNumber } from "../../utils/formatting";
+import Wave from "../../components/General/Wave";
 
 const Footer: React.FC = () => {
   const t = useT();
   const { lang } = useLang();
   return (
     <>
-      <img
-        className="wawe mobile"
-        src="/general/small-vlnka-white-gray.svg"
-        alt="vlnka-white-to-gray"
-        loading="lazy"
-      />
+      <Wave variant="small-white-gray" className="wawe mobile" />
       <footer className="vert-f">
         <div className="actual-footer">
           <div className="start-footer">

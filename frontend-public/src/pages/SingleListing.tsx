@@ -44,6 +44,7 @@ import Reviews from "../components/Reviews/Reviews";
 import useImagePreloader from "../hooks/useImagePreloader";
 import { getContentText } from "../utils/getContextText";
 import ContentRenderer from "../components/Editor/ContentRenderer";
+import Wave from "../components/General/Wave";
 
 function SingleListing() {
   const t = useT();
@@ -405,18 +406,8 @@ function SingleListing() {
           size={`${listing.velikost} m²`}
         />
       </div>
-      <img
-        className="wawe"
-        alt="vlnka-gray-to-white"
-        src="/general/vlnka-gray-white-nm.svg"
-        loading="lazy"
-      ></img>
-      <img
-        className="wawe mobile"
-        src="/general/small-vlnka-gray-white.svg"
-        alt="vlnka-gray-to-white"
-        loading="lazy"
-      />
+      <Wave variant="gray-white" className="wawe " />
+      <Wave variant="small-gray-white" className="wawe mobile" />
       <ExpandableDescription content={content} />
       <div className="lower-section">
         <div className="details-wrapper">
@@ -437,18 +428,8 @@ function SingleListing() {
           </Suspense>
         </div>
       </div>
-      <img
-        className="wawe"
-        src="/general/vlnka-white-gray.svg"
-        alt="vlnka-white-to-gray"
-        loading="lazy"
-      />
-      <img
-        className="wawe mobile"
-        src="/general/small-vlnka-white-gray.svg"
-        alt="vlnka-white-to-gray"
-        loading="lazy"
-      />
+      <Wave variant="white-gray" className="wawe" />
+      <Wave variant="small-white-gray" className="wawe mobile" />
       <div className="contact gray">
         <h2>{t("form.titleDet")}</h2>
         <h3 className="padded-subtitle">{t("form.subtitleDet")}</h3>
@@ -461,52 +442,22 @@ function SingleListing() {
           <BaseForm from={1} what={2} index={listing.index} />
         </div>
       </div>
-      <img
-        className="wawe"
-        alt="vlnka-gray-to-white"
-        src="/general/vlnka-gray-white-nm.svg"
-        loading="lazy"
-      ></img>
-      <img
-        className="wawe mobile"
-        src="/general/small-vlnka-gray-white.svg"
-        alt="vlnka-gray-to-white"
-        loading="lazy"
-      />
+      <Wave variant="gray-white" className="wawe" />
+      <Wave variant="small-gray-white" className="wawe mobile" />
       <Carrousel
         similar={similar}
         loading={loadingSimilar}
         title={t("similar.title")}
         loadTxt={t("general.loading")}
         errTxt={t("similar.error")}
-      />{" "}
-      <img
-        className="wawe"
-        src="/general/vlnka-white-gray.svg"
-        alt="vlnka-white-to-gray"
-        loading="lazy"
       />
-      <img
-        className="wawe mobile"
-        src="/general/small-vlnka-white-gray.svg"
-        alt="vlnka-white-to-gray"
-        loading="lazy"
-      />
+      <Wave variant="white-gray" className="wawe" />
+      <Wave variant="small-white-gray" className="wawe mobile" />
       <div className="reviews gray">
         <Reviews />
       </div>
-      <img
-        className="wawe mobile"
-        src="/general/small-vlnka-gray-white.svg"
-        alt="vlnka-gray-to-white"
-        loading="lazy"
-      />
-      <img
-        className="wawe"
-        src="/general/vlnka-gray-white-nm.svg"
-        alt="vlnka-gray-to-white"
-        loading="lazy"
-      />
+      <Wave variant="gray-white" className="wawe " />
+      <Wave variant="small-gray-white" className="wawe mobile" />
       <div className="contact white">
         <h2>{t("form.titleInq")}</h2>
         <h3 className="inq-subtitle">{t("form.subtitleInq")}</h3>
