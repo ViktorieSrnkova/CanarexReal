@@ -8,7 +8,7 @@ import "../../styles/markercluster.css";
 
 type Props = {
   markers: MarkerData[];
-  onMarkerClick?: (id: number) => void;
+  onMarkerClick?: (index: number) => void;
   selectedId: number | null;
   center: L.LatLngExpression;
   zoom: number;
@@ -71,11 +71,11 @@ export default function SearchMap({
       >
         {markers.map((m) => (
           <Marker
-            key={m.id}
+            key={m.index}
             position={[m.position.lat, m.position.lng]}
-            icon={createIcon(m.price, m.id === selectedId)}
+            icon={createIcon(m.price, m.index === selectedId)}
             eventHandlers={{
-              click: () => onMarkerClick?.(m.id),
+              click: () => onMarkerClick?.(m.index),
             }}
           />
         ))}

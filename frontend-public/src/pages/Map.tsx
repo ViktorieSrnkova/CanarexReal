@@ -59,24 +59,24 @@ function Map() {
     });
   };
   const selected = useMemo(
-    () => listings.find((l) => l.id === selectedIdFromUrl),
+    () => listings.find((l) => l.index === selectedIdFromUrl),
     [listings, selectedIdFromUrl],
   );
-  const handleMarkerClick = (id: number) => {
+  const handleMarkerClick = (index: number) => {
     if (window.innerWidth <= 780) {
       setSearchParams((prev) => {
         const p = new URLSearchParams(prev);
-        p.set("selected", String(id));
+        p.set("selected", String(index));
         return p;
       });
 
-      navigate(`/${lang}/listings/${id}`);
+      navigate(`/${lang}/listings/${index}`);
       return;
     }
 
     setSearchParams((prev) => {
       const p = new URLSearchParams(prev);
-      p.set("selected", String(id));
+      p.set("selected", String(index));
       return p;
     });
   };
@@ -94,7 +94,7 @@ function Map() {
       return p;
     });
   };
-  const handleToggleFavorite = async (id: number, isFavorite: boolean) => {
+  const handleToggleFavorite = async (index: number, isFavorite: boolean) => {
     if (!user) {
       toast.error(t("favorites.loginNeeded"));
       return;
@@ -102,16 +102,16 @@ function Map() {
 
     setListings((prev) =>
       prev.map((item) =>
-        item.id === id ? { ...item, is_favorite: !isFavorite } : item,
+        item.index === index ? { ...item, is_favorite: !isFavorite } : item,
       ),
     );
 
     try {
-      await toggleFavoriteApi(id, isFavorite);
+      await toggleFavoriteApi(index, isFavorite);
     } catch {
       setListings((prev) =>
         prev.map((item) =>
-          item.id === id ? { ...item, is_favorite: isFavorite } : item,
+          item.index === index ? { ...item, is_favorite: isFavorite } : item,
         ),
       );
     }
@@ -154,7 +154,7 @@ function Map() {
                   >
                     <SearchMap
                       markers={listings.filter(hasCoords).map((l) => ({
-                        id: l.index,
+                        index: l.index,
                         price: l.cena_v_eur,
                         position: {
                           lat: l.adresy?.lat,
@@ -162,8 +162,8 @@ function Map() {
                         },
                       }))}
                       selectedId={selectedIdFromUrl}
-                      onMarkerClick={(id) => {
-                        handleMarkerClick(id);
+                      onMarkerClick={(index) => {
+                        handleMarkerClick(index);
                       }}
                       center={center}
                       zoom={zoom}
@@ -187,7 +187,7 @@ function Map() {
                           favorited={selected.is_favorite}
                           onToggleFavorite={() =>
                             handleToggleFavorite(
-                              selected.id,
+                              selected.index,
                               selected.is_favorite,
                             )
                           }
@@ -215,7 +215,7 @@ function Map() {
                       )}
                       <Button
                         onClick={() =>
-                          navigate(`/${lang}/listings/${selected?.id}`)
+                          navigate(`/${lang}/listings/${selected?.index}`)
                         }
                       >
                         {t("listings.goTo")}

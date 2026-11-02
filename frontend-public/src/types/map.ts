@@ -1,5 +1,5 @@
 export type MarkerData = {
-  id: number;
+  index: number;
   price: number;
   position: {
     lat: number;
