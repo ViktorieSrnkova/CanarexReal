@@ -403,6 +403,16 @@ const ListingCreatePage: React.FC<Props> = ({
               style={{ width: "100%", color: "#000", fontSize: "16px" }}
             />
           </Form.Item>
+          <Form.Item
+            name="fullAddress"
+            label="Adresa pro zobrazení na webu (nepovinné - jen když pole adresy nesouhlasí)"
+            style={{ width: "100%" }}
+          >
+            <Input
+              placeholder="Např. Calle ... , Costa Adeje, Tenerife"
+              style={{ width: "100%", color: "#000", fontSize: "16px" }}
+            />
+          </Form.Item>
         </div>
         <Row gutter={[8, 0]}>
           {FEATURES.map((feature) => (

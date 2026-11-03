@@ -76,7 +76,7 @@ export const useListingSubmit = (
       address: selectedAddress
         ? {
             value: selectedAddress.value,
-            label: selectedAddress.label,
+            label: values.fullAddress?.trim() || selectedAddress.label,
             lat: selectedAddress.lat,
             lon: selectedAddress.lon,
           }

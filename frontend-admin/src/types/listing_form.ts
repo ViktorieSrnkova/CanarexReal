@@ -45,6 +45,7 @@ export interface CreateAdFormValues {
   features: Record<string, boolean>;
   komplex?: string;
   oblast_prodeje: string;
+  fullAddress?: string;
 }
 
 export const FEATURES = [
