@@ -382,7 +382,7 @@ const ListingCreatePage: React.FC<Props> = ({
             required
             rules={[{ required: true, message: "Vyplň adresu" }]}
             name="address"
-            label="Adresa - zadej souřadnice a vyber z nabídky např: 28.0975882,-16.7408147"
+            label="Adresa - pokud nenajde adresu zadej souřadnice a vyber z nabídky např: 28.0975882,-16.7408147"
             style={{ width: "100%" }}
           >
             <Select
