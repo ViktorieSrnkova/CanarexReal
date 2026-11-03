@@ -376,7 +376,7 @@ const ListingCreatePage: React.FC<Props> = ({
             name="komplex"
             label="Komplex (nepovinné)"
           >
-            <Input maxLength={21} style={{ fontSize: "16px" }} />
+            <Input style={{ fontSize: "16px" }} />
           </Form.Item>
           <Form.Item
             required
