@@ -10,7 +10,7 @@ type Props<T extends string | number> = {
   options: readonly DropdownOption<T>[];
   onChange: (value: T) => void;
   placeholder?: string;
-  label: string;
+  label?: string;
 };
 
 function Dropdown<T extends string | number>({

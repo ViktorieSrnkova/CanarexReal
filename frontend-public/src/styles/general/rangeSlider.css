@@ -11,3 +11,71 @@
   max-width: 24.375rem;
   margin-left: 0.375rem;
 }
+
+.range-number-inputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.range-number-inputs label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+  font-size: 13px;
+}
+
+.range-number-field {
+  display: flex;
+  align-items: center;
+  border: 1px solid #d9d9d9;
+  border-radius: 6px;
+  padding: 0 10px;
+  min-width: 0;
+}
+
+.range-number-field:focus-within {
+  border-color: var(--primary-color);
+}
+
+.range-number-field input {
+  width: 100%;
+  min-width: 0;
+  padding: 10px 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 1rem;
+  color: inherit;
+}
+
+.range-number-field span {
+  flex-shrink: 0;
+  font-size: 13px;
+}
+.range-number-inputs {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.range-separator {
+  color: #888;
+  font-size: 16px;
+}
+/* Chrome, Safari, Edge, Opera */
+.range-number-field input::-webkit-inner-spin-button,
+.range-number-field input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+.range-number-field input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}

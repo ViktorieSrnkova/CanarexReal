@@ -55,6 +55,7 @@ export default function InqueryFormPart({
         step={10000}
         value={[value.priceFrom ?? 80000, value.priceTo ?? 2000000]}
         onChange={([min, max]) => onChange({ priceFrom: min, priceTo: max })}
+        showNumberInputs
       />
       <RangeSlider
         label={t("form.size")}
@@ -64,6 +65,7 @@ export default function InqueryFormPart({
         step={1}
         value={[value.sizeFrom ?? 0, value.sizeTo ?? 5000]}
         onChange={([min, max]) => onChange({ sizeFrom: min, sizeTo: max })}
+        showNumberInputs
       />
       <CheckboxOptions
         label={t("form.bedrooms")}

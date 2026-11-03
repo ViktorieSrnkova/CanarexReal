@@ -224,14 +224,14 @@ router.get("/home", optionalUser, async (req: AuthRequest, res) => {
       .json({ message: "Internal server error", error: String(err) });
   }
 });
-router.get("/thumb", async (req: PublicRequest, res) => {
+router.get("/thumb", optionalUser, async (req: AuthRequest, res) => {
   try {
     const parseNumber = (v: unknown) =>
       typeof v === "string" && v !== "" ? Number(v) : undefined;
 
     const id = parseNumber(req.query.id);
     const index = parseNumber(req.query.index);
-
+    const userId = req.user?.userId ?? undefined;
     const langId = req.langId ?? 2;
 
     if ((id && index) || (!id && !index)) {
@@ -261,7 +261,7 @@ router.get("/thumb", async (req: PublicRequest, res) => {
 
     const thumb = await prisma.inzeraty.findFirst({
       where,
-      select: listingThumbnailSelect(langId),
+      select: listingThumbnailSelect(langId, userId),
     });
 
     if (!thumb) {
@@ -270,7 +270,17 @@ router.get("/thumb", async (req: PublicRequest, res) => {
       });
     }
 
-    res.json({ thumb });
+    const isFavorite =
+      Array.isArray(thumb.uzivatelske_oblibene) &&
+      thumb.uzivatelske_oblibene.length > 0;
+
+    res.json({
+      thumb: {
+        ...thumb,
+        is_favorite: isFavorite,
+        uzivatelske_oblibene: undefined,
+      },
+    });
   } catch (err) {
     console.error("Listing thumb error:", err);
     res.status(500).json({ message: "Internal server error" });

@@ -1,0 +1,32 @@
+.checkbox-option input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+
+  width: 18px;
+  height: 18px;
+  margin: 0;
+
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  background: white;
+
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    border-color 0.15s;
+}
+
+.checkbox-option input[type="checkbox"]:checked {
+  background: #87ceeb;
+  border-color: #87ceeb;
+}
+.checkbox-option input[type="checkbox"]:checked::after {
+  content: "";
+  display: block;
+  width: 5px;
+  height: 9px;
+  margin: 2px 5px;
+  border: solid #1e1e1e;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}

@@ -11,11 +11,7 @@ import {
   useLayoutEffect,
 } from "react";
 import type { ListingDetailResponse, ListingThumbnail } from "../types/rawApi";
-import {
-  getListingByThumb,
-  getListingDetail,
-  getSimilarListings,
-} from "../api/listings";
+import { getListingDetail, getSimilarListings } from "../api/listings";
 import { useLang } from "../hooks/i18n/useLang";
 import { LANGUAGE_TO_ID } from "../types/general";
 import type { AxiosError } from "axios";
@@ -53,7 +49,6 @@ function SingleListing() {
   const { index } = useParams();
   const { lang } = useLang();
   const langId = LANGUAGE_TO_ID[lang];
-  const [listing, setListing] = useState<ListingThumbnail | null>(null);
   const [detail, setDetail] = useState<ListingDetailResponse | null>(null);
   const [notAvailable, setNotAvailable] = useState(false);
   const [similar, setSimilar] = useState<ListingThumbnail[]>([]);
@@ -63,7 +58,6 @@ function SingleListing() {
   const [isFavorite, setIsFavorite] = useState(false);
   const { toggleFavoriteApi } = useListings({ paginated: false });
   const { user } = useAuth();
-  const [id, setId] = useState<number>();
 
   useEffect(() => {
     if (!index) return;
@@ -73,18 +67,13 @@ function SingleListing() {
         console.log(index);
         const detail = await getListingDetail(Number(index), langId);
         setDetail(detail);
-
-        const databaseID = detail.id;
-        setId(databaseID);
-        const data = await getListingByThumb({ id: databaseID }, langId);
-        setListing(data);
         console.log(index);
         setNotAvailable(false);
       } catch (err) {
         const error = err as AxiosError;
 
         if (error.response?.status === 404) {
-          setListing(null);
+          setDetail(null);
           setNotAvailable(true);
           return;
         }
@@ -143,22 +132,22 @@ function SingleListing() {
     }
   };
   const price = useMemo(() => {
-    if (!listing) return null;
-    if (!rates) return listing.cena_v_eur;
+    if (!detail) return null;
+    if (!rates) return detail.cena_v_eur;
 
-    if (langId === 2) return listing.cena_v_eur * rates.CZK;
-    if (langId === 1) return listing.cena_v_eur * rates.GBP;
+    if (langId === 2) return detail.cena_v_eur * rates.CZK;
+    if (langId === 1) return detail.cena_v_eur * rates.GBP;
 
     return null;
-  }, [listing, rates, langId]);
+  }, [detail, rates, langId]);
 
   useEffect(() => {
-    if (!id) return;
+    if (!detail?.id) return;
 
     const loadSimilar = async () => {
       setLoadingSimilar(true);
       try {
-        const data = await getSimilarListings(id, langId);
+        const data = await getSimilarListings(detail.id, langId);
         setSimilar(data);
       } catch (err) {
         console.error(err);
@@ -168,7 +157,7 @@ function SingleListing() {
     };
 
     loadSimilar();
-  }, [id, langId, user]);
+  }, [detail?.id, langId, user]);
   const VITE_API_URL = import.meta.env.VITE_API_URL;
   const imageUrls = useMemo(() => {
     if (!detail?.obrazky?.length) return null;
@@ -186,7 +175,7 @@ function SingleListing() {
     return <ListingUnavailable />;
   }
 
-  if (!listing || !detail) {
+  if (!detail) {
     return (
       <>
         <div className="listing-hero skeleton-wrapper">
@@ -234,18 +223,18 @@ function SingleListing() {
   }
 
   const cardData = {
-    index: listing.index,
-    titulek: listing.inzeraty_preklady[0]?.titulek ?? "",
-    lokace: listing.adresy?.lokace ?? "",
-    typ: listing.typy_nemovitosti?.typy_nemovitosti_preklady[0]?.nazev ?? "",
-    status: listing.statusy?.statusy_preklady[0]?.nazev ?? "",
-    cena_v_eur: listing.cena_v_eur,
-    loznice: listing.loznice,
-    koupelny: listing.koupelny,
-    velikost: listing.velikost,
-    obrazekId: listing.obrazky[0]?.id ?? 0,
-    alt: listing.obrazky[0]?.obrazky_preklady[0]?.alt_text ?? "",
-    status_id: listing.statusy_id,
+    index: detail.index,
+    titulek: detail.inzeraty_preklady[0]?.titulek ?? "",
+    lokace: detail.adresy?.lokace ?? "",
+    typ: detail.typy_nemovitosti?.typy_nemovitosti_preklady[0]?.nazev ?? "",
+    status: detail.statusy?.statusy_preklady[0]?.nazev ?? "",
+    cena_v_eur: detail.cena_v_eur,
+    loznice: detail.loznice,
+    koupelny: detail.koupelny,
+    velikost: detail.velikost,
+    obrazekId: detail.obrazky[0]?.id ?? 0,
+    alt: detail.obrazky[0]?.obrazky_preklady[0]?.alt_text ?? "",
+    status_id: detail.statusy_id,
   };
   const formatLocation = (address: string, lang: Lang) => {
     if (!address) return "";
@@ -286,18 +275,18 @@ function SingleListing() {
   return (
     <>
       <SEO
-        title={`${listing.inzeraty_preklady[0]?.titulek} | Reality`}
+        title={`${detail.inzeraty_preklady[0]?.titulek} | Reality`}
         description={seoDescription}
       />
       <StructuredData
-        name={listing.inzeraty_preklady[0]?.titulek}
+        name={detail.inzeraty_preklady[0]?.titulek}
         description={content}
-        price={listing.cena_v_eur}
-        image={`${VITE_API_URL}/api/files/images/${listing.obrazky[0]?.id}`}
+        price={detail.cena_v_eur}
+        image={`${VITE_API_URL}/api/files/images/${detail.obrazky[0]?.id}`}
       />
       <div className="listing-hero">
         <div className="first-row">
-          <h1>{listing.inzeraty_preklady[0]?.titulek}</h1>
+          <h1>{detail.inzeraty_preklady[0]?.titulek}</h1>
           <div className="listing-hero-icons pc">
             <div className="favorite">
               <Favorite
@@ -339,7 +328,7 @@ function SingleListing() {
         <div className="second-row">
           <div className="apt mobile">
             <h2 className="mobile-h2">
-              {` ${listing.typy_nemovitosti?.typy_nemovitosti_preklady[0]?.nazev} ${listing.statusy?.statusy_preklady[0]?.nazev?.toLowerCase()}`}
+              {` ${detail.typy_nemovitosti?.typy_nemovitosti_preklady[0]?.nazev} ${detail.statusy?.statusy_preklady[0]?.nazev?.toLowerCase()}`}
             </h2>
 
             <div className="single-icons-mobile">
@@ -369,12 +358,10 @@ function SingleListing() {
           </div>
 
           <h2 className="pc dektop-h2">
-            {` ${listing.typy_nemovitosti?.typy_nemovitosti_preklady[0]?.nazev} ${listing.statusy?.statusy_preklady[0]?.nazev?.toLowerCase()}`}
+            {` ${detail.typy_nemovitosti?.typy_nemovitosti_preklady[0]?.nazev} ${detail.statusy?.statusy_preklady[0]?.nazev?.toLowerCase()}`}
           </h2>
           <div className="prices ">
-            <h3 className="number euro">
-              {formatMoneyEUR(listing.cena_v_eur)}
-            </h3>
+            <h3 className="number euro">{formatMoneyEUR(detail.cena_v_eur)}</h3>
 
             {price && (
               <h3 className="number czk">
@@ -389,7 +376,7 @@ function SingleListing() {
         </div>
       </div>
       <ListingGallery
-        index={listing.index}
+        index={detail.index}
         imagesProp={
           detail?.obrazky?.map((img) => ({
             id: img.id,
@@ -401,9 +388,9 @@ function SingleListing() {
       <div className="pictograms gray ">
         <Pictograms
           pictograms={detail?.inzeraty_piktogramy ?? []}
-          bath={listing.koupelny}
-          bed={listing.loznice}
-          size={`${listing.velikost} m²`}
+          bath={detail.koupelny}
+          bed={detail.loznice}
+          size={`${detail.velikost} m²`}
         />
       </div>
       <Wave variant="gray-white" className="wawe " />
@@ -439,7 +426,7 @@ function SingleListing() {
             onToggleFavorite={() => handleToggle()}
             {...cardData}
           />
-          <BaseForm from={1} what={2} index={listing.index} />
+          <BaseForm from={1} what={2} index={detail.index} />
         </div>
       </div>
       <Wave variant="gray-white" className="wawe" />

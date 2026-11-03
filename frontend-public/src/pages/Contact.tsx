@@ -33,6 +33,28 @@ function Contact() {
           },
         }}
       />
+      <div className="contact white">
+        <h2>{t("form.titleInq")}</h2>
+        <h3 className="inq-subtitle">{t("form.subtitleInq")}</h3>
+        <BaseForm from={3} what={3} />
+      </div>
+      <div className="contact-map">
+        <Suspense
+          fallback={
+            <div className="map-loader">
+              <LoaderIcon />
+            </div>
+          }
+        >
+          <Map
+            lat={28.239334}
+            lng={-16.840377}
+            height="20rem"
+            zoom={16}
+            contact={true}
+          />
+        </Suspense>
+      </div>
       <div className="contact-medalions contact white">
         <h1>{t("contact.title")}</h1>
         <h3 className="padded-subtitle">{t("contact.subtitle")}</h3>
@@ -64,28 +86,6 @@ function Contact() {
           <img src="/utils/map-pin.svg" alt="map pin" />
           {t("contact.mapAddr")}
         </div>
-      </div>
-      <div className="contact-map">
-        <Suspense
-          fallback={
-            <div className="map-loader">
-              <LoaderIcon />
-            </div>
-          }
-        >
-          <Map
-            lat={28.239334}
-            lng={-16.840377}
-            height="20rem"
-            zoom={16}
-            contact={true}
-          />
-        </Suspense>
-      </div>
-      <div className="contact white">
-        <h2>{t("form.titleInq")}</h2>
-        <h3 className="inq-subtitle">{t("form.subtitleInq")}</h3>
-        <BaseForm from={3} what={3} />
       </div>
     </>
   );

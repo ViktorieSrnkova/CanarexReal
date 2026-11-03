@@ -1,3 +1,5 @@
+import "../../styles/forms/checkbox.css";
+
 type CheckboxOptionsProps = {
   label: string;
   options: { label: string; value: number }[];
@@ -20,6 +22,7 @@ export default function CheckboxOptions({
           <input
             type="checkbox"
             checked={value.includes(option.value)}
+            style={{ border: "1px solid #d9d9d9", accentColor: "#87ceeb" }}
             onChange={(e) => {
               onChange(
                 e.target.checked

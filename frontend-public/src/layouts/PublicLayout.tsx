@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import { Suspense } from "react";
+import { Suspense, useEffect, useState } from "react";
 import Header from "../components/Layout/Header";
 import Footer from "../components/Layout/Footer";
 import "../styles/layout/publicLayout.css";
@@ -13,13 +13,23 @@ import { Hreflang } from "../components/SEO/Hreflang";
 export default function PublicLayout() {
   useHtmlLang();
   useSyncLangRoute();
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 0);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
   return (
     <>
       <ScrollToTop />
       <Canonical />
       <Hreflang />
       <div className="layout">
-        <header className="layout__header">
+        <header className={`layout__header ${isScrolled ? "scrolled" : ""}`}>
           <Header />
         </header>
 

@@ -159,15 +159,15 @@ router.post(
         listingId: payload.index,
         vi_prilet: payload.arrivalMode,
       };
-      /*   try {
-      await Promise.all([
-        sendContactEmail(payload.email, data),
-        sendAdminNotificationEmail(data),
-      ]);
-    } catch (err) {
-      console.error("Email failed:", err);
-    }
- */
+      try {
+        await Promise.all([
+          sendContactEmail(payload.email, data),
+          sendAdminNotificationEmail(data),
+        ]);
+      } catch (err) {
+        console.error("Email failed:", err);
+      }
+
       res.status(201).json({ message: "Form created", form });
     } catch (err) {
       console.error("form save error:", err);

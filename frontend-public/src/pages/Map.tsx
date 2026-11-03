@@ -12,6 +12,7 @@ import Card from "../components/Listing/Card";
 import "../styles/pages/listings.css";
 import toast, { LoaderIcon } from "react-hot-toast";
 import { useAuth } from "../Auth/authStore";
+import NoResults from "../components/Listing/NoMapListings";
 const SearchMap = lazy(() => import("../components/Listing/SearchMap"));
 
 function Map() {
@@ -31,21 +32,40 @@ function Map() {
     toggleFavoriteApi,
     setListings,
     isLoading,
+    hasAppliedFilters,
+    handleIndexSearch,
+    searchedIndex,
+    isIndexSearchActive,
+    clearIndexSearch,
   } = useListings({
     paginated: false,
   });
   const navigate = useNavigate();
   const { lang } = useLang();
   const [searchParams, setSearchParams] = useSearchParams();
-  const selectedIdFromUrl = Number(searchParams.get("selected") || 0) || null;
+  /* const selectedIdFromUrl = Number(searchParams.get("selected") || 0) || null; */
+  const selectedIdFromUrl =
+    (Number(searchParams.get("selected") || 0) || null) ??
+    (isIndexSearchActive ? searchedIndex : null);
   const clicked = !!selectedIdFromUrl;
-  const zoom = Number(searchParams.get("z") || 10);
+  const zoom = isIndexSearchActive ? 14 : Number(searchParams.get("z") || 10);
   const { user } = useAuth();
-
-  const center: [number, number] = [
-    Number(searchParams.get("lat") || 28.2),
-    Number(searchParams.get("lng") || -16.65),
-  ];
+  const searchedListing = isIndexSearchActive
+    ? listings.find((l) => l.index === searchedIndex)
+    : undefined;
+  const hasActiveListings = listings.some(
+    (listing) =>
+      listing.statusy_id === 1 &&
+      listing.adresy?.lat != null &&
+      listing.adresy?.lng != null,
+  );
+  const center: [number, number] =
+    searchedListing?.adresy?.lat != null && searchedListing.adresy.lng != null
+      ? [searchedListing.adresy.lat, searchedListing.adresy.lng]
+      : [
+          Number(searchParams.get("lat") || 28.2),
+          Number(searchParams.get("lng") || -16.65),
+        ];
 
   const handleMapMove = (center: L.LatLng, zoom: number) => {
     setSearchParams((prev) => {
@@ -126,9 +146,14 @@ function Map() {
   return (
     <>
       <SEO title={t("SEO.Map_title")} description={t("SEO.Map_description")} />
-      <div className="content">
+      <div className="map content">
         <div className="listings-wrapper">
           <Filters
+            onIndexSearch={handleIndexSearch}
+            onClearIndexSearch={clearIndexSearch}
+            isIndexSearchActive={isIndexSearchActive}
+            searchedIndex={searchedIndex}
+            disabled={isIndexSearchActive}
             formFilters={formFilters}
             setFormFilters={setFormFilters}
             handleSubmit={handleSubmit}
@@ -138,11 +163,16 @@ function Map() {
             sizeRange={sizeRange}
             filtersOpen={filtersOpen}
             setFiltersOpen={setFiltersOpen}
+            hasAppliedFilters={hasAppliedFilters}
           />
           <div className="listings">
             <div className="map-wrapper-listing">
+              <h1>{t("listings.map")}</h1>
+              <h4>{t("listings.mapSubtitle")}</h4>
               {listings.length === 0 ? (
                 <NoFilters />
+              ) : !hasActiveListings ? (
+                <NoResults />
               ) : (
                 <>
                   <Suspense

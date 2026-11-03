@@ -17,7 +17,7 @@
   justify-content: center;
   gap: 4rem;
   margin: auto;
-  min-height: 26.125rem;
+
   background: #f5f5f5;
   color: #3f3f3f;
   list-style-type: none;
@@ -30,7 +30,8 @@
 
 .middle-footer {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  column-gap: 4rem;
 }
 .bottom-info {
   display: flex;
@@ -69,6 +70,12 @@
 }
 .contacts {
   display: flex;
+  flex-direction: row;
+  column-gap: 2rem;
+}
+.contacts .first,
+.contacts .second {
+  display: flex;
   flex-direction: column;
   gap: 0.5rem;
 }
@@ -84,6 +91,22 @@
   margin-top: 0;
   margin-bottom: 8px;
 }
-.gap-br {
-  margin: 0.5rem;
+@media screen and (max-width: 780px) {
+  .middle-footer {
+    align-items: center;
+    column-gap: 0;
+  }
+  .middle-footer h2 {
+    text-align: center;
+  }
+  .middle-footer .contacts,
+  .middle-footer .contacts-h2 {
+    display: none;
+  }
+  footer .wawe {
+    margin-top: 2rem;
+  }
+  footer .actual-footer {
+    margin-top: 0;
+  }
 }

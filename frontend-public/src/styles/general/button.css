@@ -42,3 +42,6 @@
   background-color: transparent;
   color: red;
 }
+.button-danger:disabled {
+  color: #ff0d0050;
+}

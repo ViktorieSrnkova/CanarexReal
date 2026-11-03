@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import User from "../../assets/user.svg";
 import LoggedIn from "../../assets/userLogin.svg";
 import { useT } from "../../i18n";
@@ -16,11 +16,20 @@ function Navbar({ onLinkClick }: Props) {
   const t = useT();
   const { lang } = useLang();
   const { user, logout } = useAuth();
+  const location = useLocation();
+
+  const isListingsOrMap =
+    location.pathname.endsWith("/listings") ||
+    location.pathname.endsWith("/map");
 
   const menuItems = [
     { label: t("header.home"), path: `/${lang}` },
-    { label: t("header.listings"), path: `/${lang}/listings` },
-    { label: t("header.map"), path: `/${lang}/map` },
+    {
+      label: t("header.listings"),
+      path: `/${lang}/listings`,
+      preserveFilters: true,
+    },
+    { label: t("header.map"), path: `/${lang}/map`, preserveFilters: true },
     { label: t("header.services"), path: `/${lang}/services` },
     { label: t("header.mortgage"), path: `/${lang}/mortgage` },
     { label: t("header.news"), path: `/${lang}/news` },
@@ -54,7 +63,15 @@ function Navbar({ onLinkClick }: Props) {
         {menuItems.map((item) => (
           <li key={item.path}>
             <NavLink
-              to={item.path}
+              to={{
+                pathname: item.path,
+                search:
+                  isListingsOrMap &&
+                  (item.path.endsWith("/listings") ||
+                    item.path.endsWith("/map"))
+                    ? location.search
+                    : "",
+              }}
               className={({ isActive }) => (isActive ? "active" : "nonactive")}
               onClick={() => onLinkClick()}
               end

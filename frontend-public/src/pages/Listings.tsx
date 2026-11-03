@@ -34,6 +34,11 @@ function Listings() {
     toggleFavoriteApi,
     setListings,
     isLoading,
+    hasAppliedFilters,
+    handleIndexSearch,
+    clearIndexSearch,
+    isIndexSearchActive,
+    searchedIndex,
   } = useListings({
     paginated: true,
   });
@@ -87,6 +92,11 @@ function Listings() {
       <div className="content">
         <div className="listings-wrapper">
           <Filters
+            onIndexSearch={handleIndexSearch}
+            onClearIndexSearch={clearIndexSearch}
+            isIndexSearchActive={isIndexSearchActive}
+            searchedIndex={searchedIndex}
+            disabled={isIndexSearchActive}
             sort={sort}
             setSort={setSort}
             formFilters={formFilters}
@@ -98,6 +108,7 @@ function Listings() {
             sizeRange={sizeRange}
             filtersOpen={filtersOpen}
             setFiltersOpen={setFiltersOpen}
+            hasAppliedFilters={hasAppliedFilters}
           />
           <div className="listings">
             <Pagination

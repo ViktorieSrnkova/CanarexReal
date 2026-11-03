@@ -52,6 +52,9 @@
   font-size: 1.25em;
   width: 100%;
 }
+.listings-wrapper .filters .toggle-buttons {
+  margin-top: 0.5rem;
+}
 .listings-wrapper .filters .button-wrapper {
   width: 100%;
   display: flex;
@@ -107,14 +110,22 @@
 }
 
 .map-wrapper-listing h1 {
-  margin-top: 0;
-  margin-bottom: 0.563rem;
+  margin-bottom: 0.5rem;
   width: 100%;
   text-align: center;
+  font-size: 1.75em;
+  margin-top: 0rem;
+}
+.map-wrapper-listing h4 {
+  margin-bottom: 0.5rem;
+  width: 100%;
+  text-align: center;
+
+  margin-top: 0rem;
 }
 .map-wrapper-listing .result {
   position: absolute;
-  top: 0;
+  top: 4.25rem;
   right: 0;
   z-index: 1000;
   background-color: #fff;
@@ -154,6 +165,7 @@
 }
 .content {
   max-width: 90rem;
+  padding-top: 2rem;
 }
 @media screen and (max-width: 1112px) {
   .listings-wrapper .listings .hp-cards-wrapper {

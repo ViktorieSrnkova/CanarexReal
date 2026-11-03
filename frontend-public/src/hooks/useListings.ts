@@ -6,7 +6,7 @@ import { useRanges } from "../RangesContext";
 import type { ListingThumbnail } from "../types/rawApi";
 import type { FormValues } from "../types/forms";
 import type { ListingSort } from "../types/filters";
-import { getListingsThumbs } from "../api/listings";
+import { getListingsThumbs, getListingByThumb } from "../api/listings";
 import { addFavorite, removeFavorite } from "../api/favorites";
 import { useAuth } from "../Auth/authStore";
 
@@ -36,10 +36,22 @@ export function useListings({ paginated = true }: Props) {
   const fallbackRange = useMemo<[number, number]>(() => [0, 0], []);
   const priceRange = ranges?.price ?? fallbackRange;
   const sizeRange = ranges?.size ?? fallbackRange;
+  const indexParam = searchParams.get("index");
+  const searchedIndex = indexParam ? Number(indexParam) : null;
+  const isIndexSearchActive =
+    searchedIndex !== null &&
+    Number.isInteger(searchedIndex) &&
+    searchedIndex >= 250000 &&
+    searchedIndex <= 270000;
+  const handleIndexSearch = (index: number) => {
+    setURL({ index, page: 1, selected: index });
+  };
 
+  const clearIndexSearch = () => {
+    setURL({ index: null, selected: null, page: 1 });
+  };
   const parseArray = (val: string | null) =>
     val ? val.split(",").map(Number) : [];
-  const filterString = searchParams.toString();
 
   const listingFilterString = [
     "type",
@@ -95,15 +107,14 @@ export function useListings({ paginated = true }: Props) {
       arrival: null,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [filterString, priceRange, sizeRange],
+    [listingFilterString, priceRange, sizeRange],
   );
   const [formFilters, setFormFilters] = useState<FormValues>(() => filters);
   useEffect(() => {
     if (!rangesReady) return;
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setFormFilters(filters);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [rangesReady, filterString]);
+  }, [rangesReady, filters]);
 
   const setURL = (updates: Record<string, string | number | null>) => {
     setSearchParams((prev) => {
@@ -121,7 +132,18 @@ export function useListings({ paginated = true }: Props) {
   useEffect(() => {
     const load = async () => {
       setIsLoading(true);
+
       try {
+        if (isIndexSearchActive && searchedIndex !== null) {
+          const listing = await getListingByThumb(
+            { index: searchedIndex },
+            langId,
+          );
+          setListings([listing]);
+          setTotal(1);
+          return;
+        }
+
         const { thumbnails, total } = await getListingsThumbs(langId, {
           page,
           limit,
@@ -133,6 +155,8 @@ export function useListings({ paginated = true }: Props) {
         setTotal(total);
       } catch (err) {
         console.error(err);
+        setListings([]);
+        setTotal(0);
       } finally {
         setIsLoading(false);
       }
@@ -140,7 +164,15 @@ export function useListings({ paginated = true }: Props) {
 
     load();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, langId, listingFilterString, sort, rangesReady, user]);
+  }, [
+    page,
+    langId,
+    listingFilterString,
+    sort,
+    rangesReady,
+    user,
+    searchedIndex,
+  ]);
 
   const setPage = (p: number) => {
     setURL({ page: p });
@@ -192,6 +224,7 @@ export function useListings({ paginated = true }: Props) {
     formFilters.sizeTo === defaultFilters.sizeTo &&
     formFilters.bedrooms.length === 0 &&
     formFilters.bathrooms.length === 0;
+
   async function toggleFavoriteApi(id: number, isFavorite: boolean) {
     if (isFavorite) {
       await removeFavorite(id);
@@ -199,6 +232,15 @@ export function useListings({ paginated = true }: Props) {
       await addFavorite(id);
     }
   }
+
+  const hasAppliedFilters =
+    filters.type.length > 0 ||
+    filters.priceFrom !== defaultFilters.priceFrom ||
+    filters.priceTo !== defaultFilters.priceTo ||
+    filters.sizeFrom !== defaultFilters.sizeFrom ||
+    filters.sizeTo !== defaultFilters.sizeTo ||
+    filters.bedrooms.length > 0 ||
+    filters.bathrooms.length > 0;
 
   return {
     listings,
@@ -215,16 +257,17 @@ export function useListings({ paginated = true }: Props) {
     setListings,
     handleSubmit,
     handleClear,
-
+    hasAppliedFilters,
     setPage,
     setSort,
-
+    handleIndexSearch,
     isDefault,
-
+    searchedIndex,
+    clearIndexSearch,
     rangesReady,
     priceRange,
     sizeRange,
-
+    isIndexSearchActive,
     lang,
     isLoading,
   };

@@ -341,9 +341,7 @@
   .main-header {
     padding-inline: 0;
   }
-  .middle-footer {
-    align-items: center !important;
-  }
+
   .skeleton-title {
     height: 1.139rem !important;
     margin-top: 0.5rem !important;
@@ -471,17 +469,7 @@
   .mobile-socials img {
     width: 2rem;
   }
-  .start-footer {
-    display: none;
-  }
 
-  .middle-footer h2 {
-    text-align: center;
-  }
-  .middle-footer .contacts,
-  .middle-footer .contacts-h2 {
-    display: none;
-  }
   .bottom-info {
     display: flex;
     flex-direction: column;
@@ -493,12 +481,6 @@
     border-bottom: 0.063rem solid #303030;
   }
 
-  footer .wawe {
-    margin-top: 2rem !important;
-  }
-  footer .actual-footer {
-    margin-top: 0;
-  }
   .fab-right {
     display: block;
   }
