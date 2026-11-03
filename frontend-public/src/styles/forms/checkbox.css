@@ -28,9 +28,9 @@
   position: absolute;
   width: 4px;
   height: 8px;
-  left: 5px;
-  top: 2px;
+  left: 50%;
+  top: 50%;
   border: solid #1e1e1e90;
   border-width: 0 2px 2px 0;
-  transform: rotate(45deg);
+  transform: translate(-50%, -60%) rotate(45deg);
 }
