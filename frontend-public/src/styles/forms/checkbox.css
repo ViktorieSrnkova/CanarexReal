@@ -20,13 +20,3 @@
   background: #87ceeb;
   border-color: #87ceeb;
 }
-.checkbox-option input[type="checkbox"]:checked::after {
-  content: "";
-  display: block;
-  width: 5px;
-  height: 9px;
-  margin: 2px 5px;
-  border: solid #1e1e1e;
-  border-width: 0 2px 2px 0;
-  transform: rotate(45deg);
-}
