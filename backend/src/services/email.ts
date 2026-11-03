@@ -40,7 +40,11 @@ const formatMoneyEUR = (amount: number) =>
     currency: "EUR",
     maximumFractionDigits: 0,
   }).format(amount);
-const ADMIN_EMAILS = ["viky.srnkova@seznam.cz", "viky.srnkova16@gmail.com"];
+const ADMIN_EMAILS = [
+  "viky.srnkova@seznam.cz",
+  "vladena@canarexreal.com",
+  "stan@canarexreal.com",
+];
 
 const transporter = nodemailer.createTransport({
   host: "smtp.zoner.com",
