@@ -64,9 +64,9 @@ function SingleReview(props: Props) {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <h3>{props.name}</h3>
+            <strong>{props.name}</strong>
           </a>
-
+          <br></br>
           <span className="subtext">{props.when}</span>
         </div>
       </div>

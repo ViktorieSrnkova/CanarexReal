@@ -10,6 +10,7 @@ import { useMemo } from "react";
 import { useAuth } from "../Auth/authStore";
 import toast from "react-hot-toast";
 import useImagePreloader from "../hooks/useImagePreloader";
+import ToggleFilters from "../components/Listing/ToggleFilters";
 
 function Listings() {
   const t = useT();
@@ -85,86 +86,117 @@ function Listings() {
 
   return (
     <>
-      <SEO
-        title={t("SEO.Listings_title")}
-        description={t("SEO.Listings_description")}
-      />
-      <div className="content">
-        <div className="listings-wrapper">
-          <Filters
-            onIndexSearch={handleIndexSearch}
-            onClearIndexSearch={clearIndexSearch}
-            isIndexSearchActive={isIndexSearchActive}
-            searchedIndex={searchedIndex}
-            disabled={isIndexSearchActive}
-            sort={sort}
-            setSort={setSort}
-            formFilters={formFilters}
-            setFormFilters={setFormFilters}
-            handleSubmit={handleSubmit}
-            handleClear={handleClear}
-            isDefault={isDefault}
-            priceRange={priceRange}
-            sizeRange={sizeRange}
-            filtersOpen={filtersOpen}
-            setFiltersOpen={setFiltersOpen}
-            hasAppliedFilters={hasAppliedFilters}
-          />
-          <div className="listings">
-            <Pagination
-              page={page}
-              totalPages={totalPages}
-              onChange={setPage}
-              loading={listings.length === 0}
-            />
-
-            <div className={`hp-cards-wrapper ${isLoading ? "loading" : ""}`}>
-              {isLoading &&
-                Array.from({ length: 6 }).map((_, i) => (
-                  <CardSkeleton key={i} />
-                ))}
-              {listings.length === 0 && !isLoading && (
-                <p className="listings-empty">{t("listings.none")}</p>
-              )}
-
-              {listings.map((listing, i) => (
-                <Card
-                  key={listing.index}
-                  fetchpriority={i < 2}
-                  favorited={listing.is_favorite}
-                  onToggleFavorite={() =>
-                    handleToggleFavorite(listing.id, listing.is_favorite)
-                  }
-                  status={listing.statusy?.statusy_preklady[0]?.nazev ?? ""}
-                  status_id={listing.statusy_id}
-                  {...{
-                    index: listing.index,
-                    titulek: listing.inzeraty_preklady[0]?.titulek ?? "",
-                    lokace: listing.adresy?.lokace ?? "",
-                    typ:
-                      listing.typy_nemovitosti?.typy_nemovitosti_preklady[0]
-                        ?.nazev ?? "",
-                    cena_v_eur: listing.cena_v_eur,
-                    loznice: listing.loznice,
-                    koupelny: listing.koupelny,
-                    velikost: listing.velikost,
-                    obrazekId: listing.obrazky[0]?.id ?? 0,
-                    alt:
-                      listing.obrazky[0]?.obrazky_preklady[0]?.alt_text ?? "",
-                  }}
-                />
-              ))}
+      <section>
+        <SEO
+          title={t("SEO.Listings_title")}
+          description={t("SEO.Listings_description")}
+        />
+        <div className="wrap">
+          <div className="listings-wrapper">
+            <div className="buttons-pc">
+              <ToggleFilters
+                hasAppliedFilters={hasAppliedFilters}
+                isIndexSearchActive={isIndexSearchActive}
+              />
+              <Filters
+                onIndexSearch={handleIndexSearch}
+                onClearIndexSearch={clearIndexSearch}
+                isIndexSearchActive={isIndexSearchActive}
+                searchedIndex={searchedIndex}
+                disabled={isIndexSearchActive}
+                sort={sort}
+                setSort={setSort}
+                formFilters={formFilters}
+                setFormFilters={setFormFilters}
+                handleSubmit={handleSubmit}
+                handleClear={handleClear}
+                isDefault={isDefault}
+                priceRange={priceRange}
+                sizeRange={sizeRange}
+                filtersOpen={filtersOpen}
+                setFiltersOpen={setFiltersOpen}
+                hasAppliedFilters={hasAppliedFilters}
+              />
             </div>
+            <div className="listings">
+              <div className="wrap title-wrap">
+                <p className="eyebrow">{t("listings.listSubtitle")}</p>
+                <h2>{t("listings.list")}</h2>
+              </div>
+              <div className="mobile filter-btns-toggle">
+                <ToggleFilters
+                  hasAppliedFilters={hasAppliedFilters}
+                  isIndexSearchActive={isIndexSearchActive}
+                />
+                <Filters
+                  onIndexSearch={handleIndexSearch}
+                  onClearIndexSearch={clearIndexSearch}
+                  isIndexSearchActive={isIndexSearchActive}
+                  searchedIndex={searchedIndex}
+                  disabled={isIndexSearchActive}
+                  sort={sort}
+                  setSort={setSort}
+                  formFilters={formFilters}
+                  setFormFilters={setFormFilters}
+                  handleSubmit={handleSubmit}
+                  handleClear={handleClear}
+                  isDefault={isDefault}
+                  priceRange={priceRange}
+                  sizeRange={sizeRange}
+                  filtersOpen={filtersOpen}
+                  setFiltersOpen={setFiltersOpen}
+                  hasAppliedFilters={hasAppliedFilters}
+                />
+              </div>
 
-            <Pagination
-              page={page}
-              totalPages={totalPages}
-              onChange={setPage}
-              loading={listings.length === 0}
-            />
+              <div className={`hp-cards-wrapper ${isLoading ? "loading" : ""}`}>
+                {isLoading &&
+                  Array.from({ length: 6 }).map((_, i) => (
+                    <CardSkeleton key={i} />
+                  ))}
+                {listings.length === 0 && !isLoading && (
+                  <p className="listings-empty">{t("listings.none")}</p>
+                )}
+
+                {listings.map((listing, i) => (
+                  <Card
+                    key={listing.index}
+                    fetchpriority={i < 2}
+                    favorited={listing.is_favorite}
+                    onToggleFavorite={() =>
+                      handleToggleFavorite(listing.id, listing.is_favorite)
+                    }
+                    status={listing.statusy?.statusy_preklady[0]?.nazev ?? ""}
+                    status_id={listing.statusy_id}
+                    {...{
+                      index: listing.index,
+                      titulek: listing.inzeraty_preklady[0]?.titulek ?? "",
+                      lokace: listing.adresy?.lokace ?? "",
+                      typ:
+                        listing.typy_nemovitosti?.typy_nemovitosti_preklady[0]
+                          ?.nazev ?? "",
+                      cena_v_eur: listing.cena_v_eur,
+                      loznice: listing.loznice,
+                      koupelny: listing.koupelny,
+                      velikost: listing.velikost,
+                      obrazekId: listing.obrazky[0]?.id ?? 0,
+                      alt:
+                        listing.obrazky[0]?.obrazky_preklady[0]?.alt_text ?? "",
+                    }}
+                  />
+                ))}
+              </div>
+
+              <Pagination
+                page={page}
+                totalPages={totalPages}
+                onChange={setPage}
+                loading={listings.length === 0}
+              />
+            </div>
           </div>
         </div>
-      </div>
+      </section>
     </>
   );
 }

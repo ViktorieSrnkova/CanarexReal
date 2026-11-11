@@ -1,12 +1,12 @@
 .toggle-group .active {
-  background-color: #87ceeb;
+  background-color: var(--primary);
+  color: var(--highlight);
 }
 .toggle-group {
   display: flex;
   flex-direction: row;
   gap: 0.5rem;
   justify-content: start;
-  max-width: 25.125rem;
 }
 .toggle-section {
   display: flex;
@@ -15,4 +15,24 @@
 }
 .toggle-section label {
   font-size: 0.875em;
+}
+.listings-wrapper .toggle-group {
+  flex-wrap: wrap;
+}
+
+@media screen and (max-width: 850px) {
+  .toggle-group {
+    width: 100%;
+  }
+  .toggle-group {
+    justify-content: space-evenly;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .toggle-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
 }

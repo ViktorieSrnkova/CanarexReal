@@ -1,10 +1,18 @@
 import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
 import L from "leaflet";
 import MarkerClusterGroup from "react-leaflet-cluster";
+import { GestureHandling } from "leaflet-gesture-handling";
+
 import type { MarkerData } from "../../types/map";
 import { formatMoneyEUR } from "../../utils/formatting";
+
 import "leaflet/dist/leaflet.css";
+import "leaflet-gesture-handling/dist/leaflet-gesture-handling.css";
 import "../../styles/markercluster.css";
+import { useT } from "../../i18n";
+
+// Register the plugin once, not inside the component.
+L.Map.addInitHook("addHandler", "gestureHandling", GestureHandling);
 
 type Props = {
   markers: MarkerData[];
@@ -47,24 +55,35 @@ export default function SearchMap({
 
     return L.divIcon({
       className: "",
-      html: `<div class="price-label number ${longClass}  ${active ? "active" : ""}">${formatMoneyEUR(price)}</div>`,
+      html: `<div class="price-label number ${longClass} ${active ? "active" : ""}">${formatMoneyEUR(price)}</div>`,
       iconSize: [50, 30],
       iconAnchor: [25, 15],
     });
   };
-
+  const t = useT();
   return (
     <MapContainer
       key={selectedId}
       center={center}
       zoom={zoom}
       style={{ height: "100%", width: "100%" }}
+      gestureHandling={true}
+      gestureHandlingOptions={{
+        duration: 3000,
+        text: {
+          touch: t("map.gesture.touch"),
+          scroll: t("map.gesture.scroll"),
+          scrollMac: t("map.gesture.scrollMac"),
+        },
+      }}
     >
       <MapSync onMove={onMapMove} />
+
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         detectRetina={true}
       />
+
       <MarkerClusterGroup
         chunkedLoading
         maxClusterRadius={window.innerWidth <= 600 ? 40 : 60}

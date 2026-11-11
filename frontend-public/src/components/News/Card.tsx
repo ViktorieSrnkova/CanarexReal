@@ -25,7 +25,9 @@ function Card({ id, img_id, alt, title }: Props) {
             className="news-img"
           />
         ) : null}
-        <h2 className="news-title">{title}</h2>
+        <div className="title-wrapper">
+          <h2 className="news-title">{title}</h2>
+        </div>
       </Link>
     </div>
   );

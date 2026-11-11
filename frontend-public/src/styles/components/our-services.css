@@ -1,0 +1,113 @@
+.s-first {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+
+  gap: 2rem;
+  max-width: calc(var(--max-width) - 15rem);
+}
+.services-img {
+  width: 100%;
+  max-width: 30rem;
+  border-radius: 0.25rem;
+  flex-shrink: 1;
+  min-width: 11.25rem;
+}
+.s-bottom {
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  max-width: var(--max-width);
+}
+.s-bottom .bold {
+  width: 100%;
+  text-align: center;
+  padding-top: 1rem;
+}
+.serv {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.serv p {
+  margin: 0;
+  text-align: left;
+  width: 100%;
+  max-width: calc(var(--max-width) - 15rem);
+}
+.s-text {
+  min-width: 28.125rem;
+  flex: 0 1 auto;
+  width: 100%;
+}
+
+.serv h3 {
+  margin-top: 2rem;
+}
+.serv > *:first-child .s-text h3:first-of-type {
+  margin-top: 0;
+}
+
+.beggining {
+  margin-bottom: 4rem;
+}
+.middle {
+  padding: 4rem 0;
+}
+.end {
+  padding-top: 4rem;
+}
+.beggining h1 {
+  font:
+    400 2.5rem / 1.2 Georgia,
+    serif;
+  letter-spacing: -0.025rem;
+  margin: 0;
+  text-align: left;
+  width: 100%;
+  max-width: calc(var(--max-width) - 15rem);
+}
+.stan {
+  max-width: 18.75rem;
+}
+.livingroom {
+  max-width: 21.875rem;
+}
+.garden {
+  max-width: 21.875rem;
+}
+
+@media screen and (max-width: 760px) {
+  .s-first,
+  .s-second {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .s-bottom {
+    max-width: 28.125rem;
+    width: 100%;
+  }
+  .s-text {
+    min-width: 0;
+    max-width: 28.125rem;
+  }
+
+  .services-img {
+    margin-top: 2rem;
+  }
+
+  .stan {
+    max-width: 25rem;
+  }
+  .livingroom {
+    max-width: 25rem;
+  }
+  .garden {
+    max-width: 25rem;
+  }
+  .s-first {
+    gap: 0;
+  }
+}

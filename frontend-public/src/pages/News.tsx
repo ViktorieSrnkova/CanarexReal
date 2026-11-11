@@ -47,33 +47,39 @@ function News() {
     setSearchParams({ page: String(p) });
   };
   return (
-    <div className="news">
+    <>
       <SEO
         title={t("SEO.News_title")}
         description={t("SEO.News_description")}
         noindex
       />
-      <h1>{t("news.title")}</h1>
-      <div className="content">
-        <div className="hp-cards-wrapper">
-          {news.map((item) => (
-            <Card
-              id={item.id}
-              key={item.id}
-              img_id={item.image?.id}
-              alt={item.image?.alt ?? ""}
-              title={item.titulek ?? ""}
+
+      <section>
+        <div className="wrap news">
+          <p className="eyebrow">{t("news.eyebrow")}</p>
+          <h1>{t("news.title")}</h1>
+          <div>
+            <div className="hp-cards-wrapper">
+              {news.map((item) => (
+                <Card
+                  id={item.id}
+                  key={item.id}
+                  img_id={item.image?.id}
+                  alt={item.image?.alt ?? ""}
+                  title={item.titulek ?? ""}
+                />
+              ))}
+            </div>
+            <Pagination
+              page={page}
+              totalPages={totalPages}
+              onChange={setPage}
+              loading={news.length === 0}
             />
-          ))}
+          </div>
         </div>
-        <Pagination
-          page={page}
-          totalPages={totalPages}
-          onChange={setPage}
-          loading={news.length === 0}
-        />
-      </div>
-    </div>
+      </section>
+    </>
   );
 }
 

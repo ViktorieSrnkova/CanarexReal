@@ -1,14 +1,35 @@
 .settings {
   width: 100%;
-  max-width: 61rem;
+  padding: 2rem 2.5rem;
   display: flex;
-  /*  justify-content: space-between; */
+  background-color: var(--accent);
+  border: 1px solid var(--line);
+  border-radius: 0.25rem;
   justify-content: center;
+  margin-top: 2rem;
+}
+.title-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  max-width: 61rem;
+}
+.title-section h1 {
+  text-align: center;
+}
+.modal-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+.sts.wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .settings h1 {
-  font-size: 1.75em;
   text-align: center;
-  margin-top: 2rem;
 }
 .settings-infosection,
 .button-section {
@@ -26,12 +47,15 @@ table {
   border-collapse: collapse;
   margin-top: 1.5rem;
   overflow: hidden;
-  border-radius: 1rem;
-  background: white;
+  border-radius: 0.25rem;
+  background: var(--highlight);
+}
+.settings a {
+  color: var(--primary);
 }
 
 tbody tr {
-  border-bottom: 1px solid #e5e5e5;
+  border-bottom: 1px solid var(--shadow);
 }
 
 tbody tr:last-child {
@@ -46,38 +70,54 @@ td {
 
 td:first-child {
   font-weight: 600;
-  color: #1e1e1e;
+  color: var(--ink);
   width: 55%;
 }
 
 td:not(:first-child) {
   text-align: right;
-  color: #4b4b4b;
+  color: var(--primary-hover);
 }
 
 tbody tr:nth-child(even) {
-  background: #f8f8f8;
+  background: var(--);
 }
 
 .setting-fields {
   width: 100%;
 }
 
-@media (max-width: 700px) {
-  td {
-    padding: 0.5rem;
-    font-size: 0.875rem !important;
-  }
-  .settings-infosection {
-    max-width: 100%;
-    padding-inline: 1rem;
-  }
-}
 @media (max-width: 1112px) {
   .settings {
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
     gap: 1rem;
+  }
+}
+@media (max-width: 700px) {
+  .settings {
+    width: 100%;
+    padding: 1rem 0;
+    display: flex;
+    background-color: var(--accent);
+    border: 1px solid var(--line);
+    border-radius: 0.25rem;
+    justify-content: center;
+    margin-top: 2rem;
+  }
+  td {
+    padding: 0.5rem;
+    font-size: 0.875rem !important;
+  }
+  .settings-infosection {
+    max-width: 100%;
+  }
+  .button-section {
+    max-width: unset;
+  }
+  .graphic {
+    width: 100%;
+    aspect-ratio: 3/2;
   }
 }

@@ -6,7 +6,7 @@
   justify-content: center;
   align-items: flex-start;
   transition: opacity 200ms ease;
-  max-width: 90rem;
+  max-width: var(--max-width);
   padding: 0.75em 2em 3em 2em;
 }
 .home-page .hp-cards-wrapper.loading {
@@ -20,7 +20,7 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  color: #1e1e1e;
+  color: var(--ink);
   align-items: center;
 }
 .heroImage {
@@ -35,7 +35,7 @@
 .heroOverlay {
   position: absolute;
   inset: 0;
-  background: rgba(255, 255, 255, 0.5); /* odpovídá opacity 0.5 */
+  background: var(--light-shadow); /* odpovídá opacity 0.5 */
   z-index: 1;
 }
 .heroContent {
@@ -44,8 +44,8 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  color: #1e1e1e;
-  max-width: 90rem;
+  color: var(--ink);
+  max-width: var(--max-width);
   width: 100%;
   padding-inline: 2rem;
 }
@@ -90,7 +90,11 @@
   text-align: center;
 }
 .hp-2-contact p {
-  background: linear-gradient(180deg, #cdf1ff8f 31.57894736842105%, #fff 100%);
+  background: linear-gradient(
+    180deg,
+    var(--accent) 31.57894736842105%,
+    var(--paper) 100%
+  );
   padding: 0.5em;
   border-radius: 0 1rem;
   padding-bottom: 1rem;
@@ -113,7 +117,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 2rem;
+  border: 1px solid var(--line);
 }
 @media screen and (max-width: 1112px) {
   .hero h1 {
@@ -147,9 +151,7 @@
   .home-page .hp-cards-wrapper {
     padding: 0.75rem 0 2rem 0;
   }
-  .hp-reviews {
-    padding: 1rem;
-  }
+
   .hp-contact {
     flex-direction: column;
     gap: 0rem;
@@ -170,7 +172,7 @@
     width: 100%;
     font-size: 0.813em;
     border-radius: 0;
-    background: rgb(242, 250, 255);
+    background: var(--accent);
   }
   .hp-2-contact p:first-child {
     border-top-right-radius: 2rem;

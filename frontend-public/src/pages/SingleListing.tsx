@@ -40,7 +40,6 @@ import Reviews from "../components/Reviews/Reviews";
 import useImagePreloader from "../hooks/useImagePreloader";
 import { getContentText } from "../utils/getContextText";
 import ContentRenderer from "../components/Editor/ContentRenderer";
-import Wave from "../components/General/Wave";
 
 function SingleListing() {
   const t = useT();
@@ -85,29 +84,16 @@ function SingleListing() {
     load();
   }, [langId, user, index]);
   useLayoutEffect(() => {
-    if (!location.state?.scrollToMap) return;
+    if (location.hash !== "#map-scroll" || !detail) return;
 
-    const tryScroll = () => {
-      const el = document.getElementById("listing-map");
+    const el = document.getElementById("map-scroll");
+    if (!el) return;
 
-      if (el) {
-        el.scrollIntoView({ behavior: "smooth", block: "start" });
-        return true;
-      }
-
-      return false;
-    };
-
-    if (tryScroll()) return;
-
-    const interval = setInterval(() => {
-      if (tryScroll()) {
-        clearInterval(interval);
-      }
-    }, 50);
-
-    return () => clearInterval(interval);
-  }, [location.state]);
+    el.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  }, [location.hash, detail]);
   useEffect(() => {
     if (!detail) return;
 
@@ -284,172 +270,212 @@ function SingleListing() {
         price={detail.cena_v_eur}
         image={`${VITE_API_URL}/api/files/images/${detail.obrazky[0]?.id}`}
       />
-      <div className="listing-hero">
-        <div className="first-row">
-          <h1>{detail.inzeraty_preklady[0]?.titulek}</h1>
-          <div className="listing-hero-icons pc">
-            <div className="favorite">
-              <Favorite
-                list={false}
-                top={-32}
-                right={0}
-                favorited={isFavorite}
-                onToggleFavorite={() => handleToggle()}
-              />
-            </div>
-            <div
-              onMouseEnter={() => setHoveredIcon("copy")}
-              onMouseLeave={() => setHoveredIcon(null)}
-              style={{
-                position: "relative",
-                width: "3rem",
-                cursor: "pointer",
-                display: "flex",
-                justifyContent: "center",
-              }}
-            >
-              <img
-                onClick={handleCopy}
-                src="/listings/copy.svg"
-                style={{
-                  cursor: "pointer",
-                  background: copied ? "#87ceeb" : "",
-                  borderRadius: "0.5rem",
-                  transition: "background 0.2s ease-out",
-                }}
-                alt="copy link"
-              />
-              {hoveredIcon === "copy" && (
-                <Tooltip message={t("listing.copy")} top={-34} right={0} />
-              )}
-            </div>
-          </div>
-        </div>
-        <div className="second-row">
-          <div className="apt mobile">
-            <h2 className="mobile-h2">
-              {` ${detail.typy_nemovitosti?.typy_nemovitosti_preklady[0]?.nazev} ${detail.statusy?.statusy_preklady[0]?.nazev?.toLowerCase()}`}
-            </h2>
+      <section className="hero-listing">
+        <div className="wrap">
+          <div className="listing-hero">
+            <div className="null-row">
+              <div className="property-type">
+                <p className="eyebrow">
+                  {` ${detail.typy_nemovitosti?.typy_nemovitosti_preklady[0]?.nazev} ${detail.statusy?.statusy_preklady[0]?.nazev?.toLowerCase()}`}
+                </p>
+              </div>
 
-            <div className="single-icons-mobile">
-              <Favorite
-                list={false}
-                top={-32}
-                right={0}
-                favorited={isFavorite}
-                onToggleFavorite={() => handleToggle()}
-              />
-
-              <div className="favorited-image">
-                <img
-                  onClick={handleCopy}
-                  src="/listings/copy.svg"
+              <div className="listing-hero-icons pc">
+                <div className="favorite">
+                  <Favorite
+                    list={false}
+                    top={-42}
+                    right={-12}
+                    width={"26"}
+                    height={"26"}
+                    favorited={isFavorite}
+                    onToggleFavorite={() => handleToggle()}
+                  />
+                </div>
+                <div
+                  onMouseEnter={() => setHoveredIcon("copy")}
+                  onMouseLeave={() => setHoveredIcon(null)}
                   style={{
+                    position: "relative",
+                    width: "3rem",
                     cursor: "pointer",
-                    background: copied ? "#87ceeb" : "",
-                    borderRadius: "0.5rem",
-                    transition: "background 0.2s ease-out",
-                    scale: "0.9",
+                    display: "flex",
+                    justifyContent: "center",
                   }}
-                  alt="copy link"
+                >
+                  <img
+                    onClick={handleCopy}
+                    src="/listings/copy.svg"
+                    style={{
+                      cursor: "pointer",
+                      background: copied ? "#87ceeb" : "",
+                      borderRadius: "0.5rem",
+                      transition: "background 0.2s ease-out",
+                      width: "44px",
+                      height: "44px",
+                    }}
+                    alt="copy link"
+                  />
+                  {hoveredIcon === "copy" && (
+                    <Tooltip message={t("listing.copy")} top={-34} right={0} />
+                  )}
+                </div>
+              </div>
+            </div>
+            <div className="first-row">
+              <h1>{detail.inzeraty_preklady[0]?.titulek}</h1>
+              <div className="prices pc ">
+                <strong className="number euro">
+                  {formatMoneyEUR(detail.cena_v_eur)}
+                </strong>
+
+                {price && (
+                  <p className="number czk">
+                    {"("}
+                    {langId === 2
+                      ? formatMoneyCZK(price)
+                      : formatMoneyGBP(price)}
+                    {""}
+                    {")"}
+                  </p>
+                )}
+              </div>
+            </div>
+            <div className="second-row mobile">
+              <div className="prices mobile">
+                <strong className="number euro">
+                  {formatMoneyEUR(detail.cena_v_eur)}
+                </strong>
+
+                {price && (
+                  <p className="number czk">
+                    {"("}
+                    {langId === 2
+                      ? formatMoneyCZK(price)
+                      : formatMoneyGBP(price)}
+                    {""}
+                    {")"}
+                  </p>
+                )}
+              </div>
+              <div className="single-icons-mobile">
+                <Favorite
+                  list={false}
+                  top={-32}
+                  right={0}
+                  width={"22"}
+                  height={"22"}
+                  favorited={isFavorite}
+                  onToggleFavorite={() => handleToggle()}
                 />
+
+                <div className="favorited-image">
+                  <img
+                    onClick={handleCopy}
+                    src="/listings/copy.svg"
+                    style={{
+                      cursor: "pointer",
+                      background: copied ? "var(--primary)" : "",
+                      borderRadius: "0.5rem",
+                      transition: "background 0.2s ease-out",
+                      width: "38px",
+                      height: "38px",
+                    }}
+                    alt="copy link"
+                  />
+                </div>
               </div>
             </div>
           </div>
-
-          <h2 className="pc dektop-h2">
-            {` ${detail.typy_nemovitosti?.typy_nemovitosti_preklady[0]?.nazev} ${detail.statusy?.statusy_preklady[0]?.nazev?.toLowerCase()}`}
-          </h2>
-          <div className="prices ">
-            <h3 className="number euro">{formatMoneyEUR(detail.cena_v_eur)}</h3>
-
-            {price && (
-              <h3 className="number czk">
-                {"("}
-                {langId === 2
-                  ? formatMoneyCZK(price)
-                  : formatMoneyGBP(price)}{" "}
-                {")"}
-              </h3>
-            )}
-          </div>
-        </div>
-      </div>
-      <ListingGallery
-        index={detail.index}
-        imagesProp={
-          detail?.obrazky?.map((img) => ({
-            id: img.id,
-            mimeType: img.mime_typ,
-            alt: img.obrazky_preklady[0]?.alt_text ?? "",
-          })) ?? []
-        }
-      />
-      <div className="pictograms gray ">
-        <Pictograms
-          pictograms={detail?.inzeraty_piktogramy ?? []}
-          bath={detail.koupelny}
-          bed={detail.loznice}
-          size={`${detail.velikost} m²`}
-        />
-      </div>
-      <Wave variant="gray-white" className="wawe " />
-      <Wave variant="small-gray-white" className="wawe mobile" />
-      <ExpandableDescription content={content} />
-      <div className="lower-section">
-        <div className="details-wrapper">
-          <h3>{t("listing.detail")}</h3>
-          <ContentRenderer data={detContent} />
-        </div>
-        <div className="map-wrapper" id="listing-map">
-          <h3>{t("listing.location")}</h3>
-          <div className="city">
-            <h4>{t("listing.city")}</h4> <p>{detail?.adresy.lokace}</p>
-          </div>
-          <div className="address">
-            <img src="/utils/map-pin.svg" alt="map pin" />
-            <p>{formatLocation(detail?.adresy.cela_adresa, lang)}</p>
-          </div>
-          <Suspense fallback={<div>Loading map...</div>}>
-            <Map height="20rem" lat={lat} lng={lng} zoom={12} />
-          </Suspense>
-        </div>
-      </div>
-      <Wave variant="white-gray" className="wawe" />
-      <Wave variant="small-white-gray" className="wawe mobile" />
-      <div className="contact gray">
-        <h2>{t("form.titleDet")}</h2>
-        <h3 className="padded-subtitle">{t("form.subtitleDet")}</h3>
-        <div className="details-form">
-          <Card
-            favorited={isFavorite}
-            onToggleFavorite={() => handleToggle()}
-            {...cardData}
+          <ListingGallery
+            index={detail.index}
+            imagesProp={
+              detail?.obrazky?.map((img) => ({
+                id: img.id,
+                mimeType: img.mime_typ,
+                alt: img.obrazky_preklady[0]?.alt_text ?? "",
+              })) ?? []
+            }
           />
-          <BaseForm from={1} what={2} index={detail.index} />
+          <div className="pictograms gray ">
+            <Pictograms
+              pictograms={detail?.inzeraty_piktogramy ?? []}
+              bath={detail.koupelny}
+              bed={detail.loznice}
+              size={`${detail.velikost} m²`}
+            />
+          </div>
         </div>
-      </div>
-      <Wave variant="gray-white" className="wawe" />
-      <Wave variant="small-gray-white" className="wawe mobile" />
-      <Carrousel
-        similar={similar}
-        loading={loadingSimilar}
-        title={t("similar.title")}
-        loadTxt={t("general.loading")}
-        errTxt={t("similar.error")}
-      />
-      <Wave variant="white-gray" className="wawe" />
-      <Wave variant="small-white-gray" className="wawe mobile" />
-      <div className="reviews gray">
-        <Reviews />
-      </div>
-      <Wave variant="gray-white" className="wawe " />
-      <Wave variant="small-gray-white" className="wawe mobile" />
-      <div className="contact white">
-        <h2>{t("form.titleInq")}</h2>
-        <h3 className="inq-subtitle">{t("form.subtitleInq")}</h3>
-        <BaseForm from={1} what={3} />
-      </div>
+      </section>
+      <section className="border">
+        <div className="wrap">
+          <ExpandableDescription content={content} />
+        </div>
+      </section>
+      <section>
+        <div className="wrap" id="map-scroll">
+          <div className="lower-section">
+            <div className="details-wrapper">
+              <h3>{t("listing.detail")}</h3>
+              <ContentRenderer data={detContent} />
+            </div>
+            <div className="map-wrapper" id="listing-map">
+              <h3>{t("listing.location")}</h3>
+              <div className="city">
+                <strong>{t("listing.city")}</strong>{" "}
+                <p>{detail?.adresy.lokace}</p>
+              </div>
+              <div className="address">
+                <img src="/utils/map-pin.svg" alt="map pin" />
+                <p>{formatLocation(detail?.adresy.cela_adresa, lang)}</p>
+              </div>
+              <Suspense fallback={<div>Loading map...</div>}>
+                <Map height="20rem" lat={lat} lng={lng} zoom={12} />
+              </Suspense>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section className="gray ">
+        <div className="wrap contact">
+          <p className="eyebrow">{t("form.subtitleDet")}</p>
+          <h2>{t("form.titleDet")}</h2>
+          <div className="details-form">
+            <Card
+              favorited={isFavorite}
+              onToggleFavorite={() => handleToggle()}
+              {...cardData}
+            />
+            <BaseForm from={1} what={2} index={detail.index} />
+          </div>
+        </div>
+      </section>
+
+      <section className="white services">
+        <div className="wrap">
+          <Carrousel
+            similar={similar}
+            loading={loadingSimilar}
+            title={t("similar.title")}
+            loadTxt={t("general.loading")}
+            errTxt={t("similar.error")}
+          />
+        </div>
+      </section>
+
+      <section className="gray ">
+        <div className="wrap">
+          <Reviews />
+        </div>
+      </section>
+
+      <section className=" white">
+        <div className="wrap">
+          <p className="eyebrow">{t("form.subtitleInq")}</p>
+          <h2>{t("form.titleInq")}</h2>
+          <BaseForm from={1} what={3} />
+        </div>
+      </section>
     </>
   );
 }

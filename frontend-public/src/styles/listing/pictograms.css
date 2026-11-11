@@ -1,43 +1,115 @@
-.pictograms {
+.pict {
+  position: relative;
+  width: 100%;
+  padding-inline: 2.5rem;
+
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(86px, 1fr));
+  gap: 2.875rem;
+}
+.pictogram {
+  justify-self: center;
+}
+.pictogram {
+  position: relative;
+
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 2em;
-  padding-bottom: 2em;
-  padding-inline: 1rem;
-  width: 100%;
-  min-height: 8.375rem;
+
+  width: 5.375rem;
+  height: 4.375rem;
+
+  background-color: var(--accent);
 }
 
-.pictogram {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  height: 4.375rem;
-  width: 5.375rem;
+.pict-column-separator {
+  position: absolute;
+  width: 1px;
+  background: var(--dark-line);
+  pointer-events: none;
 }
+
+.pict-row-separator {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--dark-line);
+  pointer-events: none;
+}
+
 .pict-name {
-  color: #1e1e1e;
+  color: var(--primary-hover);
   text-align: center;
   font-size: 1em;
-  font-style: normal;
   font-weight: 400;
   line-height: 140%;
 }
-.pict {
-  width: 100%;
-  max-width: 64.063rem;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(86px, 1fr));
-  flex-wrap: wrap;
-  gap: 2.875rem;
-}
+
 .top-part {
   display: flex;
-  flex-direction: row;
   justify-content: center;
   align-items: center;
 }
+
 .pict-det {
   padding-left: 0.625em;
+  color: var(--primary-hover);
+  font-weight: 600;
+}
+.icon svg path {
+  stroke: var(--primary-hover);
+}
+@media screen and (max-width: 780px) {
+  .pict-name {
+    font-weight: 600;
+  }
+  .pict-det {
+    font-weight: 700;
+  }
+  .pict {
+    padding-inline: 0;
+  }
+}
+@media (max-width: 552px) and (min-width: 401px) {
+  .pict {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: 0;
+    row-gap: 2rem;
+  }
+
+  .pictogram {
+    grid-column: span 3;
+  }
+
+  .pictogram:nth-child(-n + 3) {
+    grid-column: span 4;
+  }
+  .icon svg {
+    width: 24px;
+  }
+  .pict-name {
+    font-size: 0.85rem;
+  }
+  .pictograms {
+    padding: 0;
+  }
+}
+
+@media (max-width: 400px) {
+  .pict {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: 1rem;
+    row-gap: 1.5rem;
+  }
+  .pict-name {
+    font-size: 0.85rem;
+  }
+  .icon svg {
+    width: 20px;
+  }
+  .pictogram {
+    height: unset;
+  }
 }

@@ -1,7 +1,7 @@
 .favorited-list {
   position: absolute;
-  top: 12px;
-  right: 12px;
+  top: 13px;
+  right: 13px;
   cursor: pointer;
   z-index: 2;
 }
@@ -9,7 +9,6 @@
   cursor: pointer;
 }
 .favorited-image {
-  width: 3rem;
   cursor: pointer;
   display: flex;
   justify-content: center;

@@ -1,0 +1,27 @@
+.medalion-group {
+  display: flex;
+  flex-direction: row;
+  gap: 15.938rem;
+  justify-content: center;
+  width: 100%;
+  padding-top: 1rem;
+}
+.contact-map-wrapper {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1rem;
+}
+@media screen and (max-width: 1112px) {
+  .medalion-group {
+    gap: 1rem !important;
+    justify-content: space-between !important;
+  }
+}
+@media screen and (max-width: 780px) {
+  .medalion-group {
+    flex-direction: column !important;
+    gap: 0rem !important;
+  }
+}

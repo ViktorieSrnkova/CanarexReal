@@ -39,27 +39,31 @@ export function ListingUnavailable() {
   }, [id, langId, user]);
   return (
     <>
-      <SEO
-        title={`${t("listing.notAvailableTitle")} | CanarexReal`}
-        description={t("listing.notAvailableText")}
-        noindex
-      />
-      <div className="unavailable">
-        <h1>{t("listing.notAvailableTitle")}</h1>
-
-        <p>{t("listing.notAvailableText")}</p>
-
-        <Button onClick={() => navigate(`/${lang}/listings`)}>
-          {t("listing.backToListings")}
-        </Button>
-        <Carrousel
-          similar={similar}
-          loading={loadingSimilar}
-          title={t("similar.title")}
-          loadTxt={t("general.loading")}
-          errTxt={t("similar.error")}
+      <section>
+        <SEO
+          title={`${t("listing.notAvailableTitle")} | CanarexReal`}
+          description={t("listing.notAvailableText")}
+          noindex
         />
-      </div>
+        <div className="wrap">
+          <div className="unavailable">
+            <h1>{t("listing.notAvailableTitle")}</h1>
+
+            <p>{t("listing.notAvailableText")}</p>
+
+            <Button onClick={() => navigate(`/${lang}/listings`)}>
+              {t("listing.backToListings")}
+            </Button>
+            <Carrousel
+              similar={similar}
+              loading={loadingSimilar}
+              title={t("similar.title")}
+              loadTxt={t("general.loading")}
+              errTxt={t("similar.error")}
+            />
+          </div>
+        </div>
+      </section>
     </>
   );
 }

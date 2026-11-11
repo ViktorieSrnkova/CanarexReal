@@ -1,6 +1,6 @@
 .lang-switch {
   display: flex;
-  background: #f1f5f9;
+  background: var(--ink);
   border-radius: 62.438rem;
   padding: 0.25em;
   gap: 0.25rem;
@@ -9,7 +9,7 @@
 .lang-btn {
   border: none;
   background: transparent;
-  border-radius: 62.438rem;
+  border-radius: 0.25rem;
   padding: 0.313em;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -22,12 +22,12 @@
 }
 
 .lang-btn:hover {
-  background: rgba(0, 0, 0, 0.05);
+  background: var(--primary);
 }
 
 .lang-btn.active {
-  background: #87cee8;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  background: var(--muted);
+  box-shadow: 0 2px 6px var(--shadow);
 }
 
 .lang-btn.active img {

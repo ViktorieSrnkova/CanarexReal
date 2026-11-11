@@ -4,6 +4,19 @@
   flex-wrap: nowrap;
   gap: 1rem;
   width: 100%;
+  max-width: var(--max-width);
+  margin: auto;
+  justify-content: space-between;
+}
+.list-wrap.wrap {
+  max-width: calc(var(--max-width) + 5rem);
+}
+.title-wrap {
+  margin: 0;
+  padding-top: 2rem;
+}
+.result-box {
+  display: none;
 }
 .listings-empty {
   display: flex;
@@ -13,16 +26,21 @@
   width: 100%;
 }
 .listings-wrapper .filters {
-  max-width: 20.438rem;
   width: 100%;
 }
 .listings-wrapper .listings {
   width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
-  gap: 1rem;
+
+  background-color: var(--accent);
+  border-radius: 0.25rem;
+  border: 1px solid var(--line);
 }
+.listings-wrapper .listings .pagination {
+  margin-bottom: 2rem;
+}
+
 .listings-wrapper .listings .hp-cards-wrapper {
   min-height: 38.75rem;
   gap: 0.5rem;
@@ -32,7 +50,7 @@
   flex-wrap: wrap;
   justify-content: center;
   align-items: flex-start;
-  max-width: 90rem;
+  max-width: var(--max-width);
 }
 
 .listings-wrapper .listings .hp-cards-wrapper.loading {
@@ -44,7 +62,7 @@
   margin-top: 2rem;
   margin-bottom: 2rem;
   height: 0.063rem;
-  border: solid 0.063rem #757575;
+  border: solid 0.063rem var(--line);
 }
 .listings-wrapper .filters h2 {
   margin-top: 0;
@@ -59,6 +77,7 @@
   width: 100%;
   display: flex;
   justify-content: center;
+  gap: 0.5rem;
 }
 .listings-wrapper .filters Button {
   margin-top: 1rem;
@@ -120,18 +139,17 @@
   margin-bottom: 0.5rem;
   width: 100%;
   text-align: center;
-
   margin-top: 0rem;
 }
 .map-wrapper-listing .result {
   position: absolute;
-  top: 4.25rem;
+  top: 0;
   right: 0;
   z-index: 1000;
-  background-color: #fff;
+  background-color: var(--accent);
   width: min(21.25rem, 90vw);
   height: 100%;
-  box-shadow: -2px 2px 3px 2px #e3e3e3;
+  box-shadow: -2px 2px 3px 2px var(--light-shadow);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -139,7 +157,7 @@
 }
 .result-close {
   font-size: 2.5em;
-  padding: 0.75em;
+  padding-left: 0.75em;
   cursor: pointer;
   line-height: 1.25em;
   width: 2.75rem;
@@ -163,18 +181,149 @@
   justify-content: center;
   align-items: center;
 }
-.content {
-  max-width: 90rem;
-  padding-top: 2rem;
-}
+
 @media screen and (max-width: 1112px) {
+  .mobile-wrapper {
+    padding: 0 2.5rem;
+  }
+  .map {
+    padding: 0;
+  }
+  .buttons-pc {
+    display: none;
+  }
+  .title-wrap {
+    padding: 0;
+  }
+
+  .listings-wrapper .listings {
+    background-color: var(--paper);
+    border: none;
+  }
   .listings-wrapper .listings .hp-cards-wrapper {
     padding: 0.75em 0 3em 0;
     justify-content: center;
+  }
+  .listings-wrapper {
+    display: flex;
+    flex-direction: column;
+  }
+  .none-filter h2 {
+    padding-inline: 1rem;
+    text-align: center;
+  }
+  .none-filter {
+    min-height: 50vh;
+  }
+  .map-wrapper {
+    z-index: 0;
+  }
+  .map-wrapper-listing {
+    width: 100%;
+    height: 25rem;
+    margin-bottom: 0;
+    z-index: 0;
+    position: relative;
+  }
+  .filters {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    max-width: 22rem;
+    background: var(--paper);
+    z-index: 9999999999 !important;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 1rem;
+    border: 1px solid var(--line);
+    box-shadow: 2px 0 3px 2px var(--light-shadow);
+  }
+  .close {
+    font-size: 3rem;
+    line-height: 0;
+    margin-top: 1rem;
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
+    cursor: pointer;
+    margin-bottom: 2rem;
+  }
+  .filters.open .filters-header {
+    margin-bottom: 2rem;
+  }
+  .filters.open {
+    transform: translateX(0);
+  }
+  .filters-toggle {
+    display: flex;
+    background: var(--highlight);
+    color: var(--ink);
+    padding: 8px 16px;
+    cursor: pointer;
+    z-index: 900;
+    font-size: 1rem;
+    border: none;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    width: 100%;
+    border-radius: 0;
+    box-shadow: none;
+    margin-bottom: 0.5rem;
+    gap: 1rem;
+    justify-content: center;
+  }
+  .navigation-btn.pc {
+    display: none;
+  }
+  .navigation-btn.mobile {
+    margin: 0;
+    margin-bottom: 0.5rem;
+    background: var(--accent);
+    border: none;
+    box-shadow: -2px 2px 3px 2px var(--shadow);
+    width: 100%;
+    display: flex;
+  }
+  .filter-btns-toggle {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  .map-wrapper-listing .result {
+    height: 25rem;
   }
 }
 @media screen and (max-width: 780px) {
   .listings-wrapper .listings .hp-cards-wrapper {
     padding: 0.75rem 0 2rem 0;
+  }
+  .map-wrapper-listing {
+    height: 20rem;
+  }
+  .map-wrapper-listing .result {
+    display: none;
+  }
+  .result-box {
+    display: block;
+  }
+  .result.mobile {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    background-color: var(--accent);
+    padding: 1.25rem;
+  }
+
+  .mobile-wrapper {
+    padding: 0 1.25rem;
+  }
+}
+@media screen and (max-width: 500px) {
+  .filters {
+    max-width: none !important;
   }
 }

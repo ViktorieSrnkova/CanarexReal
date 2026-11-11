@@ -4,10 +4,29 @@
   padding: 0.5em;
   justify-content: center;
   align-items: center;
-  border-radius: 0 0.5rem;
-  border: 0.125rem solid #87ceeb;
-  background-color: #ffffff;
+  border-radius: 0.25rem;
+  border: 0.125rem solid var(--primary);
+  background-color: var(--highlight);
   font-size: 1em;
   cursor: pointer;
-  min-width: 2.5rem;
+}
+@media screen and (max-width: 1112px) {
+  .toggle-buttons {
+    font-size: 0.875em;
+    padding: 0.25rem;
+  }
+  .toggle-btn {
+    font-size: 0.813em;
+    padding: 0.25rem;
+  }
+}
+@media screen and (max-width: 850px) {
+  .toggle-btn {
+    width: 100%;
+  }
+}
+@media screen and (max-width: 780px) {
+  .toggle-btn {
+    height: 2.3rem;
+  }
 }

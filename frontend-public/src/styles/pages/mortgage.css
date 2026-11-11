@@ -1,28 +1,27 @@
-.mortgage {
-  margin-bottom: 2rem;
-  padding-inline: 2rem;
-}
-.mortgage h2 {
-  font-weight: 700;
-  font-size: 1.125em;
+.mortgage h3 {
   margin-top: 2rem;
 }
 .mortgage h1 {
-  font-size: 1.75em;
-  text-align: center;
-  margin-top: 2rem;
+  font:
+    400 2.5rem / 1.2 Georgia,
+    serif;
+  letter-spacing: -0.025rem;
+  margin: 0;
+  text-align: left;
+  width: 100%;
+  max-width: calc(var(--max-width) - 15rem);
 }
 .mortgage table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 1.5rem;
   overflow: hidden;
-  border-radius: 1rem;
-  background: white;
+  border-radius: 0.25rem;
+  background: var(--accent);
 }
 
 .mortgage tbody tr {
-  border-bottom: 1px solid #e5e5e5;
+  border-bottom: 1px solid var(--shadow);
 }
 
 .mortgage tbody tr:last-child {
@@ -37,73 +36,56 @@
 
 .mortgage td:first-child {
   font-weight: 600;
-  color: #1e1e1e;
+  color: var(--ink);
   width: 35%;
 }
 
 .mortgage td:not(:first-child) {
   text-align: right;
-  color: #4b4b4b;
+  color: var(--primary-hover);
 }
 
 .mortgage tbody tr:nth-child(even) {
-  background: #f8f8f8;
+  background: var(--line);
 }
 
 .mortgage .contact-form {
-  background-color: #fff;
+  background-color: var(--accent);
   flex-direction: column;
   align-items: center;
+  border-radius: 0.25rem;
 }
-.mortgage .base-form {
-  max-width: 44.25rem;
-}
+
 .mortgage.contactssss {
-  padding: 2em;
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  max-width: 90rem;
+  max-width: var(--max-width);
+  background-color: var(--accent);
+  text-align: left;
 }
-.mortgage.contactssss h2 {
-  margin-bottom: 0.25rem;
-  font-size: 1.5rem;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 120%;
-  letter-spacing: -0.03em;
+.mortgage.contactssss .eyebrow {
+  width: 100%;
+  max-width: 63.875rem;
 }
+
 .mortgage.contactssss .form-title-mortgage {
   margin-bottom: 2rem;
+  width: 100%;
+  max-width: 63.875rem;
+}
+.mortgage .grid-2 {
+  max-width: unset;
 }
 
 @media screen and (max-width: 1112px) {
-  .mortgage h1 {
-    font-size: 1.5em;
-  }
-  .mortgage.contactssss {
-    padding: 1em;
-    padding-top: 0;
-  }
 }
 @media screen and (max-width: 780px) {
   .mortgage .grid-2 {
     display: flex;
     flex-direction: column;
     gap: 0;
-  }
-
-  .mortgage h2 {
-    margin-top: 1rem;
-  }
-  .mortgage {
-    padding-inline: 0.8rem;
-    padding-bottom: 2rem;
-    margin-bottom: 0;
-  }
-  .mortgage.contactssss .form-title-mortgage {
-    text-align: center;
   }
 }
 

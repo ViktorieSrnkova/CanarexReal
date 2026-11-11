@@ -8,6 +8,7 @@ import { isValidPhoneNumber } from "libphonenumber-js";
 import eye from "../../assets/eye.svg";
 import noeye from "../../assets/noeye.svg";
 import toast from "react-hot-toast";
+import Button from "../General/Button";
 
 type Errors = {
   jmeno?: string;
@@ -312,9 +313,14 @@ function RegisterForm({ onSwitch, onClose }: Props) {
 
         {error && <p className="login-error">{error}</p>}
 
-        <button className="submit-button" type="submit" disabled={loading}>
+        <Button
+          variant="primary"
+          className="submit-button"
+          type="submit"
+          disabled={loading}
+        >
           {loading ? t("register.loading") : t("register.submit")}
-        </button>
+        </Button>
         <button
           type="button"
           className="link-button"

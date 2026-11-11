@@ -8,6 +8,7 @@ import eye from "../../assets/eye.svg";
 import noeye from "../../assets/noeye.svg";
 import { useLang } from "../../hooks/i18n/useLang";
 import "../../styles/login/loginPage.css";
+import Button from "../General/Button";
 type Errors = {
   password?: string;
   confirmPassword?: string;
@@ -166,9 +167,14 @@ function ResetPasswordForm() {
           </div>
         </label>
         {error && <p className="login-error">{error}</p>}
-        <button className="submit-button" type="submit" disabled={loading}>
+        <Button
+          variant="primary"
+          className="submit-button"
+          type="submit"
+          disabled={loading}
+        >
           {loading ? t("general.loading") : t("resetPwd.submit")}
-        </button>
+        </Button>
       </form>
     </div>
   );

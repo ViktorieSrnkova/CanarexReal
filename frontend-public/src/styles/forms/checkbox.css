@@ -1,16 +1,13 @@
 .checkbox-option input[type="checkbox"] {
   appearance: none;
   -webkit-appearance: none;
-
   width: 18px;
   height: 18px;
   margin: 0;
   flex-shrink: 0;
-
-  border: 1px solid #d9d9d9;
+  border: 1px solid var(--line);
   border-radius: 4px;
-  background: white;
-
+  background: var(--highlight);
   cursor: pointer;
   position: relative;
   transition:
@@ -19,8 +16,8 @@
 }
 
 .checkbox-option input[type="checkbox"]:checked {
-  background: #87ceeb;
-  border-color: #87ceeb;
+  background: var(--primary);
+  border-color: var(--primary);
 }
 
 .checkbox-option input[type="checkbox"]:checked::after {
@@ -30,7 +27,7 @@
   height: 8px;
   left: 50%;
   top: 50%;
-  border: solid #1e1e1e90;
+  border: solid var(--line);
   border-width: 0 2px 2px 0;
   transform: translate(-50%, -60%) rotate(45deg);
 }

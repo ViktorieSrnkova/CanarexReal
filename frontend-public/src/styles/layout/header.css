@@ -3,6 +3,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  background-color: var(--ink);
 }
 .socials {
   display: flex;
@@ -16,7 +17,7 @@
   gap: 0.5rem;
   align-items: center;
   text-decoration: none;
-  color: #1e1e1e;
+  color: var(--highlight);
   margin-right: 1rem;
   font-size: 0.875em;
 }
@@ -26,12 +27,16 @@
   display: flex;
   justify-content: space-between;
   padding-inline: 2em;
-  max-width: 90rem;
-  background-color: white;
+  max-width: var(--max-width);
+  background-color: var(--ink);
+  align-items: center;
 }
 .info-left {
   display: flex;
   align-items: center;
+}
+.info-left a {
+  display: flex;
 }
 .info-right {
   display: flex;
@@ -45,13 +50,13 @@
   font-size: 0.938em;
   font-weight: 400;
   height: 2.75rem;
-  color: #1e1e1e;
+  color: var(--ink);
 }
 .main-header-wrapper {
   width: 100%;
-  height: 3.75rem;
+  height: 5rem;
 
-  background-color: #87ceeb;
+  background-color: var(--highlight);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -63,8 +68,9 @@
   position: relative;
   align-items: center;
   width: 100%;
-  max-width: 90rem;
+  max-width: var(--max-width);
   padding-inline: 2em;
+  height: 5rem;
 }
 
 .main-header ul {
@@ -77,22 +83,24 @@
 
 .main-header .active:hover {
   cursor: pointer;
-  color: #a80000;
+  color: var(--primary);
+  text-decoration: overline;
 }
 
 .main-header .active {
-  color: #a80000;
-  text-decoration: none;
+  color: var(--primary);
+  text-decoration: overline;
 }
 
 .nonactive {
   text-decoration: none;
-  color: #1e1e1e;
+  color: var(--ink);
 }
 
 .nonactive:hover {
   cursor: pointer;
-  color: #a80000;
+  color: var(--primary);
+  text-decoration: overline;
 }
 .nav {
   display: flex;
@@ -110,7 +118,7 @@
   position: absolute;
   height: 3px;
   width: 100%;
-  background: #1e1e1e;
+  background: var(--ink);
   border-radius: 3px;
   transition: all 0.3s ease;
 }
@@ -157,4 +165,13 @@
 }
 .mobile-socials {
   display: none;
+}
+.faq-link-menu {
+  margin: auto;
+  padding-top: 0.5rem;
+  padding-bottom: 1rem;
+}
+.info-line .info-left img {
+  filter: invert(94%) sepia(8%) saturate(130%) hue-rotate(104deg)
+    brightness(97%) contrast(92%);
 }

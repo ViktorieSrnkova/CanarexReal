@@ -588,4 +588,11 @@ export const en = {
       "Please check the address you entered or use the button below to return to the homepage.",
     button: "Back to Homepage",
   },
+  map: {
+    gesture: {
+      touch: "Use two fingers to move the map",
+      scroll: "Hold Ctrl and scroll to zoom the map",
+      scrollMac: "Hold ⌘ and scroll to zoom the map",
+    },
+  },
 };

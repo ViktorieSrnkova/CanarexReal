@@ -1,0 +1,252 @@
+.hp-hero {
+  position: relative;
+  isolation: isolate;
+  background: var(--light);
+  overflow: hidden;
+  width: 100%;
+  padding: 0 0;
+}
+.hp-hero:before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    90deg,
+    rgba(249, 248, 242, 0.97),
+    rgba(249, 248, 242, 0.9) 24%,
+    rgba(249, 248, 242, 0.62) 39%,
+    rgba(249, 248, 242, 0) 57%
+  );
+}
+.hero-img {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+}
+.hp-hero img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+.hp-hero .wrap {
+  min-height: 660px;
+  display: flex;
+  align-items: center;
+  max-width: var(--max-width);
+  margin: auto;
+  padding: 0 2.5rem;
+}
+.hp-hero .wrap .copy {
+  width: 52%;
+  padding: 3.25rem 0;
+}
+.copy .eyebrow {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--primary);
+  margin: 0 0 1rem;
+}
+.hp-hero h1 {
+  white-space: pre-line;
+}
+.copy #uvod {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(2.5rem, 4.2vw, 3.75rem);
+  line-height: 1.09;
+  letter-spacing: -0.119rem;
+  font-weight: 400;
+  margin: 0 0 1.5rem;
+}
+.copy .lead {
+  font-size: 1rem;
+  max-width: 26.25rem;
+  margin: 0 0 1rem;
+}
+.copy .care {
+  font-size: 1rem;
+  max-width: 23.125rem;
+  color: var(--text-second);
+  margin-bottom: 1.5rem;
+}
+.actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+.actions .btn {
+  text-decoration: none;
+}
+
+.copy .signature {
+  font-size: 0.813rem;
+  margin: 1.5rem 0 0;
+  color: var(--text-second);
+}
+
+@media (min-width: 1600px) {
+  .hp-hero .wrap {
+    min-height: 46.25rem;
+  }
+  .hp-hero:before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(
+      90deg,
+      rgba(249, 248, 242, 0.97),
+      rgba(249, 248, 242, 0.9) 40%,
+      rgba(249, 248, 242, 0.62) 50%,
+      rgba(249, 248, 242, 0) 60%
+    );
+  }
+}
+
+@media (max-width: 1000px) {
+  .hp-hero .wrap {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+    min-height: 38.125rem;
+  }
+
+  .copy {
+    width: 49%;
+  }
+  #uvod {
+    font-size: 2.875rem;
+  }
+  .hp-hero:before {
+    background: linear-gradient(
+      90deg,
+      rgba(249, 248, 242, 0.98),
+      rgba(249, 248, 242, 0.87) 32%,
+      transparent 65%
+    );
+  }
+  .actions .btn {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 760px) {
+  .hp-hero {
+    display: flex;
+    flex-direction: column;
+    background: var(--hero);
+  }
+
+  .hp-hero:before {
+    display: none;
+  }
+
+  .hp-hero .wrap {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+    min-height: 0;
+    display: block;
+    order: 0;
+    width: 100%;
+  }
+
+  .hp-hero .wrap .copy {
+    width: 100%;
+    padding: 2.375rem 0 1.875rem;
+  }
+
+  #uvod {
+    font-size: 2.625rem;
+
+    letter-spacing: -0.081rem;
+  }
+
+  .copy .lead {
+    font-size: 1rem;
+    max-width: 100%;
+  }
+
+  .copy .care {
+    max-width: 100%;
+    font-size: 0.875rem;
+    /*  margin-top: -1.5rem; */
+  }
+
+  .copy .signature {
+    margin-top: 1.25rem;
+  }
+
+  .hp-hero .hero-img.mobile {
+    position: relative;
+    width: calc(100% + 2.5rem);
+    margin-inline: -1.25rem;
+    margin-top: 0.875rem;
+    aspect-ratio: 1.15;
+    isolation: isolate;
+    max-height: 25rem;
+  }
+
+  .hp-hero img {
+    display: block;
+    object-position: 83% center;
+  }
+  /* .hp-hero .hero-img.mobile::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 45%;
+
+    background: linear-gradient(
+      to top,
+
+      var(--hero),
+      var(--paper) 24%,
+      rgba(249, 248, 242, 0.62) 50%,
+      transparent 90%
+    );
+
+    pointer-events: none;
+  } */
+  .actions {
+    gap: 0.625rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-bottom: -6rem;
+    z-index: 100;
+    position: relative;
+  }
+  .hp-hero .button {
+    padding: 0.75rem 0.625rem;
+    font-weight: 600;
+    font-size: 0.875rem;
+    height: unset;
+  }
+  .hp-hero .button-secondary {
+    background-color: var(--highlight);
+  }
+  .hp-hero .button,
+  .hp-hero .btn {
+    width: 100%;
+  }
+  .hp-hero .eyebrow {
+    font-size: 0.688rem;
+  }
+  #uvod {
+    padding-bottom: 2rem;
+  }
+}
+@media (max-width: 451px) {
+  .actions {
+    gap: 0.625rem;
+    display: flex;
+    flex-direction: column;
+  }
+  #uvod {
+    padding-bottom: 0;
+    max-width: 28.125rem;
+  }
+}

@@ -584,4 +584,11 @@ export const sk = {
       "Skontrolujte, prosím, zadanú adresu, prípadne sa pomocou tlačidla nižšie vráťte na domovskú stránku.",
     button: "Späť na domovskú stránku",
   },
+  map: {
+    gesture: {
+      touch: "Na pohyb po mape použite dva prsty",
+      scroll: "Na priblíženie mapy podržte Ctrl a posúvajte kolieskom myši",
+      scrollMac: "Na priblíženie mapy podržte ⌘ a posúvajte kolieskom myši",
+    },
+  },
 };

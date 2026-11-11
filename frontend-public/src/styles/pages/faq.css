@@ -1,11 +1,7 @@
 .faq .bold {
   font-weight: 700;
 }
-.faq h2 {
-  font-weight: 700;
-  font-size: 1.125em !important;
-  margin-top: 3rem;
-}
+
 .faq ul,
 .faq ol {
   display: flex;
@@ -13,11 +9,10 @@
   gap: 0.5rem;
 }
 .faq h1 {
-  font-size: 1.75em;
-  text-align: center;
-  margin-top: 2rem;
+  margin-bottom: 2rem;
 }
-.faq.description-wrapper {
-  gap: 0 !important;
-  padding-inline: 2rem;
+.faq h2 {
+  font-size: 1.75rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--line);
 }

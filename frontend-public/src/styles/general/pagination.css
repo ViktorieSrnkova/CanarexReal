@@ -3,6 +3,7 @@
   align-items: center;
   gap: 0.5rem;
   justify-content: center;
+  margin-top: 2rem;
 }
 .pagination {
   min-height: 2.188rem;
@@ -17,13 +18,13 @@
   background: none;
   padding: 0.5em 0.75em;
   cursor: pointer;
-  border-radius: 0.375rem;
+  border-radius: 0.25rem;
   font-size: 1em;
 }
 
 .pagination button.active {
-  background: #87ceeb;
-  color: #380401;
+  background: var(--primary);
+  color: var(--highlight);
 }
 
 .pagination button:disabled {
@@ -41,4 +42,9 @@
 }
 .arrow-pg {
   padding-inline: 0.5em;
+}
+@media screen and (max-width: 780px) {
+  .pagination {
+    gap: 0;
+  }
 }

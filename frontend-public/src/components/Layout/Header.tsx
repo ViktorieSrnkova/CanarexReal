@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../../styles/layout/header.css";
 import "../../styles/responsivity/resize.css";
 import LangSwitcher from "./LangSwitcher";
@@ -104,6 +104,13 @@ function Header() {
                 <img src="/socials/TikTok.svg" alt="TikTok" />
               </a>
             </div>
+            <Link
+              to={`/${lang}/faq`}
+              onClick={() => setMenuOpen(false)}
+              className="faq-link-menu mobile"
+            >
+              {t("footer.faq")}
+            </Link>
           </nav>
         </div>
       </div>

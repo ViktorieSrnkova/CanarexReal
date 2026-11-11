@@ -13,6 +13,7 @@ import "../styles/pages/listings.css";
 import toast, { LoaderIcon } from "react-hot-toast";
 import { useAuth } from "../Auth/authStore";
 import NoResults from "../components/Listing/NoMapListings";
+import ToggleFilters from "../components/Listing/ToggleFilters";
 const SearchMap = lazy(() => import("../components/Listing/SearchMap"));
 
 function Map() {
@@ -43,12 +44,12 @@ function Map() {
   const navigate = useNavigate();
   const { lang } = useLang();
   const [searchParams, setSearchParams] = useSearchParams();
-  /* const selectedIdFromUrl = Number(searchParams.get("selected") || 0) || null; */
   const selectedIdFromUrl =
     (Number(searchParams.get("selected") || 0) || null) ??
     (isIndexSearchActive ? searchedIndex : null);
   const clicked = !!selectedIdFromUrl;
   const zoom = isIndexSearchActive ? 14 : Number(searchParams.get("z") || 10);
+
   const { user } = useAuth();
   const searchedListing = isIndexSearchActive
     ? listings.find((l) => l.index === searchedIndex)
@@ -83,7 +84,7 @@ function Map() {
     [listings, selectedIdFromUrl],
   );
   const handleMarkerClick = (index: number) => {
-    if (window.innerWidth <= 780) {
+    /* if (window.innerWidth <= 780) {
       setSearchParams((prev) => {
         const p = new URLSearchParams(prev);
         p.set("selected", String(index));
@@ -92,7 +93,7 @@ function Map() {
 
       navigate(`/${lang}/listings/${index}`);
       return;
-    }
+    } */
 
     setSearchParams((prev) => {
       const p = new URLSearchParams(prev);
@@ -145,119 +146,198 @@ function Map() {
   }
   return (
     <>
-      <SEO title={t("SEO.Map_title")} description={t("SEO.Map_description")} />
-      <div className="map content">
-        <div className="listings-wrapper">
-          <Filters
-            onIndexSearch={handleIndexSearch}
-            onClearIndexSearch={clearIndexSearch}
-            isIndexSearchActive={isIndexSearchActive}
-            searchedIndex={searchedIndex}
-            disabled={isIndexSearchActive}
-            formFilters={formFilters}
-            setFormFilters={setFormFilters}
-            handleSubmit={handleSubmit}
-            handleClear={handleClear}
-            isDefault={isDefault}
-            priceRange={priceRange}
-            sizeRange={sizeRange}
-            filtersOpen={filtersOpen}
-            setFiltersOpen={setFiltersOpen}
-            hasAppliedFilters={hasAppliedFilters}
-          />
-          <div className="listings">
-            <div className="map-wrapper-listing">
-              <h1>{t("listings.map")}</h1>
-              <h4>{t("listings.mapSubtitle")}</h4>
-              {listings.length === 0 ? (
-                <NoFilters />
-              ) : !hasActiveListings ? (
-                <NoResults />
-              ) : (
-                <>
-                  <Suspense
-                    fallback={
-                      <div className="map-loader">
-                        <LoaderIcon />
-                      </div>
-                    }
-                  >
-                    <SearchMap
-                      markers={listings.filter(hasCoords).map((l) => ({
-                        index: l.index,
-                        price: l.cena_v_eur,
-                        position: {
-                          lat: l.adresy?.lat,
-                          lng: l.adresy?.lng,
-                        },
-                      }))}
-                      selectedId={selectedIdFromUrl}
-                      onMarkerClick={(index) => {
-                        handleMarkerClick(index);
-                      }}
-                      center={center}
-                      zoom={zoom}
-                      onMapMove={handleMapMove}
-                    />
-                  </Suspense>
-                  {selectedIdFromUrl && selected && clicked && (
-                    <div className="result">
-                      <div
-                        className="result-close"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          closePanel();
-                        }}
-                      >
-                        ×
-                      </div>
+      <section>
+        <SEO
+          title={t("SEO.Map_title")}
+          description={t("SEO.Map_description")}
+        />
 
-                      {selected && (
-                        <Card
-                          favorited={selected.is_favorite}
-                          onToggleFavorite={() =>
-                            handleToggleFavorite(
-                              selected.index,
-                              selected.is_favorite,
-                            )
+        <div className="map wrap">
+          <div className="listings-wrapper">
+            <div className="buttons-pc">
+              <ToggleFilters
+                hasAppliedFilters={hasAppliedFilters}
+                isIndexSearchActive={isIndexSearchActive}
+              />
+              <Filters
+                onIndexSearch={handleIndexSearch}
+                onClearIndexSearch={clearIndexSearch}
+                isIndexSearchActive={isIndexSearchActive}
+                searchedIndex={searchedIndex}
+                disabled={isIndexSearchActive}
+                formFilters={formFilters}
+                setFormFilters={setFormFilters}
+                handleSubmit={handleSubmit}
+                handleClear={handleClear}
+                isDefault={isDefault}
+                priceRange={priceRange}
+                sizeRange={sizeRange}
+                filtersOpen={filtersOpen}
+                setFiltersOpen={setFiltersOpen}
+                hasAppliedFilters={hasAppliedFilters}
+              />
+            </div>
+            <div className="listings">
+              <div className="mobile-wrapper">
+                <div className="wrap title-wrap ">
+                  <p className="eyebrow">{t("listings.mapSubtitle")}</p>
+                  <h2>{t("listings.map")}</h2>
+                </div>
+                <div className="mobile filter-btns-toggle">
+                  <ToggleFilters
+                    hasAppliedFilters={hasAppliedFilters}
+                    isIndexSearchActive={isIndexSearchActive}
+                  />
+                  <Filters
+                    onIndexSearch={handleIndexSearch}
+                    onClearIndexSearch={clearIndexSearch}
+                    isIndexSearchActive={isIndexSearchActive}
+                    searchedIndex={searchedIndex}
+                    disabled={isIndexSearchActive}
+                    formFilters={formFilters}
+                    setFormFilters={setFormFilters}
+                    handleSubmit={handleSubmit}
+                    handleClear={handleClear}
+                    isDefault={isDefault}
+                    priceRange={priceRange}
+                    sizeRange={sizeRange}
+                    filtersOpen={filtersOpen}
+                    setFiltersOpen={setFiltersOpen}
+                    hasAppliedFilters={hasAppliedFilters}
+                  />
+                </div>
+              </div>
+              <div className="map-wrapper-listing">
+                {listings.length === 0 ? (
+                  <NoFilters />
+                ) : !hasActiveListings ? (
+                  <NoResults />
+                ) : (
+                  <>
+                    <Suspense
+                      fallback={
+                        <div className="map-loader">
+                          <LoaderIcon />
+                        </div>
+                      }
+                    >
+                      <SearchMap
+                        markers={listings.filter(hasCoords).map((l) => ({
+                          index: l.index,
+                          price: l.cena_v_eur,
+                          position: {
+                            lat: l.adresy?.lat,
+                            lng: l.adresy?.lng,
+                          },
+                        }))}
+                        selectedId={selectedIdFromUrl}
+                        onMarkerClick={(index) => {
+                          handleMarkerClick(index);
+                        }}
+                        center={center}
+                        zoom={zoom}
+                        onMapMove={handleMapMove}
+                      />
+                    </Suspense>
+
+                    {selectedIdFromUrl && selected && clicked && (
+                      <div className="result">
+                        <div
+                          className="result-close"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            closePanel();
+                          }}
+                        >
+                          ×
+                        </div>
+
+                        {selected && (
+                          <Card
+                            favorited={selected.is_favorite}
+                            onToggleFavorite={() =>
+                              handleToggleFavorite(
+                                selected.index,
+                                selected.is_favorite,
+                              )
+                            }
+                            index={selected.index}
+                            titulek={
+                              selected.inzeraty_preklady[0]?.titulek ?? ""
+                            }
+                            lokace={selected.adresy?.lokace ?? ""}
+                            typ={
+                              selected.typy_nemovitosti
+                                ?.typy_nemovitosti_preklady[0]?.nazev ?? ""
+                            }
+                            status={
+                              selected.statusy?.statusy_preklady[0]?.nazev ?? ""
+                            }
+                            cena_v_eur={selected.cena_v_eur}
+                            loznice={selected.loznice}
+                            koupelny={selected.koupelny}
+                            velikost={selected.velikost}
+                            obrazekId={selected.obrazky[0]?.id ?? 0}
+                            alt={
+                              selected.obrazky[0]?.obrazky_preklady[0]
+                                ?.alt_text ?? ""
+                            }
+                            status_id={selected.statusy_id}
+                          />
+                        )}
+                        <Button
+                          onClick={() =>
+                            navigate(`/${lang}/listings/${selected?.index}`)
                           }
-                          index={selected.index}
-                          titulek={selected.inzeraty_preklady[0]?.titulek ?? ""}
-                          lokace={selected.adresy?.lokace ?? ""}
-                          typ={
-                            selected.typy_nemovitosti
-                              ?.typy_nemovitosti_preklady[0]?.nazev ?? ""
-                          }
-                          status={
-                            selected.statusy?.statusy_preklady[0]?.nazev ?? ""
-                          }
-                          cena_v_eur={selected.cena_v_eur}
-                          loznice={selected.loznice}
-                          koupelny={selected.koupelny}
-                          velikost={selected.velikost}
-                          obrazekId={selected.obrazky[0]?.id ?? 0}
-                          alt={
-                            selected.obrazky[0]?.obrazky_preklady[0]
-                              ?.alt_text ?? ""
-                          }
-                          status_id={selected.statusy_id}
-                        />
-                      )}
-                      <Button
-                        onClick={() =>
-                          navigate(`/${lang}/listings/${selected?.index}`)
+                        >
+                          {t("listings.goTo")}
+                        </Button>
+                      </div>
+                    )}
+                  </>
+                )}
+              </div>
+              <div className="result-box">
+                {selectedIdFromUrl && selected && clicked && (
+                  <div className="result mobile">
+                    {selected && (
+                      <Card
+                        favorited={selected.is_favorite}
+                        onToggleFavorite={() =>
+                          handleToggleFavorite(
+                            selected.index,
+                            selected.is_favorite,
+                          )
                         }
-                      >
-                        {t("listings.goTo")}
-                      </Button>
-                    </div>
-                  )}
-                </>
-              )}
+                        index={selected.index}
+                        titulek={selected.inzeraty_preklady[0]?.titulek ?? ""}
+                        lokace={selected.adresy?.lokace ?? ""}
+                        typ={
+                          selected.typy_nemovitosti
+                            ?.typy_nemovitosti_preklady[0]?.nazev ?? ""
+                        }
+                        status={
+                          selected.statusy?.statusy_preklady[0]?.nazev ?? ""
+                        }
+                        cena_v_eur={selected.cena_v_eur}
+                        loznice={selected.loznice}
+                        koupelny={selected.koupelny}
+                        velikost={selected.velikost}
+                        obrazekId={selected.obrazky[0]?.id ?? 0}
+                        alt={
+                          selected.obrazky[0]?.obrazky_preklady[0]?.alt_text ??
+                          ""
+                        }
+                        status_id={selected.statusy_id}
+                      />
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </section>
     </>
   );
 }

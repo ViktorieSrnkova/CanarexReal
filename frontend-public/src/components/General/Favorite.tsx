@@ -10,6 +10,8 @@ type Props = {
   top: number;
   left?: number;
   right?: number;
+  width?: string;
+  height?: string;
 };
 
 function Favorite({
@@ -19,6 +21,8 @@ function Favorite({
   top,
   left,
   right,
+  width,
+  height,
 }: Props) {
   const [hoveredIcon, setHoveredIcon] = useState<"like" | null>(null);
   const t = useT();
@@ -32,8 +36,8 @@ function Favorite({
       <img
         src={favorited ? "/listings/filled-heart.svg" : "/listings/heart.svg"}
         alt="favorite"
-        width="22"
-        height="22"
+        width={width || "22"}
+        height={height || "22"}
         className={list === true ? "favorited-list" : "favorited-item"}
       />
 

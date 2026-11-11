@@ -1,8 +1,7 @@
 .gdpr h1 {
   text-align: center;
-  font-size: 1.75em;
+  font-size: 2.5rem;
   margin-bottom: 2rem;
-  margin-top: 2rem;
 }
 .gdpr ul {
   display: flex;
@@ -11,29 +10,25 @@
   margin-bottom: 1rem;
 }
 .gdpr h2 {
-  font-size: 1.125em !important;
-  margin-bottom: 0.25rem;
-  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--line);
+  font-size: 1.5rem;
 }
 .gdpr p,
 .gdpr-link,
 .gdpr a {
   font-size: 1em;
 }
-.gdpr.description-wrapper {
-  gap: 0 !important;
-  padding-inline: 2rem;
-}
+
 .has-margin {
   margin-bottom: 1rem !important;
 }
 .gdpr h3 {
-  font-size: 1em;
-  color: #1e1e1e;
+  color: var(--ink);
 }
 .gdpr * {
-  color: #1e1e1e;
+  color: var(--ink);
 }
 .gdpr a {
-  color: #237798;
+  color: var(--primary);
 }

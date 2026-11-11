@@ -1,0 +1,50 @@
+.socials-section {
+  width: 100%;
+  background: var(--accent);
+  padding: 3rem 0;
+}
+.socials-section .wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: var(--max-width);
+  padding: 0 2.5rem;
+  gap: 1rem;
+}
+
+.socials-section .wrap h2 {
+  font:
+    400 1.75rem / 1.2 Georgia,
+    serif;
+  letter-spacing: -0.05rem;
+  margin: 0 0 1rem;
+  text-align: center;
+}
+.socials-section .wrap .icons {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+  margin-bottom: 0;
+}
+.socials-section .wrap .icons .rect {
+  background-color: var(--highlight);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: 0.25rem;
+}
+.socials-section .wrap .icons .rect a {
+  text-decoration: none;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+@media (max-width: 760px) {
+  .socials-section .wrap {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+}

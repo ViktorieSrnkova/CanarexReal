@@ -1,0 +1,110 @@
+.contact-overview {
+  background: var(--accent);
+}
+.wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  max-width: var(--max-width);
+  margin: auto;
+  padding: 0 2.5rem;
+  justify-content: space-between;
+  gap: 4.5rem;
+}
+
+.worry {
+  display: flex;
+  flex-direction: column;
+  max-width: 38rem;
+  width: 100%;
+}
+.worry .eyebrow {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin: 0 0 1rem;
+}
+.worry h2 {
+  font:
+    400 2.5rem / 1.2 Georgia,
+    serif;
+  letter-spacing: -0.05rem;
+  margin: 0 0 1rem;
+}
+.worry p {
+  color: var(--muted);
+  max-width: 33.25rem;
+  margin-top: 0;
+}
+.contact-box {
+  background: var(--highlight);
+  padding: 2rem;
+  border: 1px solid var(--line);
+  max-width: 30.5rem;
+  width: 100%;
+}
+.contact-box strong {
+  font-size: 1.25rem;
+}
+.contact-box .subtext {
+  font-size: 1rem;
+}
+.contact-box a:not(.btn) {
+  display: block;
+  margin-top: 0.625rem;
+}
+.contact-box a {
+  color: inherit;
+}
+.contact-box .btn {
+  margin-top: 1.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 3rem;
+  padding: 0.75rem 1.25rem;
+  background: var(--primary);
+  color: var(--highlight);
+  text-decoration: none;
+  border: 1px solid var(--primary);
+  border-radius: 0.25rem;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.5;
+}
+.contact-box .btn:hover {
+  background: var(--primary-hover);
+}
+.contact-box .textlink {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: bold;
+  text-decoration: none;
+  border-bottom: 1px solid var(--primary);
+  margin-top: 0.625rem;
+  padding-bottom: 0.25rem;
+}
+@media (max-width: 1112px) {
+  .contact-box .btn {
+    font-size: 0.938rem;
+  }
+}
+@media (max-width: 760px) {
+  .contact-overview {
+    padding: 2.5rem 0;
+  }
+  .wrapper {
+    flex-direction: column;
+    gap: 20px;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+  .worry h2 {
+    font-size: 2rem !important;
+  }
+  .contact-box {
+    padding: 1.5rem;
+    max-width: 38rem;
+  }
+}

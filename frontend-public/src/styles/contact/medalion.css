@@ -5,7 +5,7 @@
   align-items: center;
   margin-top: 3.875rem;
   position: static;
-  color: #3f3f3f;
+  color: var(--ink);
   margin-bottom: 1rem;
 }
 .medalion-graphic {
@@ -25,7 +25,7 @@
   margin-bottom: 0.438rem;
   height: 0.063rem;
   border: 0;
-  border-top: solid 0.063rem #000;
+  border-top: solid 0.063rem var(--ink);
 }
 .medalion-blue-pettal {
   width: 20.625rem;
@@ -34,26 +34,22 @@
   flex-direction: column;
   align-items: center;
   position: relative;
-  border-radius: 0 6.25rem 0 6.25rem;
-
-  background-image: linear-gradient(
-    180deg,
-    #87ceeb 31.57894736842105%,
-    #fff 100%
-  );
+  border-radius: 0.25rem;
+  background-color: var(--accent);
+  border: 1px solid var(--line);
 }
 .medalion-blue-pettal img {
   position: relative;
-  border-radius: 0 6.25rem 0 6.25rem;
+  border-radius: 0.25rem;
   height: 15rem;
   width: 12.5rem;
   top: -3.875rem;
   object-fit: cover;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 1px 3px var(--shadow);
 }
 .medalion-person {
   position: relative;
-  top: -1.813rem;
+  top: -2.4rem;
 }
 .medalion-name {
   margin: 0;
@@ -71,7 +67,7 @@
   white-space: nowrap;
   justify-content: center;
   margin-bottom: 0.625rem;
-  gap: 1rem;
+  gap: 0.625rem;
 }
 .medalion-second-row {
   display: flex;
@@ -84,4 +80,13 @@
 .medalion-image {
   min-height: 240px;
   min-width: 200px;
+}
+.medalion-info-wrapper .phone,
+.medalion-info-wrapper .mail {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  text-decoration: none;
+  color: var(--ink);
+  font-size: 0.875em;
 }

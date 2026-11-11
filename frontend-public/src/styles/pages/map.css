@@ -9,8 +9,8 @@
   flex-direction: column;
   gap: 1rem;
 }
-.map.content {
-  max-width: 90rem;
+.map {
+  max-width: var(--max-width);
 }
 .map .listings-wrapper .filters {
   max-width: 20.438rem;
@@ -23,4 +23,9 @@
   flex-wrap: nowrap;
   gap: 1rem;
   width: 100%;
+}
+@media screen and (max-width: 500px) {
+  .map .listings-wrapper .filters {
+    max-width: none !important;
+  }
 }

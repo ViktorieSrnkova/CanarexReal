@@ -1,112 +1,50 @@
-.vert-f {
+.footer {
+  background: var(--highlight);
   width: 100%;
-  background-color: #f5f5f5;
+  padding: 1.5rem 0;
+  font-size: 12px;
+  color: var(--muted);
 }
-.vert-line {
-  width: 0.063rem;
-  border: none;
-  border-right: 0.063rem solid #303030;
-  height: 1.313rem;
-  color: #efefef;
-  background-color: #efefef;
-  margin: 0;
-}
-.actual-footer {
-  display: flex;
-  align-items: start;
-  justify-content: center;
-  gap: 4rem;
+.footer .wrap {
+  max-width: var(--max-width);
   margin: auto;
-
-  background: #f5f5f5;
-  color: #3f3f3f;
-  list-style-type: none;
-  white-space: nowrap;
-  box-sizing: border-box;
-  margin-top: 1.875rem;
-  padding: 0.563em 2em 2.063em 2em;
-  width: 100%;
-}
-
-.middle-footer {
+  padding: 0 2.5rem;
   display: flex;
-  flex-direction: row;
-  column-gap: 4rem;
-}
-.bottom-info {
-  display: flex;
+  justify-content: space-between;
   gap: 1.25rem;
-  justify-content: center;
-  align-items: center;
-  padding-bottom: 1.875rem;
-  font-size: 0.875em;
 }
-.bottom-info a {
-  color: #1e1e1e;
-}
-.bottom-info p {
-  color: #595959;
-  margin: 0;
-}
-.icons {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 0.5rem;
-}
-.icons a {
-  height: 2rem;
-}
-.icons a img {
-  width: 2rem;
-  aspect-ratio: 1;
-}
-.actual-footer .start-footer h2,
-.actual-footer .middle-footer h2 {
-  margin: 1.5rem 0 1.5rem 0;
-  font-size: 1.25em;
-}
-.phone p {
-  margin: 0;
-}
-.contacts {
+.footer .wrap .sec {
   display: flex;
   flex-direction: row;
-  column-gap: 2rem;
+  gap: 1rem;
+  align-items: center;
 }
-.contacts .first,
-.contacts .second {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+.footer .wrap .sec a {
+  color: inherit;
 }
-.mail a {
-  text-decoration: none;
-  color: #1e1e1e;
+.footer .wrap .sec p {
+  margin: 0;
 }
 
-.faq-link {
-  color: #1e1e1e;
-}
-.name-title-footer {
-  margin-top: 0;
-  margin-bottom: 8px;
-}
 @media screen and (max-width: 780px) {
-  .middle-footer {
+  .footer .wrap {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
     align-items: center;
-    column-gap: 0;
+    width: 100%;
+    flex-direction: column;
+    gap: 0;
   }
-  .middle-footer h2 {
-    text-align: center;
-  }
-  .middle-footer .contacts,
-  .middle-footer .contacts-h2 {
+  .sec .pc {
     display: none;
   }
-  footer .wawe {
-    margin-top: 2rem;
-  }
-  footer .actual-footer {
-    margin-top: 0;
+
+  .footer .wrap .sec {
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    text-align: center;
   }
 }

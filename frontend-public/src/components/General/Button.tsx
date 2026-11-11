@@ -2,7 +2,7 @@ import React from "react";
 import "../../styles/general/button.css";
 
 type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
-  variant?: "primary" | "secondary" | "danger";
+  variant?: "primary" | "secondary" | "danger" | "subtle";
 };
 
 const Button: React.FC<ButtonProps> = ({

@@ -96,15 +96,22 @@ function Filters({
   return (
     <>
       <button className="filters-toggle" onClick={() => setFiltersOpen(true)}>
-        {t("listings.filters")}
+        {/*    <img
+          src="/utils/arrow-left.svg"
+          height="12"
+          alt="<"
+          style={{ color: "var(--ink)" }}
+        /> */}
+        {isMapPage ? t("listings.filters") : t("listings.filtersAndSort")}
       </button>
+
       <div className={`filters ${filtersOpen ? "open" : ""}`}>
         <div className="filters-header">
           <div className="close" onClick={() => setFiltersOpen(false)}>
             ×
           </div>
         </div>
-        <div className="navigation-btn">
+        <div className="navigation-btn pc">
           <Link
             to={{
               pathname: backLink,
@@ -134,6 +141,7 @@ function Filters({
 
           <div className="index-search">
             <input
+              id="search-index"
               type="number"
               placeholder="ID"
               value={indexInput}
@@ -148,9 +156,15 @@ function Filters({
                 }
               }}
             />
-            <Button onClick={submitIndexSearch}>⌕</Button>
+            <Button onClick={submitIndexSearch} className="search-btn-filters">
+              ⌕
+            </Button>
             {isIndexSearchActive && (
-              <Button onClick={onClearIndexSearch} variant="danger">
+              <Button
+                onClick={onClearIndexSearch}
+                variant="danger"
+                className="search-btn-filters"
+              >
                 X
               </Button>
             )}

@@ -14,7 +14,7 @@ export const ExpandableDescription: React.FC<Props> = ({ content }) => {
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <div className="description-wrapper">
+    <div className="description-wrapper expandable-desc">
       <h3>{t("listing.description")}</h3>
 
       <div className={expanded ? "det-content expanded" : "det-content"}>
@@ -24,11 +24,11 @@ export const ExpandableDescription: React.FC<Props> = ({ content }) => {
         className="det-btn-group"
         onClick={() => setExpanded((prev) => !prev)}
       >
-        {expanded && <div className="arrow arrow-up"></div>}
-        <Button className="det-toggle-btn">
+        <Button variant="subtle" className="det-toggle-btn">
+          {expanded && <div className="arrow arrow-up"></div>}
           {expanded ? t("listing.expanded") : t("listing.collapsed")}
+          {!expanded && <div className="arrow arrow-down"></div>}
         </Button>
-        {!expanded && <div className="arrow arrow-down"></div>}
       </div>
     </div>
   );

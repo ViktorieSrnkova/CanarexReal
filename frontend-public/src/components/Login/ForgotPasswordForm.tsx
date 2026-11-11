@@ -2,6 +2,7 @@ import { useState } from "react";
 import { api } from "../../api/axios";
 import { useT } from "../../i18n";
 import type { AuthMode } from "./AuthModal";
+import Button from "../General/Button";
 
 type Props = {
   onSwitch: (mode: AuthMode) => void;
@@ -73,9 +74,14 @@ function ForgotPasswordForm({ onSwitch }: Props) {
         {success && <p style={{ color: "green" }}>{success}</p>}
         {error && <p style={{ color: "red" }}>{error}</p>}
 
-        <button className="submit-button" type="submit" disabled={loading}>
+        <Button
+          variant="secondary"
+          className="submit-button"
+          type="submit"
+          disabled={loading}
+        >
           {loading ? t("general.loading") : t("forgot.submit")}
-        </button>
+        </Button>
       </form>
       <div className="login-link">
         <button

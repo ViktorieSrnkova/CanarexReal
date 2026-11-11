@@ -76,155 +76,169 @@ export default function UserFormsTable() {
   };
 
   return (
-    <div className="user-forms">
-      <h1>{t("userForms.title")}</h1>
-      <table className="forms-table">
-        <tbody>
-          {forms.map((form) => {
-            const isOpen = expandedId === form.id;
-            const listing = listings[`${form.id}-${langId}`];
-            return (
-              <React.Fragment key={form.id}>
-                <tr
-                  key={form.id}
-                  onClick={() => toggleRow(form)}
-                  style={{ cursor: "pointer" }}
-                  className="form-row"
-                >
-                  <td style={{ color: "#87ceeb", paddingRight: "0" }}>
-                    {isOpen ? "▼" : "▲"}
-                  </td>
-                  <td>
-                    {FORM_TYPE_LABELS[form.typy_formulare?.id ?? 0]?.[langId] ??
-                      ""}
-                  </td>
-                  <td className="number" style={{ minWidth: "97px" }}>
-                    {new Date(form.datum_vytvoreni).toLocaleDateString()}
-                  </td>
-                  <td className="email-cell">{form.email}</td>
-                </tr>
+    <section>
+      <div className="wrap">
+        <div className="user-forms">
+          <p className="eyebrow">{t("userForms.eyebrow")}</p>
+          <h1>{t("userForms.title")}</h1>
+          <table className="forms-table">
+            <tbody>
+              {forms.map((form) => {
+                const isOpen = expandedId === form.id;
+                const listing = listings[`${form.id}-${langId}`];
+                return (
+                  <React.Fragment key={form.id}>
+                    <tr
+                      key={form.id}
+                      onClick={() => toggleRow(form)}
+                      style={{ cursor: "pointer" }}
+                      className="form-row"
+                    >
+                      <td style={{ color: "#87ceeb", paddingRight: "0" }}>
+                        {isOpen ? "▼" : "▲"}
+                      </td>
+                      <td>
+                        {FORM_TYPE_LABELS[form.typy_formulare?.id ?? 0]?.[
+                          langId
+                        ] ?? ""}
+                      </td>
+                      <td className="number" style={{ minWidth: "97px" }}>
+                        {new Date(form.datum_vytvoreni).toLocaleDateString()}
+                      </td>
+                      <td className="email-cell">{form.email}</td>
+                    </tr>
 
-                {isOpen && (
-                  <tr className="form-expanded">
-                    <td colSpan={5}>
-                      <div className="expanded-content">
-                        <h3>{t("userForms.subtitle")}</h3>
-                        <div className="form-basic-info">
-                          <p>
-                            <strong>{t("userForms.fullName")} </strong>
-                            <span>
-                              {form.jmeno} {form.prijmeni}
-                            </span>
-                          </p>
-
-                          <p>
-                            <strong>{t("userForms.email")} </strong>
-                            <span>{form.email}</span>
-                          </p>
-
-                          <p>
-                            <strong>{t("userForms.phone")} </strong>
-                            <span className="number">{form.telefon}</span>
-                          </p>
-                        </div>
-                        {form.typy_formulare?.id === 3 && (
-                          <div className="wrap-table">
-                            <div className="cell number">
-                              <strong>{t("userForms.price")}</strong>{" "}
-                              {form.rozpocet_od} - {form.rozpocet_do} €
-                            </div>
-
-                            <div className="cell number">
-                              <strong>{t("userForms.size")}</strong>{" "}
-                              {form.velikost_od} - {form.velikost_do} m²
-                            </div>
-
-                            <div className="cell number">
-                              <strong>{t("userForms.bedrooms")}</strong>{" "}
-                              {form.pocet_loznic?.join(", ") ?? "-"}
-                            </div>
-
-                            <div className="cell number">
-                              <strong>{t("userForms.bathrooms")}</strong>{" "}
-                              {form.pocet_koupelen?.join(", ") ?? "-"}
-                            </div>
-
-                            <div className="cell number">
-                              <strong>{t("userForms.arrival")}</strong>{" "}
-                              {form.vi_prilet
-                                ? form.prilet
-                                : t("userForms.unsure")}
-                            </div>
-
-                            <div className="cell">
-                              <strong>{t("userForms.type")}</strong>
-                              {form.formulare_typy_nemovitosti?.length
-                                ? form.formulare_typy_nemovitosti
-                                    .map(
-                                      (x) =>
-                                        PROPERTY_TYPE_LABELS[
-                                          x.typy_nemovitosti.id
-                                        ]?.[langId] ?? "-",
-                                    )
-                                    .join(", ")
-                                : "-"}
-                            </div>
-                          </div>
-                        )}
-                        {form.typy_formulare?.id === 2 && listing ? (
-                          <div className="form-listing-row">
-                            <div className="form-card">
-                              <Card
-                                index={listing.index}
-                                titulek={
-                                  listing.inzeraty_preklady[0]?.titulek ?? ""
-                                }
-                                lokace={listing.adresy?.lokace ?? ""}
-                                typ={
-                                  listing.typy_nemovitosti
-                                    ?.typy_nemovitosti_preklady[0]?.nazev ?? ""
-                                }
-                                status={
-                                  listing.statusy?.statusy_preklady[0]?.nazev ??
-                                  ""
-                                }
-                                cena_v_eur={listing.cena_v_eur}
-                                loznice={listing.loznice}
-                                koupelny={listing.koupelny}
-                                velikost={listing.velikost}
-                                obrazekId={listing.obrazky[0]?.id ?? 0}
-                                alt={
-                                  listing.obrazky[0]?.obrazky_preklady[0]
-                                    ?.alt_text ?? ""
-                                }
-                                status_id={listing.statusy_id}
-                                inForms
-                              />
-                            </div>
-                            <div className="form-text">
-                              <p className="mb0 mt0">
-                                <strong>{t("userForms.text")}</strong>{" "}
+                    {isOpen && (
+                      <tr className="form-expanded">
+                        <td colSpan={5}>
+                          <div className="expanded-content">
+                            <h3>{t("userForms.subtitle")}</h3>
+                            <div className="form-basic-info">
+                              <p>
+                                <strong>{t("userForms.fullName")} </strong>
+                                <span>
+                                  {form.jmeno} {form.prijmeni}
+                                </span>
                               </p>
-                              <p className="mt0"> {form.text_zpravy || "-"}</p>
+
+                              <p>
+                                <strong>{t("userForms.email")} </strong>
+                                <span>{form.email}</span>
+                              </p>
+
+                              <p>
+                                <strong>{t("userForms.phone")} </strong>
+                                <span className="number">{form.telefon}</span>
+                              </p>
                             </div>
+                            {form.typy_formulare?.id === 3 && (
+                              <div className="wrap-table">
+                                <div className="cell number">
+                                  <strong>{t("userForms.price")}</strong>{" "}
+                                  {form.rozpocet_od} - {form.rozpocet_do} €
+                                </div>
+
+                                <div className="cell number">
+                                  <strong>{t("userForms.size")}</strong>{" "}
+                                  {form.velikost_od} - {form.velikost_do} m²
+                                </div>
+
+                                <div className="cell number">
+                                  <strong>{t("userForms.bedrooms")}</strong>{" "}
+                                  {form.pocet_loznic?.join(", ") ?? "-"}
+                                </div>
+
+                                <div className="cell number">
+                                  <strong>{t("userForms.bathrooms")}</strong>{" "}
+                                  {form.pocet_koupelen?.join(", ") ?? "-"}
+                                </div>
+
+                                <div className="cell number">
+                                  <strong>{t("userForms.arrival")}</strong>{" "}
+                                  {form.vi_prilet
+                                    ? form.prilet
+                                    : t("userForms.unsure")}
+                                </div>
+
+                                <div className="cell">
+                                  <strong>{t("userForms.type")}</strong>
+                                  {form.formulare_typy_nemovitosti?.length
+                                    ? form.formulare_typy_nemovitosti
+                                        .map(
+                                          (x) =>
+                                            PROPERTY_TYPE_LABELS[
+                                              x.typy_nemovitosti.id
+                                            ]?.[langId] ?? "-",
+                                        )
+                                        .join(", ")
+                                    : "-"}
+                                </div>
+                              </div>
+                            )}
+                            {form.typy_formulare?.id === 2 && listing ? (
+                              <div className="form-listing-row">
+                                <div className="form-card">
+                                  <Card
+                                    index={listing.index}
+                                    titulek={
+                                      listing.inzeraty_preklady[0]?.titulek ??
+                                      ""
+                                    }
+                                    lokace={listing.adresy?.lokace ?? ""}
+                                    typ={
+                                      listing.typy_nemovitosti
+                                        ?.typy_nemovitosti_preklady[0]?.nazev ??
+                                      ""
+                                    }
+                                    status={
+                                      listing.statusy?.statusy_preklady[0]
+                                        ?.nazev ?? ""
+                                    }
+                                    cena_v_eur={listing.cena_v_eur}
+                                    loznice={listing.loznice}
+                                    koupelny={listing.koupelny}
+                                    velikost={listing.velikost}
+                                    obrazekId={listing.obrazky[0]?.id ?? 0}
+                                    alt={
+                                      listing.obrazky[0]?.obrazky_preklady[0]
+                                        ?.alt_text ?? ""
+                                    }
+                                    status_id={listing.statusy_id}
+                                    inForms
+                                  />
+                                </div>
+                                <div className="form-text">
+                                  <p className="mb0 mt0">
+                                    <strong>{t("userForms.text")}</strong>{" "}
+                                  </p>
+                                  <p className="mt0 message">
+                                    {" "}
+                                    {form.text_zpravy || "-"}
+                                  </p>
+                                </div>
+                              </div>
+                            ) : (
+                              <div className="textarea-form">
+                                <p className="mb0 mt0">
+                                  <strong>{t("userForms.text")}</strong>{" "}
+                                </p>
+                                <p className="mt0 message">
+                                  {" "}
+                                  {form.text_zpravy || "-"}
+                                </p>
+                              </div>
+                            )}
                           </div>
-                        ) : (
-                          <>
-                            <p className="mb0 mt0">
-                              <strong>{t("userForms.text")}</strong>{" "}
-                            </p>
-                            <p className="mt0"> {form.text_zpravy || "-"}</p>
-                          </>
-                        )}
-                      </div>
-                    </td>
-                  </tr>
-                )}
-              </React.Fragment>
-            );
-          })}
-        </tbody>
-      </table>
-    </div>
+                        </td>
+                      </tr>
+                    )}
+                  </React.Fragment>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
   );
 }

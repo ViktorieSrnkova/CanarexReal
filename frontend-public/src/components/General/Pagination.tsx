@@ -1,17 +1,49 @@
 import { useT } from "../../i18n";
 import "../../styles/general/pagination.css";
+import { useEffect, useState } from "react";
 
 type Props = {
   page: number;
   totalPages: number;
   onChange: (page: number) => void;
   loading?: boolean;
+  visible?: boolean;
 };
 
 function Pagination({ page, totalPages, onChange, loading = false }: Props) {
   const t = useT();
+  const [isMobile, setIsMobile] = useState(
+    () => typeof window !== "undefined" && window.innerWidth <= 780,
+  );
 
-  const getPages = () => {
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 780);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const getPages = (): (number | string)[] => {
+    if (isMobile) {
+      if (totalPages <= 4) {
+        return Array.from({ length: totalPages }, (_, i) => i + 1);
+      }
+
+      if (page <= 2) {
+        return [1, 2, "...", totalPages - 1, totalPages];
+      }
+
+      if (page >= totalPages - 1) {
+        return [1, 2, "...", totalPages - 1, totalPages];
+      }
+
+      return [1, "...", page, "...", totalPages];
+    }
+
+    // Desktop - original behavior
     if (totalPages <= 6) {
       return Array.from({ length: totalPages }, (_, i) => i + 1);
     }
@@ -32,7 +64,7 @@ function Pagination({ page, totalPages, onChange, loading = false }: Props) {
   };
 
   return (
-    <div className={`pagination ${loading ? "loading" : ""}`}>
+    <div className={`pagination ${loading ? "loading" : ""} `}>
       <button className="btn" disabled={loading || page === 1} onClick={goPrev}>
         <img
           className="arrow-pg"

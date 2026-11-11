@@ -60,14 +60,14 @@ export const cs = {
     news: "O Tenerife",
     contact: "Kontaktní formulář",
     back: "Zpět",
-    logo: "Tenerife, místo, kde sny mají adresu.",
+    logo: "Váš realitní agent na Tenerife",
   },
   footer: {
     formTitle: "Napiště nám!",
     contactsTitle: "Kontakty",
     followUs: "Sledujte nás!",
     privacy: "Zpracování osobních údajů",
-    copyright: "©CanarexReal 2020-2026",
+    copyright: "© 2026 CanarexReal",
     faq: "Často kladené otázky",
   },
   form: {
@@ -96,7 +96,7 @@ export const cs = {
     date: "Datum",
     unsetDate: "Nevím",
     titleInq: "Napište nám Vaše představy!",
-    subtitleInq: "Rádi Vám najdeme nemovitost na míru.",
+    subtitleInq: "Najdeme Vám nemovitost na míru.",
     titleDet: "Chcete více informací o prohlížené nemovitosti?",
     subtitleDet:
       "Rádi Vám sdělíme veškeré informace, upřesněte prosím Váš dotaz.",
@@ -142,26 +142,84 @@ export const cs = {
     filterList: "Zobrazit filtrovaný seznam",
     searchByIndex: "Vyhledávání podle ID inzerátu",
     mapSubtitle: "Klikněte na cenu v mapě pro zobrazení detailu nemovitosti",
+    listSubtitle: "Začněte hledat svůj nový domov na Tenerife",
     sortLabel: "Řadid dle",
     goTo: "Zobrazit nemovitost",
     clear: "Zrušit filtry",
     none: "Momentálně nemáme v nabídce žádné nemovitosti, které by splňovaly zvolené filtry.",
     filters: "Filtry",
+    filtersAndSort: "Filtry a Řazení",
     noActiveMapListings:
       "Pro zadané filtry nebo vyhledávání momentálně nejsou k dispozici žádné nemovitosti aktivně nabízené k prodeji. V seznamu nemovitostí však můžete stále zobrazit i prodané a rezervované nabídky.",
   },
   homepage: {
-    title: "Tenerife, kde sny mají adresu",
-    subtitle: "Najděte si z minimálně 200 nabídek svou ideální nemovitost.",
-    listings: "Zobrazit nabídku",
-    contact: "Kontaktovat agenta",
-    services: "Zobrazit služby",
-    contactMe: "Kontaktujte mě",
-    servis: "Realitní servis od A do Z",
-    rent: "Zajistím pronájem Vaší nemovitosti",
-    ideal: "Najdu Vám ideální nemovitost",
-    manage: "Správa, úklid a rekonstrukce",
-    agent: "Váš realitní agent na Tenerife",
+    hero: {
+      alt: "Stan předává klientům klíče na terase s výhledem na oceán na Tenerife",
+      eyebrow: "Nemovitosti na Tenerife · v češtině",
+      title: "Tenerife, \n místo, kde Vaše sny mají adresu.",
+      lead: "Pomůžeme Vám s výběrem a koupí nemovitosti na Tenerife. Osobně, s místní znalostí a komunikací v češtině.",
+      care: "Postaráme se o vaši nemovitost v době vaší nepřítomnosti.",
+      actions: [
+        { btn: "Prohlédnout nemovitosti", href: "/listings" },
+        { btn: "Domluvit konzultaci", href: "/contact" },
+        { btn: "Zobrazit mapu nemovitostí", href: "/map" },
+      ],
+      signature: "Stan Srnka · Váš realitní agent na Tenerife",
+    },
+    trust: [
+      {
+        title: "Domluvíme se Vaším jazykem",
+        subtitle: "Komunikace česky, slovensky i španělsky.",
+      },
+      {
+        title: "Máte oporu přímo na ostrově",
+        subtitle: "Od výběru a prohlídek po předání klíčů.",
+      },
+      {
+        title: "Koupí naše spolupráce nekončí",
+        subtitle: "Správa, údržba a péče během nepřítomnosti.",
+      },
+    ],
+    contactOverview: {
+      eyebrow: "Začneme rozhovorem",
+      title: "Nemusíte mít všechno promyšlené.",
+      p1: "Řekněte mi, co od nemovitosti na Tenerife očekáváte. Probereme Vaše představy i otázky a domluvíme další postup.",
+      p2: "Hledáte péči o nemovitost? Napište mi, kde se nachází a s čím potřebujete pomoci.",
+      strong: "Stan Srnka",
+      subtext: "Váš realitní agent na Tenerife",
+      a1: "Napište mi na WhatsApp ↗",
+      inquiry: "Vyplnit poptávku na webu →",
+    },
+    servicesOverview: {
+      eyebrow: "Od první představy po vlastní klíče",
+      h2: "Co pro Vás můžeme udělat?",
+      p1: "Ať své místo na Tenerife teprve hledáte, nebo už vlastníte nemovitost, pomůžeme Vám s dalším krokem.",
+      textlink: "Všechny naše služby →",
+      link: "/services",
+      sections: [
+        {
+          eyebrow: "01 / VÝBĚR",
+          title: "Najít správnou nemovitost",
+          p: "Projděte si nabídku, nebo nám sdělte své požadavky. Pomůžeme Vám zorientovat se v lokalitách a vybrat vhodné možnosti.",
+          link: "/listings",
+          textlink: "Prohlédnout nabídku →",
+        },
+        {
+          eyebrow: "02 / KOUPĚ",
+          title: "Mít jasno v každém kroku",
+          p: "Osobní i online prohlídky, prověření nemovitosti a koordinace koupě ve spolupráci s advokátem. Srozumitelně a v češtině.",
+          link: "/faq",
+          textlink: "Otázky ke koupi →",
+        },
+        {
+          eyebrow: "03 / PÉČE",
+          title: "Odjet s klidnou hlavou",
+          p: "Domluvíme rozsah péče během Vaší nepřítomnosti: kontroly, úklid, údržbu i řešení potřebných oprav.",
+          link: "mailto:stan@canarexreal.com?subject=P%C3%A9%C4%8De%20o%20nemovitost",
+          textlink: "Domluvit péči o nemovitost →",
+        },
+      ],
+    },
   },
   similar: {
     error: "Momentálně nemáme podobné nemovitosti.",
@@ -189,7 +247,8 @@ export const cs = {
     copy: "Zkopírovat URL inzerátu",
   },
   news: {
-    title: "Zajímavosti a informace o Tenerife",
+    title: "Ostrov Tenerife",
+    eyebrow: "Zajímavosti a informace",
   },
   SEO: {
     HP_title: "CanarexReal | Reality Tenerife",
@@ -300,7 +359,8 @@ export const cs = {
       "Se svými podněty se rovněž můžete obrátit na Úřad pro ochranu osobních údajů.",
   },
   FAQ: {
-    title: "FAQ – Nejčastější otázky o životě a koupi nemovitosti na Tenerife",
+    subtitle: "Nejčastější otázky o životě a koupi nemovitosti na Tenerife",
+    title: "Často kladené dotazy",
     subtitle1: "Proč si pořídit nemovitost právě na Tenerife?",
     p1: "Tenerife nabízí výjimečnou kombinaci celoročního tepla, evropského komfortu, bezpečného prostředí a stabilního realitního trhu. Ostrov je ideální jak pro vlastní bydlení, tak pro investici či druhý domov u oceánu.",
     subtitle2: "Jaké jsou na Tenerife životní náklady?",
@@ -393,9 +453,11 @@ export const cs = {
     p2: "Ano budeme od Vás požadovat mnoho dokumentů, potvrzení, výpisů. Vše Vám detailně vysvětlíme, dáme Vám seznam a nebudeme po Vás chtít nic víc, než je nutné minimum pro splnění podmínek půjčky.",
 
     subtitle7: "Celý proces získání financování je zdarma!",
-    formTitle: "Chcete vice informaci? Odešlete vyplněný dotazník.",
+    formTitle: "Odešlete vyplněný dotazník.",
+    formSubTitle: "Chcete více informací?",
   },
   services: {
+    eyebrow: "Jsme tu pro vás",
     title: "Naše služby",
     subtitle1: "Proč využít realitní agenturu na Tenerife",
     p1: "Na Tenerife žijeme a pracujeme již",
@@ -504,6 +566,8 @@ export const cs = {
     more: "Další nemovitosti",
   },
   favorites: {
+    title: "Oblíbené inzeráty",
+    eyebrow: "Vaše oblíbené nemovitosti na jednom místě",
     add: "Přidat do oblíbených",
     remove: "Odebrat z oblíbených",
     confirm: "Odebrat z oblíbených?",
@@ -530,6 +594,7 @@ export const cs = {
     changedPwd: "Heslo bylo změněno",
     changedErr: "Chyba při změně hesla",
     title: "Nastavení profilu",
+    eyebrow: "Mějte své údaje a preference vždy pod kontrolou",
     subtitle: "Profil",
     numFav: "Počet oblíbených inzerátů:",
     numForm: "Počet vyplněných formulářů:",
@@ -566,6 +631,7 @@ export const cs = {
   },
   userForms: {
     title: "Vyplněné formuláře",
+    eyebrow: "Vaše dotazy na jednom místě",
     phone: "Telefon:",
     email: "E-mail:",
     fullName: "Jméno a příjmení:",
@@ -585,5 +651,13 @@ export const cs = {
     description:
       "Zkontrolujte prosím zadanou adresu, případně se pomocí tlačítka níže vraťte na domovskou stránku.",
     button: "Zpět na domovskou stránku",
+  },
+
+  map: {
+    gesture: {
+      touch: "Pro pohyb v mapě použijte dva prsty",
+      scroll: "Pro přiblížení mapy podržte Ctrl a scrollujte",
+      scrollMac: "Pro přiblížení mapy podržte ⌘ a scrollujte",
+    },
   },
 };

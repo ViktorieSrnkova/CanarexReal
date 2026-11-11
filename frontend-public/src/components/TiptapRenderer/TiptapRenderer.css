@@ -11,6 +11,10 @@
 .tiptap-renderer .tiptap-emoji {
   font-family: "Noto Color Emoji", sans-serif;
 }
+.tiptap-renderer :is(h1, h2, h3, h4, h5, h6),
+.tiptap-renderer :is(h1, h2, h3, h4, h5, h6) * {
+  font-family: Georgia, "Times New Roman", serif;
+}
 
 .tiptap-renderer p {
   margin: 0 0 1em;
@@ -68,6 +72,8 @@
 .tiptap-renderer ul,
 .tiptap-renderer ol {
   text-align: inherit;
+  padding-left: 0.5rem;
+  margin: 0;
 }
 
 .tiptap-renderer li {
@@ -137,19 +143,19 @@
 }
 /* Nadpisy */
 .tiptap-renderer h1 {
-  font-size: 2rem;
+  font-size: 2.5rem;
   margin-top: 1.34rem;
   margin-bottom: 0.5em;
 }
 
 .tiptap-renderer h2 {
-  font-size: 1.74rem;
+  font-size: 2rem;
   margin-top: 1.444rem;
   margin-bottom: 0.5em;
 }
 
 .tiptap-renderer h3 {
-  font-size: 1.5rem;
+  font-size: 1.688rem;
   margin-top: 1.5rem;
   margin-bottom: 0.5em;
 }
@@ -207,9 +213,9 @@
 .tiptap-renderer blockquote {
   margin: 1rem 0;
   padding: 0.75rem 1rem;
-  border-left: 3px solid #87ceeb;
-  background: #f9f9f9;
-  color: #555;
+  border-left: 3px solid var(--primary);
+  background: var(--accent);
+  color: var(--muted);
   font-style: italic;
 }
 

@@ -306,236 +306,242 @@ function UserSettings() {
   };
   return (
     <>
-      <div className="settings">
-        <h1>{t("usrSettings.title")}</h1>
-      </div>
-      <div className="settings">
-        <div className="settings-infosection">
-          {/*   <h3>{t("usrSettings.subtitle")}</h3> */}
+      <section>
+        <div className="wrap sts">
+          <div className=" title-section">
+            <p className="eyebrow">{t("usrSettings.eyebrow")}</p>
+            <h1>{t("usrSettings.title")}</h1>
+          </div>
+          <div className="settings">
+            <div className="settings-infosection">
+              {/*   <h3>{t("usrSettings.subtitle")}</h3> */}
 
-          {!editing ? (
-            <table>
-              <tbody>
-                <tr>
-                  <td>{t("form.name")}: </td>
-                  <td>{form.jmeno}</td>
-                </tr>
-                <tr>
-                  <td>{t("form.surname")}: </td>
-                  <td>{form.prijmeni}</td>
-                </tr>
-                <tr>
-                  <td>{t("form.email")}: </td>
-                  <td>{form.email}</td>
-                </tr>
-                <tr>
-                  <td>{t("form.phone")}: </td>
-                  <td className="number">{form.telefon}</td>
-                </tr>
-                <tr>
-                  <td>{t("usrSettings.numFav")} </td>
-                  <td>
-                    <Link to="/favorites" className="number">
-                      {stats.favoritesCount}
-                    </Link>
-                  </td>
-                </tr>
-                <tr>
-                  <td>{t("usrSettings.numForm")}</td>
-                  <td>
-                    <Link to="/forms" className="number">
-                      {stats.formsCount}
-                    </Link>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          ) : (
-            <div className="setting-fields">
-              <FieldRow label={t("form.name")} error={errors.jmeno}>
-                <input
-                  placeholder={t("form.name")}
-                  value={form.jmeno}
-                  onChange={(e) => updateField("jmeno", e.target.value)}
-                />
-              </FieldRow>
-
-              <FieldRow label={t("form.surname")} error={errors.prijmeni}>
-                <input
-                  placeholder={t("form.surname")}
-                  value={form.prijmeni}
-                  onChange={(e) => updateField("prijmeni", e.target.value)}
-                />
-              </FieldRow>
-              <FieldRow label={t("form.email")} error={errors.email}>
-                <input
-                  placeholder={t("form.email")}
-                  value={form.email}
-                  onChange={(e) => updateField("email", e.target.value)}
-                />
-              </FieldRow>
-              <FieldRow label={t("form.phone")} error={errors.telefon}>
-                <input
-                  placeholder={t("form.phone")}
-                  value={form.telefon}
-                  onChange={(e) => updateField("telefon", e.target.value)}
-                />
-              </FieldRow>
-            </div>
-          )}
-
-          <div className="modal-actions">
-            <div style={{ marginTop: 10 }}>
               {!editing ? (
-                <Button variant="primary" onClick={() => setEditing(true)}>
-                  {t("usrSettings.edit")}
-                </Button>
+                <table>
+                  <tbody>
+                    <tr>
+                      <td>{t("form.name")}: </td>
+                      <td>{form.jmeno}</td>
+                    </tr>
+                    <tr>
+                      <td>{t("form.surname")}: </td>
+                      <td>{form.prijmeni}</td>
+                    </tr>
+                    <tr>
+                      <td>{t("form.email")}: </td>
+                      <td>{form.email}</td>
+                    </tr>
+                    <tr>
+                      <td>{t("form.phone")}: </td>
+                      <td className="number">{form.telefon}</td>
+                    </tr>
+                    <tr>
+                      <td>{t("usrSettings.numFav")} </td>
+                      <td>
+                        <Link to="/favorites" className="number">
+                          {stats.favoritesCount}
+                        </Link>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>{t("usrSettings.numForm")}</td>
+                      <td>
+                        <Link to="/forms" className="number">
+                          {stats.formsCount}
+                        </Link>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
               ) : (
-                <div className="modal-actions">
-                  <Button variant="primary" onClick={handleSave}>
-                    {t("usrSettings.save")}
-                  </Button>
-                  <Button
-                    variant="secondary"
-                    onClick={() => {
-                      setForm(savedForm);
-                      setErrors({});
-                      setEditing(false);
-                    }}
-                  >
-                    {t("usrSettings.cancel")}
-                  </Button>
+                <div className="setting-fields">
+                  <FieldRow label={t("form.name")} error={errors.jmeno}>
+                    <input
+                      placeholder={t("form.name")}
+                      value={form.jmeno}
+                      onChange={(e) => updateField("jmeno", e.target.value)}
+                    />
+                  </FieldRow>
+
+                  <FieldRow label={t("form.surname")} error={errors.prijmeni}>
+                    <input
+                      placeholder={t("form.surname")}
+                      value={form.prijmeni}
+                      onChange={(e) => updateField("prijmeni", e.target.value)}
+                    />
+                  </FieldRow>
+                  <FieldRow label={t("form.email")} error={errors.email}>
+                    <input
+                      placeholder={t("form.email")}
+                      value={form.email}
+                      onChange={(e) => updateField("email", e.target.value)}
+                    />
+                  </FieldRow>
+                  <FieldRow label={t("form.phone")} error={errors.telefon}>
+                    <input
+                      placeholder={t("form.phone")}
+                      value={form.telefon}
+                      onChange={(e) => updateField("telefon", e.target.value)}
+                    />
+                  </FieldRow>
                 </div>
               )}
+
+              <div className="modal-actions">
+                <div style={{ marginTop: 10 }}>
+                  {!editing ? (
+                    <Button variant="primary" onClick={() => setEditing(true)}>
+                      {t("usrSettings.edit")}
+                    </Button>
+                  ) : (
+                    <div className="modal-actions">
+                      <Button variant="primary" onClick={handleSave}>
+                        {t("usrSettings.save")}
+                      </Button>
+                      <Button
+                        variant="secondary"
+                        onClick={() => {
+                          setForm(savedForm);
+                          setErrors({});
+                          setEditing(false);
+                        }}
+                      >
+                        {t("usrSettings.cancel")}
+                      </Button>
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
+            <div className="button-section">
+              <Button
+                className="setting-btn"
+                variant="primary"
+                onClick={() => setPasswordModalOpen(true)}
+              >
+                {t("usrSettings.change")}
+              </Button>
+              <Button
+                className="setting-btn"
+                onClick={toggleNewsletter}
+                variant={!isSubbed ? "primary" : "secondary"}
+              >
+                {isSubbed ? t("form.cancelNewsletter") : t("form.newsletter")}
+              </Button>
+              <img
+                src="/pages/newsletter_graphic.svg"
+                alt="newsletter graphic"
+                className="graphic"
+                loading="lazy"
+              />
+            </div>
+            <Modal
+              open={passwordModalOpen}
+              onClose={() => setPasswordModalOpen(false)}
+            >
+              <h3 style={{ marginTop: 30 }}>{t("usrSettings.changeTit")}</h3>
+
+              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                <FieldRow
+                  label={t("usrSettings.curr")}
+                  error={passwordErrors.currentPassword}
+                >
+                  <div className="password-wrapper">
+                    <input
+                      type={showCurrentPassword ? "text" : "password"}
+                      value={currentPassword}
+                      onChange={(e) =>
+                        updatePasswordField("currentPassword", e.target.value)
+                      }
+                    />
+                    <button
+                      type="button"
+                      className="toggle-password"
+                      onClick={() => setShowCurrentPassword((p) => !p)}
+                    >
+                      {showCurrentPassword ? (
+                        <img src={noeye} alt="Hide password" height="20" />
+                      ) : (
+                        <img src={eye} alt="Show password" height="20" />
+                      )}
+                    </button>
+                  </div>
+                </FieldRow>
+
+                <FieldRow
+                  label={t("usrSettings.new")}
+                  error={passwordErrors.newPassword}
+                >
+                  <div className="password-wrapper">
+                    <input
+                      type={showNewPassword ? "text" : "password"}
+                      value={newPassword}
+                      onChange={(e) =>
+                        updatePasswordField("newPassword", e.target.value)
+                      }
+                    />
+                    <button
+                      type="button"
+                      className="toggle-password"
+                      onClick={() => setShowNewPassword((p) => !p)}
+                    >
+                      {showNewPassword ? (
+                        <img src={noeye} alt="Hide password" height="20" />
+                      ) : (
+                        <img src={eye} alt="Show password" height="20" />
+                      )}
+                    </button>
+                  </div>
+                </FieldRow>
+
+                <FieldRow
+                  label={t("usrSettings.check")}
+                  error={passwordErrors.confirmPassword}
+                >
+                  <div className="password-wrapper">
+                    <input
+                      type={showConfirmPassword ? "text" : "password"}
+                      value={confirmPassword}
+                      onChange={(e) =>
+                        updatePasswordField("confirmPassword", e.target.value)
+                      }
+                    />
+                    <button
+                      type="button"
+                      className="toggle-password"
+                      onClick={() => setShowConfirmPassword((p) => !p)}
+                    >
+                      {showConfirmPassword ? (
+                        <img src={noeye} alt="Hide password" height="20" />
+                      ) : (
+                        <img src={eye} alt="Show password" height="20" />
+                      )}
+                    </button>
+                  </div>
+                </FieldRow>
+
+                <Button
+                  variant="primary"
+                  onClick={handlePasswordChange}
+                  disabled={passwordLoading}
+                >
+                  {passwordLoading
+                    ? t("usrSettings.saving")
+                    : t("usrSettings.change")}
+                </Button>
+              </div>
+            </Modal>
+            <ConfirmModal
+              open={showUnsubConfirm}
+              title={t("newsletter.unsubscribeConfirm")}
+              confirmText={t("newsletter.unsubscribe")}
+              cancelText={t("newsletter.cancel")}
+              onCancel={() => setShowUnsubConfirm(false)}
+              onConfirm={confirmUnsubscribe}
+            />
           </div>
         </div>
-        <div className="button-section">
-          <Button
-            className="setting-btn"
-            variant="primary"
-            onClick={() => setPasswordModalOpen(true)}
-          >
-            {t("usrSettings.change")}
-          </Button>
-          <Button
-            className="setting-btn"
-            onClick={toggleNewsletter}
-            variant={!isSubbed ? "primary" : "secondary"}
-          >
-            {isSubbed ? t("form.cancelNewsletter") : t("form.newsletter")}
-          </Button>
-          <img
-            src="/pages/newsletter_graphic.svg"
-            alt="newsletter graphic"
-            loading="lazy"
-          />
-        </div>
-        <Modal
-          open={passwordModalOpen}
-          onClose={() => setPasswordModalOpen(false)}
-        >
-          <h3 style={{ marginTop: 30 }}>{t("usrSettings.changeTit")}</h3>
-
-          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-            <FieldRow
-              label={t("usrSettings.curr")}
-              error={passwordErrors.currentPassword}
-            >
-              <div className="password-wrapper">
-                <input
-                  type={showCurrentPassword ? "text" : "password"}
-                  value={currentPassword}
-                  onChange={(e) =>
-                    updatePasswordField("currentPassword", e.target.value)
-                  }
-                />
-                <button
-                  type="button"
-                  className="toggle-password"
-                  onClick={() => setShowCurrentPassword((p) => !p)}
-                >
-                  {showCurrentPassword ? (
-                    <img src={noeye} alt="Hide password" height="20" />
-                  ) : (
-                    <img src={eye} alt="Show password" height="20" />
-                  )}
-                </button>
-              </div>
-            </FieldRow>
-
-            <FieldRow
-              label={t("usrSettings.new")}
-              error={passwordErrors.newPassword}
-            >
-              <div className="password-wrapper">
-                <input
-                  type={showNewPassword ? "text" : "password"}
-                  value={newPassword}
-                  onChange={(e) =>
-                    updatePasswordField("newPassword", e.target.value)
-                  }
-                />
-                <button
-                  type="button"
-                  className="toggle-password"
-                  onClick={() => setShowNewPassword((p) => !p)}
-                >
-                  {showNewPassword ? (
-                    <img src={noeye} alt="Hide password" height="20" />
-                  ) : (
-                    <img src={eye} alt="Show password" height="20" />
-                  )}
-                </button>
-              </div>
-            </FieldRow>
-
-            <FieldRow
-              label={t("usrSettings.check")}
-              error={passwordErrors.confirmPassword}
-            >
-              <div className="password-wrapper">
-                <input
-                  type={showConfirmPassword ? "text" : "password"}
-                  value={confirmPassword}
-                  onChange={(e) =>
-                    updatePasswordField("confirmPassword", e.target.value)
-                  }
-                />
-                <button
-                  type="button"
-                  className="toggle-password"
-                  onClick={() => setShowConfirmPassword((p) => !p)}
-                >
-                  {showConfirmPassword ? (
-                    <img src={noeye} alt="Hide password" height="20" />
-                  ) : (
-                    <img src={eye} alt="Show password" height="20" />
-                  )}
-                </button>
-              </div>
-            </FieldRow>
-
-            <Button
-              variant="primary"
-              onClick={handlePasswordChange}
-              disabled={passwordLoading}
-            >
-              {passwordLoading
-                ? t("usrSettings.saving")
-                : t("usrSettings.change")}
-            </Button>
-          </div>
-        </Modal>
-        <ConfirmModal
-          open={showUnsubConfirm}
-          title={t("newsletter.unsubscribeConfirm")}
-          confirmText={t("newsletter.unsubscribe")}
-          cancelText={t("newsletter.cancel")}
-          onCancel={() => setShowUnsubConfirm(false)}
-          onConfirm={confirmUnsubscribe}
-        />
-      </div>
+      </section>
     </>
   );
 }

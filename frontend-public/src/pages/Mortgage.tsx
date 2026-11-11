@@ -17,59 +17,67 @@ function Mortgage() {
         description={t("SEO.Mortgage_description")}
         noindex
       />
+      <section>
+        <div className="wrap">
+          <div className="mortgage">
+            <p className="eyebrow">{t("services.eyebrow")}</p>
+            <h1>{t("mortgage.title")}</h1>
 
-      <div className="mortgage">
-        <h1>{t("mortgage.title")}</h1>
-
-        {sections.slice(0, 2).map((section) => (
-          <section key={section.title}>
-            <h2>{section.title}</h2>
-            <ul>
-              {section.items.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
-          </section>
-        ))}
-
-        <h2>{t("mortgage.subtitle3")}</h2>
-
-        <table>
-          <tbody>
-            {rows.map((row, i) => (
-              <tr key={i}>
-                {row.map((cell, j) => (
-                  <td key={j}>{cell}</td>
-                ))}
-              </tr>
+            {sections.slice(0, 2).map((section) => (
+              <div key={section.title}>
+                <h3>{section.title}</h3>
+                <ul>
+                  {section.items.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </div>
             ))}
-          </tbody>
-        </table>
 
-        {sections.slice(2).map((section) => (
-          <section key={section.title}>
-            <h2>{section.title}</h2>
-            <ul>
-              {section.items.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
-          </section>
-        ))}
+            <h3>{t("mortgage.subtitle3")}</h3>
 
-        <h2>{t("mortgage.subtitle5")}</h2>
-        <p>{t("mortgage.p1")}</p>
+            <table>
+              <tbody>
+                {rows.map((row, i) => (
+                  <tr key={i}>
+                    {row.map((cell, j) => (
+                      <td key={j}>{cell}</td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
 
-        <h2>{t("mortgage.subtitle6")}</h2>
-        <p>{t("mortgage.p2")}</p>
+            {sections.slice(2).map((section) => (
+              <div key={section.title}>
+                <h3>{section.title}</h3>
+                <ul>
+                  {section.items.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            ))}
 
-        <h2>{t("mortgage.subtitle7")}</h2>
-      </div>
+            <h3>{t("mortgage.subtitle5")}</h3>
+            <p>{t("mortgage.p1")}</p>
 
-      <div className="contactssss white mortgage">
-        <h2 className="form-title-mortgage">{t("mortgage.formTitle")}</h2>
-        <ContactForm from={2} what={1} />
-      </div>
+            <h3>{t("mortgage.subtitle6")}</h3>
+            <p>{t("mortgage.p2")}</p>
+
+            <h3>{t("mortgage.subtitle7")}</h3>
+          </div>
+        </div>
+      </section>
+      <section className="gray">
+        <div className="wrap">
+          <div className="contactssss white mortgage">
+            <p className="eyebrow">{t("mortgage.formSubTitle")}</p>
+            <h2 className="form-title-mortgage">{t("mortgage.formTitle")}</h2>
+            <ContactForm from={2} what={1} />
+          </div>
+        </div>
+      </section>
     </>
   );
 }

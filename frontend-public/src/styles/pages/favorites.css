@@ -1,7 +1,7 @@
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: var(--shadow);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -22,10 +22,15 @@
   transition: opacity 200ms ease;
   max-width: 68.75rem;
 }
-.favorites h1 {
-  font-size: 1.75em;
-  text-align: center;
-  margin-top: 2rem;
+.favorites {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.favorites.listings {
+  background: var(--accent);
+  border-radius: 0.25rem;
+  border: 1px solid var(--line);
 }
 .favorites-empty {
   display: flex;
@@ -36,5 +41,12 @@
 }
 .no-underline {
   text-decoration: none;
-  color: black;
+  color: var(--ink);
+}
+.favorites h1 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+.margin-bottom {
+  margin-bottom: 2rem;
 }

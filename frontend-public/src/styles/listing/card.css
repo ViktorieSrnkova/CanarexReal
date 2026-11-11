@@ -1,23 +1,25 @@
 .card {
   width: 20.688rem;
   border: none;
-  border-radius: 0.5rem;
+  border-radius: 0.25rem;
   padding: 0.5em;
   display: flex;
   flex-direction: column;
   justify-content: start;
   align-items: center;
-  background-color: #f5f5f5;
-  box-shadow: 2px 2px 3px 2px #e3e3e3;
-  color: #1e1e1e;
+  background-color: var(--highlight);
+  box-shadow: 2px 2px 3px 2px var(--light-shadow);
+  color: var(--ink);
   margin: 0.25rem;
   margin-bottom: 0.5rem;
   min-height: 20.751rem;
+  min-width: 20.688rem;
+}
+.blue {
+  color: var(--primary);
 }
 .card {
   position: relative;
-  /* 	overflow: hidden;
- */
 }
 
 .card-image {
@@ -26,9 +28,10 @@
   overflow: hidden;
   width: 100%;
   text-decoration: none;
-  color: black;
-  border-radius: 0.5rem;
+  color: var(--ink);
+  border-radius: 0.25rem;
   aspect-ratio: 315/222;
+  background-color: var(--paper);
 }
 
 .card-img {
@@ -46,6 +49,7 @@
   justify-content: space-between;
   width: 100%;
   padding-top: 0.5em;
+  align-items: center;
 }
 .card p {
   margin: 0;
@@ -56,7 +60,7 @@
 }
 .card-location {
   font-size: 0.875em;
-
+  align-items: center;
   display: flex;
   flex-direction: row;
   gap: 0.1rem;
@@ -66,32 +70,68 @@
   height: 0.875rem;
 }
 .card-second-row {
-  font-size: 0.875em;
   min-height: 3rem;
   line-height: 140%;
-  margin-top: 0.25rem;
-  margin-bottom: 0.3rem;
+  margin-bottom: 0.55rem;
+}
+.property-type-card {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+  gap: 1.25rem;
+}
+.property-type-card .eyebrow {
+  margin: 0;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.property-type-card::after {
+  content: "";
+  display: block;
+  flex: 1;
+  height: 1px;
+  max-width: 50rem;
+  background: #bdd0ce;
 }
 .card-loc-link {
-  color: #1e1e1e;
+  color: var(--ink);
 }
 .card-icons {
   display: flex;
   flex-direction: row;
-  gap: 0.125rem;
+  gap: 0.2rem;
   height: 0.875rem;
   font-size: 0.875em;
   min-height: 0.875rem;
+  align-items: center;
+}
+.card-icons img {
+  filter: brightness(0) saturate(100%) invert(24%) sepia(34%) saturate(1100%)
+    hue-rotate(145deg) brightness(91%) contrast(95%);
+}
+.card-second-row h4 {
+  margin: 0;
+  padding: 0;
+  font-size: 1.2rem;
+  line-height: 1.4;
+
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
 }
 .spaced6 {
-  padding-right: 0.25em;
+  padding-right: 0.375em;
 }
 .card-third-row {
-  padding-left: 1em;
   line-height: 140%;
   height: 1.375rem;
   align-items: center;
   margin-bottom: 0.25rem;
+  gap: 1rem;
 }
 .card-price {
   font-size: 1.25em;
@@ -104,11 +144,14 @@
   position: absolute;
   left: 0.25rem;
   top: 0.25rem;
-  border-radius: 0 0.5rem;
+  border-radius: 0.25rem;
   width: fit-content;
   font-size: 1em;
   line-height: 140%;
   z-index: 10;
+}
+.card .card-status .eyebrow {
+  color: unset;
 }
 .card-second-row p {
   display: -webkit-box;
@@ -117,37 +160,37 @@
   overflow: hidden;
 }
 .status-1 {
-  background: white;
-  color: #380401;
+  background: var(--highlight);
+  color: var(--primary);
 }
 
 .status-3 {
-  background: #fff1c2;
-  color: #380401;
+  background: var(--accent);
+  color: var(--primary);
 }
 .status-4 {
-  background: #a80000;
-  color: #fff;
+  background: var(--error);
+  color: var(--highlight);
 }
 
 .status-2 {
-  background: #380401;
-  color: white;
+  background: var(--ink);
+  color: var(--highlight);
 }
 .card.status-2-active {
-  background-color: #b3b3b3;
+  background-color: var(--shadow);
 }
 
 .card.status-2-active .card-image::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: rgba(211, 211, 211, 0.5);
+  background: var(--shadow);
 }
 .image-loader-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.3);
+  background: var(--light-shadow);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -160,21 +203,20 @@
   position: absolute;
   left: 0.25rem;
   bottom: 0.25rem;
-  border-radius: 0 0.5rem;
+  border-radius: 0.25rem;
   width: fit-content;
   font-size: 0.813em;
   line-height: 140%;
   z-index: 10;
-  background-color: #000000b7;
-  color: white;
-  /* background-color: #ffffffc0; */
+  background-color: var(--dark-shadow);
+  color: var(--highlight);
 }
 
 .spinner {
   width: 28px;
   height: 28px;
-  border: 3px solid rgba(0, 106, 220, 0.7);
-  border-top-color: #87ceeb;
+  border: 3px solid var(--ink);
+  border-top-color: var(--primary);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
@@ -182,5 +224,10 @@
 @keyframes spin {
   to {
     transform: rotate(360deg);
+  }
+}
+@media screen and (max-width: 500px) {
+  .card {
+    width: 100%;
   }
 }

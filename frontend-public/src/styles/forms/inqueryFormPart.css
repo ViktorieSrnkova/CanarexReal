@@ -3,6 +3,16 @@
   flex-direction: column;
   gap: 1rem;
 }
+.inquiry-form-wrapper {
+  margin: 0;
+  background-color: var(--paper);
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 2rem;
+  width: 100%;
+  max-width: var(--max-width);
+}
 
 .checkbox-options {
   display: flex;
@@ -14,7 +24,7 @@
 }
 
 .checkbox-options legend {
-  margin-bottom: 10px;
+  margin-bottom: 0.25rem;
   padding: 0;
   font-weight: 500;
   font-size: 0.875em;
@@ -34,9 +44,26 @@
   cursor: pointer;
 }
 .field {
-  margin-top: 0.5rem;
+  margin-top: 0.25rem;
 }
 .radio-group {
   display: flex;
   gap: 1rem;
+}
+@media screen and (max-width: 850px) {
+  .filter-type {
+    width: unset;
+  }
+}
+
+@media screen and (max-width: 780px) {
+  .inquiry-form {
+    gap: 0.5rem;
+    max-width: 39.188rem;
+    width: 100%;
+  }
+  .inquiry-form-wrapper {
+    flex-direction: column;
+    align-items: center;
+  }
 }

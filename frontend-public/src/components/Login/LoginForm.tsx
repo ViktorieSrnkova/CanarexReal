@@ -23,6 +23,7 @@ type Props = {
 };
 
 import { z } from "zod";
+import Button from "../General/Button";
 
 const loginSchema = z.object({
   email: z.string().min(1, "Email je povinný").email("Neplatný email"),
@@ -152,9 +153,9 @@ export default function LoginPage({ onSwitch, onClose }: Props) {
           )}
         </label>
 
-        <button className="submit-button" type="submit" disabled={loading}>
+        <Button className="submit-button" type="submit" disabled={loading}>
           {loading ? t("login.loading") : t("login.submit")}
-        </button>
+        </Button>
 
         <div className="login-links">
           <button

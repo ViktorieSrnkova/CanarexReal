@@ -72,73 +72,89 @@ function Favorites() {
   };
   return (
     <>
-      <div className="favorites">
-        <h1>Oblíbené inzeráty</h1>
-      </div>
-      <div className="listings favorites">
-        {loading ? (
-          <div className="hp-cards-wrapper">
-            {Array.from({ length: 9 }).map((_, i) => (
-              <CardSkeleton key={i} />
-            ))}
+      <section>
+        <div className="wrap">
+          <div className="favorites">
+            <p className="eyebrow">{t("favorites.eyebrow")}</p>
+            <h1>{t("favorites.title")}</h1>
           </div>
-        ) : listings.length === 0 ? (
-          <div className="favorites-empty">
-            <h2>{t("favorites.empty")}</h2>
-            <p>{t("favorites.emptyDescription")}</p>
-            <Button>
-              <Link className="no-underline" to={"/listings"}>
-                {t("favorites.button")}
-              </Link>
-            </Button>
-          </div>
-        ) : (
-          <div className="hp-cards-wrapper" style={{ maxWidth: "68.75rem" }}>
-            {listings.map((listing, i) => {
-              const cardData = {
-                index: listing.index,
-                titulek: listing.inzeraty_preklady[0]?.titulek ?? "",
-                lokace: listing.adresy?.lokace ?? "",
-                typ:
-                  listing.typy_nemovitosti?.typy_nemovitosti_preklady[0]
-                    ?.nazev ?? "",
-                status: listing.statusy.statusy_preklady[0].nazev ?? "",
-                cena_v_eur: listing.cena_v_eur,
-                loznice: listing.loznice,
-                koupelny: listing.koupelny,
-                velikost: listing.velikost,
-                obrazekId: listing.obrazky[0]?.id ?? 0,
-                alt: listing.obrazky[0]?.obrazky_preklady[0]?.alt_text ?? "",
-                status_id: listing.statusy_id,
-              };
+          <div className="listings favorites">
+            {loading ? (
+              <div className="hp-cards-wrapper">
+                {Array.from({ length: 9 }).map((_, i) => (
+                  <CardSkeleton key={i} />
+                ))}
+              </div>
+            ) : listings.length === 0 ? (
+              <div className="favorites-empty">
+                <h2>{t("favorites.empty")}</h2>
+                <p>{t("favorites.emptyDescription")}</p>
+                <Button>
+                  <Link className="no-underline" to={"/listings"}>
+                    {t("favorites.button")}
+                  </Link>
+                </Button>
+              </div>
+            ) : (
+              <div
+                className="hp-cards-wrapper"
+                style={{ maxWidth: "68.75rem" }}
+              >
+                {listings.map((listing, i) => {
+                  const cardData = {
+                    index: listing.index,
+                    titulek: listing.inzeraty_preklady[0]?.titulek ?? "",
+                    lokace: listing.adresy?.lokace ?? "",
+                    typ:
+                      listing.typy_nemovitosti?.typy_nemovitosti_preklady[0]
+                        ?.nazev ?? "",
+                    status: listing.statusy.statusy_preklady[0].nazev ?? "",
+                    cena_v_eur: listing.cena_v_eur,
+                    loznice: listing.loznice,
+                    koupelny: listing.koupelny,
+                    velikost: listing.velikost,
+                    obrazekId: listing.obrazky[0]?.id ?? 0,
+                    alt:
+                      listing.obrazky[0]?.obrazky_preklady[0]?.alt_text ?? "",
+                    status_id: listing.statusy_id,
+                  };
 
-              return (
-                <Card
-                  fetchpriority={i < 2}
-                  key={listing.index}
-                  favorited={listing.is_favorite}
-                  onToggleFavorite={() => openRemoveModal(listing.id)}
-                  {...cardData}
+                  return (
+                    <Card
+                      fetchpriority={i < 2}
+                      key={listing.index}
+                      favorited={listing.is_favorite}
+                      onToggleFavorite={() => openRemoveModal(listing.id)}
+                      {...cardData}
+                    />
+                  );
+                })}
+              </div>
+            )}
+            <ConfirmModal
+              open={confirmOpen}
+              title={t("favorites.confirm")}
+              confirmText={t("favorites.ok")}
+              cancelText={t("favorites.cancel")}
+              onCancel={() => {
+                setConfirmOpen(false);
+                setSelectedId(null);
+              }}
+              onConfirm={confirmRemove}
+            />
+
+            {listings.length !== 0 && (
+              <div className="margin-bottom">
+                <Pagination
+                  page={page}
+                  totalPages={totalPages}
+                  onChange={setPage}
                 />
-              );
-            })}
+              </div>
+            )}
           </div>
-        )}
-        <ConfirmModal
-          open={confirmOpen}
-          title={t("favorites.confirm")}
-          confirmText={t("favorites.ok")}
-          cancelText={t("favorites.cancel")}
-          onCancel={() => {
-            setConfirmOpen(false);
-            setSelectedId(null);
-          }}
-          onConfirm={confirmRemove}
-        />
-        {listings.length !== 0 && (
-          <Pagination page={page} totalPages={totalPages} onChange={setPage} />
-        )}
-      </div>
+        </div>
+      </section>
     </>
   );
 }

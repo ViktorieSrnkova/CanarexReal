@@ -52,7 +52,7 @@ function Card(props: Props) {
           </div>
         )}
         <div className={`card-status status-${props.status_id}`}>
-          {props.status}
+          <p className="eyebrow">{props.status}</p>
         </div>
         <div className={`card-index number`}>ID: {props.index}</div>
       </Link>
@@ -82,8 +82,8 @@ function Card(props: Props) {
             favorited={props.favorited}
             onToggleFavorite={props.onToggleFavorite}
             list={true}
-            top={-16}
-            right={0}
+            top={-20}
+            right={-2}
           />
         </div>
       )}
@@ -92,9 +92,8 @@ function Card(props: Props) {
         <div className="card-location">
           <img src="/utils/map-pin.svg" alt="map pin" loading="lazy" />
           <Link
-            to={`/${lang}/listings/${props.index}`}
+            to={`/${lang}/listings/${props.index}/#map-scroll`}
             className="card-loc-link"
-            state={{ scrollToMap: true }}
           >
             {props.lokace}
           </Link>
@@ -109,12 +108,14 @@ function Card(props: Props) {
         </div>
       </div>
       <div className="card-second-row">
-        <p>{props.titulek} </p>
+        <h4>{props.titulek} </h4>
       </div>
       <div className="card-third-row">
-        <p>{props.typ}</p>
+        <div className="property-type-card">
+          <p className="eyebrow">{props.typ}</p>
+        </div>
         <div className="card-price number">
-          <b className="bold-num"> {formatMoneyEUR(props.cena_v_eur)}</b>
+          <b className="bold-num blue"> {formatMoneyEUR(props.cena_v_eur)}</b>
         </div>
       </div>
     </div>
