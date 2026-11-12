@@ -67,7 +67,7 @@ export const sk = {
     contactsTitle: "Kontakty",
     followUs: "Sledujte nás!",
     privacy: "Spracovaním osobných údajov",
-    copyright: "©CanarexReal 2020-2026",
+    copyright: "2026 ©CanarexReal",
     faq: "Často kladené otázky",
   },
   form: {
@@ -142,26 +142,84 @@ export const sk = {
     filterList: "Zobraziť filtrovaný zoznam",
     searchByIndex: "Vyhľadávanie podľa ID inzerátu",
     mapSubtitle: "Kliknite na cenu v mape pre zobrazenie detailu nehnuteľnosti",
+    listSubtitle: "Začnite hľadať svoj nový domov na Tenerife",
     sortLabel: "Triediť podľa",
     goTo: "Zobraziť nehnuteľnosť",
     clear: "Zrušiť filtre",
     none: "V súčasnosti nemáme v ponuke žiadne nehnuteľnosti, ktoré by spĺňali zvolené filtre.",
     filters: "Filtry",
+    filtersAndSort: "Filtry a Řazení",
     noActiveMapListings:
       "Pre zadané filtre alebo vyhľadávanie momentálne nie sú k dispozícii žiadne nehnuteľnosti aktívne ponúkané na predaj. V zozname nehnuteľností však môžete stále zobraziť aj predané a rezervované ponuky.",
   },
   homepage: {
-    title: "Tenerife, kde sny majú adresu",
-    subtitle: "Vyberte si svoju ideálnu nehnuteľnosť z minimálne 200 ponúk.",
-    listings: "Zobraziť ponuku",
-    contact: "Kontaktovať agenta",
-    services: "Zobraziť služby",
-    contactMe: "Kontaktujte ma",
-    servis: "Realitné služby od A po Z",
-    rent: "Zabezpečím prenájom vašej nehnuteľnosti",
-    ideal: "Nájdem vám ideálnu nehnuteľnosť",
-    manage: "Správa, upratovanie a rekonštrukcia",
-    agent: "Váš realitný agent na Tenerife",
+    hero: {
+      alt: "Stan odovzdáva klientom kľúče na terase s výhľadom na oceán na Tenerife",
+      eyebrow: "Nehnuteľnosti na Tenerife · po slovensky",
+      title: "Tenerife, \n miesto, kde majú Vaše sny svoju adresu.",
+      lead: "Pomôžeme Vám s výberom a kúpou nehnuteľnosti na Tenerife. Osobne, s miestnou znalosťou a komunikáciou v slovenčine.",
+      care: "Postaráme sa o Vašu nehnuteľnosť počas Vašej neprítomnosti.",
+      actions: [
+        { btn: "Prezrieť nehnuteľnosti", href: "/listings" },
+        { btn: "Dohodnúť konzultáciu", href: "/contact" },
+        { btn: "Zobraziť mapu nehnuteľností", href: "/map" },
+      ],
+      signature: "Stan Srnka · Váš realitný maklér na Tenerife",
+    },
+    trust: [
+      {
+        title: "Dohovoríme sa Vaším jazykom",
+        subtitle: "Komunikácia v češtine, slovenčine aj španielčine.",
+      },
+      {
+        title: "Máte oporu priamo na ostrove",
+        subtitle: "Od výberu a obhliadok až po odovzdanie kľúčov.",
+      },
+      {
+        title: "Kúpou sa naša spolupráca nekončí",
+        subtitle: "Správa, údržba a starostlivosť počas Vašej neprítomnosti.",
+      },
+    ],
+    contactOverview: {
+      eyebrow: "Začneme rozhovorom",
+      title: "Nemusíte mať všetko vopred premyslené.",
+      p1: "Povedzte mi, čo od nehnuteľnosti na Tenerife očakávate. Porozprávame sa o Vašich predstavách, otázkach a dohodneme sa na ďalšom postupe.",
+      p2: "Hľadáte niekoho, kto sa postará o Vašu nehnuteľnosť? Napíšte mi, kde sa nachádza a s čím potrebujete pomôcť.",
+      strong: "Stan Srnka",
+      subtext: "Váš realitný maklér na Tenerife",
+      a1: "Napíšte mi na WhatsApp ↗",
+      inquiry: "Vyplniť dopyt na webe →",
+    },
+    servicesOverview: {
+      eyebrow: "Od prvej predstavy až po vlastné kľúče",
+      h2: "S čím Vám môžeme pomôcť?",
+      p1: "Či už si svoje miesto na Tenerife ešte len hľadáte, alebo už nehnuteľnosť vlastníte, pomôžeme Vám s ďalším krokom.",
+      textlink: "Všetky naše služby →",
+      link: "/services",
+      sections: [
+        {
+          eyebrow: "01 / VÝBER",
+          title: "Nájsť tú správnu nehnuteľnosť",
+          p: "Prezrite si našu ponuku alebo nám povedzte, čo hľadáte. Pomôžeme Vám zorientovať sa v jednotlivých lokalitách a vybrať vhodné nehnuteľnosti.",
+          link: "/listings",
+          textlink: "Prezrieť ponuku →",
+        },
+        {
+          eyebrow: "02 / KÚPA",
+          title: "Mať jasno v každom kroku",
+          p: "Osobné aj online obhliadky, preverenie nehnuteľnosti a koordinácia kúpy v spolupráci s advokátom. Zrozumiteľne a vo Vašom jazyku.",
+          link: "/faq",
+          textlink: "Otázky o kúpe →",
+        },
+        {
+          eyebrow: "03 / STAROSTLIVOSŤ",
+          title: "Odísť s pokojnou mysľou",
+          p: "Dohodneme rozsah starostlivosti počas Vašej neprítomnosti: kontroly, upratovanie, údržbu aj zabezpečenie potrebných opráv.",
+          link: "mailto:stan@canarexreal.com?subject=P%C3%A9%C4%8De%20o%20nemovitost",
+          textlink: "Dohodnúť starostlivosť o nehnuteľnosť →",
+        },
+      ],
+    },
   },
   similar: {
     error: "Momentálne nemáme podobné nehnuteľnosti.",
@@ -169,11 +227,12 @@ export const sk = {
   },
   general: {
     loading: "Načítanie ...",
+    ok: "OK",
+    cancel: "Zrušiť",
   },
   carrousel: {
     title: "Ponuka nehnuteľností",
   },
-
   listing: {
     notAvailableTitle: "Nedostupné v tomto jazyku",
     notAvailableText:
@@ -186,9 +245,13 @@ export const sk = {
     collapsed: "zobraziť celý popis",
     expanded: "zobraziť menej",
     copy: "Skopírovať URL inzerátu",
+    copied: "URL inzerátu skopírované",
   },
+  /* */
+  /* */
   news: {
-    title: "Zaujímavosti a informácie o Tenerife",
+    title: "Ostrov Tenerife",
+    eyebrow: "Zaujímavosti a informácie",
   },
   SEO: {
     HP_title: "CanarexReal | Nehnuteľnosti na Tenerife",
@@ -297,6 +360,7 @@ export const sk = {
     outro:
       "Svojimi návrhmi sa môžete obrátiť aj na Úrad na ochranu osobných údajov.",
   },
+  /* */
   FAQ: {
     title:
       "FAQ – Často kladené otázky o živote a kúpe nehnuteľností na Tenerife",
@@ -346,7 +410,6 @@ export const sk = {
     p16: "Na to sme tu my. Poskytujeme tlmočnícke a právne služby, komunikáciu s úradmi a organizáciu celého procesu, aby bol nákup nehnuteľnosti na Tenerife pre vás",
     bold1: "bez stresu a rizika.",
   },
-
   mortgage: {
     title: "Hypotéka zo Slovenska na nehnuteľnosť na Kanárskych ostrovoch",
 
@@ -388,12 +451,17 @@ export const sk = {
 
     subtitle5: "",
     p1: "",
+
     subtitle6: "",
     p2: "",
+
     subtitle7: "Celý proces získania financovania je zadarmo!",
-    formTitle: "Chcete viac informácií? Odošlite vyplnený dotazník.",
+    formTitle: "Odošlite vyplnený formulár.",
+    formSubTitle: "Chcete viac informácií?",
   },
+  /* */
   services: {
+    eyebrow: "Sme tu pre vás",
     title: "Naše služby",
     subtitle1: "Prečo využiť realitnú kanceláriu na Tenerife",
     p1: "Žijeme a pracujeme na Tenerife už",
@@ -502,16 +570,22 @@ export const sk = {
     more: "Ďalšie nehnuteľnosti",
   },
   favorites: {
-    add: "Pridať do obľúbených",
+    title: "Obľúbené inzeráty",
+    eyebrow: "Vaše obľúbené nehnuteľnosti na jednom mieste",
+    add: "Pridať k obľúbeným",
     remove: "Odstrániť z obľúbených",
     confirm: "Odstrániť z obľúbených?",
     ok: "Odstrániť",
-    cancel: "Nechávať",
-    loginNeeded: "Na pridanie do obľúbených sa musíte prihlásiť.",
+    cancel: "Ponechať",
+    loginNeeded: "Ak chcete pridať inzerát k obľúbeným, musíte sa prihlásiť.",
     button: "Prejsť na ponuku nehnuteľností",
     empty: "Žiadne obľúbené inzeráty",
     emptyDescription:
-      "Zatiaľ ste nepridali žiadny inzerát medzi obľúbené. Inzeráty môžete pridať kliknutím na srdiečko v pravom hornom rohu ich karty alebo v hornej časti detailu inzerátu.",
+      "Zatiaľ ste nepridali žiadny inzerát k obľúbeným. Inzeráty môžete pridať kliknutím na srdiečko v pravom hornom rohu ich karty alebo v hornej časti stránky s detailom inzerátu.",
+    added: " Inzerát bol úspešne pridaný k obľúbeným",
+    removed: " Inzerát bol úspešne odstránený z obľúbených",
+    serverFailed: "Komunikácia so serverom zlyhala. Skúste to, prosím, neskôr.",
+    /* */
   },
   usrSettings: {
     nameReq: "Meno je povinné",
@@ -528,6 +602,7 @@ export const sk = {
     changedPwd: "Heslo bolo zmenené",
     changedErr: "Chyba pri zmene hesla",
     title: "Nastavenia účtu",
+    eyebrow: "Majte svoje údaje a preferencie vždy pod kontrolou",
     subtitle: "Profil",
     numFav: "Počet obľúbených inzerátov:",
     numForm: "Počet vyplnených formulárov:",
@@ -543,6 +618,7 @@ export const sk = {
     sameEmail: "Zadaná e-mailová adresa už patrí inému používateľovi.",
     newsletterSub: "Úspešne ste sa prihlásili k odberu newslettra.",
     newsletterUnsub: "Newsletter už neodoberáte.",
+    /* */
   },
   home: {
     news: "Novinky",
@@ -552,6 +628,7 @@ export const sk = {
     cancel: "Zachovať",
     unsubscribe: "Zrušiť odber",
     unsubscribeConfirm: "Naozaj chcete zrušiť odber newslettra?",
+    /* */
   },
   reviews: {
     title: "Recenzie na Google",
@@ -564,6 +641,7 @@ export const sk = {
   },
   userForms: {
     title: "Vyplnené formuláre",
+    eyebrow: "Vaše dopyty na jednom mieste",
     phone: "Telefón:",
     email: "E-mail:",
     fullName: "Meno a priezvisko:",
@@ -584,6 +662,7 @@ export const sk = {
       "Skontrolujte, prosím, zadanú adresu, prípadne sa pomocou tlačidla nižšie vráťte na domovskú stránku.",
     button: "Späť na domovskú stránku",
   },
+
   map: {
     gesture: {
       touch: "Na pohyb po mape použite dva prsty",

@@ -113,8 +113,10 @@ function SingleListing() {
 
     try {
       await toggleFavoriteApi(detail.id, prev);
+      toast.success(prev ? t("favorites.removed") : t("favorites.added"));
     } catch {
       setIsFavorite(prev);
+      toast.error(t("favorites.serverFailed"));
     }
   };
   const price = useMemo(() => {
@@ -164,46 +166,71 @@ function SingleListing() {
   if (!detail) {
     return (
       <>
-        <div className="listing-hero skeleton-wrapper">
-          <div className="first-row">
-            <div className="skeleton skeleton-title" />
-            <div className="skeleton skeleton-icon pc" />
-          </div>
-
-          <div className="second-row">
-            <div className="apt mobile">
-              <div className="skeleton skeleton-subtitle mobile-h2" />
-              <div className="skeleton skeleton-icon" />
-            </div>
-            <div className="skeleton skeleton-subtitle pc dektop-h2" />
-
-            <div className="prices">
-              <div className="skeleton skeleton-price" />
-              <div className="skeleton skeleton-price-small" />
-            </div>
-          </div>
-        </div>
-
-        <GallerySkeleton />
-
-        <div className="pictograms gray">
-          <div className="pict">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <div key={i} className="pictogram">
-                <div className="top-part">
-                  <div className="skeleton skeleton-pict-icon" />
-                  <div className="skeleton skeleton-pict-number" />
+        <section className="hero-listing">
+          <div className="wrap">
+            <div className="listing-hero skeleton-wrapper">
+              <div className="null-row">
+                <div className="property-type">
+                  <div className="skeleton skeleton-property-type" />
                 </div>
 
-                <div className="skeleton skeleton-pict-label" />
+                <div className="listing-hero-icons pc">
+                  <div className="skeleton skeleton-action-icon" />
+                  <div className="skeleton skeleton-action-icon" />
+                </div>
               </div>
-            ))}
-          </div>
-        </div>
 
-        <div className="description-wrapper">
-          <div className="skeleton skeleton-heading" />
-        </div>
+              <div className="first-row">
+                <div className="skeleton skeleton-listing-title" />
+
+                <div className="prices pc">
+                  <div className="skeleton skeleton-price-main" />
+                  <div className="skeleton skeleton-price-secondary" />
+                </div>
+              </div>
+
+              <div className="second-row mobile">
+                <div className="prices mobile">
+                  <div className="skeleton skeleton-price-main" />
+                  <div className="skeleton skeleton-price-secondary" />
+                </div>
+
+                <div className="single-icons-mobile">
+                  <div className="skeleton skeleton-action-icon" />
+                  <div className="skeleton skeleton-action-icon" />
+                </div>
+              </div>
+            </div>
+
+            <GallerySkeleton />
+
+            <div className="pictograms gray">
+              <div className="pict">
+                {Array.from({ length: 6 }).map((_, i) => (
+                  <div className="pictogram" key={i}>
+                    <div className="top-part">
+                      <div className="skeleton skeleton-pict-icon" />
+                      <div className="skeleton skeleton-pict-number" />
+                    </div>
+
+                    <div className="skeleton skeleton-pict-label" />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="border">
+          <div className="wrap">
+            <div className="skeleton-description">
+              <div className="skeleton skeleton-heading" />
+              <div className="skeleton skeleton-line" />
+              <div className="skeleton skeleton-line" />
+              <div className="skeleton skeleton-line short" />
+            </div>
+          </div>
+        </section>
       </>
     );
   }
@@ -246,7 +273,7 @@ function SingleListing() {
   const handleCopy = async () => {
     await navigator.clipboard.writeText(window.location.href);
     setCopied(true);
-
+    toast.success(t("listing.copied"));
     setTimeout(() => setCopied(false), 300);
   };
   const lat = detail?.adresy?.lat;
@@ -415,10 +442,6 @@ function SingleListing() {
       <section>
         <div className="wrap" id="map-scroll">
           <div className="lower-section">
-            <div className="details-wrapper">
-              <h3>{t("listing.detail")}</h3>
-              <ContentRenderer data={detContent} />
-            </div>
             <div className="map-wrapper" id="listing-map">
               <h3>{t("listing.location")}</h3>
               <div className="city">
@@ -429,9 +452,23 @@ function SingleListing() {
                 <img src="/utils/map-pin.svg" alt="map pin" />
                 <p>{formatLocation(detail?.adresy.cela_adresa, lang)}</p>
               </div>
-              <Suspense fallback={<div>Loading map...</div>}>
+              <Suspense
+                fallback={
+                  <div
+                    className="skeleton skeleton-map"
+                    style={{
+                      width: "100%",
+                      height: "20rem",
+                    }}
+                  />
+                }
+              >
                 <Map height="20rem" lat={lat} lng={lng} zoom={12} />
               </Suspense>
+            </div>
+            <div className="details-wrapper">
+              <h3>{t("listing.detail")}</h3>
+              <ContentRenderer data={detContent} />
             </div>
           </div>
         </div>

@@ -7,7 +7,6 @@ import { useParams } from "react-router-dom";
 import type { NewsDetail } from "../types/rawApi";
 import "../styles/pages/single-news.css";
 import ContentRenderer from "../components/Editor/ContentRenderer";
-import { LoaderIcon } from "react-hot-toast";
 
 function SingleNews() {
   const [news, setNews] = useState<NewsDetail | null>(null);
@@ -79,7 +78,7 @@ function SingleNews() {
 
           {loading ? (
             <div className="wrap">
-              <LoaderIcon />
+              <span className="spinner" />
             </div>
           ) : error || !news ? (
             <div className="wrap">

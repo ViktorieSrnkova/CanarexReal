@@ -12,7 +12,7 @@ import type {
 } from "react";
 
 import "../../styles/listing/gallery.css";
-import GallerySkeleton from "./GallerySkeleton";
+import ShimmerLoader from "../General/ShimmerLoader";
 
 type GalleryProp = {
   id: number;
@@ -110,24 +110,38 @@ export default function ListingGallery({ imagesProp, index }: Props) {
   }, [isOpen]);
 
   // Načtení první fotografie pro skeleton
+
   useEffect(() => {
+    let cancelled = false;
+
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setLoaded(false);
+
     if (!images.length) return;
 
     const first = images[0];
 
     if (first.mimeType?.startsWith("video/")) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       setLoaded(true);
       return;
     }
 
     const img = new Image();
 
-    img.onload = () => setLoaded(true);
-    img.onerror = () => setLoaded(true);
+    const finish = () => {
+      if (!cancelled) setLoaded(true);
+    };
+
+    img.onload = finish;
+    img.onerror = finish;
     img.src = first.url;
 
+    if (img.complete) {
+      finish();
+    }
+
     return () => {
+      cancelled = true;
       img.onload = null;
       img.onerror = null;
     };
@@ -302,13 +316,7 @@ export default function ListingGallery({ imagesProp, index }: Props) {
   if (!count) return null;
 
   return (
-    <div className="gallery" style={{ position: "relative" }}>
-      {!loaded && (
-        <div className="gallery-skeleton-overlay">
-          <GallerySkeleton />
-        </div>
-      )}
-
+    <div className={`gallery ${!loaded ? "gallery--loading" : ""}`}>
       {/* LIGHTBOX */}
       {isOpen && (
         <div
@@ -412,7 +420,6 @@ export default function ListingGallery({ imagesProp, index }: Props) {
       {/* HLAVNÍ FOTOGRAFIE */}
       <div
         className="gallery-main"
-        style={{ opacity: loaded ? 1 : 0 }}
         onTouchStart={onTouchStart}
         onTouchEnd={onTouchEnd}
       >
@@ -485,7 +492,8 @@ export default function ListingGallery({ imagesProp, index }: Props) {
                 <div className="video-play-icon">▶</div>
               </>
             ) : (
-              <img
+              <ShimmerLoader
+                key={img.url}
                 loading="lazy"
                 src={img.url}
                 alt={img.alt || ""}

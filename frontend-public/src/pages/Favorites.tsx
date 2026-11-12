@@ -13,6 +13,7 @@ import "../styles/pages/favorites.css";
 import { useT } from "../i18n";
 import { Link } from "react-router-dom";
 import Button from "../components/General/Button";
+import toast from "react-hot-toast";
 
 function Favorites() {
   const { page, setPage } = useListings({
@@ -63,11 +64,13 @@ function Favorites() {
 
       setListings(thumbnails);
       setTotal(total);
+      toast.success(t("favorites.removed"));
     } catch (err) {
       console.error(err);
     } finally {
       setConfirmOpen(false);
       setSelectedId(null);
+      toast.error(t("favorites.serverFailed"));
     }
   };
   return (

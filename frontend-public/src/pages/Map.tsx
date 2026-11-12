@@ -10,7 +10,7 @@ import { useLang } from "../hooks/i18n/useLang";
 import Filters from "../components/General/Filters";
 import Card from "../components/Listing/Card";
 import "../styles/pages/listings.css";
-import toast, { LoaderIcon } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { useAuth } from "../Auth/authStore";
 import NoResults from "../components/Listing/NoMapListings";
 import ToggleFilters from "../components/Listing/ToggleFilters";
@@ -129,18 +129,20 @@ function Map() {
 
     try {
       await toggleFavoriteApi(index, isFavorite);
+      toast.success(isFavorite ? t("favorites.removed") : t("favorites.added"));
     } catch {
       setListings((prev) =>
         prev.map((item) =>
           item.index === index ? { ...item, is_favorite: isFavorite } : item,
         ),
       );
+      toast.error(t("favorites.serverFailed"));
     }
   };
   if (!filtersReady || isLoading) {
     return (
-      <div className="map-loader">
-        <LoaderIcon />
+      <div className="map-page-loader">
+        <span className="spinner" />
       </div>
     );
   }
@@ -216,9 +218,13 @@ function Map() {
                   <>
                     <Suspense
                       fallback={
-                        <div className="map-loader">
-                          <LoaderIcon />
-                        </div>
+                        <div
+                          className="skeleton skeleton-map"
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                          }}
+                        />
                       }
                     >
                       <SearchMap

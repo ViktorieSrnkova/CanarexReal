@@ -4,7 +4,6 @@ import { useT } from "../i18n";
 import "../styles/pages/contact.css";
 import SEO from "../components/SEO/Meta";
 import { formatPhoneNumber } from "../utils/formatting";
-import { LoaderIcon } from "react-hot-toast";
 import Socials from "../components/Contact/Socials";
 import Medalions from "../components/Contact/Medalions";
 import FormSection from "../components/Forms/FormSection";
@@ -32,7 +31,7 @@ function Contact() {
         <Suspense
           fallback={
             <div className="map-loader">
-              <LoaderIcon />
+              <span className="spinner" />
             </div>
           }
         >
@@ -51,7 +50,7 @@ function Contact() {
         <Suspense
           fallback={
             <div className="map-loader">
-              <LoaderIcon />
+              <span className="spinner" />
             </div>
           }
         >

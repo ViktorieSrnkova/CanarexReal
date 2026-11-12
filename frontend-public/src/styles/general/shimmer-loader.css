@@ -1,0 +1,71 @@
+.image-loading-wrapper {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+
+  background: var(--paper);
+}
+
+/* Shimmer je vždy pod fotografií */
+.image-shimmer {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background: var(--paper);
+}
+
+.image-shimmer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--light-shadow),
+    transparent
+  );
+
+  animation: shimmer-image 1.5s infinite;
+}
+
+/* Fotografie leží nad shimmerem */
+.image-loading-wrapper > img {
+  position: relative;
+  z-index: 1;
+
+  display: block;
+  width: 100%;
+  height: 100%;
+
+  transition: opacity 0.2s ease;
+}
+
+/* Po načtení už animaci nepotřebujeme */
+.image-loading-wrapper.is-loaded .image-shimmer::after,
+.image-loading-wrapper.is-error .image-shimmer::after {
+  animation: none;
+}
+
+@keyframes shimmer-image {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .image-shimmer::after {
+    animation: none;
+  }
+
+  .image-loading-wrapper > img {
+    transition: none;
+  }
+}

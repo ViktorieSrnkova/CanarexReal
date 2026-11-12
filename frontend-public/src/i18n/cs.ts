@@ -67,7 +67,7 @@ export const cs = {
     contactsTitle: "Kontakty",
     followUs: "Sledujte nás!",
     privacy: "Zpracování osobních údajů",
-    copyright: "© 2026 CanarexReal",
+    copyright: "2026 ©CanarexReal",
     faq: "Často kladené otázky",
   },
   form: {
@@ -104,6 +104,7 @@ export const cs = {
     newsletter: "Chci odebírat newsletter",
     cancelNewsletter: "Zrušit odběr newsletteru",
     newsletterLog: " Pro newsletter použijte přihlášený email:",
+    /* */
   },
   property_type: {
     vila: "Vila",
@@ -134,10 +135,10 @@ export const cs = {
     newest: "Nejnovější",
     lowestPrice: "Cena od nejnižší",
     highestPrice: "Cena od nejvyšší",
-    list: "Seznam nemovitostí",
+    list: "List nemovitostí",
     map: "Mapa nemovitostí",
     moveToMap: "Přejít na mapu nemovitostí",
-    moveToList: "Přejít na seznam nemovitostí",
+    moveToList: "Přejít na list nemovitostí",
     filterMap: "Zobrazit filtrovanou mapu",
     filterList: "Zobrazit filtrovaný seznam",
     searchByIndex: "Vyhledávání podle ID inzerátu",
@@ -245,7 +246,9 @@ export const cs = {
     collapsed: "zobrazit celý popis",
     expanded: "zobrazit méně",
     copy: "Zkopírovat URL inzerátu",
+    copied: "URL inzerátu zkopírováno",
   },
+
   news: {
     title: "Ostrov Tenerife",
     eyebrow: "Zajímavosti a informace",
@@ -409,6 +412,7 @@ export const cs = {
   },
   mortgage: {
     title: "Hypotéka z Čech na nemovitost na Kanárech",
+    /* */
 
     sections: [
       {
@@ -578,6 +582,10 @@ export const cs = {
     empty: "Žádné oblíbené inzeráty",
     emptyDescription:
       "Zatím jste nepřidali žádný inzerát mezi oblíbené. Inzeráty můžete přidat kliknutím na srdíčko v pravém horním rohu jejich karty nebo v horní části stránky s detailem inzerátu.",
+    added: " Úspěšně jste přidali inzerát do oblíbených",
+    removed: " Odebrání inzerátu z oblíbených proběhlo v pořádku",
+    serverFailed:
+      "Komunikace se serverem se nezdařila, zkuste to prosím později.",
   },
   usrSettings: {
     nameReq: "Jméno je povinné",
@@ -610,6 +618,7 @@ export const cs = {
     sameEmail: "Zadaný email už patří jinému uživateli.",
     newsletterSub: "Úspěšně jste se přihlásili k newsletteru.",
     newsletterUnsub: "Už neodebíráte newsletter.",
+    /* */
   },
   home: {
     news: "Novinky",
@@ -619,6 +628,7 @@ export const cs = {
     cancel: "Zachovat",
     unsubscribe: "Zrušit odběr",
     unsubscribeConfirm: "Opravdu si přejete zrušit odběr newsletteru?",
+    /* */
   },
   reviews: {
     title: "Google Recenze",

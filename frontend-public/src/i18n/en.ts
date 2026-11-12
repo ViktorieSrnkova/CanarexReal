@@ -66,7 +66,7 @@ export const en = {
     contactsTitle: "Contacts",
     followUs: "Follow us!",
     privacy: "Personal data policy",
-    copyright: "©CanarexReal 2020-2026",
+    copyright: "2026 ©CanarexReal",
     faq: "FAQ",
   },
   form: {
@@ -142,26 +142,86 @@ export const en = {
     filterList: "View filtered list",
     searchByIndex: "Search by listing ID",
     mapSubtitle: "Click on the price in the map to view property details",
+    listSubtitle: "Start looking for your new home in Tenerife",
     sortLabel: "Sort by",
     goTo: "View Property",
     clear: "Clear filter",
     none: "We currently do not have any properties that would match the selected filters.",
     filters: "Filters",
+    filtersAndSort: "Sort and Filters",
     noActiveMapListings:
       "There are currently no properties actively listed for sale matching your filters or search. However, you can still see sold and reserved properties in the property listings.",
   },
   homepage: {
-    title: "Tenerife, where dreams come true",
-    subtitle: "Find your ideal property from over 200 listings.",
-    listings: "View listings",
-    contact: "Contact an agent",
-    services: "View services",
-    contactMe: "Contact me",
-    servis: "Real Estate Services from A to Z",
-    rent: "I'll help you rent out your property",
-    ideal: "I'll find you the perfect property",
-    manage: "Management, cleaning, and renovation",
-    agent: "Your real estate agent in Tenerife",
+    hero: {
+      alt: "Stan handing over the keys to clients on a terrace overlooking the ocean in Tenerife",
+      eyebrow: "Tenerife Real Estate · In Your Language",
+      title: "Tenerife, \n where your dreams find a home.",
+      lead: "We will guide you through choosing and purchasing a property in Tenerife. Personal service, local expertise and communication in your language.",
+      care: "We will take care of your property while you are away.",
+      actions: [
+        { btn: "Explore properties", href: "/listings" },
+        { btn: "Book a consultation", href: "/contact" },
+        { btn: "View properties on the map", href: "/map" },
+      ],
+      signature: "Stan Srnka · Your Real Estate Agent in Tenerife",
+    },
+    trust: [
+      {
+        title: "We speak your language",
+        subtitle: "Communication in Czech, Slovak and Spanish.",
+      },
+      {
+        title: "Local support, right on the island",
+        subtitle:
+          "From property searches and viewings to handing over the keys.",
+      },
+      {
+        title: "Our support doesn't end with the purchase",
+        subtitle:
+          "Property management, maintenance and care while you are away.",
+      },
+    ],
+    contactOverview: {
+      eyebrow: "It starts with a conversation",
+      title: "You don't need to have everything figured out.",
+      p1: "Tell me what you are looking for in a property in Tenerife. We can discuss your ideas, answer your questions and agree on the next steps.",
+      p2: "Looking for someone to take care of your property? Tell me where it is located and how I can help.",
+      strong: "Stan Srnka",
+      subtext: "Your Real Estate Agent in Tenerife",
+      a1: "Message me on WhatsApp ↗",
+      inquiry: "Submit an enquiry online →",
+    },
+    servicesOverview: {
+      eyebrow: "From your first idea to the keys in your hands",
+      h2: "How can we help you?",
+      p1: "Whether you are just starting to look for your place in Tenerife or already own a property, we are here to help you with the next step.",
+      textlink: "Explore all our services →",
+      link: "/services",
+      sections: [
+        {
+          eyebrow: "01 / FIND",
+          title: "Find the right property",
+          p: "Browse our listings or tell us what you are looking for. We will help you explore different areas and find properties that match your needs.",
+          link: "/listings",
+          textlink: "Explore properties →",
+        },
+        {
+          eyebrow: "02 / PURCHASE",
+          title: "Feel confident at every step",
+          p: "In-person and online viewings, property checks and purchase coordination in cooperation with a lawyer. Clear guidance in your language.",
+          link: "/faq",
+          textlink: "Questions about buying →",
+        },
+        {
+          eyebrow: "03 / CARE",
+          title: "Leave Tenerife with peace of mind",
+          p: "We will arrange the level of care your property needs while you are away, including inspections, cleaning, maintenance and necessary repairs.",
+          link: "mailto:stan@canarexreal.com?subject=P%C3%A9%C4%8De%20o%20nemovitost",
+          textlink: "Arrange property care →",
+        },
+      ],
+    },
   },
   similar: {
     error: "We currently do not have any similar properties.",
@@ -169,6 +229,8 @@ export const en = {
   },
   general: {
     loading: "Loading ...",
+    ok: "OK",
+    cancel: "Cancel",
   },
   carrousel: {
     title: "Property Listings",
@@ -185,9 +247,11 @@ export const en = {
     collapsed: "show full description",
     expanded: "show less",
     copy: "Copy listing URL",
+    copied: "URL copied to clipboard",
   },
   news: {
-    title: "News and Information about Tenerife",
+    title: "The Island of Tenerife",
+    eyebrow: "Insights and Information",
   },
   SEO: {
     HP_title: "CanarexReal | Real estate Tenerife",
@@ -393,9 +457,11 @@ export const en = {
     p2: "Yes we will require many documents, confirmations, statements from you. Everything will be detailed for you We will explain them in detail, give you a list and ask you for nothing more than the minimum necessary. to meet the terms of the loan.",
 
     subtitle7: "The whole process of obtaining financing is free!",
-    formTitle: "Do you want more information? Contact us!",
+    formTitle: "Submit your completed enquiry form.",
+    formSubTitle: "Would you like more information?",
   },
   services: {
+    eyebrow: "We're here for you",
     title: "Our services",
     subtitle1: "Why use a real estate agency in Tenerife",
     p1: "We have been living and working in Tenerife for",
@@ -504,16 +570,22 @@ export const en = {
     more: "More properties",
   },
   favorites: {
-    add: "Favorite",
-    remove: "Unfavorite",
+    title: "Favorite Listings",
+    eyebrow: "Your favorite properties, all in one place",
+    add: "Add to favorites",
+    remove: "Remove from favorites",
     confirm: "Remove from favorites?",
     ok: "Remove",
     cancel: "Keep",
-    loginNeeded: "You must be logged in to add this to your favorites.",
-    button: "Go to property listings",
-    empty: "No favorite listings",
+    loginNeeded: "You need to log in to add listings to your favorites.",
+    button: "Browse Properties",
+    empty: "No Favorite Listings",
     emptyDescription:
-      "You haven't added any listings to your favorites yet. You can add listings by clicking the heart icon in the top-right corner of a listing card or at the top of the listing details page.",
+      "You haven't added any listings to your favorites yet. You can do so by clicking the heart icon in the top-right corner of a listing card or at the top of a listing detail page.",
+    added: " Listing successfully added to favorites",
+    removed: " Listing successfully removed from favorites",
+    serverFailed:
+      "Unable to communicate with the server. Please try again later.",
   },
   usrSettings: {
     nameReq: "Name is required",
@@ -530,6 +602,7 @@ export const en = {
     changedPwd: "Password has been changed",
     changedErr: "Error changing password",
     title: "Account Settings",
+    eyebrow: "Keep your personal details and preferences under control",
     subtitle: "Profile",
     numFav: "Amount of favorited listings:",
     numForm: "Amount of sent forms:",
@@ -568,6 +641,7 @@ export const en = {
   },
   userForms: {
     title: "Submitted Forms",
+    eyebrow: "All your enquiries in one place",
     phone: "Phone:",
     email: "Email:",
     fullName: "Full Name:",
@@ -588,6 +662,7 @@ export const en = {
       "Please check the address you entered or use the button below to return to the homepage.",
     button: "Back to Homepage",
   },
+
   map: {
     gesture: {
       touch: "Use two fingers to move the map",

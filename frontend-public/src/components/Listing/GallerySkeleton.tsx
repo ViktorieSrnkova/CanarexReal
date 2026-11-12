@@ -1,22 +1,19 @@
 import "../../styles/listing/gallery.css";
-function GallerySkeleton() {
+
+export default function GallerySkeleton() {
   return (
-    <div className="gallery skeleton-gallery-wrapper">
+    <div
+      className="gallery gallery--loading gallery--placeholder"
+      aria-hidden="true"
+    >
       <div className="gallery-main">
-        <div className="arrow arrow-left" />
-
-        <div className="gallery-image skeleton-block" />
-
-        <div className="arrow arrow-right" />
+        <div className="gallery-image" />
       </div>
-
       <div className="gallery-thumbs">
-        {Array.from({ length: 3 }).map((_, i) => (
-          <div key={i} className="thumb skeleton" />
+        {Array.from({ length: 3 }, (_, i) => (
+          <div className="thumb-wrapper" key={i} />
         ))}
       </div>
     </div>
   );
 }
-
-export default GallerySkeleton;

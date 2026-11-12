@@ -4,6 +4,7 @@ import { formatMoneyEUR } from "../../utils/formatting";
 import { useLang } from "../../hooks/i18n/useLang";
 import Favorite from "../General/Favorite";
 import { useState } from "react";
+import ShimmerLoader from "../General/ShimmerLoader";
 
 type Props = {
   index: number;
@@ -37,18 +38,19 @@ function Card(props: Props) {
         className="card-image"
         onClick={handleNavigate}
       >
-        <img
+        <ShimmerLoader
+          key={props.obrazekId}
           loading={props.fetchpriority ? "eager" : "lazy"}
           fetchPriority={props.fetchpriority ? "high" : "auto"}
           src={`${VITE_API_URL}/api/files/images/${props.obrazekId}`}
           alt={props.alt}
           className="card-img"
-          width={"315"}
-          height={"218"}
+          width={315}
+          height={218}
         />
         {loading && (
           <div className="image-loader-overlay">
-            <div className="spinner" />
+            <span className="spinner" />
           </div>
         )}
         <div className={`card-status status-${props.status_id}`}>

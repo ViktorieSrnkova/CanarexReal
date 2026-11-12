@@ -211,39 +211,7 @@
 #map-scroll {
   scroll-margin-top: 10rem;
 }
-.skeleton {
-  position: relative;
-  overflow: hidden;
-  background: var(--paper);
-  border-radius: 0.75rem;
-}
 
-.skeleton::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-
-  transform: translateX(-100%);
-
-  background: linear-gradient(
-    90deg,
-    transparent,
-    var(--light-shadow),
-    transparent
-  );
-
-  animation: shimmer 1.5s infinite;
-}
-
-@keyframes shimmer {
-  100% {
-    transform: translateX(100%);
-  }
-}
-.skeleton-title {
-  width: 100%;
-  height: 2.4rem;
-}
 .skeleton-subtitle {
   width: 16rem;
   height: 1.438rem;
@@ -289,6 +257,8 @@
 .skeleton-map {
   width: 100%;
   height: 20rem;
+  flex-shrink: 0;
+  border-radius: 0.25rem;
 }
 
 .skeleton-contact-title {
@@ -349,7 +319,7 @@
   }
   .lower-section {
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse;
     align-items: center;
     gap: 0.5rem;
   }
@@ -432,5 +402,120 @@
   }
   .null-row .eyebrow {
     font-size: 0.75rem;
+  }
+}
+
+.skeleton-wrapper {
+  width: 100%;
+}
+
+.skeleton-property-type {
+  width: 12rem;
+  max-width: 100%;
+  height: 1.25rem;
+}
+
+.skeleton-wrapper .property-type::after {
+  content: "";
+  display: block;
+  flex: 1;
+  height: 1px;
+  background: #bdd0ce;
+}
+
+.skeleton-action-icon {
+  width: 2.75rem;
+  height: 2.75rem;
+  flex-shrink: 0;
+}
+
+.skeleton-listing-title {
+  flex: 1;
+  min-width: 0;
+  max-width: 42rem;
+  height: 3rem;
+}
+
+.skeleton-price-main {
+  width: 10rem;
+  height: 1.8rem;
+  flex-shrink: 0;
+}
+
+.skeleton-price-secondary {
+  width: 8rem;
+  height: 1.5rem;
+  flex-shrink: 0;
+}
+
+.skeleton-description {
+  width: 100%;
+  padding-block: 2rem;
+}
+
+.skeleton-description .skeleton-heading {
+  margin-top: 0;
+}
+
+@media (max-width: 1100px) {
+  .skeleton-listing-title {
+    max-width: 30rem;
+  }
+}
+
+@media (max-width: 780px) {
+  .skeleton-listing-title {
+    width: 100%;
+    max-width: 100%;
+    height: 4.8rem;
+  }
+
+  .skeleton-wrapper .first-row {
+    padding-bottom: 1rem;
+  }
+
+  .skeleton-wrapper .second-row.mobile {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .skeleton-wrapper .prices.mobile {
+    display: flex;
+    min-width: 0;
+    flex-wrap: wrap;
+  }
+
+  .skeleton-price-main {
+    width: 8rem;
+    height: 1.5rem;
+  }
+
+  .skeleton-price-secondary {
+    width: 6rem;
+    height: 1.2rem;
+  }
+
+  .skeleton-action-icon {
+    width: 2.375rem;
+    height: 2.375rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .skeleton-listing-title {
+    height: 4.2rem;
+  }
+
+  .skeleton-price-main {
+    width: 6.5rem;
+  }
+
+  .skeleton-price-secondary {
+    width: 5rem;
+  }
+
+  .skeleton-property-type {
+    width: 9rem;
   }
 }

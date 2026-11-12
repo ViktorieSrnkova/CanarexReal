@@ -88,8 +88,10 @@
 }
 
 @media (min-width: 1600px) {
-  .hp-hero .wrap {
-    min-height: 46.25rem;
+  .hero-img {
+    max-width: 110rem;
+    margin-left: auto;
+    margin-right: 0;
   }
   .hp-hero:before {
     content: "";
@@ -98,7 +100,7 @@
     z-index: -1;
     background: linear-gradient(
       90deg,
-      rgba(249, 248, 242, 0.97),
+      rgba(249, 248, 242) 30%,
       rgba(249, 248, 242, 0.9) 40%,
       rgba(249, 248, 242, 0.62) 50%,
       rgba(249, 248, 242, 0) 60%

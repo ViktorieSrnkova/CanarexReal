@@ -129,8 +129,6 @@
   opacity: 0.6;
 }
 
-/* Card inside listing carousel */
-
 .listing-carousel-item {
   min-width: 0;
   box-sizing: border-box;
@@ -147,14 +145,10 @@
   flex: 1;
 }
 
-/* Space for card shadows */
-
 .crsl-listings-wrapper {
-  padding: 5px;
+  padding: 1.3rem;
   box-sizing: border-box;
 }
-
-/* Keep carousel width correct */
 
 .listing-cards-viewport {
   width: 100%;
@@ -163,15 +157,11 @@
   box-sizing: border-box;
 }
 
-/* Tablet: 2 cards */
-
 @media (max-width: 1162px) and (min-width: 801px) {
   .listing-carousel-item {
     flex-basis: calc((100% - 1.25rem) / 2);
   }
 }
-
-/* Mobile: native swipe */
 
 @media (max-width: 800px) {
   .listing-cards-viewport {
@@ -235,8 +225,6 @@
   }
 }
 
-/* Reduced motion */
-
 @media (prefers-reduced-motion: reduce) {
   .crsl-listings-wrapper {
     transition: none;
@@ -250,8 +238,6 @@
     animation: none;
   }
 }
-
-/* Skeleton */
 
 .skeleton-dot {
   pointer-events: none;

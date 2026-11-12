@@ -3,13 +3,9 @@ import { formatPhoneNumber } from "../../utils/formatting";
 import { useT } from "../../i18n";
 import Stan from "/contact/stan.webp";
 import Assistant from "/contact/assistant.jpeg";
-import useImagePreloader from "../../hooks/useImagePreloader";
 import "../../styles/components/medalions.css";
 
-const preloadSrcList: string[] = [Stan, Assistant];
-
 const Medalions = () => {
-  useImagePreloader(preloadSrcList);
   const t = useT();
   return (
     <section style={{ background: "var(--highlight)" }}>

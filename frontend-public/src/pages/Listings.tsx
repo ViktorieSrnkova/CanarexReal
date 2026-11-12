@@ -72,12 +72,14 @@ function Listings() {
 
     try {
       await toggleFavoriteApi(id, isFavorite);
+      toast.success(isFavorite ? t("favorites.removed") : t("favorites.added"));
     } catch {
       setListings((prev) =>
         prev.map((item) =>
           item.id === id ? { ...item, is_favorite: isFavorite } : item,
         ),
       );
+      toast.error(t("favorites.serverFailed"));
     }
   };
   if (!filtersReady) {

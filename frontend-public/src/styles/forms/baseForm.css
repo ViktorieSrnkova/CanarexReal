@@ -130,15 +130,6 @@ textarea {
 .submit-msg.error {
   color: var(--error);
 }
-.spinner {
-  width: 1.125rem;
-  height: 1.125rem;
-  border: 0.125rem solid var(--shadow);
-  border-top-color: var(--paper);
-  border-radius: 50%;
-  display: inline-block;
-  animation: spin 0.8s linear infinite;
-}
 
 @keyframes spin {
   to {
