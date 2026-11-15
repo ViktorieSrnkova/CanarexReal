@@ -45,7 +45,6 @@ function News() {
     };
 
     load();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [langId, page]);
 
   const setPage = (p: number) => {

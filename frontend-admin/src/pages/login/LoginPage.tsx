@@ -4,7 +4,6 @@ import { Button, Form, Input, Spin, Typography, message } from "antd";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { api } from "../../api/client";
-import axios from "axios";
 
 const { Title } = Typography;
 type FieldType = {
@@ -27,15 +26,8 @@ const LoginPage: React.FC = () => {
       api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       message.success("Přihlášení úspěšné");
       navigate("/");
-    } catch (error) {
+    } catch {
       setLoading(false);
-      console.error("LOGIN ERROR:", error);
-
-      if (axios.isAxiosError(error)) {
-        console.log("STATUS:", error.response?.status);
-        console.log("DATA:", error.response?.data);
-        console.log("URL:", error.config?.url);
-      }
 
       message.error("Neplatné přihlašovací údaje");
     }
