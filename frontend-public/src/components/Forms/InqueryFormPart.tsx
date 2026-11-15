@@ -128,22 +128,31 @@ export default function InqueryFormPart({
           </div>
 
           {mode === "date" && (
-            <input
-              type="date"
-              id="arrival"
-              name="arrival"
-              lang={lang === "cs" ? "cs-CZ" : lang === "sk" ? "sk-SK" : "en-GB"}
-              value={
-                value.arrival
-                  ? new Date(value.arrival).toISOString().split("T")[0]
-                  : ""
-              }
-              onChange={(e) =>
-                onChange({
-                  arrival: e.target.value ? new Date(e.target.value) : null,
-                })
-              }
-            />
+            <div className="date-input-wrapper">
+              {!value.arrival && (
+                <span className="date-placeholder">dd.mm.rrrr</span>
+              )}
+
+              <input
+                type="date"
+                id="arrival"
+                name="arrival"
+                placeholder="dd.mm.rrr"
+                lang={
+                  lang === "cs" ? "cs-CZ" : lang === "sk" ? "sk-SK" : "en-GB"
+                }
+                value={
+                  value.arrival
+                    ? new Date(value.arrival).toISOString().split("T")[0]
+                    : ""
+                }
+                onChange={(e) =>
+                  onChange({
+                    arrival: e.target.value ? new Date(e.target.value) : null,
+                  })
+                }
+              />
+            </div>
           )}
 
           {errors?.arrivalMode && (

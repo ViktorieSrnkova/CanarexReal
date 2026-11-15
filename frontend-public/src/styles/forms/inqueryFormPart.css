@@ -75,6 +75,19 @@
   width: 20px;
   height: 20px;
 }
+.date-input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.date-input-wrapper input[type="date"] {
+  width: 100%;
+}
+
+.date-placeholder {
+  display: none;
+}
+
 @media screen and (max-width: 850px) {
   .filter-type {
     width: unset;
@@ -90,5 +103,19 @@
   .inquiry-form-wrapper {
     flex-direction: column;
     align-items: center;
+  }
+  .date-placeholder {
+    display: block;
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #888;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .date-input-wrapper input[type="date"]:not(:focus):invalid {
+    color: transparent;
   }
 }
