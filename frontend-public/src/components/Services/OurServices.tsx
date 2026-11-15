@@ -7,11 +7,13 @@ import villa from "../../assets/villa.avif";
 import garden from "../../assets/garden.avif";
 import { Link } from "react-router-dom";
 import "../../styles/components/our-services.css";
+import { useLang } from "../../hooks/i18n/useLang";
 
 const preloadSrcList: string[] = [stan];
 const OurServices = () => {
   const t = useT();
   useImagePreloader(preloadSrcList);
+  const { lang } = useLang();
 
   const list1 = t<string[]>("services.list1");
   const list2 = t<string[]>("services.list2");
@@ -21,7 +23,7 @@ const OurServices = () => {
   const list6 = t<string[]>("services.list6");
   const list7 = t<string[]>("services.list7");
   return (
-    <section>
+    <section className="services-section">
       <div className="wrap">
         <div className="white serv beggining">
           <p className="eyebrow">{t("services.eyebrow")}</p>
@@ -227,7 +229,7 @@ const OurServices = () => {
               <span>
                 <p>
                   {t("services.p33")}
-                  <Link className="gdpr-link" to={"/faq"}>
+                  <Link className="gdpr-link" to={`/${lang}/faq`}>
                     {" "}
                     {t("services.link")}
                   </Link>{" "}

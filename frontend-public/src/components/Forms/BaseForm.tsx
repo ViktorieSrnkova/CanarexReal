@@ -133,7 +133,7 @@ export default function ContactForm(props: Props): React.ReactElement {
       setSubmitStatus("success");
       setSubmitMessage(t("form.success"));
       reset();
-
+      toast.success(t("form.success"));
       setTimeout(() => {
         setSubmitStatus("idle");
       }, 4000);
@@ -172,6 +172,16 @@ export default function ContactForm(props: Props): React.ReactElement {
     clearErrors();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lang]);
+  const onInvalid = () => {
+    if (window.innerWidth > 780) return;
+
+    setTimeout(() => {
+      document.getElementById("arrival-field")?.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    }, 100);
+  };
 
   const fillFromProfile = () => {
     if (!rich) return;
@@ -193,7 +203,7 @@ export default function ContactForm(props: Props): React.ReactElement {
   return (
     <FormProvider {...methods}>
       <form
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit(onSubmit, onInvalid)}
         className={`${props.what === 1 ? "contact-form" : ""} ${props.what === 3 ? "inquiry-form-wrapper" : ""} ${props.what === 2 ? "det-wrap" : ""}`}
         noValidate
       >

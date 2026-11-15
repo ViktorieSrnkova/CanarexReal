@@ -317,7 +317,6 @@ export default function ListingGallery({ imagesProp, index }: Props) {
 
   return (
     <div className={`gallery ${!loaded ? "gallery--loading" : ""}`}>
-      {/* LIGHTBOX */}
       {isOpen && (
         <div
           className="lightbox"
@@ -417,7 +416,6 @@ export default function ListingGallery({ imagesProp, index }: Props) {
         </div>
       )}
 
-      {/* HLAVNÍ FOTOGRAFIE */}
       <div
         className="gallery-main"
         onTouchStart={onTouchStart}
@@ -471,7 +469,6 @@ export default function ListingGallery({ imagesProp, index }: Props) {
         )}
       </div>
 
-      {/* MINIATURY */}
       <div className="gallery-thumbs">
         {images.map((img, i) => (
           <div

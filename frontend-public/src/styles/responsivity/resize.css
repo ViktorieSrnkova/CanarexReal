@@ -97,11 +97,6 @@
   .range-header {
     max-width: 97% !important;
   }
-
-  .button {
-    height: 2.25rem !important;
-    font-size: 0.813em !important ;
-  }
 }
 @media screen and (max-width: 850px) {
   .base-form,

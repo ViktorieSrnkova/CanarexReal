@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import "../../styles/newscard.css";
 import { useLang } from "../../hooks/i18n/useLang";
+import ShimmerLoader from "../General/ShimmerLoader";
 
 type Props = {
   id?: number;
@@ -19,7 +20,8 @@ function Card({ id, img_id, alt, title }: Props) {
     <div className="news-card">
       <Link to={`/${lang}/news/${id}`} className="news-card-link">
         {img_id ? (
-          <img
+          <ShimmerLoader
+            key={img_id}
             src={`${VITE_API_URL}/api/files/images/${img_id}`}
             alt={alt ?? ""}
             className="news-img"

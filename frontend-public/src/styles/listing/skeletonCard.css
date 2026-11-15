@@ -1,9 +1,9 @@
 .skeleton-block {
   background: linear-gradient(
     90deg,
-    var(--shadow) 25%,
-    var(--light-shadow) 50%,
-    var(--shadow) 75%
+    var(--paper) 25%,
+    var(--accent) 50%,
+    var(--paper) 75%
   );
 
   background-size: 200% 100%;

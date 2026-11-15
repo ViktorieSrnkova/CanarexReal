@@ -93,7 +93,7 @@ function Favorites() {
                 <h2>{t("favorites.empty")}</h2>
                 <p>{t("favorites.emptyDescription")}</p>
                 <Button>
-                  <Link className="no-underline" to={"/listings"}>
+                  <Link className="no-underline" to={`/${lang}/listings`}>
                     {t("favorites.button")}
                   </Link>
                 </Button>

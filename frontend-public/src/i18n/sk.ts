@@ -60,7 +60,8 @@ export const sk = {
     mortgage: "Hypotéky",
     contact: "Kontaktný formulár",
     back: "Späť",
-    logo: "Tenerife, miesto, kde sny majú adresu.",
+    logo: "Váš realitný agent na Tenerife",
+    profile: "Profil",
   },
   footer: {
     formTitle: "Napíšte nám!",
@@ -155,14 +156,14 @@ export const sk = {
   homepage: {
     hero: {
       alt: "Stan odovzdáva klientom kľúče na terase s výhľadom na oceán na Tenerife",
-      eyebrow: "Nehnuteľnosti na Tenerife · po slovensky",
-      title: "Tenerife, \n miesto, kde majú Vaše sny svoju adresu.",
+      eyebrow: "Nehnuteľnosti na Tenerife | po slovensky",
+      title: "Tenerife, \n miesto, kde sny majú svoju adresu.",
       lead: "Pomôžeme Vám s výberom a kúpou nehnuteľnosti na Tenerife. Osobne, s miestnou znalosťou a komunikáciou v slovenčine.",
       care: "Postaráme sa o Vašu nehnuteľnosť počas Vašej neprítomnosti.",
       actions: [
-        { btn: "Prezrieť nehnuteľnosti", href: "/listings" },
-        { btn: "Dohodnúť konzultáciu", href: "/contact" },
-        { btn: "Zobraziť mapu nehnuteľností", href: "/map" },
+        { btn: "Prezrieť nehnuteľnosti", href: "listings" },
+        { btn: "Dohodnúť konzultáciu", href: "contact" },
+        { btn: "Zobraziť mapu nehnuteľností", href: "map" },
       ],
       signature: "Stan Srnka · Váš realitný maklér na Tenerife",
     },

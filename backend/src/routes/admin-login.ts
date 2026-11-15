@@ -14,12 +14,25 @@ router.post("/login", async (req, res) => {
       where: { email },
     });
 
-    if (!user || (user.role_id !== 1 && user.role_id !== 3)) {
+    if (!user) {
+      console.log("USER NOT FOUND");
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
+
+    if (user.role_id !== 1 && user.role_id !== 3) {
+      console.log("INVALID ROLE:", user.role_id);
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
     const valid = await bcrypt.compare(password, user.heslo_hash);
-    if (!valid) return res.status(401).json({ message: "Invalid credentials" });
+
+    console.log("BCRYPT RESULT:", valid);
+    console.log("HASH LENGTH:", user.heslo_hash.length);
+
+    if (!valid) {
+      console.log("INVALID PASSWORD");
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
 
     const accessToken = jwt.sign(
       { userId: user.id, roleId: user.role_id },

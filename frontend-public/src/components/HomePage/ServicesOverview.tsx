@@ -1,6 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { useT } from "../../i18n";
 import "../../styles/components/servicesOverlay.css";
+import { useLang } from "../../hooks/i18n/useLang";
 
 const ServicesOverview = () => {
   const t = useT();
@@ -13,7 +14,7 @@ const ServicesOverview = () => {
       textlink: string;
     }[]
   >("homepage.servicesOverview.sections");
-
+  const { lang } = useLang();
   return (
     <section className="servicesOverview" id="sluzby">
       <div className="wrap">
@@ -25,7 +26,7 @@ const ServicesOverview = () => {
           </div>
           <NavLink
             className="textlink"
-            to={t("homepage.servicesOverview.link")}
+            to={`/${lang}${t("homepage.servicesOverview.link")}`}
           >
             {t("homepage.servicesOverview.textlink")}
           </NavLink>
@@ -42,7 +43,7 @@ const ServicesOverview = () => {
                   {section.textlink}
                 </a>
               ) : (
-                <NavLink className="textlink" to={section.link}>
+                <NavLink className="textlink" to={`/${lang}${section.link}`}>
                   {section.textlink}
                 </NavLink>
               )}

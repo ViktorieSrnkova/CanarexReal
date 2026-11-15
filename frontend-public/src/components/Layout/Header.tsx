@@ -54,7 +54,12 @@ function Header() {
           </div>
           <span className="phone number">
             <img src={Phone} alt="phone" height="20" />
-            {formatPhoneNumber(t("contact.phoneCZ1"))}
+            <a
+              href={`tel:${formatPhoneNumber(t("contact.phoneCZ1"))}`}
+              style={{ textDecoration: "none" }}
+            >
+              {formatPhoneNumber(t("contact.phoneCZ1"))}
+            </a>
           </span>
           <a href="mailto:info@canarexreal.com" className="mail">
             <img src={Mail} alt="email" height="16" />

@@ -9,6 +9,7 @@
   background-color: var(--highlight);
   font-size: 1em;
   cursor: pointer;
+  color: var(--ink);
 }
 @media screen and (max-width: 1112px) {
   .toggle-buttons {

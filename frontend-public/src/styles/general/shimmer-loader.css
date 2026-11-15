@@ -26,12 +26,7 @@
   inset: 0;
   transform: translateX(-100%);
 
-  background: linear-gradient(
-    90deg,
-    transparent,
-    var(--light-shadow),
-    transparent
-  );
+  background: linear-gradient(90deg, var(--paper), var(--accent), var(--paper));
 
   animation: shimmer-image 1.5s infinite;
 }

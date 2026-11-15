@@ -59,7 +59,8 @@ export const en = {
     mortgage: "Mortgage",
     contact: "Contact Form",
     back: "Back",
-    logo: "Tenerife a place where dreams have an address.",
+    logo: "Your Real Estate Agent in Tenerife",
+    profile: "Profile",
   },
   footer: {
     formTitle: "Contact us!",
@@ -155,14 +156,14 @@ export const en = {
   homepage: {
     hero: {
       alt: "Stan handing over the keys to clients on a terrace overlooking the ocean in Tenerife",
-      eyebrow: "Tenerife Real Estate · In Your Language",
+      eyebrow: "Tenerife Real Estate ",
       title: "Tenerife, \n where your dreams find a home.",
       lead: "We will guide you through choosing and purchasing a property in Tenerife. Personal service, local expertise and communication in your language.",
       care: "We will take care of your property while you are away.",
       actions: [
-        { btn: "Explore properties", href: "/listings" },
-        { btn: "Book a consultation", href: "/contact" },
-        { btn: "View properties on the map", href: "/map" },
+        { btn: "Explore properties", href: "listings" },
+        { btn: "Book a consultation", href: "contact" },
+        { btn: "View properties on the map", href: "map" },
       ],
       signature: "Stan Srnka · Your Real Estate Agent in Tenerife",
     },
@@ -200,21 +201,21 @@ export const en = {
       link: "/services",
       sections: [
         {
-          eyebrow: "01 / FIND",
+          eyebrow: "01 | FIND",
           title: "Find the right property",
           p: "Browse our listings or tell us what you are looking for. We will help you explore different areas and find properties that match your needs.",
           link: "/listings",
           textlink: "Explore properties →",
         },
         {
-          eyebrow: "02 / PURCHASE",
+          eyebrow: "02 | PURCHASE",
           title: "Feel confident at every step",
           p: "In-person and online viewings, property checks and purchase coordination in cooperation with a lawyer. Clear guidance in your language.",
           link: "/faq",
           textlink: "Questions about buying →",
         },
         {
-          eyebrow: "03 / CARE",
+          eyebrow: "03 | CARE",
           title: "Leave Tenerife with peace of mind",
           p: "We will arrange the level of care your property needs while you are away, including inspections, cleaning, maintenance and necessary repairs.",
           link: "mailto:stan@canarexreal.com?subject=P%C3%A9%C4%8De%20o%20nemovitost",

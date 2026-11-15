@@ -9,5 +9,11 @@
 }
 .no-underline {
   text-decoration: none;
-  color: var(--ink);
+  color: var(--highlight);
+}
+
+.not-found h1 {
+  text-align: center;
+  margin-bottom: 4rem;
+  font-size: 54px;
 }

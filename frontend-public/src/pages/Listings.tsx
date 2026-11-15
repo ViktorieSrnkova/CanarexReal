@@ -11,6 +11,7 @@ import { useAuth } from "../Auth/authStore";
 import toast from "react-hot-toast";
 import useImagePreloader from "../hooks/useImagePreloader";
 import ToggleFilters from "../components/Listing/ToggleFilters";
+import NoFilters from "../components/Listing/NoFilters";
 
 function Listings() {
   const t = useT();
@@ -40,6 +41,7 @@ function Listings() {
     clearIndexSearch,
     isIndexSearchActive,
     searchedIndex,
+    total,
   } = useListings({
     paginated: true,
   });
@@ -118,6 +120,7 @@ function Listings() {
                 filtersOpen={filtersOpen}
                 setFiltersOpen={setFiltersOpen}
                 hasAppliedFilters={hasAppliedFilters}
+                totalResults={total}
               />
             </div>
             <div className="listings">
@@ -148,6 +151,7 @@ function Listings() {
                   filtersOpen={filtersOpen}
                   setFiltersOpen={setFiltersOpen}
                   hasAppliedFilters={hasAppliedFilters}
+                  totalResults={total}
                 />
               </div>
 
@@ -156,9 +160,7 @@ function Listings() {
                   Array.from({ length: 6 }).map((_, i) => (
                     <CardSkeleton key={i} />
                   ))}
-                {listings.length === 0 && !isLoading && (
-                  <p className="listings-empty">{t("listings.none")}</p>
-                )}
+                {listings.length === 0 && !isLoading && <NoFilters />}
 
                 {listings.map((listing, i) => (
                   <Card

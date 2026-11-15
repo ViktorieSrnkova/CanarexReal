@@ -9,8 +9,8 @@ function LangSwitcher() {
 
   const languages = [
     { code: "cs", flag: "/flags/cz.svg", label: "Čeština" },
-    { code: "en", flag: "/flags/en.svg", label: "English" },
     { code: "sk", flag: "/flags/sk.svg", label: "Slovenčina" },
+    { code: "en", flag: "/flags/en.svg", label: "English" },
   ] as const;
 
   const pathWithoutLang = pathname.replace(/^\/(cs|en|sk)/, "");

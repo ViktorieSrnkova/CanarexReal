@@ -78,6 +78,9 @@
 .garden {
   max-width: 21.875rem;
 }
+.services-section ul {
+  padding-left: 1rem;
+}
 
 @media screen and (max-width: 760px) {
   .s-first,

@@ -61,6 +61,7 @@ export const cs = {
     contact: "Kontaktní formulář",
     back: "Zpět",
     logo: "Váš realitní agent na Tenerife",
+    profile: "Profil",
   },
   footer: {
     formTitle: "Napiště nám!",
@@ -156,14 +157,14 @@ export const cs = {
   homepage: {
     hero: {
       alt: "Stan předává klientům klíče na terase s výhledem na oceán na Tenerife",
-      eyebrow: "Nemovitosti na Tenerife · v češtině",
+      eyebrow: "Nemovitosti na Tenerife | v češtině",
       title: "Tenerife, \n místo, kde Vaše sny mají adresu.",
       lead: "Pomůžeme Vám s výběrem a koupí nemovitosti na Tenerife. Osobně, s místní znalostí a komunikací v češtině.",
       care: "Postaráme se o vaši nemovitost v době vaší nepřítomnosti.",
       actions: [
-        { btn: "Prohlédnout nemovitosti", href: "/listings" },
-        { btn: "Domluvit konzultaci", href: "/contact" },
-        { btn: "Zobrazit mapu nemovitostí", href: "/map" },
+        { btn: "Prohlédnout nemovitosti", href: "listings" },
+        { btn: "Domluvit konzultaci", href: "contact" },
+        { btn: "Zobrazit mapu nemovitostí", href: "map" },
       ],
       signature: "Stan Srnka · Váš realitní agent na Tenerife",
     },

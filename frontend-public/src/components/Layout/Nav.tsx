@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import User from "../../assets/user.svg";
 import LoggedIn from "../../assets/userLogin.svg";
 import { useT } from "../../i18n";
@@ -17,11 +17,6 @@ function Navbar({ onLinkClick }: Props) {
   const t = useT();
   const { lang } = useLang();
   const { user, logout } = useAuth();
-  const location = useLocation();
-
-  const isListingsOrMap =
-    location.pathname.endsWith("/listings") ||
-    location.pathname.endsWith("/map");
 
   const menuItems = [
     { label: t("header.home"), path: `/${lang}` },
@@ -69,12 +64,6 @@ function Navbar({ onLinkClick }: Props) {
             <NavLink
               to={{
                 pathname: item.path,
-                search:
-                  isListingsOrMap &&
-                  (item.path.endsWith("/listings") ||
-                    item.path.endsWith("/map"))
-                    ? location.search
-                    : "",
               }}
               className={({ isActive }) => (isActive ? "active" : "nonactive")}
               onClick={() => onLinkClick()}
@@ -113,7 +102,8 @@ function Navbar({ onLinkClick }: Props) {
               alt="Uživatelské menu"
               height="20"
               width="20"
-            />
+            />{" "}
+            {t("header.profile")} ▾
           </button>
 
           {userMenuOpen && (

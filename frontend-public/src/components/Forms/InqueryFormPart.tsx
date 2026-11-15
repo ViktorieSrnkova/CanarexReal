@@ -6,6 +6,7 @@ import type { FormValues, InquiryFormPatch } from "../../types/forms";
 import type { FormErrorMap } from "./InqueryFormPartRHF";
 import { useId } from "react";
 import CheckboxOptions from "./CheckboxOptions";
+import { useLang } from "../../hooks/i18n/useLang";
 
 type Props = {
   value: FormValues;
@@ -26,6 +27,7 @@ export default function InqueryFormPart({
 }: Props) {
   const t = useT();
   const id = useId();
+  const { lang } = useLang();
   const radioDateId = `${id}- radioDateId`;
   const radioUnknownId = `${id}- radioUnknownId`;
 
@@ -40,7 +42,6 @@ export default function InqueryFormPart({
           { label: t("property_type.vila"), value: 3 },
           { label: t("property_type.apartment"), value: 1 },
           { label: t("property_type.house"), value: 2 },
-          { label: t("property_type.studio"), value: 4 },
           { label: t("property_type.land"), value: 5 },
         ]}
         value={value.type ?? []}
@@ -96,7 +97,7 @@ export default function InqueryFormPart({
         <span className="error">{t("form.toggleErr")}</span>
       )}
       {hasDate && (
-        <div className="field">
+        <div className="field" id="arrival-field">
           <span>{t("form.since") + "*"}</span>
 
           <div className="radio-group">
@@ -129,6 +130,9 @@ export default function InqueryFormPart({
           {mode === "date" && (
             <input
               type="date"
+              id="arrival"
+              name="arrival"
+              lang={lang === "cs" ? "cs-CZ" : lang === "sk" ? "sk-SK" : "en-GB"}
               value={
                 value.arrival
                   ? new Date(value.arrival).toISOString().split("T")[0]

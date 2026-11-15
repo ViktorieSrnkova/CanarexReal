@@ -1,14 +1,18 @@
+import { useState } from "react";
 import ContactForm from "../components/Forms/BaseForm";
 import SEO from "../components/SEO/Meta";
+import { useLang } from "../hooks/i18n/useLang";
 import { useT } from "../i18n";
 import "../styles/pages/mortgage.css";
 
 function Mortgage() {
   const t = useT();
+  const { lang } = useLang();
 
   const sections = t<{ title: string; items: string[] }[]>("mortgage.sections");
 
   const rows = t<string[][]>("mortgage.mortgageTable");
+  const [isCalcLoading, setIsCalcLoading] = useState(true);
 
   return (
     <>
@@ -68,7 +72,21 @@ function Mortgage() {
             <h3>{t("mortgage.subtitle7")}</h3>
           </div>
         </div>
+        {lang !== "en" && (
+          <div className="calc-wrapper">
+            {isCalcLoading && <div className="calc-skeleton" />}
+            <iframe
+              src="https://www.hypo-portal.cz/canarexreal/kalkulator-lorinc" //{`https://www.hypo-portal.cz/${lang}/canarexreal/kalkulator-lorinc`}
+              width="100%"
+              height="700px"
+              frameBorder="0"
+              className="iframe-calc"
+              onLoad={() => setIsCalcLoading(false)}
+            />
+          </div>
+        )}
       </section>
+
       <section className="gray">
         <div className="wrap">
           <div className="contactssss white mortgage">

@@ -20,6 +20,7 @@ import "../styles/pages/settings.css";
 import { useAuth } from "../Auth/authStore";
 import ConfirmModal from "../components/General/ConfirmModal";
 import { Link } from "react-router-dom";
+import { useLang } from "../hooks/i18n/useLang";
 
 const profileSchema = (t: ReturnType<typeof useT>) =>
   z.object({
@@ -58,6 +59,7 @@ const passwordSchema = (t: ReturnType<typeof useT>) =>
 
 function UserSettings() {
   const t = useT();
+  const { lang } = useLang();
   const { refreshUser } = useAuth();
 
   const [form, setForm] = useState<FormState>({
@@ -338,7 +340,7 @@ function UserSettings() {
                     <tr>
                       <td>{t("usrSettings.numFav")} </td>
                       <td>
-                        <Link to="/favorites" className="number">
+                        <Link to={`/${lang}/favorites`} className="number">
                           {stats.favoritesCount}
                         </Link>
                       </td>
@@ -346,7 +348,7 @@ function UserSettings() {
                     <tr>
                       <td>{t("usrSettings.numForm")}</td>
                       <td>
-                        <Link to="/forms" className="number">
+                        <Link to={`/${lang}/forms`} className="number">
                           {stats.formsCount}
                         </Link>
                       </td>

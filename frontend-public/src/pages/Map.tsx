@@ -1,4 +1,4 @@
-import { lazy, Suspense, useMemo } from "react";
+import { lazy, Suspense, useMemo, useRef } from "react";
 import { useT } from "../i18n";
 import SEO from "../components/SEO/Meta";
 import Button from "../components/General/Button";
@@ -38,12 +38,14 @@ function Map() {
     searchedIndex,
     isIndexSearchActive,
     clearIndexSearch,
+    total,
   } = useListings({
     paginated: false,
   });
   const navigate = useNavigate();
   const { lang } = useLang();
   const [searchParams, setSearchParams] = useSearchParams();
+  const hasAutoScrolled = useRef(false);
   const selectedIdFromUrl =
     (Number(searchParams.get("selected") || 0) || null) ??
     (isIndexSearchActive ? searchedIndex : null);
@@ -84,16 +86,27 @@ function Map() {
     [listings, selectedIdFromUrl],
   );
   const handleMarkerClick = (index: number) => {
-    /* if (window.innerWidth <= 780) {
-      setSearchParams((prev) => {
-        const p = new URLSearchParams(prev);
-        p.set("selected", String(index));
-        return p;
-      });
+    if (window.innerWidth <= 780 && !hasAutoScrolled.current) {
+      const mapElement = document.getElementById("map-anchor");
 
-      navigate(`/${lang}/listings/${index}`);
-      return;
-    } */
+      if (mapElement) {
+        const headerHeight =
+          document.querySelector("header")?.getBoundingClientRect().height ?? 0;
+
+        const top =
+          mapElement.getBoundingClientRect().top +
+          window.scrollY -
+          headerHeight -
+          parseFloat(getComputedStyle(document.documentElement).fontSize);
+
+        window.scrollTo({
+          top,
+          behavior: "smooth",
+        });
+
+        hasAutoScrolled.current = true;
+      }
+    }
 
     setSearchParams((prev) => {
       const p = new URLSearchParams(prev);
@@ -177,6 +190,7 @@ function Map() {
                 filtersOpen={filtersOpen}
                 setFiltersOpen={setFiltersOpen}
                 hasAppliedFilters={hasAppliedFilters}
+                totalResults={total}
               />
             </div>
             <div className="listings">
@@ -206,10 +220,11 @@ function Map() {
                     filtersOpen={filtersOpen}
                     setFiltersOpen={setFiltersOpen}
                     hasAppliedFilters={hasAppliedFilters}
+                    totalResults={total}
                   />
                 </div>
               </div>
-              <div className="map-wrapper-listing">
+              <div className="map-wrapper-listing" id="map-anchor">
                 {listings.length === 0 ? (
                   <NoFilters />
                 ) : !hasActiveListings ? (

@@ -1,8 +1,10 @@
+import { useLang } from "../../hooks/i18n/useLang";
 import { useT } from "../../i18n";
 import "../../styles/components/contactOverview.css";
 
 const ContactOverview = () => {
   const t = useT();
+  const { lang } = useLang();
   return (
     <section className="contact-overview">
       <div className="wrapper">
@@ -25,7 +27,7 @@ const ContactOverview = () => {
           >
             {t("homepage.contactOverview.a1")}
           </a>
-          <a className="textlink" href="https://www.canarexreal.com/kontakt">
+          <a className="textlink" href={`${lang}/contact`}>
             {t("homepage.contactOverview.inquiry")}
           </a>
         </div>

@@ -78,6 +78,40 @@
 .mortgage .grid-2 {
   max-width: unset;
 }
+.calc-wrapper {
+  --calc-height: 700px;
+  position: relative;
+  width: 100%;
+  min-height: var(--calc-height);
+}
+
+.iframe-calc {
+  width: 100%;
+  height: var(--calc-height);
+  border: 0;
+}
+
+.calc-skeleton {
+  position: absolute;
+  inset: 0;
+  height: var(--calc-height);
+  border-radius: 8px;
+  background: linear-gradient(
+    90deg,
+    var(--accent) 25%,
+    var(--highlight) 50%,
+    var(--accent) 75%
+  );
+  background-size: 200% 100%;
+  animation: calc-loading 1.5s infinite linear;
+  z-index: 1;
+}
+
+@keyframes calc-loading {
+  to {
+    background-position: -200% 0;
+  }
+}
 
 @media screen and (max-width: 1112px) {
 }
@@ -87,11 +121,20 @@
     flex-direction: column;
     gap: 0;
   }
+  .calc-wrapper {
+    --calc-height: 750px;
+  }
 }
 
 @media (max-width: 700px) {
   .mortgage td {
     padding: 0.5rem;
     font-size: 0.875rem;
+  }
+}
+
+@media (max-width: 670px) {
+  .calc-wrapper {
+    --calc-height: 1460px;
   }
 }

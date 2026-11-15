@@ -1,0 +1,56 @@
+.news-card-skeleton {
+  pointer-events: none;
+  width: 100%;
+}
+.skeleton-title-wrapper {
+  height: 7rem;
+}
+.news-card-skeleton-image {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  background: var(--paper);
+}
+
+.news-card-skeleton-image .image-shimmer {
+  position: absolute;
+  inset: 0;
+}
+
+.news-card-skeleton-title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 85%;
+}
+
+.news-card-skeleton-line {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 1.1rem;
+  border-radius: 0.2rem;
+  background: var(--paper);
+}
+
+.news-card-skeleton-line.short {
+  width: 65%;
+}
+
+.news-card-skeleton-line::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, var(--paper), var(--accent), var(--paper));
+  animation: shimmer-image 1.5s infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .news-card-skeleton-line::after {
+    animation: none;
+  }
+}

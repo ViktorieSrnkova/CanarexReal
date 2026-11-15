@@ -4,8 +4,7 @@
   gap: 0.5rem;
   justify-content: center;
   margin-top: 2rem;
-}
-.pagination {
+  color: var(--ink);
   min-height: 2.188rem;
 }
 

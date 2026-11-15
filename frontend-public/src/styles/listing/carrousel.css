@@ -243,9 +243,9 @@
   pointer-events: none;
   background: linear-gradient(
     90deg,
-    var(--shadow) 25%,
-    var(--ligh-shadow) 50%,
-    var(--shadow) 75%
+    var(--paper) 25%,
+    var(--accent) 50%,
+    var(--paper) 75%
   );
   background-size: 200% 100%;
   animation: skeleton-loading 1.5s infinite linear;

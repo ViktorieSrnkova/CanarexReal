@@ -77,7 +77,7 @@ function SingleNews() {
           />
 
           {loading ? (
-            <div className="wrap">
+            <div className="wrap centerer">
               <span className="spinner" />
             </div>
           ) : error || !news ? (

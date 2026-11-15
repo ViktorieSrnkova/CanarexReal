@@ -45,7 +45,12 @@ function Medalion(props: Props) {
                 <img src={props.flagPath[0]} alt={props.flagAlts[0]} />
               )}
               <img src={Phone} alt="phone icon" height="20" />
-              {formatPhoneNumber(props.phoneMain)}
+              <a
+                href={`tel:${formatPhoneNumber(props.phoneMain)}`}
+                style={{ textDecoration: "none" }}
+              >
+                {formatPhoneNumber(props.phoneMain)}
+              </a>
             </div>
           )}
 
@@ -55,7 +60,13 @@ function Medalion(props: Props) {
                 <img src={props.flagPath[1]} alt={props.flagAlts[1]} />
               )}
               <img src={Whatsapp} alt="phone icon" height="20" />
-              {formatPhoneNumber(props.phoneSecondary)}
+
+              <a
+                href={`tel:${formatPhoneNumber(props.phoneSecondary)}`}
+                style={{ textDecoration: "none" }}
+              >
+                {formatPhoneNumber(props.phoneSecondary)}
+              </a>
             </div>
           )}
         </div>

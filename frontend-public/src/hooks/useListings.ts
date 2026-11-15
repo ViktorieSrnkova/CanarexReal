@@ -45,10 +45,12 @@ export function useListings({ paginated = true }: Props) {
     searchedIndex <= 270000;
   const handleIndexSearch = (index: number) => {
     setURL({ index, page: 1, selected: index });
+    setFiltersOpen(false);
   };
 
   const clearIndexSearch = () => {
     setURL({ index: null, selected: null, page: 1 });
+    setFiltersOpen(false);
   };
   const parseArray = (val: string | null) =>
     val ? val.split(",").map(Number) : [];
@@ -215,6 +217,7 @@ export function useListings({ paginated = true }: Props) {
     });
 
     setFormFilters(defaultFilters);
+    setFiltersOpen(false);
   };
   const isDefault =
     formFilters.type.length === 0 &&

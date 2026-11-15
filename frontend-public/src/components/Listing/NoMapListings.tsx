@@ -5,7 +5,7 @@ function NoResults() {
   const t = useT();
   return (
     <div className="none-filter">
-      <h2>{t("listings.noActiveMapListings")}</h2>
+      <strong>{t("listings.noActiveMapListings")}</strong>
     </div>
   );
 }

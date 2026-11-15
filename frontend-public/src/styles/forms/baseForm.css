@@ -41,6 +41,9 @@
   font-size: 0.875em;
   color: var(--ink);
 }
+.field span.error {
+  color: var(--error);
+}
 
 input:focus,
 textarea:focus {
@@ -65,6 +68,7 @@ textarea {
 
 .phone-row .prefix {
   width: 5.625rem;
+  padding: 0.5rem;
 }
 .phoneInput {
   width: 100%;

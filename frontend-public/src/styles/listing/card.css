@@ -14,12 +14,16 @@
   margin-bottom: 0.5rem;
   min-height: 20.751rem;
   min-width: 20.688rem;
+  position: relative;
+  transition: zoom 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
+
+.card:hover {
+  zoom: 1.05;
+}
+
 .blue {
   color: var(--primary);
-}
-.card {
-  position: relative;
 }
 
 .card-image {
@@ -212,11 +216,6 @@
   color: var(--highlight);
 }
 
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
 @media screen and (max-width: 500px) {
   .card {
     width: 100%;

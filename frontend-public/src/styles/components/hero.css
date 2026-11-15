@@ -40,7 +40,7 @@
 }
 .hp-hero .wrap .copy {
   width: 52%;
-  padding: 3.25rem 0;
+  padding: 2rem 0;
 }
 .copy .eyebrow {
   font-size: 0.75rem;
@@ -156,7 +156,7 @@
 
   .hp-hero .wrap .copy {
     width: 100%;
-    padding: 2.375rem 0 1.875rem;
+    padding: 1.5rem 0 1.875rem;
   }
 
   #uvod {
@@ -168,12 +168,12 @@
   .copy .lead {
     font-size: 1rem;
     max-width: 100%;
+    margin-top: 0.5rem;
   }
 
   .copy .care {
     max-width: 100%;
-    font-size: 0.875rem;
-    /*  margin-top: -1.5rem; */
+    color: var(--ink);
   }
 
   .copy .signature {
@@ -194,25 +194,7 @@
     display: block;
     object-position: 83% center;
   }
-  /* .hp-hero .hero-img.mobile::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 45%;
 
-    background: linear-gradient(
-      to top,
-
-      var(--hero),
-      var(--paper) 24%,
-      rgba(249, 248, 242, 0.62) 50%,
-      transparent 90%
-    );
-
-    pointer-events: none;
-  } */
   .actions {
     gap: 0.625rem;
     display: grid;
@@ -224,7 +206,6 @@
   .hp-hero .button {
     padding: 0.75rem 0.625rem;
     font-weight: 600;
-    font-size: 0.875rem;
     height: unset;
   }
   .hp-hero .button-secondary {

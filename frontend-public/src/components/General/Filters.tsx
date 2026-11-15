@@ -28,6 +28,7 @@ type Props = {
   isIndexSearchActive: boolean;
   searchedIndex: number | null;
   disabled: boolean;
+  totalResults: number;
 };
 
 function Filters({
@@ -49,6 +50,7 @@ function Filters({
   isIndexSearchActive,
   searchedIndex,
   disabled,
+  totalResults,
 }: Props) {
   const t = useT();
   const { lang } = useLang();
@@ -77,6 +79,7 @@ function Filters({
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setIndexInput(searchedIndex?.toString() ?? "");
   }, [searchedIndex]);
+
   const submitIndexSearch = () => {
     const index = Number(indexInput);
 
@@ -93,16 +96,18 @@ function Filters({
     setIndexError("");
     onIndexSearch(index);
   };
+
   return (
     <>
       <button className="filters-toggle" onClick={() => setFiltersOpen(true)}>
-        {/*    <img
-          src="/utils/arrow-left.svg"
-          height="12"
-          alt="<"
-          style={{ color: "var(--ink)" }}
-        /> */}
         {isMapPage ? t("listings.filters") : t("listings.filtersAndSort")}
+        {hasAppliedFilters && (
+          <span className="filters-count mobile-count">
+            {"("}
+            {totalResults}
+            {")"}
+          </span>
+        )}
       </button>
 
       <div className={`filters ${filtersOpen ? "open" : ""}`}>
@@ -130,7 +135,7 @@ function Filters({
             <Dropdown
               value={sort}
               options={SORT_OPTIONS}
-              onChange={(val) => setSort(val)}
+              onChange={(val) => (setSort(val), setFiltersOpen(false))}
             />
 
             <hr className="filter-hr" />
@@ -172,7 +177,14 @@ function Filters({
           {indexError && <p className="index-search-error">{indexError}</p>}
         </div>
         <hr className="filter-hr" />
-        <h2> {t("listings.filter")}</h2>
+        <div className="filters-title-row">
+          <h2>{t("listings.filter")}</h2>
+          <span className="filters-count">
+            {"("}
+            {totalResults}
+            {")"}
+          </span>
+        </div>
         <fieldset disabled={disabled} className="filters-disabled">
           <FiltersWrapper
             value={formFilters}

@@ -9,6 +9,7 @@ import Card from "../components/News/Card";
 import { useSearchParams } from "react-router-dom";
 import Pagination from "../components/General/Pagination";
 import "../styles/pages/news.css";
+import NewsCardSkeleton from "../components/News/NewsCardSkeleton";
 
 function News() {
   const t = useT();
@@ -17,6 +18,7 @@ function News() {
   const langId = LANGUAGE_TO_ID[lang];
   const [total, setTotal] = useState(0);
   const [searchParams, setSearchParams] = useSearchParams();
+  const [isLoading, setIsLoading] = useState(true);
 
   const limit = 6;
   const page = Number(searchParams.get("page") ?? 1);
@@ -24,6 +26,7 @@ function News() {
   const totalPages = Math.ceil(total / limit);
   useEffect(() => {
     const load = async () => {
+      setIsLoading(true);
       try {
         const { thumbnails, total } = await getNewsThumbsHome(
           langId,
@@ -36,6 +39,8 @@ function News() {
         setTotal(total);
       } catch (err) {
         console.error(err);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -58,17 +63,21 @@ function News() {
         <div className="wrap news">
           <p className="eyebrow">{t("news.eyebrow")}</p>
           <h1>{t("news.title")}</h1>
-          <div>
+          <div style={{ width: "100%" }}>
             <div className="hp-cards-wrapper">
-              {news.map((item) => (
-                <Card
-                  id={item.id}
-                  key={item.id}
-                  img_id={item.image?.id}
-                  alt={item.image?.alt ?? ""}
-                  title={item.titulek ?? ""}
-                />
-              ))}
+              {isLoading
+                ? Array.from({ length: limit }).map((_, index) => (
+                    <NewsCardSkeleton key={index} />
+                  ))
+                : news.map((item) => (
+                    <Card
+                      key={item.id}
+                      id={item.id}
+                      img_id={item.image?.id}
+                      alt={item.image?.alt ?? ""}
+                      title={item.titulek ?? ""}
+                    />
+                  ))}
             </div>
             <Pagination
               page={page}

@@ -16,9 +16,6 @@
 .toggle-section label {
   font-size: 0.875em;
 }
-.listings-wrapper .toggle-group {
-  flex-wrap: wrap;
-}
 
 @media screen and (max-width: 850px) {
   .toggle-group {

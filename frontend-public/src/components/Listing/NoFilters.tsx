@@ -4,7 +4,7 @@ function NoFilters() {
   const t = useT();
   return (
     <div className="none-filter">
-      <h2>{t("listings.none")}</h2>
+      <strong>{t("listings.none")}</strong>
     </div>
   );
 }

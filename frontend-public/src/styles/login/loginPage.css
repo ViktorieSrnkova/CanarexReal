@@ -23,6 +23,7 @@
 
 .phone-row .prefix {
   width: 5.625rem;
+  padding: 0.5rem;
 }
 .phoneInput {
   width: 100%;

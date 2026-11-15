@@ -16,10 +16,7 @@ const Socials = () => {
             </a>
           </div>
           <div className="rect">
-            <a
-              href="https://www.instagram.com/canarexreal/?hl=en"
-              target="_blank"
-            >
+            <a href="https://www.instagram.com/canarexreal" target="_blank">
               <img
                 src="/socials/Instagram.svg"
                 alt="Instagram"
