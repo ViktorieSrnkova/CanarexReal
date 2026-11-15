@@ -130,14 +130,13 @@ export default function InqueryFormPart({
           {mode === "date" && (
             <div className="date-input-wrapper">
               {!value.arrival && (
-                <span className="date-placeholder">dd.mm.rrrr</span>
+                <span className="date-placeholder">dd.mm.rrrr </span>
               )}
 
               <input
                 type="date"
                 id="arrival"
                 name="arrival"
-                placeholder="dd.mm.rrr"
                 lang={
                   lang === "cs" ? "cs-CZ" : lang === "sk" ? "sk-SK" : "en-GB"
                 }
