@@ -54,6 +54,25 @@ const PropertyPrintTemplate = ({
     <>
       <div className="print-page-wrapper">
         <section className="print-page">
+          <div className="print-image-grid">
+            {images.slice(3, 11).map((image, index) => (
+              <div
+                key={image.id}
+                className={`print-image ${index >= 0 ? "print-image-gap" : ""}`}
+              >
+                {!image.mime_typ?.startsWith("video/") && (
+                  <img
+                    src={`${import.meta.env.VITE_API_URL}/api/files/images/${image.id}`}
+                    alt="Property"
+                  />
+                )}
+              </div>
+            ))}
+          </div>
+        </section>
+      </div>
+      <div className="print-page-wrapper">
+        <section className="print-page">
           <div className="print-header">
             <div className="first-line">
               <div className="logo">
@@ -132,6 +151,7 @@ const PropertyPrintTemplate = ({
                   )?.popis || ""
                 }
               />
+
               <div className="last-row">
                 <ContentRenderer
                   data={
@@ -140,15 +160,17 @@ const PropertyPrintTemplate = ({
                     )?.detaily || ""
                   }
                 />
-
-                <PrintPictograms
-                  pictograms={listing?.inzeraty_piktogramy ?? []}
-                  bath={listing.koupelny || 0}
-                  bed={listing.loznice || 0}
-                  size={`${listing.velikost} m²`}
-                  language={language}
-                />
+                <div className="pictograms-float">
+                  <PrintPictograms
+                    pictograms={listing?.inzeraty_piktogramy ?? []}
+                    bath={listing.koupelny || 0}
+                    bed={listing.loznice || 0}
+                    size={`${listing.velikost} m²`}
+                    language={language}
+                  />
+                </div>
               </div>
+
               <div className="bottom-section">
                 <h3>Lokace</h3>
                 <PrintMap
@@ -162,25 +184,6 @@ const PropertyPrintTemplate = ({
                 </p>
               </div>
             </div>
-          </div>
-        </section>
-      </div>
-      <div className="print-page-wrapper">
-        <section className="print-page">
-          <div className="print-image-grid">
-            {images.slice(3, 11).map((image, index) => (
-              <div
-                key={image.id}
-                className={`print-image ${index >= 0 ? "print-image-gap" : ""}`}
-              >
-                {!image.mime_typ?.startsWith("video/") && (
-                  <img
-                    src={`${import.meta.env.VITE_API_URL}/api/files/images/${image.id}`}
-                    alt="Property"
-                  />
-                )}
-              </div>
-            ))}
           </div>
         </section>
       </div>

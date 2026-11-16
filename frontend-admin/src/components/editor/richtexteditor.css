@@ -72,7 +72,7 @@
   width: 100%;
 }
 .editor-container .ProseMirror p {
-  margin: 0;
+  margin: 0 0 1em;
 }
 .editor_toolbar {
   width: 100%;

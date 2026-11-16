@@ -65,7 +65,7 @@ export const sendContactEmail = async (
     to: email,
     subject: "Děkujeme za kontakt",
     html: `
-      <h2>Děkujeme za váš kontakt</h2>
+      <h2>Vážíme si vašeho zájmu</h2>
       <p>Shrnutí vašeho formuláře:</p>
 
       <ul>
@@ -85,7 +85,7 @@ export const sendContactEmail = async (
         <li><b>Zpráva:</b> ${data.message}</li>
         </ul>
 
-      <p>Ozveme se co nejdřív 👍</p>
+      <p>Budeme Vás obratem kontaktovat 👍</p>
     `,
   });
 };

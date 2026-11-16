@@ -127,6 +127,9 @@ router.get("/fx-rates", async (req, res) => {
 router.get("/ranges", async (req, res) => {
   try {
     const { _min, _max } = await prisma.inzeraty.aggregate({
+      where: {
+        reprezentativni: true,
+      },
       _min: {
         cena_v_eur: true,
         velikost: true,
@@ -158,7 +161,11 @@ router.get("/", optionalUser, async (req: AuthRequest, res) => {
         skip,
         take: limit,
         orderBy,
-        where: { ...listingWithLangWhere(langId), ...where },
+        where: {
+          ...listingWithLangWhere(langId),
+          ...where,
+          reprezentativni: true,
+        },
         select: listingThumbnailSelect(langId, userId),
       }),
 
@@ -166,6 +173,7 @@ router.get("/", optionalUser, async (req: AuthRequest, res) => {
         where: {
           ...listingWithLangWhere(langId),
           ...where,
+          reprezentativni: true,
         },
       }),
     ]);
@@ -244,6 +252,7 @@ router.get("/thumb", optionalUser, async (req: AuthRequest, res) => {
       id !== undefined
         ? {
             id,
+            reprezentativni: true,
             inzeraty_preklady: {
               some: {
                 jazyky_id: langId,
@@ -252,6 +261,7 @@ router.get("/thumb", optionalUser, async (req: AuthRequest, res) => {
           }
         : {
             index: index!,
+            reprezentativni: true,
             inzeraty_preklady: {
               some: {
                 jazyky_id: langId,
@@ -300,6 +310,7 @@ router.get("/:index", optionalUser, async (req: AuthRequest, res) => {
     const listing = await prisma.inzeraty.findFirst({
       where: {
         index,
+        reprezentativni: true,
         inzeraty_preklady: {
           some: {
             jazyky_id: langId,
@@ -380,8 +391,8 @@ router.get("/:id/similar", optionalUser, async (req: AuthRequest, res) => {
     const langId = req.langId ?? 2;
     const userId = req.user?.userId ?? undefined;
 
-    const baseListing = await prisma.inzeraty.findUnique({
-      where: { id },
+    const baseListing = await prisma.inzeraty.findFirst({
+      where: { id, reprezentativni: true },
       select: {
         cena_v_eur: true,
         typy_nemovitosti_id: true,
@@ -398,6 +409,7 @@ router.get("/:id/similar", optionalUser, async (req: AuthRequest, res) => {
     const candidates = await prisma.inzeraty.findMany({
       where: {
         id: { not: id },
+        reprezentativni: true,
         statusy_id: 1,
         typy_nemovitosti_id: baseListing.typy_nemovitosti_id,
         cena_v_eur: {

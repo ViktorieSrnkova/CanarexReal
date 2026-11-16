@@ -182,7 +182,40 @@
   padding-left: 10px;
   min-width: 85mm;
 }
+.last-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 72mm;
+  align-items: start;
+  column-gap: 4mm;
+  margin-top: 6mm;
+  margin-bottom: 2mm;
+}
 
+.pictograms-float {
+  float: none;
+  width: 100%;
+  margin: 0;
+}
+
+.pictograms-float .pict {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 2mm;
+  width: 100%;
+  max-width: none;
+}
+
+.pictograms-float .pictogram {
+  width: 100%;
+  min-width: 0;
+  height: auto;
+  min-height: 15mm;
+}
+
+.last-row ul {
+  min-width: 0;
+  padding-left: 5mm;
+}
 @media print {
   @page {
     size: A4;

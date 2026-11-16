@@ -15,7 +15,7 @@ import { Language } from "./TableRow/Language";
 import { Pictogram } from "./TableRow/Pictograms";
 import { formatMoneyEUR } from "../../utils/formatting";
 import { Bed, Bath } from "lucide-react";
-import { HomeOutlined, SearchOutlined } from "@ant-design/icons";
+import { EyeOutlined, SearchOutlined } from "@ant-design/icons";
 import { Button, Input, Space, Tooltip } from "antd";
 import { DragHandle } from "./TableRow/DragHandle";
 import "./columns.css";
@@ -244,8 +244,8 @@ export function getColumns({
     },
     {
       title: (
-        <Tooltip title="Zobrazit na homepage">
-          <HomeOutlined />
+        <Tooltip title="Zobrazit na webu">
+          <EyeOutlined />
         </Tooltip>
       ),
       width: 50,
