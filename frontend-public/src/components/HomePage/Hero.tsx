@@ -17,7 +17,7 @@ const Hero = () => {
     <section className="hp-hero" aria-labelledby="uvod">
       <picture className="hero-img pc" typeof="image/webp">
         <img
-          src="/pages/hero2.webp"
+          src="/pages/hero3.webp"
           width="1672"
           height="941"
           alt={t("homepage.hero.alt")}
@@ -40,7 +40,7 @@ const Hero = () => {
           </div>
           <picture className="hero-img mobile" typeof="image/webp">
             <img
-              src="/pages/hero2.webp"
+              src="/pages/hero3.webp"
               width="1672"
               height="941"
               alt={t("homepage.hero.alt")}
