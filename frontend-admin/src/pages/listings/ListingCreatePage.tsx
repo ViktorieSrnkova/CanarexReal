@@ -219,7 +219,7 @@ const ListingCreatePage: React.FC<Props> = ({
               gap: 16,
             }}
           >
-            <span style={{ marginLeft: 8 }}>Zobrazit na hlavní stránce</span>
+            <span style={{ marginLeft: 8 }}>Viditelnost inzerátu:</span>
 
             <Form.Item
               name="isOnHomepage"

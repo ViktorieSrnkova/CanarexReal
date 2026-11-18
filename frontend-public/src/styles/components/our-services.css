@@ -1,3 +1,6 @@
+.serv .eyebrow {
+  margin: 0;
+}
 .s-first {
   display: flex;
   align-items: center;
@@ -17,9 +20,10 @@
 .s-bottom {
   display: flex;
   flex-direction: column;
-  width: 80%;
+  width: 100%;
   max-width: var(--max-width);
 }
+
 .s-bottom .bold {
   width: 100%;
   text-align: center;
@@ -32,10 +36,13 @@
   align-items: center;
 }
 .serv p {
-  margin: 0;
   text-align: left;
   width: 100%;
   max-width: calc(var(--max-width) - 15rem);
+}
+.s-bottom p {
+  width: 100%;
+  text-align: center;
 }
 .s-text {
   min-width: 28.125rem;
@@ -45,19 +52,23 @@
 
 .serv h3 {
   margin-top: 2rem;
+  margin-bottom: 1rem;
 }
-.serv > *:first-child .s-text h3:first-of-type {
-  margin-top: 0;
+.serv article {
+  border-bottom: 1px solid var(--line);
+}
+.serv.middle article {
+  border-bottom: 1px solid var(--dark-line);
 }
 
 .beggining {
   margin-bottom: 4rem;
 }
 .middle {
-  padding: 4rem 0;
+  margin: 4rem 0;
 }
 .end {
-  padding-top: 4rem;
+  margin-top: 4rem;
 }
 .beggining h1 {
   font:
@@ -112,5 +123,14 @@
   }
   .s-first {
     gap: 0;
+  }
+  .beggining {
+    margin-bottom: 2rem;
+  }
+  .middle {
+    margin: 2rem 0;
+  }
+  .end {
+    margin-top: 2rem;
   }
 }

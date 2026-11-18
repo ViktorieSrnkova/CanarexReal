@@ -90,6 +90,9 @@
   height: var(--calc-height);
   border: 0;
 }
+#calculator {
+  scroll-margin-top: 100px;
+}
 
 .calc-skeleton {
   position: absolute;

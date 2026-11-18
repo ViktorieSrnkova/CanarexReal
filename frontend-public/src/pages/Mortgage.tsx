@@ -4,6 +4,7 @@ import SEO from "../components/SEO/Meta";
 import { useLang } from "../hooks/i18n/useLang";
 import { useT } from "../i18n";
 import "../styles/pages/mortgage.css";
+import { useEffect } from "react";
 
 function Mortgage() {
   const t = useT();
@@ -14,6 +15,18 @@ function Mortgage() {
   const rows = t<string[][]>("mortgage.mortgageTable");
   const [isCalcLoading, setIsCalcLoading] = useState(true);
 
+  useEffect(() => {
+    if (lang === "en") return;
+    if (window.location.hash !== "#calculator") return;
+
+    const element = document.getElementById("calculator");
+    if (!element) return;
+
+    element.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  }, [lang]);
   return (
     <>
       <SEO
@@ -73,7 +86,7 @@ function Mortgage() {
           </div>
         </div>
         {lang !== "en" && (
-          <div className="calc-wrapper">
+          <div className="calc-wrapper" id="calculator">
             {isCalcLoading && <div className="calc-skeleton" />}
             <iframe
               src="https://www.hypo-portal.cz/canarexreal/kalkulator-lorinc" //{`https://www.hypo-portal.cz/${lang}/canarexreal/kalkulator-lorinc`}
