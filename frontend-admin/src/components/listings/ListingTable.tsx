@@ -1,6 +1,6 @@
 import { Table, type TableProps } from "antd";
 import type { FilterValue } from "antd/es/table/interface";
-import { getColumns } from "./Columns";
+
 import type {
   ListingRow,
   ListingFilterOption,
@@ -28,6 +28,7 @@ import { useSensor, useSensors } from "@dnd-kit/core";
 import { reorderListings } from "../../api/listings";
 import { useEffect, useState } from "react";
 import { SortableRow } from "../dashboard/SortableRow";
+import { getColumns } from "./Columns";
 
 type Props = {
   data: ListingRow[];
