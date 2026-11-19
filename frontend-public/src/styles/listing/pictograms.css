@@ -57,6 +57,7 @@
   padding-left: 0.625em;
   color: var(--primary-hover);
   font-weight: 600;
+  white-space: nowrap;
 }
 .icon svg path {
   stroke: var(--primary-hover);

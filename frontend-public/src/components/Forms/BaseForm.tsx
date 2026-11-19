@@ -173,7 +173,7 @@ export default function ContactForm(props: Props): React.ReactElement {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lang]);
   const onInvalid = () => {
-    if (window.innerWidth > 780) return;
+    if (props.what !== 3 || window.innerWidth > 780) return;
 
     setTimeout(() => {
       document.getElementById("arrival-field")?.scrollIntoView({
