@@ -54,7 +54,7 @@ export function useListings({ paginated = true }: Props) {
   };
   const parseArray = (val: string | null) =>
     val ? val.split(",").map(Number) : [];
-
+  const paged = paginated ? page : 1;
   const listingFilterString = [
     "type",
     "priceFrom",
@@ -147,7 +147,7 @@ export function useListings({ paginated = true }: Props) {
         }
 
         const { thumbnails, total } = await getListingsThumbs(langId, {
-          page,
+          page: paged,
           limit,
           filters,
           sort,
@@ -167,7 +167,7 @@ export function useListings({ paginated = true }: Props) {
     load();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
-    page,
+    paged,
     langId,
     listingFilterString,
     sort,
