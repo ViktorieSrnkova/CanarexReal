@@ -2,6 +2,8 @@ import { Router } from "express";
 import { createUploadUrl } from "../services/media/mediaService.js";
 import { requireRole } from "../middleware/auth.js";
 import prisma from "../lib/db.js";
+import { validateUploadedMedia } from "../services/media/validateUploadedMedia.js";
+import { Prisma } from "@prisma/client";
 
 const router = Router();
 router.use(requireRole([1, 3]));
@@ -42,25 +44,32 @@ router.post("/upload-url", async (req, res) => {
 
 router.post("/complete", async (req, res) => {
   try {
-    const { storageKey, fileName, contentType, size } = req.body;
+    const { storageKey, contentType, size } = req.body;
 
     if (
       typeof storageKey !== "string" ||
-      typeof fileName !== "string" ||
       typeof contentType !== "string" ||
-      typeof size !== "number"
+      typeof size !== "number" ||
+      !Number.isSafeInteger(size) ||
+      size <= 0
     ) {
       return res.status(400).json({
         error: "Invalid media metadata",
       });
     }
 
+    const validatedMedia = await validateUploadedMedia({
+      storageKey,
+      expectedContentType: contentType,
+      expectedSize: size,
+    });
+
     const image = await prisma.obrazky.create({
       data: {
         url: "",
-        klic_uloziste: storageKey,
-        mime_typ: contentType,
-        velikost: size,
+        klic_uloziste: validatedMedia.storageKey,
+        mime_typ: validatedMedia.contentType,
+        velikost: validatedMedia.size,
         docasne: true,
       },
       select: {
@@ -83,8 +92,46 @@ router.post("/complete", async (req, res) => {
   } catch (err) {
     console.error("Complete R2 upload error:", err);
 
+    if (
+      err instanceof Prisma.PrismaClientKnownRequestError &&
+      err.code === "P2002"
+    ) {
+      return res.status(409).json({
+        error: "Media already registered",
+      });
+    }
+
+    if (
+      err instanceof Error &&
+      (err.name === "NotFound" || err.name === "NoSuchKey")
+    ) {
+      return res.status(400).json({
+        error: "Uploaded file not found in R2",
+      });
+    }
+
+    if (err instanceof Error) {
+      const validationErrors = [
+        "Invalid storage key",
+        "Unsupported media type",
+        "Invalid file size",
+        "Uploaded file is empty or has unknown size",
+        "Uploaded file has no content type",
+        "Unsupported uploaded media type",
+        "Uploaded file exceeds maximum size",
+        "Uploaded file size does not match",
+        "Uploaded file content type does not match",
+      ];
+
+      if (validationErrors.includes(err.message)) {
+        return res.status(400).json({
+          error: err.message,
+        });
+      }
+    }
+
     return res.status(500).json({
-      error: "Failed to save media metadata",
+      error: "Failed to complete media upload",
     });
   }
 });

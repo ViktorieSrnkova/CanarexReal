@@ -1,7 +1,6 @@
 import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { randomUUID } from "crypto";
-import path from "path";
 import { r2 } from "../../lib/r2.js";
 import type {
   CreateUploadUrlParams,
@@ -32,10 +31,15 @@ const ALLOWED_MEDIA_TYPES = new Set([
 const MAX_IMAGE_SIZE = 50 * 1024 * 1024;
 const MAX_VIDEO_SIZE = 500 * 1024 * 1024;
 
-function getExtension(fileName: string): string {
-  const extension = path.extname(fileName).toLowerCase();
-  return extension || "";
-}
+const MEDIA_EXTENSIONS: Record<string, string> = {
+  "image/jpeg": ".jpg",
+  "image/png": ".png",
+  "image/webp": ".webp",
+  "image/gif": ".gif",
+  "video/mp4": ".mp4",
+  "video/webm": ".webm",
+  "video/quicktime": ".mov",
+};
 
 export async function createUploadUrl(
   params: CreateUploadUrlParams,
@@ -61,8 +65,13 @@ export async function createUploadUrl(
     );
   }
 
-  const extension = getExtension(fileName);
-
+  const extension = MEDIA_EXTENSIONS[contentType];
+  if (
+    resourceKey !== undefined &&
+    (!Number.isSafeInteger(resourceKey) || resourceKey <= 0)
+  ) {
+    throw new Error("Invalid resource key");
+  }
   const storageKey =
     resourceKey !== undefined
       ? `${resourceType}/${resourceKey}/${randomUUID()}${extension}`

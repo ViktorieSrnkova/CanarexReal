@@ -159,7 +159,7 @@ model obrazky {
   docasne          Boolean?           @default(true)
   data             Bytes?
   ikona_svg        String?
-  klic_uloziste    String?
+  klic_uloziste    String?            @unique
   mime_typ         String?
   velikost         Int?
   aktuality        aktuality?         @relation(fields: [aktuality_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "obrazky_aktuality")
@@ -330,4 +330,10 @@ model odber_newsletter {
   datum_odberu  DateTime   @default(now())
   datum_zruseni DateTime?
   uzivatel      uzivatele? @relation(fields: [uzivatel_id], references: [id], onDelete: Cascade)
+}
+
+model playing_with_neon {
+  id    Int    @id @default(autoincrement())
+  name  String
+  value Float? @db.Real
 }
