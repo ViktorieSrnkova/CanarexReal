@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Alert, Button } from "antd";
 import { PrinterOutlined } from "@ant-design/icons";
 
@@ -32,10 +32,13 @@ function PrintListing() {
 
   const previousMaxRef = useRef<number | null>(null);
 
-  const photoImages =
-    selectedListing?.obrazky.filter(
-      (image) => !image.mime_typ?.startsWith("video/"),
-    ) ?? [];
+  const photoImages = useMemo(
+    () =>
+      selectedListing?.obrazky.filter(
+        (image) => !image.mime_typ?.startsWith("video/"),
+      ) ?? [],
+    [selectedListing?.obrazky],
+  );
 
   const maxImages = Math.min(photoImages.length, BASE_IMAGES + extraImageSlots);
 
@@ -90,7 +93,7 @@ function PrintListing() {
 
       return next;
     });
-  }, [selectedListing, maxImages, setSelectedImages]);
+  }, [selectedListing, maxImages, photoImages, setSelectedImages]);
 
   return (
     <div>

@@ -220,7 +220,7 @@
 @media print {
   @page {
     size: A4;
-    margin: 0;
+    margin: 0 !important;
   }
   html,
   body {
@@ -402,7 +402,7 @@
     padding: 20mm 12mm;
   }
 }
-/* @supports (-webkit-touch-callout: none) {
+@supports (-webkit-touch-callout: none) {
   @media print {
     .print-page {
       padding: 0;
@@ -414,7 +414,7 @@
     width: 100%;
     height: 92%;
   }
-} */
+}
 /* Skryté měření v reálné velikosti A4 */
 .print-measure-root {
   position: fixed;
