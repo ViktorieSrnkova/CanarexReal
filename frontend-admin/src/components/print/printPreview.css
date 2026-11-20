@@ -217,89 +217,6 @@
   min-width: 0;
   padding-left: 5mm;
 }
-@media print {
-  @page {
-    size: A4;
-    margin: 0 !important;
-  }
-  html,
-  body {
-    margin: 0;
-    padding: 0;
-    background: white;
-  }
-  body * {
-    visibility: hidden;
-  }
-
-  .print-document,
-  .print-document * {
-    visibility: visible;
-  }
-  .print-document {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-  }
-  .print-preview-container {
-    padding: 0;
-    margin: 0;
-    background: white;
-    min-height: auto;
-    overflow: visible;
-  }
-
-  .print-preview-toolbar,
-  .print-action {
-    display: none !important;
-  }
-
-  .print-preview {
-    display: block;
-    width: 210mm;
-    margin: 0;
-    padding: 0;
-  }
-  .print-page-wrapper {
-    position: relative;
-    width: 210mm;
-    height: 297mm;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    display: block;
-    break-after: page;
-    page-break-after: always;
-  }
-
-  .print-page {
-    position: relative;
-    top: auto;
-    left: auto;
-    width: 210mm;
-    height: 297mm;
-    box-sizing: border-box;
-    margin: 0;
-    background: white;
-    padding: 20mm 12mm;
-    box-shadow: none;
-    zoom: 1 !important;
-    transform: none !important;
-
-    -webkit-text-size-adjust: none !important;
-    text-size-adjust: none !important;
-  }
-  .print-page-wrapper:not(:last-child) {
-    break-after: page;
-    page-break-after: always;
-  }
-
-  .print-page-wrapper:last-child {
-    break-after: auto;
-    page-break-after: auto;
-  }
-}
 /* Skrytý měřicí kontejner ve skutečné velikosti A4 */
 .print-measure-root {
   position: fixed;
@@ -382,39 +299,6 @@
   page-break-inside: avoid;
 }
 
-@media print {
-  .print-measure-root {
-    display: none !important;
-  }
-
-  .print-page-wrapper:not(:last-child) {
-    break-after: page;
-    page-break-after: always;
-  }
-
-  .print-page-wrapper:last-child {
-    break-after: auto;
-    page-break-after: auto;
-  }
-
-  .print-page {
-    transform: none !important;
-    padding: 20mm 12mm;
-  }
-}
-@supports (-webkit-touch-callout: none) {
-  @media print {
-    .print-page {
-      padding: 0;
-      margin: 0;
-    }
-  }
-  .print-image-grid {
-    box-sizing: border-box;
-    width: 100%;
-    height: 92%;
-  }
-}
 /* Skryté měření v reálné velikosti A4 */
 .print-measure-root {
   position: fixed;
@@ -489,29 +373,91 @@
 }
 
 @media print {
+  @page {
+    size: A4;
+    margin: 0 !important;
+  }
+  html,
+  body {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: white;
+  }
+  body * {
+    visibility: hidden;
+  }
+
+  .print-document,
+  .print-document * {
+    visibility: visible;
+  }
+  .print-document {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 210mm;
+    margin: 0;
+    padding: 0;
+  }
+  .print-preview-container {
+    padding: 0;
+    margin: 0;
+    background: white;
+    min-height: 0;
+    overflow: visible;
+  }
+
+  .print-preview-toolbar,
+  .print-action,
   .print-measure-root {
     display: none !important;
   }
 
+  .print-preview {
+    display: block;
+    width: 210mm;
+    margin: 0;
+    padding: 0;
+    gap: 0;
+  }
   .print-page-wrapper {
+    display: block;
+    position: relative;
+    width: 210mm;
+    height: 297mm;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden;
     break-inside: avoid;
     page-break-inside: avoid;
-  }
-
-  .print-page-wrapper:not(:last-child) {
     break-after: page;
     page-break-after: always;
   }
-
   .print-page-wrapper:last-child {
     break-after: auto;
     page-break-after: auto;
   }
 
   .print-page {
+    position: relative;
+    top: auto;
+    left: auto;
+    display: block;
+    width: 210mm;
+    height: 297mm;
+    margin: 0 !important;
     padding: 20mm 12mm;
-    transform: none !important;
+    box-sizing: border-box;
+    overflow: hidden;
+    background: white;
     box-shadow: none;
+    transform: none !important;
+    zoom: 1 !important;
+    break-after: auto;
+    page-break-after: auto;
+
+    -webkit-text-size-adjust: none !important;
+    text-size-adjust: none !important;
   }
   .print-document .leaflet-control-zoom {
     display: none !important;
