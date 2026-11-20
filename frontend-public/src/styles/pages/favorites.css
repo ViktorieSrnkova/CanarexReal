@@ -36,12 +36,14 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  max-width: 1050px;
+  max-width: var(--max-width);
   text-align: center;
+  height: 25rem;
+  padding: 2rem;
+  gap: 2rem;
 }
 .no-underline {
   text-decoration: none;
-  color: var(--ink);
 }
 .favorites h1 {
   text-align: center;

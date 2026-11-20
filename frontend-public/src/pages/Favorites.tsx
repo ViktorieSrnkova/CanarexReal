@@ -67,10 +67,10 @@ function Favorites() {
       toast.success(t("favorites.removed"));
     } catch (err) {
       console.error(err);
+      toast.error(t("favorites.serverFailed"));
     } finally {
       setConfirmOpen(false);
       setSelectedId(null);
-      toast.error(t("favorites.serverFailed"));
     }
   };
   return (
@@ -90,7 +90,6 @@ function Favorites() {
               </div>
             ) : listings.length === 0 ? (
               <div className="favorites-empty">
-                <h2>{t("favorites.empty")}</h2>
                 <p>{t("favorites.emptyDescription")}</p>
                 <Button>
                   <Link className="no-underline" to={`/${lang}/listings`}>

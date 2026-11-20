@@ -735,6 +735,9 @@ export const en = {
     price: "Budget:",
     text: "Message:",
     unsure: "I don't know",
+    emptyDescription:
+      "You haven't submitted any forms using the email address associated with your account yet.",
+    button: "Fill out an inquiry form",
   },
   err404: {
     title: "404 – Page Not Found",

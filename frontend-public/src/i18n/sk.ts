@@ -733,6 +733,9 @@ export const sk = {
     price: "ozpočet:",
     text: "Text správy:",
     unsure: "Neviem",
+    emptyDescription:
+      "Z e-mailovej adresy priradenej k vášmu účtu ste zatiaľ neodoslali žiadny formulár.",
+    button: "Vyplniť dopytový formulár",
   },
   err404: {
     title: "404 – Stránka sa nenašla",

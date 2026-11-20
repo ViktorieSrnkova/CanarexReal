@@ -717,6 +717,9 @@ export const cs = {
     price: "Rozpočet:",
     text: "Text zprávy:",
     unsure: "Nevím",
+    emptyDescription:
+      "Z e-mailové adresy přiřazené k vašemu účtu jste zatím neodeslali žádný formulář.",
+    button: "Vyplnit poptávkový formulář",
   },
   err404: {
     title: "404 – Stránka nenalezena",
