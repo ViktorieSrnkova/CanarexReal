@@ -29,6 +29,7 @@ function Navbar({ onLinkClick }: Props) {
     { label: t("header.services"), path: `/${lang}/services` },
     { label: t("header.mortgage"), path: `/${lang}/mortgage` },
     { label: t("header.news"), path: `/${lang}/news` },
+    // { label: t("header.sponsors"), path: `/${lang}/sponsors` },
   ];
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [authMode, setAuthMode] = useState<"login" | "register" | null>(null);

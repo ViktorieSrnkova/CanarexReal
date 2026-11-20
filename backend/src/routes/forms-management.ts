@@ -9,7 +9,7 @@ router.use(requireRole([1, 3]));
 router.get("/", async (req, res) => {
   try {
     const forms = await prisma.formulare.findMany({
-      orderBy: { id: "desc" },
+      orderBy: [{ datum_vytvoreni: "desc" }, { id: "desc" }],
       select: {
         id: true,
         jmeno: true,

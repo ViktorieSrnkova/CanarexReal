@@ -62,6 +62,7 @@ export const sk = {
     back: "Späť",
     logo: "Váš realitný agent na Tenerife",
     profile: "Profil",
+    sponsors: "Partneri",
   },
   footer: {
     formTitle: "Napíšte nám!",

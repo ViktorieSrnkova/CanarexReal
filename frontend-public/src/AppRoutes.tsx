@@ -24,6 +24,7 @@ const Favorites = lazy(() => import("./pages/Favorites"));
 const Forms = lazy(() => import("./pages/Forms"));
 const UserSettings = lazy(() => import("./pages/UserSettings"));
 const ResetPassword = lazy(() => import("./pages/ResetPassword"));
+const Sponsors = lazy(() => import("./pages/Sponsors"));
 import { getDailyCache, setDailyCache } from "./utils/dailyCache";
 
 export default function AppRoutes() {
@@ -91,6 +92,7 @@ export default function AppRoutes() {
           <Route path="contact" element={<Contact />} />
           <Route path="faq" element={<FAQ />} />
           <Route path="gdpr" element={<GDPR />} />
+          <Route path="sponsors" element={<Sponsors />} />
 
           <Route
             path="listings"

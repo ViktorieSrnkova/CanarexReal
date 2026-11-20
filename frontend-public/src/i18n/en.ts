@@ -61,6 +61,7 @@ export const en = {
     back: "Back",
     logo: "Your Real Estate Agent in Tenerife",
     profile: "Profile",
+    sponsors: "Sponsors",
   },
   footer: {
     formTitle: "Contact us!",
