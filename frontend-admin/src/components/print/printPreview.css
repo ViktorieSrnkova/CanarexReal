@@ -430,12 +430,8 @@
     overflow: hidden;
     break-inside: avoid;
     page-break-inside: avoid;
-    break-after: page;
-    page-break-after: always;
-  }
-  .print-page-wrapper:last-child {
-    break-after: auto;
-    page-break-after: auto;
+    break-after: page !important;
+    page-break-after: always !important;
   }
 
   .print-page {
@@ -462,27 +458,19 @@
   .print-document .leaflet-control-zoom {
     display: none !important;
   }
-}
-
-@media print {
-  @page {
-    size: A4;
-    margin: 0;
-  }
-
-  .print-page-wrapper {
-    height: 280mm !important;
-    break-after: page !important;
-    page-break-after: always !important;
-  }
-
-  .print-page {
-    height: 280mm !important;
-    padding: 12mm 12mm !important;
-  }
-
   .print-page-wrapper:last-child {
     break-after: auto !important;
     page-break-after: auto !important;
+  }
+}
+
+@media print {
+  .print-page-wrapper {
+    height: 297mm !important;
+  }
+
+  .print-page {
+    height: 297mm !important;
+    padding: 12mm 12mm !important;
   }
 }
