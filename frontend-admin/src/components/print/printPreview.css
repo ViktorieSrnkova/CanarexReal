@@ -471,6 +471,6 @@
 
   .print-page {
     height: 297mm !important;
-    padding: 0% 12mm !important;
+    padding: 0mm 12mm !important;
   }
 }
