@@ -471,22 +471,27 @@
       margin: 0;
     }
 
-    .print-preview,
-    .print-document {
-      width: 100% !important;
+    .print-document,
+    .print-preview {
+      display: block !important;
+      width: 210mm !important;
       margin: 0 !important;
       padding: 0 !important;
     }
 
     .print-page-wrapper {
-      width: 100% !important;
-      height: auto !important;
-      min-height: 0 !important;
+      position: relative !important;
+
+      width: 210mm !important;
+      height: 296mm !important;
 
       margin: 0 !important;
       padding: 0 !important;
 
-      overflow: visible !important;
+      overflow: hidden !important;
+
+      break-inside: avoid !important;
+      page-break-inside: avoid !important;
 
       break-after: page !important;
       page-break-after: always !important;
@@ -499,16 +504,26 @@
 
     .print-page {
       position: relative !important;
-      width: 100% !important;
-      height: auto !important;
-      min-height: 0 !important;
+
+      width: 210mm !important;
+      height: 296mm !important;
 
       padding: 20mm 12mm !important;
       margin: 0 !important;
 
-      overflow: visible !important;
+      box-sizing: border-box !important;
+      overflow: hidden !important;
+
       transform: none !important;
+      zoom: 1 !important;
       box-shadow: none !important;
+
+      break-after: auto !important;
+      page-break-after: auto !important;
+    }
+    .print-page-wrapper {
+      break-inside: auto !important;
+      page-break-inside: auto !important;
     }
   }
 }
