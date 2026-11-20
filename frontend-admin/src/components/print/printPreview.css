@@ -463,3 +463,52 @@
     display: none !important;
   }
 }
+/* iOS / WebKit print workaround */
+@supports (-webkit-touch-callout: none) {
+  @media print {
+    @page {
+      size: A4;
+      margin: 0;
+    }
+
+    .print-preview,
+    .print-document {
+      width: 100% !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    .print-page-wrapper {
+      width: 100% !important;
+      height: auto !important;
+      min-height: 0 !important;
+
+      margin: 0 !important;
+      padding: 0 !important;
+
+      overflow: visible !important;
+
+      break-after: page !important;
+      page-break-after: always !important;
+    }
+
+    .print-page-wrapper:last-child {
+      break-after: auto !important;
+      page-break-after: auto !important;
+    }
+
+    .print-page {
+      position: relative !important;
+      width: 100% !important;
+      height: auto !important;
+      min-height: 0 !important;
+
+      padding: 20mm 12mm !important;
+      margin: 0 !important;
+
+      overflow: visible !important;
+      transform: none !important;
+      box-shadow: none !important;
+    }
+  }
+}
