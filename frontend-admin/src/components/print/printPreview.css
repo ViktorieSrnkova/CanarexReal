@@ -466,11 +466,11 @@
 
 @media print {
   .print-page-wrapper {
-    height: 287mm !important;
+    height: 297mm !important;
   }
 
   .print-page {
-    height: 287mm !important;
-    padding: 12mm 12mm !important;
+    height: 297mm !important;
+    padding: 0% 12mm !important;
   }
 }
