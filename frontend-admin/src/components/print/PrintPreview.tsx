@@ -10,6 +10,8 @@ interface PrintPreviewProps {
   images: ListingDetail["obrazky"];
   language: Language;
   onLanguageChange: (language: Language) => void;
+  onExtraImageSlotsChange: (slots: number) => void;
+  onOverflowChange: (overflow: boolean) => void;
 }
 const A4_WIDTH_PX = 793.7008;
 
@@ -18,6 +20,8 @@ const PrintPreview = ({
   images,
   language,
   onLanguageChange,
+  onExtraImageSlotsChange,
+  onOverflowChange,
 }: PrintPreviewProps) => {
   const previewContainerRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(1);
@@ -69,6 +73,8 @@ const PrintPreview = ({
           listing={listing}
           images={images}
           language={language}
+          onExtraImageSlotsChange={onExtraImageSlotsChange}
+          onOverflowChange={onOverflowChange}
         />
       </div>
     </div>

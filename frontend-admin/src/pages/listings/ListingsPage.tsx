@@ -29,6 +29,7 @@ import ListingGalleryModal from "../../components/Modals/GalleryModal";
 import type { Gallery } from "../../types/api";
 import { Button, Collapse, Tabs } from "antd";
 import "../../components/listings/columns.css";
+import type { ListingSorting } from "../../types/listingSort";
 
 const ListingsPage: React.FC = () => {
   const [data, setData] = useState<ListingRow[]>([]);
@@ -51,6 +52,7 @@ const ListingsPage: React.FC = () => {
     total: 0,
   });
   const [images, setImages] = useState<Gallery[]>([]);
+  const [sorting, setSorting] = useState<ListingSorting>({});
   const SALES_AREAS = ["Tenerife", "Costa del Sol"] as const;
   type SalesArea = (typeof SALES_AREAS)[number];
   const [activeArea, setActiveArea] = useState<SalesArea>("Tenerife");
@@ -78,6 +80,8 @@ const ListingsPage: React.FC = () => {
           limit: pagination.limit,
           filters,
           oblast_prodeje: activeArea,
+          sortField: sorting.field,
+          sortOrder: sorting.order,
         });
         //console.log("API DATA:", res.data);
         const mapped: ListingRow[] = res.data.map((item) => mapListing(item));
@@ -96,7 +100,14 @@ const ListingsPage: React.FC = () => {
     };
 
     loadListings();
-  }, [pagination.page, pagination.limit, filters, activeArea]);
+  }, [
+    pagination.page,
+    pagination.limit,
+    filters,
+    activeArea,
+    sorting.field,
+    sorting.order,
+  ]);
 
   const handleChangeStatus = async (id: number, statusId: number) => {
     try {
@@ -120,6 +131,14 @@ const ListingsPage: React.FC = () => {
     } catch (err) {
       console.error("Status update failed:", err);
     }
+  };
+
+  const handleSortingChange = (nextSorting: ListingSorting) => {
+    setSorting(nextSorting);
+    setPagination((prev) => ({
+      ...prev,
+      page: 1,
+    }));
   };
   const handleToggleVisibility = async (id: number, value: boolean) => {
     if (updatingVisibilityIds.includes(id)) return;
@@ -286,6 +305,7 @@ const ListingsPage: React.FC = () => {
         onChange={(key) => {
           setActiveArea(key as SalesArea);
           setFilters({});
+          setSorting({});
           setPagination((prev) => ({
             ...prev,
             page: 1,
@@ -296,10 +316,29 @@ const ListingsPage: React.FC = () => {
           key: area,
           label: area,
         }))}
+        tabBarExtraContent={
+          sorting.order ? (
+            <Button
+              danger
+              onClick={() => {
+                setSorting({});
+                setPagination((prev) => ({
+                  ...prev,
+                  page: 1,
+                  total: 0,
+                }));
+              }}
+            >
+              Zrušit řazení
+            </Button>
+          ) : null
+        }
       />
       <ListingTable
         data={data}
         filters={filters}
+        sorting={sorting}
+        onSortingChange={handleSortingChange}
         pictogramOptions={pictogramOptions}
         onEdit={handleEdit}
         onGalleryEdit={handleGalleryEdit}

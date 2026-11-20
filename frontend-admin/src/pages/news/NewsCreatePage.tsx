@@ -42,6 +42,11 @@ const NewsCreatePage: React.FC<Props> = ({ initialData, onSuccess }) => {
   const [editorContent, setEditorContent] =
     useState<NewsEditorContent>(emptyEditorContent);
   const [loading, setLoading] = useState(false);
+  const [imageError, setImageError] = useState(false);
+
+  const hasMainImage = Boolean(
+    formHook.data.mainImageId || formHook.data.existingImageId,
+  );
   useEffect(() => {
     if (!initialData || initializedRef.current) return;
 
@@ -65,8 +70,27 @@ const NewsCreatePage: React.FC<Props> = ({ initialData, onSuccess }) => {
   }, [initialData, form, formHook]);
 
   const handleSubmit = async (values: NewsFormValues) => {
+    const hasMainImage = Boolean(
+      formHook.data.mainImageId || formHook.data.existingImageId,
+    );
+
+    if (!hasMainImage) {
+      setImageError(true);
+      message.error("Nahrajte hlavní obrázek zajímavosti.");
+      return;
+    }
+
+    setImageError(false);
     setLoading(true);
-    const payload = formHook.createPayload(values, editorContent);
+    const initialValues = initialData
+      ? mapNewsToFormValues(initialData)
+      : undefined;
+
+    const payload = formHook.createPayload(
+      values,
+      editorContent,
+      initialValues,
+    );
     console.log("=== NEWS PAYLOAD ===");
     console.log(JSON.stringify(payload, null, 2));
     try {
@@ -136,7 +160,16 @@ const NewsCreatePage: React.FC<Props> = ({ initialData, onSuccess }) => {
               height: 100,
             }}
           >
-            <Form.Item required label="Hlavní obrázek">
+            <Form.Item
+              required
+              label="Hlavní obrázek"
+              validateStatus={imageError && !hasMainImage ? "error" : undefined}
+              help={
+                imageError && !hasMainImage
+                  ? "Hlavní obrázek je povinný."
+                  : undefined
+              }
+            >
               <Upload
                 accept="image/*"
                 beforeUpload={formHook.handleImageUpload}
@@ -199,6 +232,7 @@ const NewsCreatePage: React.FC<Props> = ({ initialData, onSuccess }) => {
               items={languages.map((lang) => ({
                 key: lang,
                 label: lang.toUpperCase(),
+                forceRender: true,
                 children: (
                   <>
                     <Form.Item
@@ -235,7 +269,12 @@ const NewsCreatePage: React.FC<Props> = ({ initialData, onSuccess }) => {
         </Form.Item>
 
         <Form.Item style={{ marginTop: 24 }}>
-          <Button type="primary" htmlType="submit" loading={loading} block>
+          <Button
+            type="primary"
+            htmlType="submit"
+            loading={loading || formHook.data.uploading}
+            block
+          >
             Uložit zajímavost
           </Button>
         </Form.Item>

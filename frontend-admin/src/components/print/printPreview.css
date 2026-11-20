@@ -141,6 +141,7 @@
 }
 .print-page .top-section p {
   font-size: 14px;
+  margin-bottom: 0;
 }
 
 .print-page-wrapper:last-child .print-page {
@@ -289,13 +290,119 @@
     -webkit-text-size-adjust: none !important;
     text-size-adjust: none !important;
   }
-  .print-page-wrapper:last-child,
-  .print-page {
+  .print-page-wrapper:not(:last-child) {
+    break-after: page;
+    page-break-after: always;
+  }
+
+  .print-page-wrapper:last-child {
     break-after: auto;
     page-break-after: auto;
   }
 }
-@supports (-webkit-touch-callout: none) {
+/* Skrytý měřicí kontejner ve skutečné velikosti A4 */
+.print-measure-root {
+  position: fixed;
+  left: -10000px;
+  top: 0;
+  width: 210mm;
+  visibility: hidden;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.print-measure-root .print-measure-page {
+  position: relative;
+  width: 210mm;
+  height: 297mm;
+  padding: 20mm 12mm;
+  box-sizing: border-box;
+  transform: none !important;
+  overflow: visible;
+  box-shadow: none;
+  break-after: auto;
+  page-break-after: auto;
+}
+
+/* Měření a skutečný obsah musí mít stejné rozložení */
+.print-measure-body,
+.print-flow-content,
+.print-source-content {
+  width: 100%;
+  display: flow-root;
+}
+
+.print-flow-block {
+  display: flow-root;
+  width: 100%;
+  overflow-wrap: anywhere;
+}
+
+/* Mezera před piktogramy */
+.print-pictograms-block {
+  display: flow-root;
+  width: 100%;
+  margin-top: 6mm;
+  margin-bottom: 4mm;
+}
+
+/* Mapa je nedělitelný blok */
+.print-map-block {
+  display: flow-root;
+  width: 100%;
+  margin-top: 4mm;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+/* Fotografie navíc na poslední stránce */
+.print-extra-images {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-auto-rows: 61.333mm;
+  gap: 2mm;
+  margin-top: 4mm;
+  width: 100%;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.print-extra-images img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  min-width: 0;
+  min-height: 0;
+}
+
+/* Žádné automatické dělení uvnitř našich A4 stránek */
+.print-page-wrapper {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+@media print {
+  .print-measure-root {
+    display: none !important;
+  }
+
+  .print-page-wrapper:not(:last-child) {
+    break-after: page;
+    page-break-after: always;
+  }
+
+  .print-page-wrapper:last-child {
+    break-after: auto;
+    page-break-after: auto;
+  }
+
+  .print-page {
+    transform: none !important;
+    padding: 20mm 12mm;
+  }
+}
+/* @supports (-webkit-touch-callout: none) {
   @media print {
     .print-page {
       padding: 0;
@@ -306,5 +413,107 @@
     box-sizing: border-box;
     width: 100%;
     height: 92%;
+  }
+} */
+/* Skryté měření v reálné velikosti A4 */
+.print-measure-root {
+  position: fixed;
+  left: -10000px;
+  top: 0;
+  width: 210mm;
+  visibility: hidden;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.print-measure-root .print-measure-page {
+  position: relative;
+  top: auto;
+  left: auto;
+  width: 210mm;
+  height: 297mm;
+  padding: 20mm 12mm;
+  box-sizing: border-box;
+  transform: none !important;
+  overflow: visible;
+  box-shadow: none;
+  break-after: auto;
+}
+
+/* Stejné rozložení při měření i při vykreslení */
+.print-flow-content {
+  display: flow-root;
+  width: 100%;
+}
+
+.print-flow-block {
+  display: flow-root;
+  width: 100%;
+  overflow-wrap: anywhere;
+}
+
+/* Piktogramy dlouhého inzerátu */
+.print-flow-pictograms {
+  display: flow-root;
+  width: 100%;
+  margin-top: 6mm;
+  margin-bottom: 4mm;
+  break-inside: avoid;
+}
+
+/* Mapa jako nedělitelný blok */
+.print-flow-map {
+  display: flow-root;
+  width: 100%;
+  margin-top: 6mm;
+  break-inside: avoid;
+}
+
+/* Fotografie navíc na čtvrté stránce */
+.print-extra-images {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-auto-rows: 61.333mm;
+  gap: 2mm;
+  margin-top: 4mm;
+  width: 100%;
+}
+
+.print-extra-images img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  min-width: 0;
+  min-height: 0;
+}
+
+@media print {
+  .print-measure-root {
+    display: none !important;
+  }
+
+  .print-page-wrapper {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .print-page-wrapper:not(:last-child) {
+    break-after: page;
+    page-break-after: always;
+  }
+
+  .print-page-wrapper:last-child {
+    break-after: auto;
+    page-break-after: auto;
+  }
+
+  .print-page {
+    padding: 20mm 12mm;
+    transform: none !important;
+    box-shadow: none;
+  }
+  .print-document .leaflet-control-zoom {
+    display: none !important;
   }
 }

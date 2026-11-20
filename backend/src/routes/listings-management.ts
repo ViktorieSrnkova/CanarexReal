@@ -253,7 +253,47 @@ const buildListingsWhere = (
 
   return where;
 };
+const buildListingsOrderBy = (
+  sortField: string,
+  sortOrder: string,
+): Prisma.inzeratyOrderByWithRelationInput[] => {
+  // Výchozí manuální pořadí inzerátů
+  const defaultOrder: Prisma.inzeratyOrderByWithRelationInput[] = [
+    { poradi: "desc" },
+    { id: "asc" },
+  ];
 
+  // Pokud není vybrané řazení, zachováme původní pořadí
+  if (sortOrder !== "ascend" && sortOrder !== "descend") {
+    return defaultOrder;
+  }
+
+  const direction: Prisma.SortOrder = sortOrder === "ascend" ? "asc" : "desc";
+
+  switch (sortField) {
+    case "index":
+      return [{ index: direction }, { id: "asc" }];
+
+    case "price":
+      return [{ cena_v_eur: direction }, { id: "asc" }];
+
+    case "size":
+      return [{ velikost: direction }, { id: "asc" }];
+
+    case "location":
+      return [
+        {
+          adresy: {
+            lokace: direction,
+          },
+        },
+        { id: "asc" },
+      ];
+
+    default:
+      return defaultOrder;
+  }
+};
 router.get("/filter-options", async (_req, res) => {
   try {
     const pictograms = await prisma.piktogramy.findMany({
@@ -361,16 +401,16 @@ router.post("/", async (req, res) => {
               create: {
                 lat: new Prisma.Decimal(lat),
                 lng: new Prisma.Decimal(lon),
-                ulice: geo.street ?? null,
+                ulice: geo.street.trim() ?? null,
                 cislo_popisne: geo.houseNumber ?? null,
-                lokace: location,
-                mesto: geo.city ?? null,
+                lokace: location.trim(),
+                mesto: geo.city.trim() ?? null,
                 staty_id: 1,
-                smerovaci_cislo: geo.postcode ?? null,
-                cela_adresa: address.label,
-                nominatim_id: address.value,
-                oblast_prodeje: values.oblast_prodeje,
-                komplex: values.komplex ?? null,
+                smerovaci_cislo: geo.postcode.trim() ?? null,
+                cela_adresa: address.label.trim(),
+                nominatim_id: address.value.trim(),
+                oblast_prodeje: values.oblast_prodeje.trim(),
+                komplex: values.komplex.trim() ?? null,
               },
             },
           },
@@ -394,9 +434,9 @@ router.post("/", async (req, res) => {
           if (!t) continue;
           await tx.inzeraty_preklady.create({
             data: {
-              titulek: t.title,
-              popis: t.description,
-              detaily: t.details,
+              titulek: t.title.trim(),
+              popis: t.description.trim(),
+              detaily: t.details.trim(),
               jazyky_id: langId,
               inzeraty_id: ad.id,
             },
@@ -442,7 +482,8 @@ router.get("/", async (req, res) => {
     const limit = Number(req.query.limit ?? 200);
     const skip = (page - 1) * limit;
     const oblastProdeje = toQueryString(req.query.oblast_prodeje);
-
+    const sortField = toQueryString(req.query.sortField);
+    const sortOrder = toQueryString(req.query.sortOrder);
     if (!oblastProdeje) {
       return res.status(400).json({
         error: "MISSING_OBLAST_PRODEJE",
@@ -450,13 +491,12 @@ router.get("/", async (req, res) => {
       });
     }
     const where = buildListingsWhere(req.query, oblastProdeje);
+    const orderBy = buildListingsOrderBy(sortField, sortOrder);
     const listings = await prisma.inzeraty.findMany({
       where,
       skip,
       take: limit,
-      orderBy: {
-        poradi: "desc",
-      },
+      orderBy,
 
       select: {
         id: true,

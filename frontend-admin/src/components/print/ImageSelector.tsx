@@ -28,11 +28,13 @@ interface ImageSelectorProps {
   images: ListingDetail["obrazky"];
   selectedImages: ListingDetail["obrazky"];
   setSelectedImages: (images: ListingDetail["obrazky"]) => void;
+  maxImages: number;
 }
 const ImageSelector = ({
   images,
   selectedImages,
   setSelectedImages,
+  maxImages,
 }: ImageSelectorProps) => {
   const photoImages = images.filter(
     (image) => !image.mime_typ?.startsWith("video/"),
@@ -56,6 +58,7 @@ const ImageSelector = ({
     images: photoImages,
     selectedImages: photoSelectedImages,
     setSelectedImages,
+    maxImages,
   });
 
   const sensors = useSensors(

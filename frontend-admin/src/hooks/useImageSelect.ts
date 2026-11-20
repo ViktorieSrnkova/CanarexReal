@@ -1,19 +1,20 @@
 import { useState } from "react";
 import type { ListingDetail } from "../types/listings";
 
-const MAX_IMAGES = 11;
-
 interface ImageSelectorProps {
   images: ListingDetail["obrazky"];
   selectedImages: ListingDetail["obrazky"];
   setSelectedImages: (images: ListingDetail["obrazky"]) => void;
+  maxImages: number;
 }
 
 const useImageSelect = ({
   images,
   setSelectedImages,
   selectedImages,
+  maxImages,
 }: ImageSelectorProps) => {
+  const MAX_IMAGES = maxImages;
   const [modalOpen, setModalOpen] = useState(false);
   const [temporarySelection, setTemporarySelection] = useState<
     ListingDetail["obrazky"]
@@ -46,7 +47,7 @@ const useImageSelect = ({
   };
 
   const handleConfirm = () => {
-    setSelectedImages(temporarySelection);
+    setSelectedImages(temporarySelection.slice(0, MAX_IMAGES));
     setModalOpen(false);
   };
 

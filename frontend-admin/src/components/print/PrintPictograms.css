@@ -21,6 +21,7 @@
   font-style: normal;
   font-weight: 400;
   line-height: 140%;
+  max-width: 20mm;
 }
 .pict {
   width: 100%;
@@ -45,4 +46,21 @@
 }
 .icon svg {
   height: 20px;
+}
+/* Pouze pro dlouhé inzeráty */
+.print-pictograms-horizontal .pict {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3mm;
+  width: 100%;
+  max-width: none;
+  justify-content: flex-start;
+}
+
+.print-pictograms-horizontal .pictogram {
+  flex: 0 0 24mm;
+  width: 24mm;
+  min-width: 0;
+  height: auto;
+  min-height: 15mm;
 }

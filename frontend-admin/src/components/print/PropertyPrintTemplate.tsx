@@ -1,10 +1,9 @@
 import type { ListingDetail } from "../../types/listings";
 import "./printPreview.css";
-import PrintPictograms from "./PrintPictograms";
-import PrintMap from "./PrintMap";
+
 import { languageIds } from "../../types/print";
 import { formatMoneyEUR } from "../../utils/formatting";
-import ContentRenderer from "./ContentRenderer";
+import PrintPaginator from "./PrintPaginator";
 
 type Language = "cs" | "sk" | "en";
 
@@ -12,12 +11,16 @@ interface PropertyPrintTemplateProps {
   listing: ListingDetail;
   images: ListingDetail["obrazky"];
   language: Language;
+  onExtraImageSlotsChange?: (slots: number) => void;
+  onOverflowChange?: (overflow: boolean) => void;
 }
 
 const PropertyPrintTemplate = ({
   listing,
   images,
   language,
+  onExtraImageSlotsChange,
+  onOverflowChange,
 }: PropertyPrintTemplateProps) => {
   const formatLocation = (address: string, lang: Language) => {
     if (!address) return "";
@@ -50,6 +53,10 @@ const PropertyPrintTemplate = ({
         return "Váš realitný agent na Tenerife";
     }
   };
+  const translation = listing.inzeraty_preklady.find(
+    (t) => t.jazyky_id === languageIds[language],
+  );
+
   return (
     <>
       <div className="print-page-wrapper">
@@ -140,53 +147,19 @@ const PropertyPrintTemplate = ({
         </section>
       </div>
 
-      <div className="print-page-wrapper">
-        <section className="print-page">
-          <div>
-            <div className="top-section">
-              <ContentRenderer
-                data={
-                  listing.inzeraty_preklady.find(
-                    (t) => t.jazyky_id === languageIds[language],
-                  )?.popis || ""
-                }
-              />
-
-              <div className="last-row">
-                <ContentRenderer
-                  data={
-                    listing.inzeraty_preklady.find(
-                      (t) => t.jazyky_id === languageIds[language],
-                    )?.detaily || ""
-                  }
-                />
-                <div className="pictograms-float">
-                  <PrintPictograms
-                    pictograms={listing?.inzeraty_piktogramy ?? []}
-                    bath={listing.koupelny || 0}
-                    bed={listing.loznice || 0}
-                    size={`${listing.velikost} m²`}
-                    language={language}
-                  />
-                </div>
-              </div>
-
-              <div className="bottom-section">
-                <h3>Lokace</h3>
-                <PrintMap
-                  height="220px"
-                  lat={listing.adresy.lat}
-                  lng={listing.adresy.lng}
-                  zoom={12}
-                />
-                <p style={{ marginTop: "4px" }}>
-                  {formatLocation(listing.adresy?.cela_adresa || "", language)}
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-      </div>
+      <PrintPaginator
+        listing={listing}
+        images={images}
+        language={language}
+        description={translation?.popis || ""}
+        details={translation?.detaily || ""}
+        formattedAddress={formatLocation(
+          listing.adresy?.cela_adresa || "",
+          language,
+        )}
+        onExtraImageSlotsChange={onExtraImageSlotsChange}
+        onOverflowChange={onOverflowChange}
+      />
     </>
   );
 };

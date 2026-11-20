@@ -29,6 +29,7 @@ import { reorderListings } from "../../api/listings";
 import { useEffect, useState } from "react";
 import { SortableRow } from "../dashboard/SortableRow";
 import { getColumns } from "./Columns";
+import type { ListingSorting } from "../../types/listingSort";
 
 type Props = {
   data: ListingRow[];
@@ -47,6 +48,8 @@ type Props = {
     limit: number;
     total: number;
   };
+  sorting: ListingSorting;
+  onSortingChange: (sorting: ListingSorting) => void;
 };
 
 const firstFilterValue = (value: FilterValue | null | undefined) => {
@@ -116,6 +119,8 @@ const normalizeFilters = (
 export function ListingTable({
   data,
   filters,
+  sorting,
+  onSortingChange,
   pictogramOptions,
   loading,
   pagination,
@@ -130,12 +135,33 @@ export function ListingTable({
   const handleTableChange: TableProps<ListingRow>["onChange"] = (
     _pagination,
     tableFilters,
-    _sorter,
+    sorter,
     extra,
   ) => {
-    if (extra.action !== "filter") return;
+    if (extra.action === "filter") {
+      onFiltersChange(normalizeFilters(tableFilters, filters));
+      return;
+    }
 
-    onFiltersChange(normalizeFilters(tableFilters, filters));
+    if (extra.action === "sort") {
+      const currentSorter = Array.isArray(sorter) ? sorter[0] : sorter;
+
+      const field = currentSorter?.columnKey;
+
+      if (
+        field === "index" ||
+        field === "price" ||
+        field === "size" ||
+        field === "location"
+      ) {
+        onSortingChange({
+          field,
+          order: currentSorter.order ?? undefined,
+        });
+      } else {
+        onSortingChange({});
+      }
+    }
   };
 
   const [tableData, setTableData] = useState(data);
@@ -158,7 +184,7 @@ export function ListingTable({
   );
 
   const handleDragEnd = async ({ active, over }: DragEndEvent) => {
-    if (!over || active.id === over.id) {
+    if (!canReorder || !over || active.id === over.id) {
       return;
     }
 
@@ -195,9 +221,12 @@ export function ListingTable({
     !filters.bathroomsTo &&
     !filters.statusIds?.length &&
     !filters.typeCodes?.length &&
-    !filters.pictogramIds?.length;
+    !filters.pictogramIds?.length &&
+    !sorting.order;
+
   const columns = getColumns({
     filters,
+    sorting,
     pictogramOptions,
     onEdit,
     onGalleryEdit,
@@ -213,7 +242,7 @@ export function ListingTable({
   };
   return (
     <DndContext
-      sensors={sensors}
+      sensors={canReorder ? sensors : []}
       onDragStart={() => {
         setDraggingCursor("grabbing");
       }}
@@ -231,6 +260,11 @@ export function ListingTable({
         strategy={verticalListSortingStrategy}
       >
         <Table
+          locale={{
+            triggerAsc: "Seřadit vzestupně",
+            triggerDesc: "Seřadit sestupně",
+            cancelSort: "Zrušit řazení",
+          }}
           rowKey="id"
           dataSource={tableData}
           size="small"

@@ -561,6 +561,7 @@ const ListingCreatePage: React.FC<Props> = ({
           items={languages.map((lang) => ({
             key: lang,
             label: lang.toUpperCase(),
+            forceRender: true,
             children: (
               <>
                 <Form.Item

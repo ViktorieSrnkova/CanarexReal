@@ -19,8 +19,11 @@ import { EyeOutlined, SearchOutlined } from "@ant-design/icons";
 import { Button, Input, Space, Tooltip } from "antd";
 import { DragHandle } from "./TableRow/DragHandle";
 import "./columns.css";
+import type { ListingSorting } from "../../types/listingSort";
+
 type Args = {
   filters: ListingFilters;
+  sorting: ListingSorting;
   pictogramOptions: ListingFilterOption[];
   onEdit: (id: number) => void;
   onGalleryEdit?: (id: number) => void;
@@ -29,7 +32,6 @@ type Args = {
   onChangeStatus: (id: number, statusId: number) => void;
   canReorder: boolean;
 };
-
 const filteredValue = (value?: string) => (value ? [value] : null);
 const rangeFilteredValue = (from?: string, to?: string) =>
   from || to ? [`${from ?? ""}:${to ?? ""}`] : null;
@@ -181,6 +183,7 @@ const getRangeSearchFilter = (
 
 export function getColumns({
   filters,
+  sorting,
   pictogramOptions,
   onEdit,
   onGalleryEdit,
@@ -235,6 +238,9 @@ export function getColumns({
       width: 73,
       filteredValue: filteredValue(filters.index),
       ...getSearchFilter("Filtrovat index", { numeric: true }),
+      sorter: true,
+      sortOrder: sorting.field === "index" ? (sorting.order ?? null) : null,
+      sortDirections: ["ascend", "descend"],
       onCell: () => ({
         style: {
           backgroundColor: "#e6f4ff",
@@ -303,15 +309,19 @@ export function getColumns({
       key: "price",
       title: "Cena",
       width: 88,
+
+      sorter: true,
+      sortOrder: sorting.field === "price" ? (sorting.order ?? null) : null,
+      sortDirections: ["ascend", "descend"],
+
       onCell: () => ({
         style: {
           paddingLeft: 8,
           paddingRight: 8,
         },
       }),
+
       dataIndex: "cena_v_eur",
-      filteredValue: rangeFilteredValue(filters.priceFrom, filters.priceTo),
-      ...getRangeSearchFilter("Cena od", "Cena do"),
       render: (value: number) => formatMoneyEUR(value),
     },
 
@@ -319,14 +329,18 @@ export function getColumns({
       key: "location",
       title: "Lokace",
       width: 151,
+
+      sorter: true,
+      sortOrder: sorting.field === "location" ? (sorting.order ?? null) : null,
+      sortDirections: ["ascend", "descend"],
+
       onCell: () => ({
         style: {
           paddingLeft: 8,
           paddingRight: 8,
         },
       }),
-      filteredValue: filteredValue(filters.location),
-      ...getSearchFilter("Filtrovat lokaci"),
+
       render: (_, r) => (
         <div
           style={{
@@ -395,14 +409,16 @@ export function getColumns({
     {
       key: "size",
       title: (
-        <Tooltip title="Velikost v m² ">
-          <span> m²</span>
+        <Tooltip title="Velikost v m²">
+          <span>m²</span>
         </Tooltip>
       ),
       width: 70,
       dataIndex: "velikost",
-      filteredValue: rangeFilteredValue(filters.sizeFrom, filters.sizeTo),
-      ...getRangeSearchFilter("Velikost od", "Velikost do"),
+
+      sorter: true,
+      sortOrder: sorting.field === "size" ? (sorting.order ?? null) : null,
+      sortDirections: ["ascend", "descend"],
     },
     {
       width: 140,

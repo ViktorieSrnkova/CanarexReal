@@ -23,6 +23,7 @@ function PrintMap({ lat, lng, zoom, height }: Props) {
     <MapContainer
       center={position}
       zoom={zoom}
+      zoomControl={true}
       style={{ height: height, width: "100%" }}
       scrollWheelZoom={false}
       className="map"

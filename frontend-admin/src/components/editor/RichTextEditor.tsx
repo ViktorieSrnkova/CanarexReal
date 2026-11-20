@@ -4,6 +4,7 @@ import {
   type JSONContent,
   useEditorState,
   Editor,
+  Extension,
 } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import TextAlign from "@tiptap/extension-text-align";
@@ -53,7 +54,7 @@ import FileHandler from "@tiptap/extension-file-handler";
 import { useState, useRef, useEffect } from "react";
 import { getContrastColor } from "../../utils/getContrastColor";
 import { uploadMedia } from "../../services/mediaService";
-
+import { Plugin } from "@tiptap/pm/state";
 Emoji.configure({
   emojis: gitHubEmojis,
 });
@@ -65,30 +66,49 @@ type RichTextEditorProps = {
 };
 const API_URL = import.meta.env.VITE_API_URL;
 
-function normalizeEditorImages(content: JSONContent): JSONContent {
-  const normalizeNode = (node: JSONContent): JSONContent => {
-    const normalized = { ...node };
+const getPreviewImageUrl = (src: string) => {
+  if (!src.startsWith("/")) {
+    return src;
+  }
 
-    if (normalized.type === "image" && normalized.attrs?.src) {
-      const src = normalized.attrs.src;
+  const baseUrl = (API_URL ?? "").replace(/\/+$/, "");
 
-      if (typeof src === "string" && src.startsWith("/")) {
-        normalized.attrs = {
-          ...normalized.attrs,
-          src: `${API_URL}${src}`,
-        };
-      }
-    }
+  return `${baseUrl}${src}`;
+};
+const ImagePreviewExtension = Extension.create({
+  name: "imagePreview",
 
-    if (normalized.content) {
-      normalized.content = normalized.content.map(normalizeNode);
-    }
+  addProseMirrorPlugins() {
+    return [
+      new Plugin({
+        view: (editorView) => {
+          const updateImagePreviews = () => {
+            const images =
+              editorView.dom.querySelectorAll<HTMLImageElement>("img");
 
-    return normalized;
-  };
+            images.forEach((img) => {
+              const src = img.getAttribute("src");
 
-  return normalizeNode(content);
-}
+              if (!src?.startsWith("/")) {
+                return;
+              }
+
+              img.setAttribute("src", getPreviewImageUrl(src));
+            });
+          };
+
+          updateImagePreviews();
+
+          return {
+            update: () => {
+              updateImagePreviews();
+            },
+          };
+        },
+      }),
+    ];
+  },
+});
 const CustomImage = Image.extend({
   addAttributes() {
     return {
@@ -124,6 +144,7 @@ export default function RichTextEditor({
 
   const editor = useEditor({
     extensions: [
+      ImagePreviewExtension,
       Superscript,
       Placeholder.configure({
         includeChildren: true,
@@ -231,7 +252,7 @@ export default function RichTextEditor({
         return false;
       },
     },
-    content: content ? normalizeEditorImages(content) : "",
+    content: content ?? "",
     onUpdate: ({ editor }) => {
       onChange?.(editor.getJSON());
     },
@@ -246,7 +267,7 @@ export default function RichTextEditor({
       return;
     }
 
-    editor.commands.setContent(normalizeEditorImages(content), {
+    editor.commands.setContent(content, {
       emitUpdate: false,
     });
   }, [editor, content]);

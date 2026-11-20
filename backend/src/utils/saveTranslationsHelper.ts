@@ -16,7 +16,7 @@ export async function saveTranslations(params: {
 
     await prisma.aktuality_preklady.create({
       data: {
-        titulek: t.title ?? "",
+        titulek: t.title?.trim() ?? "",
         text: t.text ?? Prisma.JsonNull,
         jazyky_id,
         aktuality_id: params.aktualitaId,
@@ -43,9 +43,9 @@ export async function replaceTranslations(params: {
     if (!jazyky_id) continue;
     await params.tx.inzeraty_preklady.create({
       data: {
-        titulek: t.title ?? "",
-        popis: t.description,
-        detaily: t.details,
+        titulek: t.title?.trim() ?? "",
+        popis: t.description.trim(),
+        detaily: t.details.trim(),
         jazyky_id,
         inzeraty_id: params.listingId,
       },

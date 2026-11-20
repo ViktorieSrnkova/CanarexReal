@@ -2,6 +2,7 @@ import type { Gallery, RawListing, RawListingDetail } from "../types/api";
 import type { GallerySavePayload } from "../types/gallery";
 import type { CreateAdPayload, EditAdPayload } from "../types/listing_form";
 import type { ListingFilterOption, ListingFilters } from "../types/listings";
+import type { ListingSortField, ListingSortOrder } from "../types/listingSort";
 import { api } from "./client";
 
 export type GetListingsResponse = {
@@ -34,6 +35,8 @@ export type GetListingsParams = {
   limit?: number;
   filters?: ListingFilters;
   oblast_prodeje: string;
+  sortField?: ListingSortField;
+  sortOrder?: ListingSortOrder;
 };
 
 export const getListings = async (params?: GetListingsParams) => {

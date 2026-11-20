@@ -5,7 +5,6 @@ import type {
   NewsFormValues,
   NewsEditorContent,
 } from "../types/news";
-import type { Language } from "../types/general";
 import { uploadMedia } from "../services/mediaService";
 import type { NewsPayload } from "../api/news";
 
@@ -18,19 +17,24 @@ export const useNewsForm = () => {
   const createPayload = (
     values: NewsFormValues,
     editorContent: NewsEditorContent,
+    initialValues?: NewsFormValues,
   ): NewsPayload => {
+    const translations = {} as NewsPayload["translations"];
+
+    for (const lang of ["cs", "en", "sk"] as const) {
+      const current = values.translations?.[lang];
+      const original = initialValues?.translations?.[lang];
+
+      translations[lang] = {
+        title: current?.title ?? original?.title ?? "",
+        text: editorContent[lang] ?? null,
+        alt: current?.alt ?? original?.alt ?? "",
+      };
+    }
+
     return {
       visible: values.visible,
-      translations: Object.fromEntries(
-        (Object.keys(values.translations) as Language[]).map((lang) => [
-          lang,
-          {
-            title: values.translations[lang]?.title ?? "",
-            text: editorContent[lang] ?? null,
-            alt: values.translations[lang]?.alt ?? "",
-          },
-        ]),
-      ),
+      translations,
       mainImageId: data.mainImageId,
       existingImageId: data.existingImageId,
     };
