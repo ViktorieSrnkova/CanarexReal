@@ -14,6 +14,7 @@
 .title-wrap {
   margin: 0;
   padding-top: 2rem;
+  padding-inline: 1rem;
 }
 .result-box {
   display: none;
