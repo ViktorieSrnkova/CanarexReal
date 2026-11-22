@@ -93,7 +93,7 @@ export const en = {
     bathrooms: "Number of bathrooms",
     price: "Price",
     size: "Size",
-    since: "When would you like to start the private tours?",
+    since: "Date of arrival to Tenerife",
     date: "Date",
     unsetDate: "Not sure",
     titleInq: "Tell us your vision!",

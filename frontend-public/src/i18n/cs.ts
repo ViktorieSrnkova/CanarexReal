@@ -94,7 +94,7 @@ export const cs = {
     bathrooms: "Počet koupelen",
     price: "Cena",
     size: "Celková plocha",
-    since: "Odkdy chcete začít osobní prohlídky",
+    since: "Datum příletu na Tenerife",
     date: "Datum",
     unsetDate: "Nevím",
     titleInq: "Napište nám Vaše představy!",

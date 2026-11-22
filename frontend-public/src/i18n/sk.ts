@@ -94,7 +94,7 @@ export const sk = {
     bathrooms: "Počet kúpeľní",
     price: "Cena",
     size: "Plocha",
-    since: "Kedy chcete začať s osobnými prehliadkami?",
+    since: "Dátum príletu na Tenerife",
     date: "Dátum",
     unsetDate: "Neviem",
     titleInq: "Napíšte nám Vaše predstavy!",
