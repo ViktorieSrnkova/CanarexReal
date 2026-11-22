@@ -44,8 +44,8 @@ export async function replaceTranslations(params: {
     await params.tx.inzeraty_preklady.create({
       data: {
         titulek: t.title?.trim() ?? "",
-        popis: t.description.trim(),
-        detaily: t.details.trim(),
+        popis: t.description,
+        detaily: t.details,
         jazyky_id,
         inzeraty_id: params.listingId,
       },

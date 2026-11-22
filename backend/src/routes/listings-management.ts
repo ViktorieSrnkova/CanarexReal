@@ -435,8 +435,8 @@ router.post("/", async (req, res) => {
           await tx.inzeraty_preklady.create({
             data: {
               titulek: t.title.trim(),
-              popis: t.description.trim(),
-              detaily: t.details.trim(),
+              popis: t.description,
+              detaily: t.details,
               jazyky_id: langId,
               inzeraty_id: ad.id,
             },
