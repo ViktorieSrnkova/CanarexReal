@@ -153,6 +153,7 @@ export const en = {
     filtersAndSort: "Sort and Filters",
     noActiveMapListings:
       "There are currently no properties actively listed for sale matching your filters or search. However, you can still see sold and reserved properties in the property listings.",
+    hideSold: "Hide sold properties",
   },
   homepage: {
     hero: {

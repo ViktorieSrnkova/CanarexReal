@@ -29,7 +29,7 @@ export function useListings({ paginated = true }: Props) {
 
   const page = Number(searchParams.get("page") || 1);
   const sort = (searchParams.get("sort") as ListingSort) || "date";
-
+  const hideSold = searchParams.get("hideSold") === "true";
   const totalPages = Math.ceil(total / limit);
 
   const rangesReady = ranges !== null;
@@ -151,6 +151,7 @@ export function useListings({ paginated = true }: Props) {
           limit,
           filters,
           sort,
+          ...(paginated && hideSold ? { hideSold: true } : {}),
         });
 
         setListings(thumbnails);
@@ -171,6 +172,7 @@ export function useListings({ paginated = true }: Props) {
     langId,
     listingFilterString,
     sort,
+    hideSold,
     rangesReady,
     user,
     searchedIndex,
@@ -182,6 +184,12 @@ export function useListings({ paginated = true }: Props) {
 
   const setSort = (val: ListingSort) => {
     setURL({ sort: val, page: 1 });
+  };
+  const setHideSold = (value: boolean) => {
+    setURL({
+      hideSold: value ? "true" : null,
+      page: 1,
+    });
   };
   const handleSubmit = () => {
     setURL({
@@ -273,5 +281,7 @@ export function useListings({ paginated = true }: Props) {
     isIndexSearchActive,
     lang,
     isLoading,
+    hideSold,
+    setHideSold,
   };
 }

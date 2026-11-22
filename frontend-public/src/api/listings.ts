@@ -27,6 +27,7 @@ export type GetListingsParams = {
   limit?: number;
   filters?: ListingFilters;
   sort?: ListingSort;
+  hideSold?: boolean;
 };
 
 export const getListingsThumbs = async (

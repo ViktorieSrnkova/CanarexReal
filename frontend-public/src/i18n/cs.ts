@@ -154,6 +154,7 @@ export const cs = {
     filtersAndSort: "Filtry a Řazení",
     noActiveMapListings:
       "Pro zadané filtry nebo vyhledávání momentálně nejsou k dispozici žádné nemovitosti aktivně nabízené k prodeji. V seznamu nemovitostí však můžete stále zobrazit i prodané a rezervované nabídky.",
+    hideSold: "Skrýt prodané nemovitosti",
   },
   homepage: {
     hero: {

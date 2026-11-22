@@ -42,6 +42,8 @@ function Listings() {
     isIndexSearchActive,
     searchedIndex,
     total,
+    hideSold,
+    setHideSold,
   } = useListings({
     paginated: true,
   });
@@ -121,6 +123,8 @@ function Listings() {
                 setFiltersOpen={setFiltersOpen}
                 hasAppliedFilters={hasAppliedFilters}
                 totalResults={total}
+                hideSold={hideSold}
+                setHideSold={setHideSold}
               />
             </div>
             <div className="listings">
@@ -152,6 +156,8 @@ function Listings() {
                   setFiltersOpen={setFiltersOpen}
                   hasAppliedFilters={hasAppliedFilters}
                   totalResults={total}
+                  hideSold={hideSold}
+                  setHideSold={setHideSold}
                 />
               </div>
 

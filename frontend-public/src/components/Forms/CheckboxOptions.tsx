@@ -22,7 +22,10 @@ export default function CheckboxOptions({
           <input
             type="checkbox"
             checked={value.includes(option.value)}
-            style={{ border: "1px solid #d9d9d9", accentColor: "#87ceeb" }}
+            style={{
+              border: "1px solid var(--line)",
+              accentColor: "var(--primary)",
+            }}
             onChange={(e) => {
               onChange(
                 e.target.checked

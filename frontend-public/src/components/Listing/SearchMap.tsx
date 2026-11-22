@@ -10,8 +10,8 @@ import "leaflet/dist/leaflet.css";
 import "leaflet-gesture-handling/dist/leaflet-gesture-handling.css";
 import "../../styles/markercluster.css";
 import { useT } from "../../i18n";
+import { useSyncExternalStore } from "react";
 
-// Register the plugin once, not inside the component.
 L.Map.addInitHook("addHandler", "gestureHandling", GestureHandling);
 
 type Props = {
@@ -41,6 +41,16 @@ function MapSync({
 
   return null;
 }
+const mobileQuery = window.matchMedia("(pointer: coarse), (max-width: 768px)");
+
+function subscribe(callback: () => void) {
+  mobileQuery.addEventListener("change", callback);
+  return () => mobileQuery.removeEventListener("change", callback);
+}
+
+function getIsMobile() {
+  return mobileQuery.matches;
+}
 
 export default function SearchMap({
   markers,
@@ -50,6 +60,9 @@ export default function SearchMap({
   zoom,
   onMapMove,
 }: Props) {
+  const isMobile = useSyncExternalStore(subscribe, getIsMobile, () => false);
+  const t = useT();
+
   const createIcon = (price: number, active: boolean) => {
     const longClass = price.toString().length > 6 ? "long-price" : "";
 
@@ -60,14 +73,14 @@ export default function SearchMap({
       iconAnchor: [25, 15],
     });
   };
-  const t = useT();
+
   return (
     <MapContainer
       key={selectedId}
       center={center}
       zoom={zoom}
       style={{ height: "100%", width: "100%" }}
-      gestureHandling={true}
+      gestureHandling={isMobile}
       gestureHandlingOptions={{
         duration: 3000,
         text: {

@@ -11,7 +11,10 @@ import { optionalUser, type AuthRequest } from "../middleware/auth.js";
 
 const router = Router();
 router.use(detectLang);
-
+const toQueryString = (value: unknown) => {
+  const rawValue = Array.isArray(value) ? value[0] : value;
+  return typeof rawValue === "string" ? rawValue.trim() : "";
+};
 const normalizeArray = (value: unknown): unknown[] => {
   if (!value) return [];
 
@@ -90,7 +93,11 @@ const buildPublicListingsWhere = (query: any): Prisma.inzeratyWhereInput => {
   if (bathrooms) {
     where.koupelny = bathrooms;
   }
+  const hideSold = toQueryString(query.hideSold) === "true";
 
+  if (hideSold) {
+    where.statusy_id = { not: 2 };
+  }
   return where;
 };
 

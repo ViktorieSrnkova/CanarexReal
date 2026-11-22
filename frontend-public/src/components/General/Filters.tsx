@@ -29,6 +29,8 @@ type Props = {
   searchedIndex: number | null;
   disabled: boolean;
   totalResults: number;
+  hideSold?: boolean;
+  setHideSold?: (value: boolean) => void;
 };
 
 function Filters({
@@ -51,6 +53,8 @@ function Filters({
   searchedIndex,
   disabled,
   totalResults,
+  hideSold = false,
+  setHideSold,
 }: Props) {
   const t = useT();
   const { lang } = useLang();
@@ -138,9 +142,20 @@ function Filters({
               onChange={(val) => (setSort(val), setFiltersOpen(false))}
             />
 
-            <hr className="filter-hr" />
+            <hr className="filter-hr thinner-bot" />
           </>
         )}
+        {showSorting && !isMapPage && setHideSold && (
+          <label className="checkbox-option">
+            <input
+              type="checkbox"
+              checked={hideSold}
+              onChange={(e) => setHideSold(e.target.checked)}
+            />
+            <span>{t("listings.hideSold")}</span>
+          </label>
+        )}
+        <hr className="filter-hr thinner-top" />
         <div className="index-search-wrapper">
           <h2> {t("listings.searchByIndex")}</h2>
 

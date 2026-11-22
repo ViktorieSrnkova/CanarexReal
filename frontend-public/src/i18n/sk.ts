@@ -153,6 +153,7 @@ export const sk = {
     filtersAndSort: "Filtry a Řazení",
     noActiveMapListings:
       "Pre zadané filtre alebo vyhľadávanie momentálne nie sú k dispozícii žiadne nehnuteľnosti aktívne ponúkané na predaj. V zozname nehnuteľností však môžete stále zobraziť aj predané a rezervované ponuky.",
+    hideSold: "Skryť predané nehnuteľnosti",
   },
   homepage: {
     hero: {
