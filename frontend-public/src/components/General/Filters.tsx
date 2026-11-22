@@ -150,7 +150,10 @@ function Filters({
             <input
               type="checkbox"
               checked={hideSold}
-              onChange={(e) => setHideSold(e.target.checked)}
+              onChange={(e) => (
+                setHideSold(e.target.checked),
+                setFiltersOpen(false)
+              )}
             />
             <span>{t("listings.hideSold")}</span>
           </label>
