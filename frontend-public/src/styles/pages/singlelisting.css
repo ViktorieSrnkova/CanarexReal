@@ -269,7 +269,7 @@
 
 .skeleton-card {
   width: 20rem;
-  height: 30rem;
+  min-height: 22.854rem;
 }
 
 .skeleton-form {
