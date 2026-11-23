@@ -623,7 +623,7 @@ export const cs = {
       },
       {
         subtitle: "Máte pocit, že je toho hodně?",
-        p1: "Od toho jsme tu my.",
+        p1: "Od toho jsme tu My 😎.",
         p2: "Zkoordinujeme jednání s úřady i advokátem, pomůžeme s překlady a domluvíme potřebné schůzky. Vy se mezitím můžete soustředit na poznávání **svého nového domova na Tenerife**.",
       },
     ],

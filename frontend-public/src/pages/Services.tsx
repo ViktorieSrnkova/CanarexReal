@@ -48,7 +48,7 @@ function Services() {
       />
       <OurServices />
 
-      <section className="gray services">
+      <section className="gray services pad">
         <div className="wrap">
           <Carrousel
             similar={similar}
@@ -65,7 +65,7 @@ function Services() {
         </div>
       </section>
 
-      <section className=" white">
+      <section className=" white pad">
         <div className="wrap">
           <p className="eyebrow">{t("form.subtitleInq")}</p>
           <h2>{t("form.titleInq")}</h2>

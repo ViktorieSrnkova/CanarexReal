@@ -1,4 +1,4 @@
-import { useT } from "../../i18n";
+﻿import { useT } from "../../i18n";
 import stan from "../../assets/stan.avif";
 import useImagePreloader from "../../hooks/useImagePreloader";
 import beach from "../../assets/beach.avif";
@@ -46,7 +46,7 @@ const OurServices = () => {
             <div className="s-text">
               <div className="services-cards">
                 {sections.splice(0, 2).map((section, index) => (
-                  <article className="services-card" key={index}>
+                  <article className="services-card " key={index}>
                     <h3>{section.subtitle}</h3>
                     {section.p1 !== "" && <p>{section.p1}</p>}
                     {section.listTitle !== "" && <p>{section.listTitle}</p>}
@@ -70,9 +70,9 @@ const OurServices = () => {
           <div className="serv middle">
             <div className="s-first">
               <div className="s-text">
-                <div className="services-cards">
-                  {sections.splice(0, 3).map((section, index) => (
-                    <article className="services-card" key={index}>
+                <div className="services-cards reverse">
+                  {sections.splice(0, 2).map((section, index) => (
+                    <article className="services-card padded" key={index}>
                       <h3>{section.subtitle}</h3>
                       {section.p1 !== "" && <p>{section.p1}</p>}
                       {section.listTitle !== "" && <p>{section.listTitle}</p>}
@@ -88,28 +88,14 @@ const OurServices = () => {
                   ))}
                 </div>
               </div>
-              <img
-                className="services-img pc"
-                src={beach}
-                alt="Tenerife beach"
-              />
-            </div>
-            <img
-              className="services-img mobile"
-              src={beach}
-              alt="Tenerife beach"
-            />
-          </div>
-        </div>
-      </div>
-
-      <div className="wrap">
-        <div className="white end serv">
-          <div className="s-first">
-            <div className="s-text">
-              <div className="services-cards">
+              <div className="second-column">
+                <img
+                  className="services-img pc livingroom"
+                  src={livingroom}
+                  alt="Tenerife beach"
+                />
                 {sections.splice(0, 1).map((section, index) => (
-                  <article className="services-card" key={index}>
+                  <article className="services-card under-pic" key={index}>
                     <h3>{section.subtitle}</h3>
                     {section.p1 !== "" && <p>{section.p1}</p>}
                     {section.listTitle !== "" && <p>{section.listTitle}</p>}
@@ -126,21 +112,48 @@ const OurServices = () => {
               </div>
             </div>
             <img
-              className="services-img livingroom"
+              className="services-img mobile livingroom"
               src={livingroom}
-              alt="Interior"
+              alt="Tenerife beach"
             />
           </div>
+        </div>
+      </div>
+
+      <div className="wrap">
+        <div className="white end serv">
           <div className="s-first">
+            <div className="s-text">
+              <div className="services-cards">
+                {sections.splice(0, 1).map((section, index) => (
+                  <article className="services-card bordered " key={index}>
+                    <h3>{section.subtitle}</h3>
+                    {section.p1 !== "" && <p>{section.p1}</p>}
+                    {section.listTitle !== "" && <p>{section.listTitle}</p>}
+                    <ul>
+                      {section.list.length !== 0 &&
+                        section.list.map((li, index) => (
+                          <li key={index}>{li}</li>
+                        ))}
+                    </ul>
+                    {section.p2 !== "" && <p>{section.p2}</p>}
+                    {section.p3 !== "" && <p>{section.p3}</p>}
+                  </article>
+                ))}
+              </div>
+            </div>
+            <img className="services-img pc" src={beach} alt="Interior" />
+          </div>
+          <div className="s-first pad">
             <img
-              className="services-img villa"
+              className="services-img villa pc"
               src={villa}
               alt="Villa with pool"
             />
             <div className="s-text">
               <div className="services-cards">
-                {sections.splice(0, 2).map((section, index) => (
-                  <article className="services-card" key={index}>
+                {sections.splice(0, 1).map((section, index) => (
+                  <article className="services-card bordered" key={index}>
                     <h3>{section.subtitle}</h3>
                     {section.p1 !== "" && <p>{section.p1}</p>}
                     {section.listTitle !== "" && <p>{section.listTitle}</p>}
@@ -169,11 +182,38 @@ const OurServices = () => {
               </div>
             </div>
           </div>
+          <div className="pad less-pad-b">
+            {sections.splice(0, 1).map((section, index) => (
+              <article className="services-card bordered" key={index}>
+                <h3>{section.subtitle}</h3>
+                {section.p1 !== "" && <p>{section.p1}</p>}
+                {section.listTitle !== "" && <p>{section.listTitle}</p>}
+                <ul>
+                  {section.list.length !== 0 &&
+                    section.list.map((li, index) => <li key={index}>{li}</li>)}
+                </ul>
+                {section.p2 !== "" && <p>{section.p2}</p>}
+                {section.p3 !== "" && <p>{section.p3}</p>}
+                {index == 1 && (
+                  <>
+                    <p>
+                      <span>{t("services.czech")}</span>{" "}
+                      <a href={`/${lang}/mortgage#calculator`}>
+                        {t("services.csobLink")}
+                      </a>{" "}
+                      <span>{t("services.czechAfter")}</span>
+                    </p>
+                    <p>{t("services.slovak")}</p>
+                  </>
+                )}
+              </article>
+            ))}
+          </div>
           <div className="s-first">
             <div className="s-text">
               <div className="services-cards">
                 {sections2.map((section, index) => (
-                  <article className="services-card" key={index}>
+                  <article className="services-card padded" key={index}>
                     <h3>{section.subtitle}</h3>
                     <p>{section.p1}</p>
                     {section.p2 && <p>{section.p2}</p>}

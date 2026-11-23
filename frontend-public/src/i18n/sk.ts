@@ -514,10 +514,10 @@ export const sk = {
     sections: [
       {
         subtitle: "Prečo využiť realitnú agentúru na Tenerife",
-        p1: "Na Tenerife žijeme a pracujeme **viac ako 8 rokov**. Vieme, čím sa jednotlivé lokality líšia, čo preveriť pred kúpou a ako prebieha kúpa nehnuteľnosti v Španielsku. Pomôžeme Vám vybrať miesto, ktoré zodpovedá Vašim predstavám aj rozpočtu, a prevedieme Vás **od prvých obhliadok až po prevzatie kľúčov**.",
+        p1: "Na Tenerife žijeme a pracujeme **viac ako 8 rokov**. Vieme, čím sa jednotlivé lokality líšia, čo preveriť pred kúpou a ako prebieha kúpa nehnuteľnosti v Španielsku. Pomôžeme Vám vybrať miesto, ktoré zodpovedá Vašim predstavám aj rozpočtu, a prevedieme Vás **od obhliadok až po prevzatie kľúčov**.",
         listTitle: "",
         list: [],
-        p2: "Sme **Vašou miestnou oporou na Tenerife**. Na obhliadky chodíme s Vami a rokovania na mieste riešime osobne.",
+        p2: "Sme **Vašou oporou na Tenerife**. Na obhliadky chodíme s Vami a rokovania na mieste riešime osobne.",
         p3: "",
       },
       {
@@ -535,7 +535,7 @@ export const sk = {
       },
       {
         subtitle: "Kompletný realitný servis na kľúč",
-        p1: "Prevedieme Vás kúpou nehnuteľnosti na Tenerife **od prvého výberu až po odovzdanie kľúčov**. Postaráme sa o jednotlivé kroky, aj keď časť nákupu riešite na diaľku.",
+        p1: "Prevedieme Vás kúpou nehnuteľnosti na Tenerife **od prvého výberu až po odovzdanie kľúčov**. Postaráme sa o každý krok, aj keď nákup riešite na diaľku.",
         listTitle: "",
         list: [
           "Vyberieme nehnuteľnosti podľa Vašich predstáv a rozpočtu",
@@ -549,7 +549,7 @@ export const sk = {
         p3: "",
       },
       {
-        subtitle: "Dôkladné preverenie nehnuteľnosti (čo bežne neuvidíte)",
+        subtitle: "Dôkladné preverenie objektu (čo bežne unikne)",
         p1: "Výhľad na oceán spoznáte z fotografií. Aký je v dome pokoj, kde večer zaparkujete alebo koľko stojí prevádzka bytu, zistíte až pri dôkladnom preverení.",
         listTitle: "Pozrieme sa napríklad na:",
         list: [
@@ -638,7 +638,7 @@ export const sk = {
       },
       {
         subtitle: "Máte pocit, že je toho veľa?",
-        p1: "Od toho sme tu my.",
+        p1: "Od toho sme tu My 😎.",
         p2: "Skoordinujeme rokovania s úradmi aj advokátom, pomôžeme s prekladmi a dohodneme potrebné stretnutia. Vy sa medzitým môžete sústrediť na spoznávanie **svojho nového domova na Tenerife**.",
       },
     ],

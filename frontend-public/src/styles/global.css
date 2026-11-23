@@ -176,6 +176,9 @@ textarea {
   animation: spin 0.8s linear infinite;
   display: block;
 }
+.pad {
+  padding-top: 4rem;
+}
 .skeleton {
   position: relative;
   overflow: hidden;
@@ -211,6 +214,9 @@ textarea {
   }
 }
 @media screen and (max-width: 780px) {
+  .pad {
+    padding-top: 2rem;
+  }
   .description-wrapper {
     gap: 0;
   }

@@ -1,27 +1,38 @@
-.serv .eyebrow {
+﻿.serv .eyebrow {
   margin: 0;
+}
+.bordered {
+  border-bottom: 1px solid var(--line);
+  border-top: none !important;
+  padding-bottom: 2rem;
 }
 .s-first {
   display: flex;
-  align-items: center;
+  align-items: start;
   justify-content: space-between;
   width: 100%;
-
+  padding-top: 2rem;
   gap: 2rem;
   max-width: calc(var(--max-width) - 15rem);
 }
+
 .services-img {
   width: 100%;
-  max-width: 30rem;
+  max-width: 16.5rem;
   border-radius: 0.25rem;
   flex-shrink: 1;
   min-width: 11.25rem;
+  margin-top: 0.25rem;
+}
+.services-img.villa {
+  max-width: 20rem;
 }
 .s-bottom {
   display: flex;
   flex-direction: column;
   width: 100%;
   max-width: var(--max-width);
+  margin: 0;
 }
 
 .s-bottom .bold {
@@ -43,6 +54,10 @@
 .s-bottom p {
   width: 100%;
   text-align: center;
+  margin: 0;
+  margin-top: 2rem;
+  border-top: 1px solid var(--line);
+  padding-top: 4rem;
 }
 .s-text {
   min-width: 28.125rem;
@@ -51,16 +66,20 @@
 }
 
 .serv h3 {
-  margin-top: 2rem;
+  margin-top: 0;
   margin-bottom: 1rem;
 }
 .serv article {
-  border-bottom: 1px solid var(--line);
+  border-top: 1px solid var(--line);
+  padding-top: 2rem;
 }
 .serv.middle article {
-  border-bottom: 1px solid var(--dark-line);
+  border-top: 1px solid var(--dark-line);
 }
-
+.serv:is(.beggining, .middle, .end) article:first-child {
+  border-top: none;
+  padding-top: 0;
+}
 .beggining {
   margin-bottom: 4rem;
 }
@@ -81,35 +100,76 @@
   max-width: calc(var(--max-width) - 15rem);
 }
 .stan {
-  max-width: 18.75rem;
+  max-width: 21.8rem;
+  margin-top: 0.25rem;
 }
 .livingroom {
-  max-width: 21.875rem;
+  max-width: 31rem;
+  margin-top: 0.25rem;
 }
 .garden {
-  max-width: 21.875rem;
+  max-width: 23rem;
+  margin-top: 0.25rem;
 }
 .services-section ul {
   padding-left: 1rem;
 }
+.under-pic {
+  margin-top: 3.55rem;
+}
+.padded {
+  padding-bottom: 2rem;
+}
+.second-column {
+  max-width: 30rem;
+}
 
-@media screen and (max-width: 760px) {
+.padded:last-child {
+  padding-bottom: 0;
+}
+@media screen and (max-width: 1240px) {
+  .serv .pad {
+    padding-top: 2rem;
+  }
+  .serv .pc {
+    display: none;
+  }
+  .serv .mobile {
+    display: block;
+  }
+  .s-bottom p {
+    padding-top: 2rem;
+  }
+
+  .second-column {
+    max-width: unset;
+  }
+  .bordered {
+    padding-bottom: unset;
+  }
+  .padded {
+    padding-bottom: unset;
+  }
   .s-first,
   .s-second {
     flex-direction: column;
     align-items: flex-start;
+    align-items: center;
+  }
+  .under-pic {
+    margin-top: unset;
+    padding-left: unset;
+    margin-left: unset;
   }
   .s-bottom {
-    max-width: 28.125rem;
     width: 100%;
   }
   .s-text {
     min-width: 0;
-    max-width: 28.125rem;
   }
 
   .services-img {
-    margin-top: 2rem;
+    margin-top: 1rem;
   }
 
   .stan {

@@ -515,28 +515,28 @@ export const en = {
     sections: [
       {
         subtitle: "Why Work with a Real Estate Agency in Tenerife",
-        p1: "We have been **living and working in Tenerife for over 8 years**. We know the differences between individual areas, what to check before buying, and how the property purchase process works in Spain. We'll help you find a location that suits your lifestyle and budget, and guide you **from your first viewings all the way to receiving the keys**.",
+        p1: "We've been **living and working in Tenerife for over 8 years**. We know the differences between individual areas, what to check before buying, and how the process works in Spain. We'll help you find a location that suits your lifestyle and budget, and guide you **from viewings to key handover**.",
         listTitle: "",
         list: [],
-        p2: "We're **your local point of contact in Tenerife**. We accompany you to property viewings and handle negotiations in person.",
+        p2: "We're **your local support in Tenerife**. We join you for viewings and handle negotiations personally.",
         p3: "",
       },
       {
         subtitle: "We Represent Your Interests Exclusively",
-        p1: "We give you the time and space to make an informed decision without pressure. For every property, we'll discuss its advantages, potential risks, and purchase-related costs so you know exactly what you're committing to.",
+        p1: "We give you time and space to make an informed decision without pressure. For every property, we'll discuss its advantages, risks, and costs so you know exactly what you're committing to.",
         listTitle: "",
         list: [
           "We protect your interests when negotiating with the seller",
           "We communicate with you in Czech or Slovak and handle local negotiations in Spanish",
           "We review documents, purchase conditions, and important deadlines with you throughout the process",
-          "We follow through on our commitments and keep you regularly informed about the progress of your purchase",
+          "We keep our commitments and regularly update you on your purchase progress.",
         ],
         p2: "Before signing, we'll go through the terms with you in a language you understand, so you know exactly what you're signing.",
         p3: "",
       },
       {
         subtitle: "Complete Real Estate Services from Start to Finish",
-        p1: "We'll guide you through buying a property in Tenerife **from the initial search to the handover of the keys**. We take care of every step, even if you're managing part of the purchase remotely.",
+        p1: "We'll guide you through buying a property in Tenerife **from the initial search to the handover of the keys**. We handle every step, even if you're buying remotely.",
         listTitle: "",
         list: [
           "Find properties that match your preferences and budget",
@@ -546,11 +546,11 @@ export const en = {
           "Coordinate legal services with a trusted lawyer",
           "Assist with the transfer of ownership and property handover",
         ],
-        p2: "Throughout the entire process, you'll always know **what has been completed and what comes next**.",
+        p2: "Throughout the process, you'll always know **what's been done and what's next**.",
         p3: "",
       },
       {
-        subtitle: "Thorough Property Checks – Beyond What You See in Photos",
+        subtitle: "Detailed Property Checks (What's Often Overlooked)",
         p1: "You can appreciate an ocean view from photographs. But how quiet the building is, where you can park in the evening, or how much it costs to maintain the property are things you'll only discover through a thorough inspection.",
         listTitle: "We look into aspects such as:",
         list: [
@@ -639,7 +639,7 @@ export const en = {
       },
       {
         subtitle: "Does It All Seem a Little Overwhelming?",
-        p1: "That's what we're here for.",
+        p1: "That's what We're here for 😎.",
         p2: "We'll coordinate communication with authorities and lawyers, help with translations, and arrange the necessary appointments. Meanwhile, you can focus on discovering **your new home in Tenerife**.",
       },
     ],
