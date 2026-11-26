@@ -3,7 +3,7 @@ import prisma from "../lib/db.js";
 import { requireUser, type AuthRequest } from "../middleware/auth.js";
 import {
   listingThumbnailSelect,
-  listingWithLangWhere,
+  listingWithLang,
 } from "../lib/prismaSelect.js";
 
 const router = Router();
@@ -83,7 +83,7 @@ router.get("/", async (req: AuthRequest, res) => {
     const userId = req.user!.userId;
     const langId = req.langId ?? 2;
     const where = {
-      ...listingWithLangWhere(langId),
+      ...listingWithLang(langId),
       uzivatelske_oblibene: {
         some: {
           uzivatele_id: userId,

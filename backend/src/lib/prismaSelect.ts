@@ -141,7 +141,7 @@ export function listingDetailSelect(langId: number = 2, userId?: number) {
     },
   };
 }
-export function listingWithLangWhere(langId: number) {
+export function listingWithLang(langId: number) {
   return {
     inzeraty_preklady: {
       some: {
