@@ -424,10 +424,7 @@ router.post("/", async (req, res) => {
                   address.label,
                   "address.label",
                 ),
-                nominatim_id: requireTrimmedString(
-                  address.value,
-                  "address.value",
-                ),
+                nominatim_id: address.value,
                 oblast_prodeje: requireTrimmedString(
                   values.oblast_prodeje,
                   "oblast_prodeje",
