@@ -3,11 +3,12 @@ import prisma from "../lib/db.js";
 import {
   listingThumbnailSelect,
   listingDetailSelect,
-  listingWithLangWhere,
+  listingWithLang,
 } from "../lib/prismaSelect.js";
 import { detectLang, type PublicRequest } from "../middleware/detectLang.js";
 import type { Prisma } from "@prisma/client";
 import { optionalUser, type AuthRequest } from "../middleware/auth.js";
+import { CZECH_LANG_ID, FIRST_PAGE, PAGE_LIMIT } from "../constants.js";
 
 const router = Router();
 router.use(detectLang);
@@ -29,14 +30,21 @@ const toNumberArray = (value: unknown): number[] => {
       typeof v === "string" && v.includes(",") ? v.split(",") : v,
     )
     .map((v) => Number(v))
-    .filter((v) => !Number.isNaN(v));
+    .filter((v) => Number.isSafeInteger(v) && v > 0);
 };
 
 const toValidNumber = (value: unknown): number | undefined => {
-  if (value === undefined) return undefined;
+  if (typeof value !== "string" && typeof value !== "number") {
+    return undefined;
+  }
+
+  if (typeof value === "string" && !value.trim()) {
+    return undefined;
+  }
 
   const num = Number(value);
-  return Number.isNaN(num) ? undefined : num;
+
+  return Number.isSafeInteger(num) && num >= 0 ? num : undefined;
 };
 
 const toRange = (
@@ -66,7 +74,9 @@ const getQueryArray = (query: any, key: string) => {
   return query[key] ?? query[`${key}[]`];
 };
 
-const buildPublicListingsWhere = (query: any): Prisma.inzeratyWhereInput => {
+const buildPublicListingsFilterFromQuery = (
+  query: any,
+): Prisma.inzeratyWhereInput => {
   const where: Prisma.inzeratyWhereInput = {};
 
   const types = toInFilter(getQueryArray(query, "type"));
@@ -104,7 +114,7 @@ const buildPublicListingsWhere = (query: any): Prisma.inzeratyWhereInput => {
 const SORT_MAP = {
   price_asc: { cena_v_eur: "asc" },
   price_desc: { cena_v_eur: "desc" },
-  newest: { datum_vytvoreni: "desc" },
+  newest: { poradi: "desc" },
 } satisfies Record<string, Prisma.inzeratyOrderByWithRelationInput>;
 
 const buildOrderBy = (sort?: string) =>
@@ -155,11 +165,11 @@ router.get("/ranges", async (req, res) => {
 
 router.get("/", optionalUser, async (req: AuthRequest, res) => {
   try {
-    const page = Number(req.query.page) || 1;
-    const limit = Number(req.query.limit) || 12;
-    const skip = (page - 1) * limit;
-    const langId = req.langId ?? 2;
-    const where = buildPublicListingsWhere(req.query);
+    const page = Number(req.query.page) || FIRST_PAGE;
+    const limit = Number(req.query.limit) || PAGE_LIMIT;
+    const skip = (page - FIRST_PAGE) * limit;
+    const langId = req.langId ?? CZECH_LANG_ID;
+    const where = buildPublicListingsFilterFromQuery(req.query);
     const orderBy = buildOrderBy(req.query.sort as string);
     const userId = req.user?.userId ?? undefined;
 
@@ -169,7 +179,7 @@ router.get("/", optionalUser, async (req: AuthRequest, res) => {
         take: limit,
         orderBy,
         where: {
-          ...listingWithLangWhere(langId),
+          ...listingWithLang(langId),
           ...where,
           reprezentativni: true,
         },
@@ -178,7 +188,7 @@ router.get("/", optionalUser, async (req: AuthRequest, res) => {
 
       prisma.inzeraty.count({
         where: {
-          ...listingWithLangWhere(langId),
+          ...listingWithLang(langId),
           ...where,
           reprezentativni: true,
         },
@@ -207,7 +217,7 @@ router.get("/", optionalUser, async (req: AuthRequest, res) => {
 
 router.get("/home", optionalUser, async (req: AuthRequest, res) => {
   try {
-    const langId = req.langId ?? 2;
+    const langId = req.langId ?? CZECH_LANG_ID;
     const userId = req.user?.userId ?? undefined;
     const thumbnailsRaw = await prisma.inzeraty.findMany({
       where: {
@@ -239,6 +249,38 @@ router.get("/home", optionalUser, async (req: AuthRequest, res) => {
       .json({ message: "Internal server error", error: String(err) });
   }
 });
+
+router.get("/map", async (req, res) => {
+  try {
+    const filter = buildPublicListingsFilterFromQuery(req.query);
+    const langId = req.langId ?? CZECH_LANG_ID;
+
+    const mapData = await prisma.inzeraty.findMany({
+      where: {
+        ...listingWithLang(langId),
+        ...filter,
+        reprezentativni: true,
+      },
+      select: {
+        index: true,
+        cena_v_eur: true,
+
+        adresy: {
+          select: {
+            lat: true,
+            lng: true,
+          },
+        },
+      },
+    });
+
+    res.json({ mapData, total: mapData.length });
+  } catch (err) {
+    console.log("Map endpoint error: ", err);
+    res.status(500).json({ message: "Map endpoint error", error: String(err) });
+  }
+});
+
 router.get("/thumb", optionalUser, async (req: AuthRequest, res) => {
   try {
     const parseNumber = (v: unknown) =>
@@ -247,7 +289,7 @@ router.get("/thumb", optionalUser, async (req: AuthRequest, res) => {
     const id = parseNumber(req.query.id);
     const index = parseNumber(req.query.index);
     const userId = req.user?.userId ?? undefined;
-    const langId = req.langId ?? 2;
+    const langId = req.langId ?? CZECH_LANG_ID;
 
     if ((id && index) || (!id && !index)) {
       return res.status(400).json({
@@ -311,7 +353,7 @@ router.get("/:index", optionalUser, async (req: AuthRequest, res) => {
     if (!Number.isInteger(index) || index <= 0) {
       return res.status(400).json({ message: "Invalid index" });
     }
-    const langId = req.langId ?? 2;
+    const langId = req.langId ?? CZECH_LANG_ID;
     const userId = req.user?.userId ?? undefined;
 
     const listing = await prisma.inzeraty.findFirst({
@@ -395,7 +437,7 @@ router.get("/:index", optionalUser, async (req: AuthRequest, res) => {
 router.get("/:id/similar", optionalUser, async (req: AuthRequest, res) => {
   try {
     const id = Number(req.params.id);
-    const langId = req.langId ?? 2;
+    const langId = req.langId ?? CZECH_LANG_ID;
     const userId = req.user?.userId ?? undefined;
 
     const baseListing = await prisma.inzeraty.findFirst({
