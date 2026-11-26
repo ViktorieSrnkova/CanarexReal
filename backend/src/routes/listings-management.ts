@@ -336,6 +336,19 @@ router.get("/filter-options", async (_req, res) => {
       .json({ message: "Internal server error", error: String(err) });
   }
 });
+export function trimOrNull(value: unknown): string | null {
+  if (typeof value !== "string") return null;
+
+  return value.trim() || null;
+}
+
+export function requireTrimmedString(value: unknown, field: string): string {
+  if (typeof value !== "string" || !value.trim()) {
+    throw new Error(`Missing or invalid field: ${field}`);
+  }
+
+  return value.trim();
+}
 
 router.post("/", async (req, res) => {
   try {
@@ -401,16 +414,25 @@ router.post("/", async (req, res) => {
               create: {
                 lat: new Prisma.Decimal(lat),
                 lng: new Prisma.Decimal(lon),
-                ulice: geo.street.trim() ?? null,
+                ulice: trimOrNull(geo.street) ?? null,
                 cislo_popisne: geo.houseNumber ?? null,
-                lokace: location.trim(),
-                mesto: geo.city.trim() ?? null,
+                lokace: requireTrimmedString(location, "location"),
+                mesto: trimOrNull(geo.city) ?? null,
                 staty_id: 1,
-                smerovaci_cislo: geo.postcode.trim() ?? null,
-                cela_adresa: address.label.trim(),
-                nominatim_id: address.value.trim(),
-                oblast_prodeje: values.oblast_prodeje.trim(),
-                komplex: values.komplex.trim() ?? null,
+                smerovaci_cislo: trimOrNull(geo.postcode) ?? null,
+                cela_adresa: requireTrimmedString(
+                  address.label,
+                  "address.label",
+                ),
+                nominatim_id: requireTrimmedString(
+                  address.value,
+                  "address.value",
+                ),
+                oblast_prodeje: requireTrimmedString(
+                  values.oblast_prodeje,
+                  "oblast_prodeje",
+                ),
+                komplex: trimOrNull(values.komplex) ?? null,
               },
             },
           },
