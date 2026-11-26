@@ -80,7 +80,9 @@ export const cs = {
     text_placeholder: "Zde napište svou zprávu",
     required: "povinné pole",
     submit: "Odeslat zprávu",
-    gdpr: "Odesláním souhlasíte se zpracováním osobních údajů",
+    gdpr: "Odesláním souhlasíte se",
+    gdprLink: "zpracováním osobních údajů",
+    href: "/gdpr",
     email: "E-mail",
     success: "Formulář byl odeslán, kopii máte v emailu",
     error: "Některý údaj je chybně zadaný",
@@ -103,8 +105,8 @@ export const cs = {
     subtitleDet:
       "Rádi Vám sdělíme veškeré informace, upřesněte prosím Váš dotaz.",
     fillProfile: "Vyplnit z mého profilu",
-    newsletter: "Dostávat nové nabídky",
-    cancelNewsletter: "Už nechci dostávat nové nabídky",
+    newsletter: "Dostávat aktuální nemovitosti",
+    cancelNewsletter: "Už nechci dostávat aktuální nemovitosti",
     newsletterLog: " Pro získávání nových nabídek použijte přihlášený email:",
     /* */
   },
@@ -680,8 +682,8 @@ export const cs = {
     check: "Potvrzení hesla",
     saving: "Ukládám...",
     sameEmail: "Zadaný email už patří jinému uživateli.",
-    newsletterSub: "Nyní budete dostávat nové nabídky.",
-    newsletterUnsub: "Už nebudete dostávat nové nabídky.",
+    newsletterSub: "Nyní budete dostávat aktuální nemovitosti.",
+    newsletterUnsub: "Už nebudete dostávat aktuální nemovitosti.",
     /* */
   },
   home: {
@@ -691,7 +693,7 @@ export const cs = {
   newsletter: {
     cancel: "Zachovat",
     unsubscribe: "Zrušit odběr",
-    unsubscribeConfirm: "Opravdu už nechcete dostávat nové nabídky?",
+    unsubscribeConfirm: "Opravdu už nechcete dostávat aktuální nemovitosti?",
     /* */
   },
   reviews: {

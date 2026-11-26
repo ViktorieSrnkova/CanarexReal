@@ -12,6 +12,7 @@ import { useLang } from "../../hooks/i18n/useLang";
 import InqueryFormPartRHF from "./InqueryFormPartRHF";
 import { useAuth } from "../../Auth/authStore";
 import toast from "react-hot-toast";
+import { Link } from "react-router-dom";
 
 type Props =
   | { from: number; what: 1 }
@@ -325,7 +326,13 @@ export default function ContactForm(props: Props): React.ReactElement {
           <div className={`gdpr-col ${props.what === 3 ? "long" : ""}`}>
             <label htmlFor={gdprId} className="gdpr">
               <input id={gdprId} type="checkbox" {...register("gdpr")} />
-              <span>{t("form.gdpr")} *</span>
+              <span>
+                {t("form.gdpr")}{" "}
+                <Link to={`/${lang}${t("form.href")}`}>
+                  {t("form.gdprLink")}
+                </Link>{" "}
+                *
+              </span>
             </label>
             {errors.gdpr && (
               <span className="error">{errors.gdpr.message}</span>

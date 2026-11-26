@@ -80,7 +80,9 @@ export const sk = {
     text_placeholder: "Tu napište svoju správu",
     required: "povinné pole",
     submit: "odoslať správu",
-    gdpr: "Odoslaním súhlasíte so spracovaním osobných údajov",
+    gdpr: "Odoslaním súhlasíte so",
+    gdprLink: "spracovaním osobných údajov",
+    href: "/gdpr",
     email: "E-mail",
     phoneErr: "zadajte platné telefónne číslo",
     emailErr: "zadajte platnú e-mailovú adresu",
@@ -103,9 +105,10 @@ export const sk = {
     subtitleDet:
       "Radi Vám poskytneme všetky informácie, upresnite prosím Vašu otázku.",
     fillProfile: "Vyplniť z môjho profilu",
-    newsletter: "Dostávať nové ponuky",
-    cancelNewsletter: "Už nechcem dostávať nové ponuky",
-    newsletterLog: " Na dostávanie nových ponúk použite prihlásený e-mail:",
+    newsletter: "Dostávať aktuálne nehnuteľnosti",
+    cancelNewsletter: "Už nechcem dostávať aktuálne nehnuteľnosti",
+    newsletterLog:
+      " Na dostávanie aktuálnych nehnuteľností použite prihlásený e-mail:",
   },
   property_type: {
     vila: "Vila",
@@ -696,8 +699,8 @@ export const sk = {
     check: "Potvrdenie hesla",
     saving: "Ukladám...",
     sameEmail: "Zadaná e-mailová adresa už patrí inému používateľovi.",
-    newsletterSub: "Teraz budete dostávať nové ponuky.",
-    newsletterUnsub: "Už nebudete dostávať nové ponuky.",
+    newsletterSub: "Teraz budete dostávať aktuálne nehnuteľnosti.",
+    newsletterUnsub: "Už nebudete dostávať aktuálne nehnuteľnosti.",
     /* */
   },
   home: {
@@ -707,7 +710,7 @@ export const sk = {
   newsletter: {
     cancel: "Zachovať",
     unsubscribe: "Zrušiť odber",
-    unsubscribeConfirm: "Naozaj už nechcete dostávať nové ponuky?",
+    unsubscribeConfirm: "Naozaj už nechcete dostávať aktuálne nehnuteľnosti?",
     /* */
   },
   reviews: {

@@ -81,6 +81,8 @@ export const en = {
     required: "required field",
     submit: "Send message",
     gdpr: "By submitting, you agree to the personal data policy.",
+    gdprLink: "personal data policy",
+    href: "/gdpr",
     phoneErr: "enter valid phone number",
     emailErr: "enter valid email",
     checkErr: "choose one of the options above!",
@@ -103,9 +105,10 @@ export const en = {
     subtitleDet:
       "We will be happy to provide you with all the information, please specify your question.",
     fillProfile: "Fill from my profile",
-    newsletter: "Receive new offers",
-    cancelNewsletter: "I no longer want to receive new offers",
-    newsletterLog: " To receive new offers, use your registered email address:",
+    newsletter: "Receive current properties",
+    cancelNewsletter: "I no longer want to receive current properties",
+    newsletterLog:
+      " To receive current properties, use your registered email address:",
   },
   property_type: {
     vila: "Villa",
@@ -699,8 +702,8 @@ export const en = {
     saving: "Saving...",
     sameEmail:
       "The email address you entered is already taken by another user.",
-    newsletterSub: "You will now receive new offers.",
-    newsletterUnsub: "You will no longer receive new offers.",
+    newsletterSub: "You will now receive current properties.",
+    newsletterUnsub: "You will no longer receive current properties.",
   },
   home: {
     news: "New listings",
@@ -710,7 +713,7 @@ export const en = {
     cancel: "Keep",
     unsubscribe: "Unsubscribe",
     unsubscribeConfirm:
-      "Are you sure you no longer want to receive new offers?",
+      "Are you sure you no longer want to receive current properties?",
   },
   reviews: {
     title: "Google Reviews",
